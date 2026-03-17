@@ -60,6 +60,7 @@ def _show_login():
         '<style>section.main > div {overflow: hidden !important;}</style>',
         unsafe_allow_html=True,
     )
+
     st.markdown(
         """
         <div style="text-align:center; margin-top:3rem;">
@@ -88,6 +89,24 @@ def _show_login():
                 st.error("Invalid username or password.")
 
         st.caption("Username: **TestUser**  •  Password: **User123**")
+
+    # 👇 ADD THIS FOOTER HERE
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    st.markdown("---")
+
+    st.markdown(
+        """
+        <div style="text-align:center; font-size:12px; color:#94a3b8;">
+            Built by 
+            <a href="https://www.linkedin.com/in/monika-kushwaha-52443735/" 
+            target="_blank" 
+            style="color:#60a5fa; text-decoration:none;">
+            Monika Kushwaha
+            </a>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 
 # -----------------------------------------------
