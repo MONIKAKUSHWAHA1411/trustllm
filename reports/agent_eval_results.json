@@ -1,0 +1,77 @@
+{
+  "tool_accuracy": 1.0,
+  "total_tests": 10,
+  "passed_tests": 10,
+  "results": [
+    {
+      "query": "Check my PTO balance",
+      "expected_tool": "workday_api",
+      "tool_used": "workday_api",
+      "correct": true,
+      "response": "Your PTO balance is 12 days."
+    },
+    {
+      "query": "How many vacation days do I have left?",
+      "expected_tool": "workday_api",
+      "tool_used": "workday_api",
+      "correct": true,
+      "response": "Your PTO balance is 12 days."
+    },
+    {
+      "query": "I need to request time off next week",
+      "expected_tool": "workday_api",
+      "tool_used": "workday_api",
+      "correct": true,
+      "response": "Your PTO balance is 12 days."
+    },
+    {
+      "query": "Create HR ticket for laptop issue",
+      "expected_tool": "servicenow_api",
+      "tool_used": "servicenow_api",
+      "correct": true,
+      "response": "A support ticket has been created (INC0012345)."
+    },
+    {
+      "query": "Submit a support request for my broken keyboard",
+      "expected_tool": "servicenow_api",
+      "tool_used": "servicenow_api",
+      "correct": true,
+      "response": "A support ticket has been created (INC0012345)."
+    },
+    {
+      "query": "Open an incident for a software access issue",
+      "expected_tool": "servicenow_api",
+      "tool_used": "servicenow_api",
+      "correct": true,
+      "response": "A support ticket has been created (INC0012345)."
+    },
+    {
+      "query": "Show company leave policy",
+      "expected_tool": "policy_retriever",
+      "tool_used": "policy_retriever",
+      "correct": true,
+      "response": "Here is the relevant company policy section."
+    },
+    {
+      "query": "What is the remote work guideline?",
+      "expected_tool": "policy_retriever",
+      "tool_used": "policy_retriever",
+      "correct": true,
+      "response": "Here is the relevant company policy section."
+    },
+    {
+      "query": "Find the employee handbook section on expense reimbursement",
+      "expected_tool": "policy_retriever",
+      "tool_used": "policy_retriever",
+      "correct": true,
+      "response": "Here is the relevant company policy section."
+    },
+    {
+      "query": "What are the procedures for taking paid leave?",
+      "expected_tool": "policy_retriever",
+      "tool_used": "policy_retriever",
+      "correct": true,
+      "response": "Here is the relevant company policy section."
+    }
+  ]
+}

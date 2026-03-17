@@ -1,0 +1,42 @@
+[
+  {
+    "query": "Check my PTO balance",
+    "expected_tool": "workday_api"
+  },
+  {
+    "query": "How many vacation days do I have left?",
+    "expected_tool": "workday_api"
+  },
+  {
+    "query": "I need to request time off next week",
+    "expected_tool": "workday_api"
+  },
+  {
+    "query": "Create HR ticket for laptop issue",
+    "expected_tool": "servicenow_api"
+  },
+  {
+    "query": "Submit a support request for my broken keyboard",
+    "expected_tool": "servicenow_api"
+  },
+  {
+    "query": "Open an incident for a software access issue",
+    "expected_tool": "servicenow_api"
+  },
+  {
+    "query": "Show company leave policy",
+    "expected_tool": "policy_retriever"
+  },
+  {
+    "query": "What is the remote work guideline?",
+    "expected_tool": "policy_retriever"
+  },
+  {
+    "query": "Find the employee handbook section on expense reimbursement",
+    "expected_tool": "policy_retriever"
+  },
+  {
+    "query": "What are the procedures for taking paid leave?",
+    "expected_tool": "policy_retriever"
+  }
+]
