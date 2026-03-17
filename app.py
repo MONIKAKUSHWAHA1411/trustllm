@@ -1,259 +1,145 @@
 import streamlit as st
-import json
-from pathlib import Path
 
-from ui_pages.overview import render as overview
-from ui_pages.prompt_explorer import render as prompt_explorer
-from ui_pages.leaderboard import render as leaderboard
-from ui_pages.run_eval import render as run_eval
-from ui_pages.agent_performance import render as agent_performance
-from ui_pages.rag_page import render as rag_testing
-from ui_pages.prompt_dataset import render as prompt_dataset
-from ui_pages.failure_analysis import render as failure_analysis
-
-BASE_DIR = Path(__file__).resolve().parent
-
-# -------------------------------
-# PAGE CONFIG
-# -------------------------------
+# -------------------- PAGE CONFIG --------------------
 st.set_page_config(
     page_title="TrustLLM",
-    page_icon="🛡️",
-    layout="wide",
-    initial_sidebar_state="expanded"
+    layout="centered",
+    initial_sidebar_state="collapsed"
 )
 
-# -------------------------------
-# LOAD CSS
-# -------------------------------
-def load_css():
-    with open(BASE_DIR / "style.css") as f:
-        st.markdown(
-            f"<style>{f.read()}</style>",
-            unsafe_allow_html=True
-        )
+# -------------------- CUSTOM CSS --------------------
+st.markdown("""
+<style>
 
-load_css()
+/* Remove default padding */
+.block-container {
+    padding-top: 0rem;
+    padding-bottom: 0rem;
+}
 
+/* Full page center */
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
 
-# -------------------------------
-# AUTH HELPERS
-# -------------------------------
-def _load_users():
-    with open(BASE_DIR / "users.json") as f:
-        return json.load(f)["users"]
+/* Background */
+.stApp {
+    background: radial-gradient(circle at top, #0b1b2b, #020617);
+    color: white;
+}
 
+/* Card */
+.login-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 35px;
+    border-radius: 16px;
+    width: 360px;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+}
 
-def _authenticate(username, password):
-    for u in _load_users():
-        if u["username"] == username and u["password"] == password:
-            return u
-    return None
+/* Title */
+.title {
+    text-align: center;
+    font-size: 34px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
 
-def _show_login():
-    # -------------------------------
-    # CLEAN NO-SCROLL FIX
-    # -------------------------------
-    st.markdown(
-        """
-        <style>
-        .block-container {
-            padding-top: 1rem;
-            padding-bottom: 1rem;
-            max-width: 100%;
-        }
+.subtitle {
+    text-align: center;
+    font-size: 14px;
+    color: #9CA3AF;
+    margin-bottom: 25px;
+}
 
-        html, body, [data-testid="stAppViewContainer"] {
-            overflow: hidden;
-        }
+/* Input fields */
+.stTextInput>div>div>input {
+    background-color: #0f172a;
+    color: white;
+    border-radius: 10px;
+    border: 1px solid #1f2937;
+    padding: 10px;
+}
 
-        .login-box {
-            margin-top: 8vh;
-        }
+/* Password field */
+.stTextInput>div>div>div>input {
+    background-color: #0f172a;
+    color: white;
+    border-radius: 10px;
+    border: 1px solid #1f2937;
+    padding: 10px;
+}
 
-        .login-footer {
-            position: fixed;
-            bottom: 10px;
-            width: 100%;
-            text-align: center;
-            font-size: 12px;
-            color: #94a3b8;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
+/* Button */
+.stButton>button {
+    width: 100%;
+    background: linear-gradient(90deg, #2563eb, #1d4ed8);
+    color: white;
+    border-radius: 10px;
+    padding: 10px;
+    font-weight: 600;
+    border: none;
+    transition: 0.2s;
+}
 
-    # -------------------------------
-    # HEADER
-    # -------------------------------
-    st.markdown(
-        """
-        <div class="login-box" style="text-align:center;">
-            <div style="font-size:3rem;">🛡</div>
-            <h1 style="margin-bottom:0;">TrustLLM</h1>
-            <p style="color:#94a3b8;">AI Model Evaluation Platform</p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+.stButton>button:hover {
+    background: linear-gradient(90deg, #1d4ed8, #1e40af);
+    transform: scale(1.02);
+}
 
-    # -------------------------------
-    # LOGIN FORM
-    # -------------------------------
-    col_l, col_form, col_r = st.columns([1.5, 1, 1.5])
-    with col_form:
-        with st.form("login_form"):
-            username = st.text_input("Username")
-            password = st.text_input("Password", type="password")
-            submitted = st.form_submit_button("Sign in", use_container_width=True)
+/* Footer text */
+.footer {
+    text-align: center;
+    font-size: 12px;
+    color: #6B7280;
+    margin-top: 15px;
+}
 
-        if submitted:
-            user = _authenticate(username, password)
-            if user:
-                st.session_state["logged_in"] = True
-                st.session_state["user"] = user
-                st.rerun()
-            else:
-                st.error("Invalid username or password.")
+</style>
+""", unsafe_allow_html=True)
 
-        st.caption("Username: **TestUser**  •  Password: **User123**")
+# -------------------- CENTER WRAPPER --------------------
+st.markdown('<div class="main">', unsafe_allow_html=True)
 
-    # -------------------------------
-    # FOOTER
-    # -------------------------------
-    st.markdown(
-        """
-        <div class="login-footer">
-            Built by 
-            <a href="https://www.linkedin.com/in/monika-kushwaha-52443735/" 
-            target="_blank" 
-            style="color:#60a5fa; text-decoration:none;">
-            Monika Kushwaha
-            </a>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+# -------------------- LOGIN CARD --------------------
+st.markdown('<div class="login-card">', unsafe_allow_html=True)
 
+st.markdown('<div class="title">🔐 TrustLLM</div>', unsafe_allow_html=True)
+st.markdown('<div class="subtitle">AI Model Evaluation Platform</div>', unsafe_allow_html=True)
 
-# -----------------------------------------------
-# GATE: show login if not authenticated
-# -----------------------------------------------
-if not st.session_state.get("logged_in"):
-    _show_login()
-    st.stop()
+# Inputs
+username = st.text_input("Username", placeholder="Enter username")
+password = st.text_input("Password", type="password", placeholder="Enter password")
 
+# Login button
+if st.button("Sign in"):
+    if username == "TestUser" and password == "User123":
+        st.success("Login successful 🚀")
+        st.session_state["logged_in"] = True
+    else:
+        st.error("Invalid credentials")
 
-# ===============================================
-# AUTHENTICATED APP
-# ===============================================
-
-# -------------------------------
-# LOAD PROJECTS
-# -------------------------------
-with open(BASE_DIR / "projects.json") as _pf:
-    _projects_data = json.load(_pf)["projects"]
-_project_names = ["All Projects"] + [p["name"] for p in _projects_data]
-
-# -------------------------------
-# TOP HEADER BAR
-# -------------------------------
-header = st.container()
-with header:
-    h1, h2, h3, h4, h5 = st.columns([1.2, 2, 2, 0.8, 0.8])
-    with h1:
-        st.markdown("**🛡 TrustLLM**")
-    with h2:
-        selected_project = st.selectbox(
-            "Project",
-            _project_names,
-            label_visibility="collapsed",
-        )
-    with h3:
-        selected_env = st.selectbox(
-            "Environment",
-            ["production", "staging", "development"],
-            label_visibility="collapsed",
-        )
-    with h4:
-        st.markdown(
-            '<a href="https://github.com/" target="_blank" class="header-btn">📖 Docs</a>',
-            unsafe_allow_html=True,
-        )
-    with h5:
-        st.markdown(
-            '<a href="#compare" class="header-btn">⚖️ Compare</a>',
-            unsafe_allow_html=True,
-        )
-
-st.markdown('<hr class="header-divider">', unsafe_allow_html=True)
-
-# Resolve selected project
-_selected_categories = None
-if selected_project != "All Projects":
-    for p in _projects_data:
-        if p["name"] == selected_project:
-            _selected_categories = p["categories"]
-            break
-
-st.session_state["project_categories"] = _selected_categories
-
-# -------------------------------
-# SIDEBAR
-# -------------------------------
-user = st.session_state["user"]
-st.sidebar.markdown("## 🛡 TrustLLM")
-st.sidebar.caption(f"Signed in as **{user['display_name']}**")
-
-st.sidebar.divider()
-
-page = st.sidebar.radio(
-    "Navigation",
-    [
-        "Overview",
-        "Prompt Explorer",
-        "Leaderboard",
-        "Run Evaluation",
-        "Agent Performance",
-        "RAG Testing",
-        "Prompt Dataset",
-        "Failure Analysis",
-    ]
+# Demo creds
+st.markdown(
+    '<div class="footer">Demo: TestUser / User123</div>',
+    unsafe_allow_html=True
 )
 
-st.sidebar.divider()
+# Branding
+st.markdown(
+    '<div class="footer">Built by Monika Kushwaha</div>',
+    unsafe_allow_html=True
+)
 
-if st.sidebar.button("Sign out", use_container_width=True):
-    for key in list(st.session_state.keys()):
-        del st.session_state[key]
-    st.rerun()
+st.markdown('</div>', unsafe_allow_html=True)  # card
+st.markdown('</div>', unsafe_allow_html=True)  # center wrapper
 
-st.sidebar.caption("TrustLLM • LLM Evaluation Toolkit")
-
-# -------------------------------
-# ROUTER
-# -------------------------------
-if page == "Overview":
-    overview()
-
-elif page == "Prompt Explorer":
-    prompt_explorer()
-
-elif page == "Leaderboard":
-    leaderboard()
-
-elif page == "Run Evaluation":
-    run_eval()
-
-elif page == "Agent Performance":
-    agent_performance()
-
-elif page == "RAG Testing":
-    rag_testing()
-
-elif page == "Prompt Dataset":
-    prompt_dataset()
-
-elif page == "Failure Analysis":
-    failure_analysis()
+# -------------------- AFTER LOGIN --------------------
+if st.session_state.get("logged_in"):
+    st.title("Welcome to TrustLLM Dashboard 🚀")
+    st.write("Now your real app starts here.")
