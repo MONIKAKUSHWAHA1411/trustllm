@@ -22,14 +22,7 @@ section.main > div {
     padding-top: 0rem;
     padding-bottom: 0rem;
 }
-
-/* Make full viewport usable */
-html, body, [data-testid="stAppViewContainer"] {
-    height: 100%;
-}
-
-/* Center everything properly */
-[data-testid="stAppViewContainer"] > .main {
+[data-testid="stAppViewContainer"] {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -104,7 +97,6 @@ html, body, [data-testid="stAppViewContainer"] {
 """, unsafe_allow_html=True)
 
 # -------------------- CENTER WRAPPER --------------------
-st.markdown('<div class="main">', unsafe_allow_html=True)
 
 # -------------------- LOGIN CARD --------------------
 st.markdown('<div class="login-card">', unsafe_allow_html=True)
@@ -137,7 +129,6 @@ st.markdown(
 )
 
 st.markdown('</div>', unsafe_allow_html=True)  # card
-st.markdown('</div>', unsafe_allow_html=True)  # center wrapper
 
 # -------------------- AFTER LOGIN --------------------
 if st.session_state.get("logged_in"):
