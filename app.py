@@ -50,34 +50,30 @@ def _authenticate(username, password):
             return u
     return None
 
-
-# -------------------------------
-# LOGIN PAGE
-# -------------------------------
 def _show_login():
+    # -------------------------------
+    # CLEAN NO-SCROLL FIX
+    # -------------------------------
     st.markdown(
         """
         <style>
         .block-container {
-            padding-top: 0rem;
-            padding-bottom: 0rem;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            max-width: 100%;
         }
 
         html, body, [data-testid="stAppViewContainer"] {
-            height: 100%;
             overflow: hidden;
         }
 
-        .login-wrapper {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+        .login-box {
+            margin-top: 8vh;
         }
 
         .login-footer {
             position: fixed;
-            bottom: 15px;
+            bottom: 10px;
             width: 100%;
             text-align: center;
             font-size: 12px;
@@ -88,13 +84,12 @@ def _show_login():
         unsafe_allow_html=True
     )
 
-    # Wrapper start
-    st.markdown('<div class="login-wrapper">', unsafe_allow_html=True)
-
-    # Header
+    # -------------------------------
+    # HEADER
+    # -------------------------------
     st.markdown(
         """
-        <div style="text-align:center;">
+        <div class="login-box" style="text-align:center;">
             <div style="font-size:3rem;">🛡</div>
             <h1 style="margin-bottom:0;">TrustLLM</h1>
             <p style="color:#94a3b8;">AI Model Evaluation Platform</p>
@@ -103,7 +98,9 @@ def _show_login():
         unsafe_allow_html=True,
     )
 
-    # Login form
+    # -------------------------------
+    # LOGIN FORM
+    # -------------------------------
     col_l, col_form, col_r = st.columns([1.5, 1, 1.5])
     with col_form:
         with st.form("login_form"):
@@ -122,10 +119,9 @@ def _show_login():
 
         st.caption("Username: **TestUser**  •  Password: **User123**")
 
-    # Close wrapper
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    # Footer
+    # -------------------------------
+    # FOOTER
+    # -------------------------------
     st.markdown(
         """
         <div class="login-footer">
