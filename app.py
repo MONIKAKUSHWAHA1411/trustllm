@@ -55,15 +55,46 @@ def _authenticate(username, password):
 # LOGIN PAGE
 # -------------------------------
 def _show_login():
-    # Hide scrollbar on login page
-    st.markdown(
-        '<style>section.main > div {overflow: hidden !important;}</style>',
-        unsafe_allow_html=True,
-    )
-
     st.markdown(
         """
-        <div style="text-align:center; margin-top:3rem;">
+        <style>
+        .block-container {
+            padding-top: 0rem;
+            padding-bottom: 0rem;
+        }
+
+        html, body, [data-testid="stAppViewContainer"] {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .login-wrapper {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-footer {
+            position: fixed;
+            bottom: 15px;
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            color: #94a3b8;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+    # Wrapper start
+    st.markdown('<div class="login-wrapper">', unsafe_allow_html=True)
+
+    # Header
+    st.markdown(
+        """
+        <div style="text-align:center;">
             <div style="font-size:3rem;">🛡</div>
             <h1 style="margin-bottom:0;">TrustLLM</h1>
             <p style="color:#94a3b8;">AI Model Evaluation Platform</p>
@@ -72,6 +103,7 @@ def _show_login():
         unsafe_allow_html=True,
     )
 
+    # Login form
     col_l, col_form, col_r = st.columns([1.5, 1, 1.5])
     with col_form:
         with st.form("login_form"):
@@ -90,13 +122,13 @@ def _show_login():
 
         st.caption("Username: **TestUser**  •  Password: **User123**")
 
-    # 👇 ADD THIS FOOTER HERE
-    st.markdown("<br><br>", unsafe_allow_html=True)
-    st.markdown("---")
+    # Close wrapper
+    st.markdown("</div>", unsafe_allow_html=True)
 
+    # Footer
     st.markdown(
         """
-        <div style="text-align:center; font-size:12px; color:#94a3b8;">
+        <div class="login-footer">
             Built by 
             <a href="https://www.linkedin.com/in/monika-kushwaha-52443735/" 
             target="_blank" 
@@ -161,7 +193,7 @@ with header:
 
 st.markdown('<hr class="header-divider">', unsafe_allow_html=True)
 
-# Resolve selected project to category filter
+# Resolve selected project
 _selected_categories = None
 if selected_project != "All Projects":
     for p in _projects_data:
@@ -169,11 +201,10 @@ if selected_project != "All Projects":
             _selected_categories = p["categories"]
             break
 
-# Store in session_state so pages can access it
 st.session_state["project_categories"] = _selected_categories
 
 # -------------------------------
-# SIDEBAR HEADER
+# SIDEBAR
 # -------------------------------
 user = st.session_state["user"]
 st.sidebar.markdown("## 🛡 TrustLLM")
@@ -181,9 +212,6 @@ st.sidebar.caption(f"Signed in as **{user['display_name']}**")
 
 st.sidebar.divider()
 
-# -------------------------------
-# NAVIGATION
-# -------------------------------
 page = st.sidebar.radio(
     "Navigation",
     [
@@ -198,18 +226,17 @@ page = st.sidebar.radio(
     ]
 )
 
-# -------------------------------
-# SIDEBAR FOOTER
-# -------------------------------
 st.sidebar.divider()
+
 if st.sidebar.button("Sign out", use_container_width=True):
     for key in list(st.session_state.keys()):
         del st.session_state[key]
     st.rerun()
+
 st.sidebar.caption("TrustLLM • LLM Evaluation Toolkit")
 
 # -------------------------------
-# PAGE ROUTER
+# ROUTER
 # -------------------------------
 if page == "Overview":
     overview()
