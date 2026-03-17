@@ -11,14 +11,19 @@ st.set_page_config(
 st.markdown("""
 <style>
 
-/* Remove default padding */
-.block-container {
+/* Kill Streamlit default spacing */
+section.main > div {
     padding-top: 0rem;
     padding-bottom: 0rem;
 }
 
-/* Full page center */
-.main {
+/* Make full viewport usable */
+html, body, [data-testid="stAppViewContainer"] {
+    height: 100%;
+}
+
+/* Center everything properly */
+[data-testid="stAppViewContainer"] > .main {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -57,17 +62,8 @@ st.markdown("""
     margin-bottom: 25px;
 }
 
-/* Input fields */
+/* Inputs */
 .stTextInput>div>div>input {
-    background-color: #0f172a;
-    color: white;
-    border-radius: 10px;
-    border: 1px solid #1f2937;
-    padding: 10px;
-}
-
-/* Password field */
-.stTextInput>div>div>div>input {
     background-color: #0f172a;
     color: white;
     border-radius: 10px;
@@ -84,15 +80,13 @@ st.markdown("""
     padding: 10px;
     font-weight: 600;
     border: none;
-    transition: 0.2s;
 }
 
 .stButton>button:hover {
     background: linear-gradient(90deg, #1d4ed8, #1e40af);
-    transform: scale(1.02);
 }
 
-/* Footer text */
+/* Footer */
 .footer {
     text-align: center;
     font-size: 12px;
