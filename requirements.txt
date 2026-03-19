@@ -1,5 +1,5 @@
 altair==6.0.0
-chromadb==0.4.24
+chromadb==0.3.29
 attrs==25.4.0
 blinker==1.9.0
 cachetools==7.0.5
