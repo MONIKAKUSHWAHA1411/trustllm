@@ -1,5 +1,10 @@
 altair==6.0.0
 chromadb==0.3.29
+streamlit
+langchain
+langchain-community
+
+sentence-transformers
 attrs==25.4.0
 blinker==1.9.0
 cachetools==7.0.5
