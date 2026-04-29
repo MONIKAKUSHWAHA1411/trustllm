@@ -1,0 +1,327 @@
+/* ===== Sidebar ===== */
+
+section[data-testid="stSidebar"] {
+    background-color: #0f172a;
+}
+
+section[data-testid="stSidebar"]:not([aria-expanded="false"]) {
+    width: 220px !important;
+    min-width: 220px !important;
+}
+
+section[data-testid="stSidebar"]:not([aria-expanded="false"]) > div {
+    width: 220px !important;
+}
+
+section[data-testid="stSidebar"][aria-expanded="false"] {
+    width: auto !important;
+    min-width: auto !important;
+}
+
+section[data-testid="stSidebar"][aria-expanded="false"] > div {
+    width: auto !important;
+}
+
+section[data-testid="stSidebar"] * {
+    color: #e2e8f0;
+}
+
+/* ===== Typography ===== */
+
+h1, h2, h3 {
+    color: #e5e7eb;
+}
+
+/* ===== Buttons ===== */
+
+.stButton button {
+    background-color: #2563eb;
+    color: white !important;
+    border-radius: 8px;
+    border: none;
+}
+
+.stButton button:hover {
+    background-color: #1d4ed8;
+}
+
+/* ===== Pagination buttons (subtler) ===== */
+
+.pagination-nav .stButton button {
+    background-color: transparent;
+    color: #94a3b8 !important;
+    border: 1px solid #334155;
+    font-size: 0.85rem;
+}
+
+.pagination-nav .stButton button:hover {
+    background-color: #1e293b;
+    color: #e2e8f0 !important;
+}
+
+/* ===== Header action buttons ===== */
+
+.header-btn {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    padding: 0.45rem 0.75rem;
+    background-color: #1e293b;
+    color: #e2e8f0 !important;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    text-decoration: none !important;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: background-color 0.15s ease;
+}
+
+.header-btn:hover {
+    background-color: #334155;
+}
+
+/* ===== Header divider ===== */
+
+hr.header-divider {
+    margin: 0.25rem 0 1rem 0;
+    border: none;
+    border-top: 1px solid #1e293b;
+}
+
+/* ===== Section divider (under page titles) ===== */
+
+hr.section-divider {
+    margin: 0 0 1.25rem 0;
+    border: none;
+    border-top: 1px solid #1e293b;
+}
+
+/* ===== KPI Metric Cards ===== */
+
+.metric-card {
+    background: linear-gradient(135deg, #111827 0%, #1e293b 100%);
+    border: 1px solid #334155;
+    border-radius: 14px;
+    padding: 1.25rem 1rem;
+    text-align: center;
+    min-height: 170px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.15);
+}
+
+.metric-icon {
+    font-size: 1.75rem;
+    margin-bottom: 0.4rem;
+}
+
+.metric-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    line-height: 1.2;
+}
+
+.metric-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-top: 0.25rem;
+}
+
+.metric-context {
+    font-size: 0.7rem;
+    color: #64748b;
+    margin-top: 0.2rem;
+}
+
+/* ===== Legacy metric containers (other pages) ===== */
+
+[data-testid="metric-container"] {
+    background-color: #111827;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+/* ===== Login / auth page ===== */
+
+[data-testid="stForm"] {
+    background-color: #1e293b;
+    border: 1px solid #475569;
+    border-radius: 14px;
+    padding: 1.5rem;
+}
+
+[data-testid="stForm"] label {
+    color: #f1f5f9 !important;
+    font-weight: 600 !important;
+    font-size: 0.9rem !important;
+}
+
+[data-testid="stForm"] input {
+    background-color: #0f172a !important;
+    border: 1px solid #475569 !important;
+    color: #f1f5f9 !important;
+}
+
+/* Hide "Press Enter to submit form" tooltip */
+[data-testid="stForm"] [data-testid="InputInstructions"] {
+    display: none !important;
+}
+
+/* ===== Google sign-in button ===== */
+
+.google-signin-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0.65rem 1rem;
+    background-color: #ffffff;
+    color: #1f2937 !important;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    text-decoration: none !important;
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color 0.15s ease, box-shadow 0.15s ease;
+    margin-bottom: 0.25rem;
+}
+
+.google-signin-btn:hover {
+    background-color: #f9fafb;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== User avatar in header popover ===== */
+
+[data-testid="stPopover"] button {
+    background-color: #1e293b !important;
+    border: 1px solid #334155 !important;
+    border-radius: 8px !important;
+    color: #e2e8f0 !important;
+    font-size: 0.85rem !important;
+    font-weight: 500 !important;
+    padding: 0.35rem 0.75rem !important;
+}
+
+[data-testid="stPopover"] button:hover {
+    background-color: #334155 !important;
+}
+
+/* ===== Profile card ===== */
+
+.profile-card {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background: linear-gradient(135deg, #111827 0%, #1e293b 100%);
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 1.75rem 2rem;
+    margin-bottom: 1.25rem;
+}
+
+.profile-avatar {
+    flex-shrink: 0;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.profile-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #f1f5f9;
+}
+
+.profile-email {
+    font-size: 0.9rem;
+    color: #94a3b8;
+}
+
+.profile-badge {
+    display: inline-block;
+    margin-top: 0.25rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #60a5fa;
+    background: #1e3a5f;
+    border: 1px solid #2563eb40;
+    border-radius: 6px;
+    padding: 0.2rem 0.6rem;
+}
+
+/* ===== Query history rows ===== */
+
+.history-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    font-size: 0.88rem;
+}
+
+.history-card {
+    background: #111827;
+    border: 1px solid #1e293b;
+    border-radius: 10px;
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 0.4rem;
+}
+
+.history-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.4rem;
+}
+
+.history-card-query {
+    font-size: 0.92rem;
+    color: #e2e8f0;
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+.history-page-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    padding: 0.15rem 0.55rem;
+    border-radius: 5px;
+    border: 1px solid #33415580;
+    background: #1e293b20;
+    color: #94a3b8;
+    white-space: nowrap;
+}
+
+.history-query-text {
+    color: #cbd5e1;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.history-ts {
+    font-size: 0.75rem;
+    color: #475569;
+    white-space: nowrap;
+    margin-left: auto;
+}

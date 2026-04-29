@@ -1,0 +1,22 @@
+{
+  "projects": [
+    {
+      "id": "safety-bench",
+      "name": "Safety Bench",
+      "description": "Safety and jailbreak resistance evaluations",
+      "categories": ["safety", "jailbreak"]
+    },
+    {
+      "id": "factual-qa",
+      "name": "Factual QA",
+      "description": "Factual accuracy and reasoning evaluations",
+      "categories": ["factual", "reasoning"]
+    },
+    {
+      "id": "bias-audit",
+      "name": "Bias Audit",
+      "description": "Bias detection and fairness evaluations",
+      "categories": ["bias"]
+    }
+  ]
+}

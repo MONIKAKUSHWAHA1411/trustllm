@@ -1,0 +1,242 @@
+[
+  {
+    "prompt": "What is Retrieval Augmented Generation?",
+    "expected_answer": "Retrieval Augmented Generation combines document retrieval with language model generation",
+    "model_answer": "Retrieval-Augmented Generation (RAG) systems combine large language models with a search mechanism to retrieve relevant information from external databases or documents, which can then be fed back into the generation process. This approach enhances the performance and factuality of generated responses in tasks like question answering or content creation where real data access is beneficial.",
+    "similarity": 0.7983,
+    "passed": true,
+    "latency_s": 65.8,
+    "sources": [
+      "tmp_u_7jsbe.pdf",
+      "tmpf3xw31wg.pdf"
+    ]
+  },
+  {
+    "prompt": "Explain what a vector database is",
+    "expected_answer": "A vector database stores embeddings and allows similarity search for AI applications",
+    "model_answer": "A vector database, as mentioned in the context provided from your documents related to Microsoft AI and Agile Testing Foundations resources dated April 2025 - Present, appears to be an integral part of creating efficient data-AI integrations. Although not explicitly detailed within this specific snippet on pages one and zero respectively, a vector database typically refers to the storage that uses vectors (multi-dimensional points) for representing its contents in machine learning applications such as natural language processing or recommendation systems. This form of representation allows AI models like Large Language Models (LLMs) mentioned alongside HireMate project goals and Travel Sensei AI's functionalities to process, interpret, and analyze data effectively for tasks including JD parsing and candidate scoring in a faster manner as well as generating personalized itineraries. The connection between vector databases and Prompt Evaluation & Retrieval Optimization mentioned on page one also hints at their relevance within this context\u2014implying that these optimized retrieval systems likely use or incorporate vectors for better query performance, which aligns with the objectives of using a Vector Database in your applications.",
+    "similarity": 0.5835,
+    "passed": true,
+    "latency_s": 82.12,
+    "sources": [
+      "tmpf3xw31wg.pdf",
+      "tmpf3xw31wg.pdf"
+    ]
+  },
+  {
+    "prompt": "What does Ollama do in an AI stack?",
+    "expected_answer": "Ollama runs large language models locally on your machine",
+    "model_answer": "Ollama provides the foundational layer for natural language processing (NLP) tasks within an AI stack. It serves as a platform that offers access to various pre-trained LLMs, which can be utilized by developers and data scientists to build applications or integrate into existing systems without having to train models from scratch. Ollama allows users to easily deploy state-of-the-art language models for understanding and generating human-like text, thereby streamlining the process of incorporating NLP capabilities in their AI projects.",
+    "similarity": 0.6364,
+    "passed": true,
+    "latency_s": 43.46,
+    "sources": [
+      "tmpf3xw31wg.pdf",
+      "tmpf3xw31wg.pdf"
+    ]
+  },
+  {
+    "prompt": "What is the purpose of embeddings in RAG?",
+    "expected_answer": "Embeddings convert text into vectors so semantic similarity can be calculated",
+    "model_answer": "Embeddings are utilized to efficiently retrieve relevant documents that can then be used by a Large Language Model (LLM) like GPT-3 for generating responses. In Retrieval-Augmented Generation systems, the embedding process is crucial as it enables quick access and relevancy in large datasets during prompt execution time.",
+    "similarity": 0.5614,
+    "passed": true,
+    "latency_s": 49.56,
+    "sources": [
+      "tmp_u_7jsbe.pdf",
+      "tmpf3xw31wg.pdf"
+    ]
+  },
+  {
+    "prompt": "Why is RAG useful for enterprise AI?",
+    "expected_answer": "RAG allows models to answer questions using private or domain specific knowledge",
+    "model_answer": "RAG (Retrieval-Augmented Generation) systems are beneficial in an enterprise setting because they combine the strengths of large language models with external knowledge retrieval mechanisms, allowing them to produce highly relevant and accurate outputs. This approach is particularly useful for tasks that require specific or factual information beyond what's present within a pre-trained model alone. By leveraging RAG architectures in enterprise AI workflows, companies can improve the quality of their automated responses with up-to-date facts from external databases and documents without extensive retraining required for large language models (LLMs). This makes it an efficient tool to create responsive customer service bots, generate insightful reports, or any application where accessing accurate current information is crucial. Furthermore, as Monika Kushwaha's experience indicates, RAG systems are designed and deployed using state-of-the-art technologies like LangChain for intelligent automation workflows, Hugging Face transformers for model processing, and FAISS (Flat Approximate Nearest Neighbor) indexing to retrieve the most relevant documents quickly. Together these contribute significantly towards building scalable AI solutions that businesses require in a dynamic enterprise environment where time-sensitive information is critical. Monika's skills highlight how deploying RAG systems can enhance an organization\u2019s ability to deliver on customer needs and drive better data intelligence outcomes with less manual intervention, demonstrating the value of integrating such technologies into larger AI projects at scale.",
+    "similarity": 0.5075,
+    "passed": false,
+    "latency_s": 66.28,
+    "sources": [
+      "tmp_u_7jsbe.pdf",
+      "tmpf3xw31wg.pdf"
+    ]
+  },
+  {
+    "prompt": "What is hallucination in LLMs?",
+    "expected_answer": "Hallucination is when a language model generates incorrect or unsupported information",
+    "model_answer": "Hallucination in LLMs refers to the phenomenon where a language model generates content that appears plausible but may not be accurate or based on real information. This can occur when an LLM, particularly one trained without sufficient guardrails or fails to have access to reliable sources during its training phase. Hallucinations manifest as fabricated facts, events, entities, and narratives created by the model itself rather than extracted from trustworthy data it has been trained on. In simpler terms, a hallucination is like when an AI says something that seems real but isn't really based in factual information or evidence.\n\nGiven Monika Kushwaha Gurgaon's expertise as detailed in the context provided from her LinkedIn and temp_u_7jsbe.pdf documents, it is likely she has experience dealing with AI-generated content including understanding hallucinations within LLMs. While this specific term isn\u2019t mentioned directly about what Monika does or knows regarding \"hallucination in LLMS\", we can infer that her comprehensive knowledge of Generative AI and systems like FAIRESScan she likely be conversant with the concepts as they are related to language models' behaviors, such as hallucinations.",
+    "similarity": 0.6331,
+    "passed": true,
+    "latency_s": 76.34,
+    "sources": [
+      "tmpf3xw31wg.pdf",
+      "tmp_u_7jsbe.pdf"
+    ]
+  },
+  {
+    "prompt": "How does chunking help document retrieval?",
+    "expected_answer": "Chunking splits documents into smaller pieces so relevant sections can be retrieved",
+    "model_answer": "The provided context does not contain information about how \"chunking\" helps in document retrieval. It discusses the conceptualization of an AI tool by ReelRocket and aspects covered in Walmart Omni-Grocery GTM Playbook related to personas, JTBDs (Jobs To Be Done), success signals, Responsible AI considerations, product strategy, LLM applications, RAG pipelines, PRD writing, A/B testing, and AI Product Ethics. Therefore, I don't have enough information in the provided documents to answer your question about chunking.",
+    "similarity": 0.6834,
+    "passed": true,
+    "latency_s": 68.67,
+    "sources": [
+      "tmpgs1nnd38.pdf",
+      "tmpby5ziayx.pdf"
+    ]
+  },
+  {
+    "prompt": "What does cosine similarity measure?",
+    "expected_answer": "Cosine similarity measures semantic similarity between two vectors",
+    "model_answer": "Cosine similarity measures the angle between two vectors in a multi-dimensional space and is often used to assess how similar documents are within text analysis or natural language processing tasks. It's calculated by taking the dot product of the vectors representing the texts divided by the product of their magnitudes (or lengths). The result ranges from -1 to 1, where 1 indicates identical direction/content, and -1 represents completely opposite content in a sense that is meaningful for vector space models. However, this specific context provided does not explicitly discuss cosine similarity; it rather talks about the application of language model tuning and automation systems for various engineering tasks within Coforge Ltd.'s domain during May 2021 \u2013 Dec 2023. Therefore, I don't have enough information in this particular context to describe how cosine similarity was utilized or measured by the Senior Test Engineer at Coforge Ltd.",
+    "similarity": 0.7537,
+    "passed": true,
+    "latency_s": 70.22,
+    "sources": [
+      "tmp_u_7jsbe.pdf",
+      "tmpby5ziayx.pdf"
+    ]
+  },
+  {
+    "prompt": "Why are evaluation metrics important for LLM systems?",
+    "expected_answer": "Evaluation metrics help measure reliability accuracy and safety of model responses",
+    "model_answer": "Evaluation metrics are crucial for Language Learning (LLM) systems to ensure that the generated content is factually accurate, free from biases, and aligns with user needs. They help in monitoring model performance and guiding necessary improvements through practices like fine-tuning or employing techniques such as Relevance Awareness Grouping (RAG) coupled with LLM for better results.",
+    "similarity": 0.4804,
+    "passed": false,
+    "latency_s": 51.27,
+    "sources": [
+      "tmp_u_7jsbe.pdf",
+      "tmpf3xw31wg.pdf"
+    ]
+  },
+  {
+    "prompt": "What is prompt injection?",
+    "expected_answer": "Prompt injection is a security attack where a prompt attempts to override system instructions",
+    "model_answer": "I don't have enough information in the provided documents to define \"prompt injection.\" The context given focuses on Monika Kushwaha Gurgaon's expertise and experience with AI, specifically relating to Generative AI (GenAI) applications using tools like LangChain, FAISS, Hugging Face, etc. It discusses her background in QA Automation, Performance Testing, API Testing across different industries and the creation of LLM-based apps for intelligent workflows but does not mention \"prompt injection.\"\n\nPrompt injection typically refers to a technique where additional information or context is provided to an AI model (like a language model) during its operation in order to steer it towards desired outputs. However, since this specific term and the associated details are not present within the given document, I cannot provide an accurate definition from that source alone.",
+    "similarity": 0.6394,
+    "passed": true,
+    "latency_s": 85.3,
+    "sources": [
+      "tmp_u_7jsbe.pdf",
+      "tmp_u_7jsbe.pdf"
+    ]
+  },
+  {
+    "prompt": "Explain the role of a retriever in RAG",
+    "expected_answer": "A retriever finds the most relevant documents for a given query",
+    "model_answer": "In Retrieval-Augmented Generation (RAG) systems, a retriever plays an essential part by fetching relevant documents or information from external data sources. When given a prompt for text generation that requires background knowledge beyond the model's pre-existing training, such as specific details related to BFSI, Airlines, and EdTech domains mentioned in Monika Kushwaha Gurgaon's experience context, the retriever searches an indexed dataset or database. It then selects text passages that closely match the given prompt from these external sources for further processing by a completion model like Chain of Thought Prompting (COT). Essentially, without directly referring to Monika Kushwaha Gurgaon's experience context but using common knowledge about RAG systems:\n\nA retriever in a RAG pipeline helps the system quickly access relevant information needed for generating accurate and informed text. It supports models by providing them with immediate external data that can augment their internal capabilities, especially when dealing with complex or niche topics requiring domain-specific expertise\u2014this is crucial where generative AI's contextual understanding needs to be supplemented externally due to limited knowledge within the model itself.\n\nIn summary, a retriever in RAG systems facilitates generating better and more accurate text by providing relevant external information that can help overcome limitations when internal data is insufficient for complex domain-specific prompts or topics requiring specialized knowledge outside of what was learned during training.",
+    "similarity": 0.3306,
+    "passed": false,
+    "latency_s": 60.88,
+    "sources": [
+      "tmp_u_7jsbe.pdf",
+      "tmp_u_7jsbe.pdf"
+    ]
+  },
+  {
+    "prompt": "What does top k retrieval mean?",
+    "expected_answer": "Top k retrieval selects the most relevant k document chunks",
+    "model_answer": "Top-k retrieval refers to the process of fetching and displaying a subset, specifically the top 'k' most relevant or similar items from a larger collection based on certain criteria. This technique is commonly used in search engines, recommendation systems, and data mining where only a limited number of results are provided for quicker access without needing users to sift through all possible options. The exact value of 'k' can vary depending on the specific application or user preference but generally ranges from 5-10 items that best match the search query or criteria in terms of relevance, popularity, similarity, etc. This system helps enhance efficiency and performance by focusing users\u2019 attention only on potentially valuable results while reducing information overload.",
+    "similarity": 0.7222,
+    "passed": true,
+    "latency_s": 61.44,
+    "sources": [
+      "tmp_u_7jsbe.pdf",
+      "tmpf3xw31wg.pdf"
+    ]
+  },
+  {
+    "prompt": "Why is transparency important in AI systems?",
+    "expected_answer": "Transparency allows users to understand how AI systems generate responses",
+    "model_answer": "Transparency in AI systems, also known as explainability or interpretability, refers to the extent to which a human can understand how an AI system processes information and arrives at decisions. This concept gained significance due to several reasons such as ethical considerations, accountability, fairness, trustworthiness of models, regulatory compliance (like GDPR), user acceptance, debugging challenges in the development phase, facilitating effective communication between stakeholders and maintaining a robust feedback loop for continuous improvement. AI practitioner's ability to explain how their systems make decisions can greatly improve trust with users as well as provide clear guidelines when ethical or regulatory issues arise due to the system behavior, ensuring responsible AI practices that respect privacy and promote fairness among diverse user groups.",
+    "similarity": 0.7598,
+    "passed": true,
+    "latency_s": 75.06,
+    "sources": [
+      "tmpf3xw31wg.pdf",
+      "tmpf3xw31wg.pdf"
+    ]
+  },
+  {
+    "prompt": "What does latency mean in AI inference?",
+    "expected_answer": "Latency is the time taken by a model to generate a response",
+    "model_answer": "Latency in AI inference generally refers to the delay between a request for an artificial intelligence model's output and the time when that output is received. It can be affected by various factors such as data processing speed, complexity of computations required for generating predictions or decisions, network transmission times if cloud-based services are used, and efficiency of hardware acceleration like GPU utilization in deep learning inference tasks. Minimizing latency is crucial to ensure timely responses from AI systems, especially when dealing with real-time applications such as autonomous vehicles or financial trading bots where decisions need to be made rapidly based on incoming data streams.",
+    "similarity": 0.6572,
+    "passed": true,
+    "latency_s": 70.76,
+    "sources": [
+      "tmpf3xw31wg.pdf",
+      "tmp_u_7jsbe.pdf"
+    ]
+  },
+  {
+    "prompt": "Why should RAG responses cite sources?",
+    "expected_answer": "Citing sources helps verify the correctness of generated answers",
+    "model_answer": "Citing sources in the context of using Retrieval-Augmented Generation (RAG) is crucial for several reasons. Primarily, it acknowledges and gives credit to original creators or authors whose work forms a part of the generated content. This recognition upholds academic integrity and prevents plagiarism by ensuring that any borrowed ideas are properly attributed.\n\nMoreover, citing sources provides validation and reliability for the information presented in RAG responses. By referencing authoritative texts like research papers or industry reports\u2014as indicated on pages 1 of tmpgs1nnd38.pdf and tmpby5ziayx.pdf regarding ReelRocket's AI tool conceptualization using LLMs (Large Language Models) for auto-captioning and trend recommendations, users can trace the source material to verify its accuracy and authenticity when generating responses based on such content in RAG systems.\n\nFurthermore, citations enable further exploration of ideas by providing readers with direct access to additional information or context that may enhance their understanding of a topic beyond what has been presented through LLMs alone. In scenarios where multiple sources support similar viewpoints\u2014as mentioned on page 1 for Walmart Omni-Grocery GTM Playbook's user personas and success signals\u2014citing can help users make well-informed decisions by reviewing various perspectives before applying recommendations in AI product development.\n\nLastly, citations demonstrate transparency as they reveal the extent of data processing or analysis that led to a particular RAG response; this openness fosters trust between content creators and consumers while also allowing for constructive criticism and improvements within an iterative feedback loop with source material. It's important to note, however, in some cases where direct quotes are used\u2014as suggested by the provided context about lifting engagement through auto-captioning technology developed at ReelRocket\u2014the text should include proper attribution for verbatim content while ensuring that such usage is relevant and ethically sound within the RAG response.",
+    "similarity": 0.5844,
+    "passed": true,
+    "latency_s": 118.73,
+    "sources": [
+      "tmpgs1nnd38.pdf",
+      "tmpby5ziayx.pdf"
+    ]
+  },
+  {
+    "prompt": "What does TrustLLM evaluate?",
+    "expected_answer": "TrustLLM evaluates reliability faithfulness hallucination risk and performance of LLM systems",
+    "model_answer": "I don't have enough information in the provided documents. The context only discusses a person's role as a Quality Analyst at Tech Mahindra, focusing on e-commerce workflow testing and defect reduction. It doesn't provide any details about TrustLLM or what it evaluates.",
+    "similarity": 0.4377,
+    "passed": false,
+    "latency_s": 25.14,
+    "sources": [
+      "tmpgs1nnd38.pdf",
+      "tmpby5ziayx.pdf"
+    ]
+  },
+  {
+    "prompt": "Explain the difference between fine tuning and RAG",
+    "expected_answer": "Fine tuning changes model weights while RAG retrieves external knowledge",
+    "model_answer": "I'm sorry, but I cannot provide information on \"fine tuning\" versus \"RAG\" based on the given contexts as they do not contain any details related to these topics. Fine tuning typically refers to small adjustments made in a process or system for optimal performance, while RAG can stand for various things depending on the field (e.g., Rapid Application Groups). To accurately answer your question about their differences, I would need specific contexts that discuss both terms directly. If you have those documents available, please share them so I could assist you further. Otherwise, I'll say: \"I don't have enough information in the provided documents.\"",
+    "similarity": 0.5103,
+    "passed": false,
+    "latency_s": 23.01,
+    "sources": [
+      "tmpgs1nnd38.pdf",
+      "tmpby5ziayx.pdf"
+    ]
+  },
+  {
+    "prompt": "What does semantic search mean?",
+    "expected_answer": "Semantic search finds results based on meaning instead of keyword matching",
+    "model_answer": "Semantic search refers to the process of understanding queries in a meaningful and user-intentional manner, going beyond keyword matching to consider context and intent behind words to provide more accurate and relevant results. This type of searching can use AI technologies like LLMs (Large Language Models) combined with vector searches for faster screening and improved result accuracy. Semantic search is particularly useful in complex information spaces where the relationship between terms needs careful consideration, such as translating business requirements into deployable GenAI solutions or using multimodal analysis in AI assistants like ReelRocket to provide auto-captioning and trend recommendations based on a deeper understanding of content.",
+    "similarity": 0.6852,
+    "passed": true,
+    "latency_s": 46.62,
+    "sources": [
+      "tmpf3xw31wg.pdf",
+      "tmp_u_7jsbe.pdf"
+    ]
+  },
+  {
+    "prompt": "Why is batch evaluation useful for LLM testing?",
+    "expected_answer": "Batch evaluation allows testing many prompts automatically",
+    "model_answer": "I don't have enough information in the provided documents to answer why batch evaluation is specifically useful for LLM (Large Language Model) testing, as they do not mention this aspect. The context given focuses on my experience with Selenium frameworks and manual quality improvements within financial platforms without discussing language model evaluations or their specifics related to automated tests in the documents provided.",
+    "similarity": 0.5711,
+    "passed": true,
+    "latency_s": 39.55,
+    "sources": [
+      "tmpgs1nnd38.pdf",
+      "tmpby5ziayx.pdf"
+    ]
+  },
+  {
+    "prompt": "What is an AI evaluation platform?",
+    "expected_answer": "An AI evaluation platform measures model performance reliability and safety",
+    "model_answer": "Based on the provided context, it appears that Microsoft and LinkedIn are focusing their efforts towards creating scalable AI solutions. This includes bridging testing with delivery through product thinking. They also emphasize expanding expertise in data-centric AI workflows which involves evaluation pipelines. However, there is no specific mention of an \"AI Evaluation Platform\" within the context provided. To get a precise definition or details on such platforms from this source would require additional information not included in these documents. Thus, I don't have enough information about what constitutes as an AI evaluation platform according to Microsoft and LinkedIn (2025).",
+    "similarity": 0.5533,
+    "passed": true,
+    "latency_s": 47.97,
+    "sources": [
+      "tmpf3xw31wg.pdf",
+      "tmpf3xw31wg.pdf"
+    ]
+  }
+]
