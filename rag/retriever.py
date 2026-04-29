@@ -20,10 +20,19 @@ def load_vector_store(collection_name: str = DEFAULT_COLLECTION):
     Return the ChromaDB collection object.
 
     Raises RuntimeError if the vector store has not been initialised yet
-    (no documents ingested).
+    (no documents ingested) or if the DB schema is incompatible.
     """
-    client = chromadb.PersistentClient(path=VECTOR_DB_PATH)
-    existing = [c.name for c in client.list_collections()]
+    try:
+        client = chromadb.PersistentClient(path=VECTOR_DB_PATH)
+        existing = [c.name for c in client.list_collections()]
+    except Exception as exc:
+        if any(kw in str(exc).lower() for kw in ("no such column", "no such table", "operationalerror")):
+            raise RuntimeError(
+                "Vector store schema mismatch. Go to RAG Testing → Document Upload "
+                "and click 'Reset Vector Store', then re-upload your documents."
+            ) from exc
+        raise
+
     if collection_name not in existing:
         raise RuntimeError(
             f"Collection '{collection_name}' not found. "

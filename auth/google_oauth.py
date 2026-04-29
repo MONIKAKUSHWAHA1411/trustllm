@@ -18,9 +18,17 @@ import secrets
 
 from authlib.integrations.requests_client import OAuth2Session
 
-GOOGLE_CLIENT_ID     = os.getenv("GOOGLE_CLIENT_ID", "")
-GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET", "")
-REDIRECT_URI         = os.getenv("OAUTH_REDIRECT_URI", "http://localhost:8501")
+# Prefer Streamlit Cloud secrets, fall back to environment variables
+def _secret(key: str, default: str = "") -> str:
+    try:
+        import streamlit as st
+        return st.secrets.get(key, os.getenv(key, default))
+    except Exception:
+        return os.getenv(key, default)
+
+GOOGLE_CLIENT_ID     = _secret("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = _secret("GOOGLE_CLIENT_SECRET")
+REDIRECT_URI         = _secret("OAUTH_REDIRECT_URI", "http://localhost:8501")
 
 _AUTHORIZATION_URL = "https://accounts.google.com/o/oauth2/v2/auth"
 _TOKEN_URL         = "https://oauth2.googleapis.com/token"
@@ -28,8 +36,9 @@ _USERINFO_URL      = "https://www.googleapis.com/oauth2/v3/userinfo"
 
 
 def is_configured() -> bool:
-    """Return True when Google credentials are present in the environment."""
-    return bool(GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET)
+    """Return True when Google credentials are present (env or Streamlit secrets)."""
+    # Re-read at call time so Streamlit secrets are available after the app starts
+    return bool(_secret("GOOGLE_CLIENT_ID") and _secret("GOOGLE_CLIENT_SECRET"))
 
 
 def generate_state() -> str:
@@ -39,8 +48,8 @@ def generate_state() -> str:
 def get_auth_url(state: str) -> str:
     """Build the Google authorisation URL to redirect the user to."""
     client = OAuth2Session(
-        client_id=GOOGLE_CLIENT_ID,
-        redirect_uri=REDIRECT_URI,
+        client_id=_secret("GOOGLE_CLIENT_ID"),
+        redirect_uri=_secret("OAUTH_REDIRECT_URI", "http://localhost:8501"),
         scope="openid email profile",
     )
     url, _ = client.create_authorization_url(
@@ -59,9 +68,9 @@ def exchange_code(code: str) -> dict:
         { id, name, email, picture }
     """
     client = OAuth2Session(
-        client_id=GOOGLE_CLIENT_ID,
-        client_secret=GOOGLE_CLIENT_SECRET,
-        redirect_uri=REDIRECT_URI,
+        client_id=_secret("GOOGLE_CLIENT_ID"),
+        client_secret=_secret("GOOGLE_CLIENT_SECRET"),
+        redirect_uri=_secret("OAUTH_REDIRECT_URI", "http://localhost:8501"),
     )
     client.fetch_token(_TOKEN_URL, code=code)
     resp = client.get(_USERINFO_URL)

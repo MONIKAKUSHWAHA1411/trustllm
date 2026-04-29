@@ -151,38 +151,62 @@ def _tab_upload():
     # Show current collection stats
     st.markdown("<br>", unsafe_allow_html=True)
     st.subheader("Vector Store Status")
-    try:
-        import chromadb
-        from rag.ingestion import VECTOR_DB_PATH, DEFAULT_COLLECTION
-        from rag.embeddings import get_embedding_function
 
-        client = chromadb.PersistentClient(path=VECTOR_DB_PATH)
-        existing = [c.name for c in client.list_collections()]
+    import chromadb
+    import shutil
+    from rag.ingestion import VECTOR_DB_PATH, DEFAULT_COLLECTION
+    from rag.embeddings import get_embedding_function
 
-        if DEFAULT_COLLECTION in existing:
-            col = client.get_collection(
-                name=DEFAULT_COLLECTION,
-                embedding_function=get_embedding_function(),
-            )
-            count = col.count()
-            st.success(f"Collection **{DEFAULT_COLLECTION}** · **{count}** chunks indexed")
+    def _get_chroma_client():
+        """Return a ChromaDB client, auto-repairing schema mismatches."""
+        try:
+            client = chromadb.PersistentClient(path=VECTOR_DB_PATH)
+            client.list_collections()  # probe for schema errors
+            return client, None
+        except Exception as exc:
+            if any(kw in str(exc).lower() for kw in ("no such column", "no such table", "operationalerror")):
+                return None, str(exc)
+            raise
 
-            # Show unique sources
-            if count > 0:
-                sample = col.get(limit=count, include=["metadatas"])
-                sources = sorted({m.get("source", "unknown") for m in sample["metadatas"]})
-                st.markdown("**Indexed files:**")
-                for s in sources:
-                    st.markdown(f"- 📄 `{s}`")
+    client, schema_err = _get_chroma_client()
 
-            if st.button("🗑 Clear Vector Store"):
-                client.delete_collection(DEFAULT_COLLECTION)
-                st.warning("Vector store cleared.")
-                st.rerun()
-        else:
-            st.info("No documents indexed yet. Upload PDFs above to get started.")
-    except Exception as e:
-        st.error(f"Could not read vector store: {e}")
+    if schema_err:
+        st.warning(
+            "⚠️ **Vector store schema mismatch** — the stored database is incompatible "
+            "with the installed ChromaDB version. Click below to reset it "
+            "(uploaded documents will need to be re-indexed)."
+        )
+        if st.button("🔧 Reset Vector Store", type="primary"):
+            shutil.rmtree(VECTOR_DB_PATH, ignore_errors=True)
+            st.success("Vector store reset. You can now upload and index documents.")
+            st.rerun()
+    else:
+        try:
+            existing = [c.name for c in client.list_collections()]
+
+            if DEFAULT_COLLECTION in existing:
+                col = client.get_collection(
+                    name=DEFAULT_COLLECTION,
+                    embedding_function=get_embedding_function(),
+                )
+                count = col.count()
+                st.success(f"Collection **{DEFAULT_COLLECTION}** · **{count}** chunks indexed")
+
+                if count > 0:
+                    sample = col.get(limit=count, include=["metadatas"])
+                    sources = sorted({m.get("source", "unknown") for m in sample["metadatas"]})
+                    st.markdown("**Indexed files:**")
+                    for s in sources:
+                        st.markdown(f"- 📄 `{s}`")
+
+                if st.button("🗑 Clear Vector Store"):
+                    client.delete_collection(DEFAULT_COLLECTION)
+                    st.warning("Vector store cleared.")
+                    st.rerun()
+            else:
+                st.info("No documents indexed yet. Upload PDFs above to get started.")
+        except Exception as e:
+            st.error(f"Could not read vector store: {e}")
 
 
 # -----------------------------------------------------------------------

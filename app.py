@@ -169,6 +169,42 @@ def _show_login() -> None:
         if not is_configured():
             st.caption("Username: **TestUser**  •  Password: **User123**")
 
+        # ---- Forgot password ----
+        with st.expander("Forgot password?"):
+            st.markdown(
+                "<div style='font-size:0.82rem;color:#94a3b8;margin-bottom:0.75rem;'>"
+                "Reset your local account password below. "
+                "If you signed up with Google, use the Google button above instead."
+                "</div>",
+                unsafe_allow_html=True,
+            )
+            fp_user = st.text_input("Username", key="fp_username", placeholder="Enter your username")
+            fp_new  = st.text_input("New password", type="password", key="fp_new", placeholder="New password")
+            fp_conf = st.text_input("Confirm new password", type="password", key="fp_conf", placeholder="Confirm new password")
+            if st.button("Reset password", key="fp_submit", use_container_width=True):
+                if not fp_user or not fp_new:
+                    st.error("Please fill in all fields.")
+                elif fp_new != fp_conf:
+                    st.error("Passwords do not match.")
+                elif len(fp_new) < 6:
+                    st.error("Password must be at least 6 characters.")
+                else:
+                    users_path = BASE_DIR / "users.json"
+                    with open(users_path) as _uf:
+                        _udata = json.load(_uf)
+                    matched = False
+                    for _u in _udata["users"]:
+                        if _u["username"] == fp_user:
+                            _u["password"] = fp_new
+                            matched = True
+                            break
+                    if matched:
+                        with open(users_path, "w") as _uf:
+                            json.dump(_udata, _uf, indent=2)
+                        st.success("Password updated. You can now sign in.")
+                    else:
+                        st.error("Username not found.")
+
     st.markdown("<br><br>", unsafe_allow_html=True)
     st.markdown("---")
     st.markdown(

@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+
+# Vector DB — schema is version-specific, never commit
+vector_db/
+data/
+
+# macOS
+.DS_Store
