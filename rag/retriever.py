@@ -6,6 +6,7 @@ relevant document chunks for a given query.
 """
 
 from pathlib import Path
+from typing import List
 
 import chromadb
 
@@ -61,7 +62,7 @@ def retrieve_documents(
     query: str,
     top_k: int = TOP_K,
     collection_name: str = DEFAULT_COLLECTION,
-) -> list[dict]:
+) -> List[dict]:
     """
     Query the vector store and return the top-k most relevant chunks.
 

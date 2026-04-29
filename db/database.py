@@ -9,6 +9,7 @@ Tables:
 import sqlite3
 from datetime import datetime
 from pathlib import Path
+from typing import Optional, List
 
 DB_PATH = Path(__file__).resolve().parents[1] / "data" / "trustllm.db"
 
@@ -86,7 +87,7 @@ def upsert_user(user_info: dict) -> dict:
     return get_user(user_info["id"])
 
 
-def get_user(user_id: str) -> dict | None:
+def get_user(user_id: str) -> Optional[dict]:
     with _connect() as conn:
         row = conn.execute(
             "SELECT * FROM users WHERE id = ?", (user_id,)
@@ -124,7 +125,7 @@ def save_query(user_id: str, page: str, query: str, response: str = "") -> None:
         )
 
 
-def get_history(user_id: str, limit: int = 100) -> list[dict]:
+def get_history(user_id: str, limit: int = 100) -> List[dict]:
     """Return the most recent `limit` queries for a user, newest first."""
     with _connect() as conn:
         rows = conn.execute(

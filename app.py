@@ -12,6 +12,7 @@ Auth flow:
 import json
 import os
 from pathlib import Path
+from typing import Optional, List
 
 import streamlit as st
 
@@ -52,12 +53,12 @@ _load_css()
 # -----------------------------------------------------------------------
 # Local-user helpers (username/password fallback)
 # -----------------------------------------------------------------------
-def _load_local_users() -> list[dict]:
+def _load_local_users() -> List[dict]:
     with open(BASE_DIR / "users.json") as f:
         return json.load(f)["users"]
 
 
-def _authenticate_local(username: str, password: str) -> dict | None:
+def _authenticate_local(username: str, password: str) -> Optional[dict]:
     for u in _load_local_users():
         if u["username"] == username and u["password"] == password:
             return u
