@@ -7,6 +7,8 @@ chromadb==0.5.18
 
 sentence-transformers==3.2.1
 
+ollama
+
 plotly
 reportlab
 

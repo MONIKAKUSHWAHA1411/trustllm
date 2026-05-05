@@ -38,7 +38,7 @@ def _confidence_score(faithfulness: float, context_relevance: float, hallucinati
     )
 
 
-def _confidence_tier(score: float) -> tuple[str, str, str]:
+def _confidence_tier(score: float):
     """Return (colour_hex, emoji_label, text_label) for a confidence score."""
     if score >= CONFIDENCE_HIGH:
         return "#22c55e", "🟢", "High Confidence"

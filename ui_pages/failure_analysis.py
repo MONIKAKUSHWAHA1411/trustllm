@@ -41,7 +41,7 @@ def _failure_reason(row: dict) -> str:
     return "—"
 
 
-def _failure_severity(row: dict) -> tuple[str, str]:
+def _failure_severity(row: dict):
     """
     Return (emoji, label) severity for a failed row.
     🔴 Critical  — hallucinated / completely wrong answer

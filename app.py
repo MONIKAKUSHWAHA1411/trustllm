@@ -257,24 +257,14 @@ _project_names = ["All Projects"] + [p["name"] for p in _projects_data]
 # -----------------------------------------------------------------------
 # Top header bar
 # -----------------------------------------------------------------------
-def _avatar_img(picture: str, name: str, size: int = 32) -> str:
-    if picture:
-        return (
-            f'<img src="{picture}" width="{size}" height="{size}" '
-            f'style="border-radius:50%;object-fit:cover;vertical-align:middle;" '
-            f'referrerpolicy="no-referrer">'
-        )
+def _user_label(name: str) -> str:
+    """Plain-text label for the popover trigger (Streamlit escapes HTML in labels)."""
     initials = "".join(w[0].upper() for w in name.split()[:2]) or "U"
-    return (
-        f'<span style="display:inline-flex;width:{size}px;height:{size}px;border-radius:50%;'
-        f'background:#2563eb;align-items:center;justify-content:center;'
-        f'font-size:{size // 3}px;font-weight:700;color:#fff;">{initials}</span>'
-    )
+    return f"👤 {name}"
 
 
 user = st.session_state["user"]
 user_name    = user.get("name",    user.get("display_name", "User"))
-user_picture = user.get("picture", "")
 
 header = st.container()
 with header:
@@ -299,7 +289,7 @@ with header:
     with h5:
         # User avatar + popover with profile / logout actions
         with st.popover(
-            f"{_avatar_img(user_picture, user_name)} &nbsp;{user_name}",
+            _user_label(user_name),
             use_container_width=True,
         ):
             st.markdown(
