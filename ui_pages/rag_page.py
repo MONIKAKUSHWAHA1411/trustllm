@@ -104,6 +104,13 @@ def _render_query_history():
 # -----------------------------------------------------------------------
 # Tab 1 — Document Upload
 # -----------------------------------------------------------------------
+def _uploads_dir():
+    """Return (and create) persistent uploads directory."""
+    d = BASE_DIR / "data" / "uploads"
+    d.mkdir(parents=True, exist_ok=True)
+    return d
+
+
 def _tab_upload():
     st.subheader("Upload Knowledge Base")
     st.caption("Upload one or more PDF files. They will be chunked and indexed into the vector database.")
@@ -128,12 +135,13 @@ def _tab_upload():
 
         for i, f in enumerate(uploaded):
             status.info(f"Indexing **{f.name}** …")
-            with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp:
-                tmp.write(f.read())
-                tmp_path = tmp.name
+
+            # Persist PDF with its real name so source metadata is meaningful
+            save_path = _uploads_dir() / f.name
+            save_path.write_bytes(f.read())
 
             try:
-                result = ingest_documents(tmp_path)
+                result = ingest_documents(str(save_path))
                 total_chunks += result["chunks_created"]
                 st.toast(f"✓ {f.name} — {result['chunks_created']} chunks", icon="✅")
             except Exception as e:
@@ -142,10 +150,16 @@ def _tab_upload():
             progress.progress((i + 1) / len(uploaded))
 
         status.empty()
-        st.success(
-            f"**Documents indexed successfully!**  "
-            f"Chunks created: **{total_chunks}** from {len(uploaded)} file(s)"
-        )
+        if total_chunks > 0:
+            st.success(
+                f"**Documents indexed successfully!**  "
+                f"Chunks created: **{total_chunks}** from {len(uploaded)} file(s)"
+            )
+        else:
+            st.warning(
+                f"Indexing completed but **0 chunks** were created from {len(uploaded)} file(s). "
+                "Check the error messages above."
+            )
         st.session_state["rag_indexed"] = True
 
     # Show current collection stats
@@ -213,10 +227,9 @@ def _tab_upload():
 # Tab 2 — RAG Chat
 # -----------------------------------------------------------------------
 def _render_sources(sources: list, query: str = ""):
-    """Render a numbered, expandable source panel with keyword highlighting."""
+    """Render a numbered, expandable source panel with keyword highlighting and download."""
     st.markdown("---")
-    st.markdown("**Sources Used**")
-    nums = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣"]
+    st.markdown("**📚 Sources Used**")
     for i, src in enumerate(sources, 1):
         meta  = src["metadata"]
         fname = meta.get("source", "unknown")
@@ -224,19 +237,33 @@ def _render_sources(sources: list, query: str = ""):
         page  = meta.get("page", "?")
         score = src["score"]
         score_badge = "🟢" if score > 0.7 else ("🟡" if score > 0.4 else "🔴")
-        num = nums[i - 1] if i <= len(nums) else f"{i}."
-        label = (
-            f"{num} &nbsp; `{fname}` &nbsp;·&nbsp; "
-            f"**Rank #{i}** &nbsp;·&nbsp; Chunk {chunk_idx} &nbsp;·&nbsp; "
-            f"Page {page} &nbsp;·&nbsp; {score_badge} `{score:.3f}`"
-        )
+
         with st.expander(f"Rank #{i} · {fname} (Chunk {chunk_idx}, Page {page}) · {score_badge} {score:.3f}"):
+            # Highlighted chunk text
             highlighted = _highlight_keywords(src["text"], query) if query else src["text"]
             st.markdown(
                 f"<div style='background:#1e293b;border-radius:6px;padding:0.75rem 1rem;"
                 f"font-size:0.85rem;color:#e2e8f0;line-height:1.6;'>{highlighted}</div>",
                 unsafe_allow_html=True,
             )
+
+            # Metadata row
+            st.caption(
+                f"📄 **{fname}** · Page {page} · Chunk {chunk_idx} · "
+                f"Similarity: {score_badge} {score:.4f}"
+            )
+
+            # Download source PDF if it exists
+            pdf_path = _uploads_dir() / fname
+            if pdf_path.exists():
+                with open(pdf_path, "rb") as pdf_file:
+                    st.download_button(
+                        f"⬇ Download {fname}",
+                        data=pdf_file.read(),
+                        file_name=fname,
+                        mime="application/pdf",
+                        key=f"dl_{i}_{fname}",
+                    )
 
 
 def _run_query(query: str, model: str, top_k: int):
