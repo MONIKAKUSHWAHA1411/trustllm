@@ -63,6 +63,93 @@ def _failure_severity(row: dict):
 _SEVERITY_ORDER = {"🔴 Critical": 0, "🟡 Medium": 1, "🟢 Low": 2}
 
 
+# -----------------------------------------------------------------------
+# Source rendering — chunk text preview + per-file PDF download
+# -----------------------------------------------------------------------
+
+def _normalise_source(src):
+    """
+    Accept either the old stringified format (`"file.pdf – chunk 4, page 2"`)
+    or the new dict format with full chunk text. Always return a dict.
+    """
+    if isinstance(src, dict):
+        return {
+            "source":      src.get("source", "unknown"),
+            "page":        src.get("page", "?"),
+            "chunk_index": src.get("chunk_index", "?"),
+            "score":       src.get("score"),
+            "text":        src.get("text", ""),
+        }
+    # Legacy stringified format — extract source name only.
+    txt = str(src)
+    fname = txt.split("–")[0].strip() if "–" in txt else txt
+    return {"source": fname, "page": "?", "chunk_index": "?", "score": None, "text": ""}
+
+
+def _render_sources(sources, key_prefix: str = ""):
+    """
+    Per-source UI:
+      - chunk-text expander (shows the actual retrieved text)
+      - inline PDF download button if the source PDF was persisted on disk
+    """
+    from rag.ingestion import get_source_pdf_path
+
+    # De-dup by filename so we only render one download button per file
+    seen_files = set()
+
+    for j, raw in enumerate(sources, 1):
+        s = _normalise_source(raw)
+        fname  = s["source"]
+        page   = s["page"]
+        chunk  = s["chunk_index"]
+        score  = s["score"]
+        text   = s["text"]
+
+        score_badge = ""
+        if isinstance(score, (int, float)):
+            score_badge = (
+                "🟢 " if score > 0.7 else ("🟡 " if score > 0.4 else "🔴 ")
+            ) + f"`{score:.3f}`"
+
+        header = f"📄 `{fname}` · Chunk {chunk} · Page {page}"
+        if score_badge:
+            header += f" · {score_badge}"
+
+        with st.expander(header, expanded=False):
+            if text:
+                st.markdown(
+                    f"<div style='background:#1e293b;border-radius:6px;"
+                    f"padding:0.75rem 1rem;font-size:0.85rem;color:#e2e8f0;"
+                    f"line-height:1.6;white-space:pre-wrap;'>{text}</div>",
+                    unsafe_allow_html=True,
+                )
+            else:
+                st.caption(
+                    "Chunk text not stored in this evaluation report — "
+                    "re-run the dataset evaluation to capture it."
+                )
+
+            # Download button for the original PDF (one per filename)
+            if fname not in seen_files:
+                seen_files.add(fname)
+                pdf_path = get_source_pdf_path(fname)
+                if pdf_path.exists():
+                    with open(pdf_path, "rb") as fh:
+                        st.download_button(
+                            label=f"⬇ Download {fname}",
+                            data=fh.read(),
+                            file_name=fname,
+                            mime="application/pdf",
+                            key=f"{key_prefix}_dl_{j}_{fname}",
+                            use_container_width=False,
+                        )
+                else:
+                    st.caption(
+                        f"Original PDF (`{fname}`) is not available on disk. "
+                        "Re-upload it on the **RAG Testing → Document Upload** page to enable download."
+                    )
+
+
 def _why_failed(row: dict) -> str:
     """
     Generate a concise one-line explanation of why the answer failed.
@@ -133,7 +220,7 @@ def render():
     st.markdown("<br>", unsafe_allow_html=True)
 
     # --- Pre-calculate failure reason counts for filter dropdown ---
-    reason_counts: dict[str, int] = {}
+    reason_counts = {}
     for r in failures:
         reason = _failure_reason(r)
         reason_counts[reason] = reason_counts.get(reason, 0) + 1
@@ -235,12 +322,10 @@ def render():
                 f"Latency: `{row.get('latency_s', 0):.2f}s`"
             )
 
-            # View Sources button
+            # View Sources — chunks + downloadable PDFs
             sources = row.get('sources', [])
             if sources:
-                if st.button(f"📄 View Sources (#{i})", key=f"view_sources_{i}"):
-                    st.markdown("**Sources Used:**")
-                    for source in sources:
-                        st.markdown(f"- 📄 `{source}`")
+                st.markdown("**Retrieved Sources**")
+                _render_sources(sources, key_prefix=f"fa_{i}")
             else:
                 st.caption("No sources available")

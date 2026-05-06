@@ -10,6 +10,7 @@ Pipeline:
 """
 
 import os
+import shutil
 import uuid
 from pathlib import Path
 
@@ -22,12 +23,22 @@ from .embeddings import get_embedding_function
 BASE_DIR = Path(__file__).resolve().parents[1]
 VECTOR_DB_PATH = str(BASE_DIR / "vector_db")
 
+# Persistent location for uploaded source PDFs so they can be re-served
+# for preview/download from the Failure Analysis and RAG Chat pages.
+# Must match rag_page._uploads_dir().
+UPLOADED_PDF_DIR = BASE_DIR / "data" / "uploads"
+
 # Chunking parameters
 CHUNK_SIZE = 500
 CHUNK_OVERLAP = 50
 
 # Default ChromaDB collection name
 DEFAULT_COLLECTION = "trustllm_rag"
+
+
+def get_source_pdf_path(source_name: str) -> Path:
+    """Return the on-disk path where the source PDF was persisted (may not exist)."""
+    return UPLOADED_PDF_DIR / source_name
 
 
 def ingest_documents(file_path: str, collection_name: str = DEFAULT_COLLECTION) -> dict:
@@ -52,6 +63,16 @@ def ingest_documents(file_path: str, collection_name: str = DEFAULT_COLLECTION) 
     # --- 1. Load PDF ---
     loader = PyPDFLoader(file_path)
     pages = loader.load()
+
+    # --- 1b. Persist a copy of the source PDF so it can be served back later ---
+    try:
+        UPLOADED_PDF_DIR.mkdir(parents=True, exist_ok=True)
+        target = UPLOADED_PDF_DIR / source_name
+        if str(Path(file_path).resolve()) != str(target.resolve()):
+            shutil.copyfile(file_path, target)
+    except Exception:
+        # Persistence failure is non-fatal — indexing still proceeds.
+        pass
 
     if not pages:
         raise ValueError(f"No content extracted from {source_name}")

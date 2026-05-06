@@ -92,7 +92,13 @@ def _run_batch(dataset: list[dict], model: str, top_k: int) -> list[dict]:
                 "passed": passed,
                 "latency_s": round(latency, 2),
                 "sources": [
-                    f"{s['metadata'].get('source', '?')} – chunk {s['metadata'].get('chunk_index', '?')}, page {s['metadata'].get('page', '?')}"
+                    {
+                        "source":      s["metadata"].get("source", "?"),
+                        "page":        s["metadata"].get("page", "?"),
+                        "chunk_index": s["metadata"].get("chunk_index", "?"),
+                        "score":       s.get("score", 0),
+                        "text":        s.get("text", ""),
+                    }
                     for s in rag_out.get("sources", [])
                 ],
             })

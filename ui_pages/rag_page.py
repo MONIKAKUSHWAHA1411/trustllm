@@ -105,10 +105,14 @@ def _render_query_history():
 # Tab 1 — Document Upload
 # -----------------------------------------------------------------------
 def _uploads_dir():
-    """Return (and create) persistent uploads directory."""
-    d = BASE_DIR / "data" / "uploads"
-    d.mkdir(parents=True, exist_ok=True)
-    return d
+    """Return (and create) persistent uploads directory.
+
+    Reuses the canonical path defined in `rag.ingestion.UPLOADED_PDF_DIR`
+    so source PDFs uploaded here are also discoverable by Failure Analysis.
+    """
+    from rag.ingestion import UPLOADED_PDF_DIR
+    UPLOADED_PDF_DIR.mkdir(parents=True, exist_ok=True)
+    return UPLOADED_PDF_DIR
 
 
 def _tab_upload():
