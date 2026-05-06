@@ -1,56 +1,56 @@
 """
 rag/rag_pipeline.py — TrustLLM RAG Module
 ==========================================
-Combines document retrieval (ChromaDB) with local LLM generation
-(Ollama) to answer user queries grounded in uploaded documents.
+Combines document retrieval (ChromaDB) with cloud LLM generation
+(Groq) to answer user queries grounded in uploaded documents.
 
 Pipeline:
-    User Query → Retriever (ChromaDB) → Top-K chunks
-               → Prompt assembly → Ollama LLM → Answer
+    User Query -> Retriever (ChromaDB) -> Top-K chunks
+               -> Prompt assembly -> Groq LLM -> Answer
 
-Cloud deployments: set `OLLAMA_HOST` (e.g. via Streamlit secrets) to a
-reachable Ollama endpoint such as an ngrok tunnel pointing at a local
-Ollama instance — `https://<your-tunnel>.ngrok-free.app`. If unset, the
-pipeline falls back to `http://localhost:11434` and surfaces a clear
-"LLM backend unreachable" error when the connection fails.
+Set `GROQ_API_KEY` in Streamlit secrets (`.streamlit/secrets.toml`)
+or as an environment variable. Free tier supports Llama 3 / Mixtral
+models with generous rate limits — no local GPU needed.
 """
 
 import os
 import time
 
-import ollama
-
 from .retriever import retrieve_documents, TOP_K
 
-# Default model — must be available via `ollama list`
-DEFAULT_MODEL = "mistral"
+# Groq model IDs — free tier
+AVAILABLE_MODELS = [
+    "llama-3.3-70b-versatile",
+    "llama-3.1-8b-instant",
+    "mixtral-8x7b-32768",
+    "gemma2-9b-it",
+]
+DEFAULT_MODEL = AVAILABLE_MODELS[0]
 
 
-def _get_ollama_client():
-    """
-    Build an Ollama client using OLLAMA_HOST from Streamlit secrets or env.
-    Falls back to the package default (http://localhost:11434).
-    """
-    host = None
+def _get_api_key() -> str:
+    """Read GROQ_API_KEY from Streamlit secrets or environment."""
     try:
         import streamlit as st
-        host = st.secrets.get("OLLAMA_HOST", os.getenv("OLLAMA_HOST"))
+        key = st.secrets.get("GROQ_API_KEY", os.getenv("GROQ_API_KEY", ""))
     except Exception:
-        host = os.getenv("OLLAMA_HOST")
-
-    if host:
-        return ollama.Client(host=host)
-    return ollama  # module-level functions hit localhost by default
+        key = os.getenv("GROQ_API_KEY", "")
+    return key or ""
 
 
-def _is_connection_error(exc: Exception) -> bool:
-    msg = str(exc).lower()
-    return any(
-        kw in msg
-        for kw in ("connection refused", "connecterror", "max retries",
-                   "name or service not known", "connection error",
-                   "failed to establish", "could not connect")
-    )
+def _get_groq_client():
+    """Build a Groq client. Raises RuntimeError when the key is missing."""
+    api_key = _get_api_key()
+    if not api_key:
+        raise RuntimeError(
+            "**GROQ_API_KEY not set.**\n\n"
+            "Add it to your Streamlit secrets (`.streamlit/secrets.toml`):\n\n"
+            "```toml\nGROQ_API_KEY = \"gsk_...\"\n```\n\n"
+            "Get a free key at https://console.groq.com/keys"
+        )
+    from groq import Groq
+    return Groq(api_key=api_key)
+
 
 PROMPT_TEMPLATE = """\
 You are a helpful assistant. Answer the question below using ONLY the
@@ -77,15 +77,15 @@ def run_rag_query(
     Parameters
     ----------
     query   : user question
-    model   : Ollama model name (must be pulled locally)
+    model   : Groq model name
     top_k   : number of context chunks to retrieve
 
     Returns
     -------
     dict
-        answer  – str, LLM-generated answer
-        sources – list of source dicts from the retriever
-        model   – str, model used
+        answer  - str, LLM-generated answer
+        sources - list of source dicts from the retriever
+        model   - str, model used
     """
     t_start = time.perf_counter()
 
@@ -115,38 +115,34 @@ def run_rag_query(
     context = "\n\n".join(context_blocks)
     prompt = PROMPT_TEMPLATE.format(context=context, question=query)
 
-    # --- 3. Generate via Ollama ---
+    # --- 3. Generate via Groq ---
     t_gen = time.perf_counter()
     try:
-        client = _get_ollama_client()
-        response = client.chat(
+        client = _get_groq_client()
+        response = client.chat.completions.create(
             model=model,
             messages=[{"role": "user", "content": prompt}],
+            temperature=0.3,
+            max_tokens=1024,
         )
-        answer = response["message"]["content"].strip()
+        answer = response.choices[0].message.content.strip()
+        token_usage = getattr(response, "usage", None)
+        completion_tokens = token_usage.completion_tokens if token_usage else None
+    except RuntimeError:
+        # Missing API key — surface directly
+        raise
     except Exception as exc:
-        if _is_connection_error(exc):
-            answer = (
-                "**LLM backend unreachable.**\n\n"
-                "The RAG retrieval succeeded — the relevant document chunks are "
-                "shown in the *Sources* section below — but no Ollama server "
-                "is reachable to generate an answer.\n\n"
-                "**On Streamlit Cloud**: Ollama runs locally on your machine, "
-                "not on Streamlit's servers. To use the chat tab, expose your "
-                "local Ollama via a tunnel (e.g. `ngrok http 11434`) and add "
-                "the tunnel URL to your app secrets as:\n\n"
-                "```toml\nOLLAMA_HOST = \"https://your-tunnel.ngrok-free.app\"\n```\n"
-                "Then reboot the app.\n\n"
-                "**Locally**: make sure `ollama serve` is running and the "
-                f"selected model (`{model}`) has been pulled via `ollama pull {model}`."
-            )
-        else:
-            answer = f"[Ollama error] {exc}"
+        answer = f"[Groq error] {exc}"
+        completion_tokens = None
+
     generation_time = round(time.perf_counter() - t_gen, 3)
     total_time = round(time.perf_counter() - t_start, 3)
 
-    # Rough token estimate: ~0.75 words per token (GPT-style)
-    estimated_tokens = max(1, int(len(answer.split()) / 0.75))
+    # Use actual token count from Groq when available
+    if completion_tokens is not None:
+        estimated_tokens = completion_tokens
+    else:
+        estimated_tokens = max(1, int(len(answer.split()) / 0.75))
 
     return {
         "answer": answer,
