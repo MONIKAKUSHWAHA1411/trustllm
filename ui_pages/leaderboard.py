@@ -103,12 +103,25 @@ def render():
     leaderboard_df = leaderboard_df.sort_values(["accuracy", "timestamp"], ascending=[False, False])
     # Remove duplicates (keep the most recent entry for each model/dataset pair)
     leaderboard_df = leaderboard_df.drop_duplicates(subset=["model", "dataset"], keep="first")
-    # Format for display
+    # Format for display with rank medals + color-coded accuracy
     display_df = leaderboard_df[["model", "dataset", "accuracy"]].copy()
-    display_df["accuracy"] = display_df["accuracy"].apply(lambda x: f"{x:.0%}")
-    display_df.columns = ["Model", "Dataset", "Accuracy"]
-    
+
+    def _rank_label(idx: int) -> str:
+        return {0: "🥇 #1", 1: "🥈 #2", 2: "🥉 #3"}.get(idx, f"#{idx + 1}")
+
+    def _accuracy_with_color(acc: float) -> str:
+        if acc >= 0.8:
+            return f"🟢 {acc:.0%}"
+        if acc >= 0.6:
+            return f"🟡 {acc:.0%}"
+        return f"🔴 {acc:.0%}"
+
+    display_df.insert(0, "Rank", [_rank_label(i) for i in range(len(display_df))])
+    display_df["accuracy"] = display_df["accuracy"].apply(_accuracy_with_color)
+    display_df.columns = ["Rank", "Model", "Dataset", "Accuracy"]
+
     st.subheader("Dataset Accuracy Rankings")
+    st.caption("🟢 ≥ 80% (production-ready) · 🟡 60–80% (acceptable) · 🔴 < 60% (failing)")
     st.dataframe(display_df, use_container_width=True, hide_index=True)
     
     # Clear leaderboard button

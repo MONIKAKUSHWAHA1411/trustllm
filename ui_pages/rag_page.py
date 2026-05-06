@@ -19,8 +19,8 @@ import streamlit as st
 BASE_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(BASE_DIR))
 
-# Available Groq models (free tier — no local GPU needed)
-AVAILABLE_MODELS = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "mixtral-8x7b-32768", "gemma2-9b-it"]
+# Available Groq models (free tier — production models, mixtral decommissioned 2025)
+AVAILABLE_MODELS = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "gemma2-9b-it"]
 DEFAULT_TOP_K    = 2   # keep context window small for speed
 
 # Confidence tiers
@@ -222,9 +222,34 @@ def _tab_upload():
                     st.warning("Vector store cleared.")
                     st.rerun()
             else:
-                st.info("No documents indexed yet. Upload PDFs above to get started.")
+                # Graceful empty state instead of an error banner
+                st.markdown(
+                    "<div style='background:#0f172a;border:1px dashed #334155;"
+                    "border-radius:12px;padding:2rem 1.5rem;text-align:center;"
+                    "margin-top:0.5rem;'>"
+                    "<div style='font-size:2rem;margin-bottom:0.5rem;'>📚</div>"
+                    "<div style='font-size:1rem;font-weight:600;color:#e2e8f0;"
+                    "margin-bottom:0.3rem;'>No documents yet</div>"
+                    "<div style='font-size:0.85rem;color:#94a3b8;'>"
+                    "Upload a PDF above to start building your knowledge base."
+                    "</div></div>",
+                    unsafe_allow_html=True,
+                )
         except Exception as e:
-            st.error(f"Could not read vector store: {e}")
+            # Hide the raw SQLite trace from end users — show actionable copy + reset option
+            with st.container():
+                st.warning(
+                    "⚠️ **Vector store is in an inconsistent state.** "
+                    "This usually happens after a ChromaDB version upgrade. "
+                    "Resetting will clear indexed chunks but is safe — your uploaded PDFs "
+                    "are preserved on disk."
+                )
+                with st.expander("Show technical details"):
+                    st.code(str(e), language="text")
+                if st.button("🔧 Reset Vector Store", type="primary", key="reset_inconsistent"):
+                    shutil.rmtree(VECTOR_DB_PATH, ignore_errors=True)
+                    st.success("Vector store reset. You can now upload and index documents.")
+                    st.rerun()
 
 
 # -----------------------------------------------------------------------

@@ -23,7 +23,7 @@ sys.path.insert(0, str(BASE_DIR))
 REPORT_PATH  = BASE_DIR / "reports" / "batch_eval_results.json"
 PASS_THRESHOLD = 0.55   # cosine sim above this = pass
 
-AVAILABLE_MODELS = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "mixtral-8x7b-32768", "gemma2-9b-it"]
+AVAILABLE_MODELS = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "gemma2-9b-it"]
 
 
 # -----------------------------------------------------------------------

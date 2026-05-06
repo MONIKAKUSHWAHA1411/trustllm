@@ -1,3 +1,27 @@
+/* ===== Monospace numerics — gives metric cards "ships eval tooling" feel ===== */
+
+[data-testid="metric-container"] [data-testid="stMetricValue"],
+[data-testid="metric-container"] [data-testid="stMetricDelta"],
+.metric-value,
+code, .stCodeBlock,
+.mono {
+    font-family: "JetBrains Mono", "SF Mono", "Menlo", "Monaco", "Consolas", monospace !important;
+    font-feature-settings: "tnum" 1, "ss01" 1;
+    letter-spacing: -0.01em;
+}
+
+/* ===== Body — slightly tighter, more product-like ===== */
+
+html, body, [data-testid="stAppViewContainer"] {
+    background-color: #0a0f1c !important;
+}
+
+/* Subtle dot grid on main background, like Linear */
+[data-testid="stAppViewContainer"] > .main {
+    background-image: radial-gradient(circle at 1px 1px, rgba(148,163,184,0.04) 1px, transparent 0);
+    background-size: 24px 24px;
+}
+
 /* ===== Sidebar ===== */
 
 section[data-testid="stSidebar"] {
@@ -155,10 +179,29 @@ hr.section-divider {
 /* ===== Login / auth page ===== */
 
 [data-testid="stForm"] {
-    background-color: #1e293b;
-    border: 1px solid #475569;
+    background-color: #0f172a;
+    border: 1px solid #1e293b;
     border-radius: 14px;
     padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Login tabs — bigger hit-targets, clearer active state */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 0.25rem;
+    background: transparent;
+    border-bottom: 1px solid #1e293b;
+}
+
+.stTabs [data-baseweb="tab"] {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #64748b;
+}
+
+.stTabs [aria-selected="true"] {
+    color: #60a5fa !important;
 }
 
 [data-testid="stForm"] label {

@@ -25,10 +25,25 @@ def render():
     st.caption("Evaluate reliability, safety, and factual accuracy of LLM outputs.")
     st.markdown('<hr class="section-divider">', unsafe_allow_html=True)
 
-    with open(BASE_DIR / "reports" / "results.json") as f:
-        data = json.load(f)
+    results_path = BASE_DIR / "reports" / "results.json"
+    if not results_path.exists():
+        st.info(
+            "📊 **No evaluation results yet.** "
+            "Go to **Run Evaluation** or **Prompt Dataset** to generate your first results."
+        )
+        return
+
+    try:
+        with open(results_path) as f:
+            data = json.load(f)
+    except Exception:
+        st.warning("⚠️ Could not read evaluation results. The file may be corrupted.")
+        return
 
     df = pd.DataFrame(data)
+    if df.empty:
+        st.info("📊 No evaluations recorded yet. Run an evaluation to populate this view.")
+        return
 
     # Apply project filter if set
     cat_filter = st.session_state.get("project_categories")
@@ -97,7 +112,20 @@ def render():
         text=alt.Text("avg_trust_score:Q", format=".2f")
     )
 
-    st.altair_chart(chart + text, use_container_width=True)
+    # SLA threshold line at 0.8 — like Datadog/Grafana
+    threshold_df = pd.DataFrame({"y": [0.8], "label": ["SLA threshold (0.80)"]})
+    threshold_line = (
+        alt.Chart(threshold_df)
+        .mark_rule(color="#64748b", strokeDash=[4, 4], strokeWidth=1)
+        .encode(y="y:Q")
+    )
+    threshold_text = (
+        alt.Chart(threshold_df)
+        .mark_text(align="right", dx=-4, dy=-6, color="#64748b", fontSize=11)
+        .encode(y="y:Q", text="label:N", x=alt.value(900))
+    )
+
+    st.altair_chart(chart + text + threshold_line + threshold_text, use_container_width=True)
 
     # ---- Recent Evaluations (paginated) ---- #
     st.subheader("Recent Evaluations")

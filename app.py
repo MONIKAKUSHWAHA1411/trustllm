@@ -137,29 +137,66 @@ _handle_oauth_callback()
 # -----------------------------------------------------------------------
 # Login page — professional design
 # -----------------------------------------------------------------------
+def _try_demo_login() -> None:
+    """Sign in as the demo user — no credentials shown to the user."""
+    demo = _authenticate_local("TestUser", "User123")
+    if demo:
+        normalised = _normalise_local_user(demo)
+        upsert_user(normalised)
+        st.session_state["logged_in"] = True
+        st.session_state["user"] = normalised
+        st.session_state["just_logged_in"] = True  # trigger entry animation
+        st.rerun()
+
+
 def _show_login() -> None:
-    # Hide sidebar on login page
+    # Hide sidebar on login page + add fade-up entry animation
     st.markdown(
         """<style>
         section[data-testid="stSidebar"] { display: none !important; }
         section.main > div { overflow: hidden !important; }
         header[data-testid="stHeader"] { display: none !important; }
-        </style>""",
+
+        @keyframes login-fade-up {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .login-stage { animation: login-fade-up 0.5s ease-out forwards; }
+        .login-stage > * { animation: login-fade-up 0.6s ease-out forwards; opacity: 0; }
+        .login-stage > *:nth-child(1) { animation-delay: 0.05s; }
+        .login-stage > *:nth-child(2) { animation-delay: 0.15s; }
+        .login-stage > *:nth-child(3) { animation-delay: 0.25s; }
+
+        .demo-btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 100%; padding: 0.7rem 1rem; gap: 0.5rem;
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            color: #ffffff !important; border: none; border-radius: 10px;
+            text-decoration: none !important; font-size: 0.95rem; font-weight: 600;
+            cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+        }
+        .demo-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4); }
+        </style>
+        <div class="login-stage"></div>""",
         unsafe_allow_html=True,
     )
 
     # ---- Hero / branding ----
     st.markdown(
         """
-        <div style="text-align:center;margin-top:2.5rem;margin-bottom:1rem;">
+        <div style="text-align:center;margin-top:2.5rem;margin-bottom:1rem;
+                    animation:login-fade-up 0.5s ease-out;">
             <div style="display:inline-flex;align-items:center;justify-content:center;
                         width:64px;height:64px;background:linear-gradient(135deg,#2563eb 0%,#7c3aed 100%);
-                        border-radius:16px;margin-bottom:0.8rem;">
+                        border-radius:16px;margin-bottom:0.8rem;
+                        box-shadow:0 8px 24px rgba(37,99,235,0.3);">
                 <span style="font-size:2rem;">🛡</span>
             </div>
             <h1 style="margin:0;font-size:2.2rem;font-weight:800;
                        background:linear-gradient(135deg,#60a5fa,#a78bfa);
-                       -webkit-background-clip:text;-webkit-text-fill-color:transparent;">
+                       -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+                       letter-spacing:-0.02em;">
                 TrustLLM
             </h1>
             <p style="color:#94a3b8;font-size:0.95rem;margin-top:0.3rem;">
@@ -226,16 +263,21 @@ def _show_login() -> None:
                     else:
                         st.error("Invalid username or password.")
 
-            # Show demo credentials only when Supabase isn't configured
-            if not is_configured():
-                st.markdown(
-                    '<div style="text-align:center;font-size:0.78rem;color:#64748b;'
-                    'margin-top:0.5rem;padding:0.5rem;background:#0f172a;border-radius:6px;">'
-                    'Demo credentials: <strong style="color:#94a3b8;">TestUser</strong> / '
-                    '<strong style="color:#94a3b8;">User123</strong>'
-                    '</div>',
-                    unsafe_allow_html=True,
-                )
+            # "Try Demo" — instant access without exposing credentials
+            st.markdown(
+                '<div style="text-align:center;color:#475569;font-size:0.75rem;'
+                'margin:0.75rem 0 0.5rem 0;display:flex;align-items:center;gap:0.5rem;">'
+                '<div style="flex:1;height:1px;background:#1e293b;"></div>'
+                '<span>or explore as guest</span>'
+                '<div style="flex:1;height:1px;background:#1e293b;"></div>'
+                '</div>',
+                unsafe_allow_html=True,
+            )
+            if st.button("✨ Try as Demo User",
+                         use_container_width=True,
+                         key="demo_btn",
+                         help="Sign in with a pre-loaded demo account — no signup required."):
+                _try_demo_login()
 
         with tab_create:
             with st.form("create_account_form"):

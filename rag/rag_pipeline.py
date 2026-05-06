@@ -18,11 +18,10 @@ import time
 
 from .retriever import retrieve_documents, TOP_K
 
-# Groq model IDs — free tier
+# Groq model IDs — free tier (production models, mixtral decommissioned 2025)
 AVAILABLE_MODELS = [
     "llama-3.3-70b-versatile",
     "llama-3.1-8b-instant",
-    "mixtral-8x7b-32768",
     "gemma2-9b-it",
 ]
 DEFAULT_MODEL = AVAILABLE_MODELS[0]
