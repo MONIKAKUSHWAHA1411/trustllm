@@ -53,8 +53,11 @@ _load_css()
 # -----------------------------------------------------------------------
 # Local-user helpers (username/password fallback)
 # -----------------------------------------------------------------------
+USERS_PATH = BASE_DIR / "users.json"
+
+
 def _load_local_users() -> List[dict]:
-    with open(BASE_DIR / "users.json") as f:
+    with open(USERS_PATH) as f:
         return json.load(f)["users"]
 
 
@@ -74,6 +77,32 @@ def _normalise_local_user(u: dict) -> dict:
         "picture": "",
         "role":    u.get("role", "viewer"),
     }
+
+
+def _create_local_user(username: str, password: str, display_name: str = "", email: str = "") -> Optional[dict]:
+    """Add a new user to users.json. Returns the user dict or None if username taken."""
+    with open(USERS_PATH) as f:
+        data = json.load(f)
+
+    # Check for duplicate username
+    for u in data["users"]:
+        if u["username"].lower() == username.lower():
+            return None
+
+    new_user = {
+        "username": username,
+        "password": password,
+        "display_name": display_name or username,
+        "role": "viewer",
+    }
+    if email:
+        new_user["email"] = email
+
+    data["users"].append(new_user)
+    with open(USERS_PATH, "w") as f:
+        json.dump(data, f, indent=2)
+
+    return new_user
 
 
 # -----------------------------------------------------------------------
@@ -106,28 +135,45 @@ _handle_oauth_callback()
 
 
 # -----------------------------------------------------------------------
-# Login page
+# Login page — professional design
 # -----------------------------------------------------------------------
 def _show_login() -> None:
+    # Hide sidebar on login page
     st.markdown(
-        '<style>section.main > div {overflow: hidden !important;}</style>',
+        """<style>
+        section[data-testid="stSidebar"] { display: none !important; }
+        section.main > div { overflow: hidden !important; }
+        header[data-testid="stHeader"] { display: none !important; }
+        </style>""",
         unsafe_allow_html=True,
     )
 
+    # ---- Hero / branding ----
     st.markdown(
         """
-        <div style="text-align:center;margin-top:3rem;">
-            <div style="font-size:3rem;">🛡</div>
-            <h1 style="margin-bottom:0;">TrustLLM</h1>
-            <p style="color:#94a3b8;">AI Model Evaluation Platform</p>
+        <div style="text-align:center;margin-top:2.5rem;margin-bottom:1rem;">
+            <div style="display:inline-flex;align-items:center;justify-content:center;
+                        width:64px;height:64px;background:linear-gradient(135deg,#2563eb 0%,#7c3aed 100%);
+                        border-radius:16px;margin-bottom:0.8rem;">
+                <span style="font-size:2rem;">🛡</span>
+            </div>
+            <h1 style="margin:0;font-size:2.2rem;font-weight:800;
+                       background:linear-gradient(135deg,#60a5fa,#a78bfa);
+                       -webkit-background-clip:text;-webkit-text-fill-color:transparent;">
+                TrustLLM
+            </h1>
+            <p style="color:#94a3b8;font-size:0.95rem;margin-top:0.3rem;">
+                AI Model Evaluation &amp; Trust Scoring Platform
+            </p>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
-    _, col, _ = st.columns([1.5, 1, 1.5])
+    # Center the login card
+    _, col, _ = st.columns([1.2, 1, 1.2])
     with col:
-        # ---- Supabase Google OAuth button ----
+        # ---- Google OAuth (Supabase) ----
         if is_configured():
             try:
                 auth_url = get_auth_url()
@@ -146,44 +192,81 @@ def _show_login() -> None:
                     unsafe_allow_html=True,
                 )
                 st.markdown(
-                    '<div style="text-align:center;color:#475569;font-size:0.8rem;margin:1rem 0;">or sign in with username</div>',
+                    '<div style="text-align:center;color:#475569;font-size:0.78rem;'
+                    'margin:0.75rem 0;display:flex;align-items:center;gap:0.5rem;">'
+                    '<div style="flex:1;height:1px;background:#334155;"></div>'
+                    '<span>or continue with email</span>'
+                    '<div style="flex:1;height:1px;background:#334155;"></div>'
+                    '</div>',
                     unsafe_allow_html=True,
                 )
             except Exception:
-                pass  # Supabase not reachable; fall through to username login
+                pass  # Supabase not reachable; fall through to form login
 
-        # ---- Username / password form ----
-        with st.form("login_form"):
-            username = st.text_input("Username")
-            password = st.text_input("Password", type="password")
-            submitted = st.form_submit_button("Sign in", use_container_width=True)
+        # ---- Tabs: Sign In / Create Account ----
+        tab_signin, tab_create = st.tabs(["Sign In", "Create Account"])
 
-        if submitted:
-            local_user = _authenticate_local(username, password)
-            if local_user:
-                normalised = _normalise_local_user(local_user)
-                upsert_user(normalised)
-                st.session_state["logged_in"] = True
-                st.session_state["user"] = normalised
-                st.rerun()
-            else:
-                st.error("Invalid username or password.")
+        with tab_signin:
+            with st.form("login_form"):
+                username = st.text_input("Username", placeholder="Enter your username")
+                password = st.text_input("Password", type="password", placeholder="Enter your password")
+                submitted = st.form_submit_button("Sign in", use_container_width=True)
 
-        if not is_configured():
-            st.caption("Username: **TestUser**  •  Password: **User123**")
+            if submitted:
+                if not username or not password:
+                    st.error("Please enter both username and password.")
+                else:
+                    local_user = _authenticate_local(username, password)
+                    if local_user:
+                        normalised = _normalise_local_user(local_user)
+                        upsert_user(normalised)
+                        st.session_state["logged_in"] = True
+                        st.session_state["user"] = normalised
+                        st.rerun()
+                    else:
+                        st.error("Invalid username or password.")
+
+            # Show demo credentials only when Supabase isn't configured
+            if not is_configured():
+                st.markdown(
+                    '<div style="text-align:center;font-size:0.78rem;color:#64748b;'
+                    'margin-top:0.5rem;padding:0.5rem;background:#0f172a;border-radius:6px;">'
+                    'Demo credentials: <strong style="color:#94a3b8;">TestUser</strong> / '
+                    '<strong style="color:#94a3b8;">User123</strong>'
+                    '</div>',
+                    unsafe_allow_html=True,
+                )
+
+        with tab_create:
+            with st.form("create_account_form"):
+                new_name = st.text_input("Display Name", placeholder="Your full name")
+                new_user = st.text_input("Username", placeholder="Choose a username", key="ca_user")
+                new_email = st.text_input("Email (optional)", placeholder="you@example.com", key="ca_email")
+                new_pass = st.text_input("Password", type="password", placeholder="Min 6 characters", key="ca_pass")
+                new_pass2 = st.text_input("Confirm Password", type="password", placeholder="Re-enter password", key="ca_pass2")
+                create_btn = st.form_submit_button("Create Account", use_container_width=True)
+
+            if create_btn:
+                if not new_user or not new_pass:
+                    st.error("Username and password are required.")
+                elif len(new_pass) < 6:
+                    st.error("Password must be at least 6 characters.")
+                elif new_pass != new_pass2:
+                    st.error("Passwords do not match.")
+                elif len(new_user) < 3:
+                    st.error("Username must be at least 3 characters.")
+                else:
+                    created = _create_local_user(new_user, new_pass, new_name, new_email)
+                    if created:
+                        st.success("Account created! You can now sign in.")
+                    else:
+                        st.error("Username already taken. Choose a different one.")
 
         # ---- Forgot password ----
         with st.expander("Forgot password?"):
-            st.markdown(
-                "<div style='font-size:0.82rem;color:#94a3b8;margin-bottom:0.75rem;'>"
-                "Reset your local account password below. "
-                "If you signed in with Google via Supabase, use the Google button above instead."
-                "</div>",
-                unsafe_allow_html=True,
-            )
             fp_user = st.text_input("Username", key="fp_username", placeholder="Enter your username")
             fp_new  = st.text_input("New password", type="password", key="fp_new", placeholder="New password")
-            fp_conf = st.text_input("Confirm new password", type="password", key="fp_conf", placeholder="Confirm new password")
+            fp_conf = st.text_input("Confirm", type="password", key="fp_conf", placeholder="Confirm new password")
             if st.button("Reset password", key="fp_submit", use_container_width=True):
                 if not fp_user or not fp_new:
                     st.error("Please fill in all fields.")
@@ -192,8 +275,7 @@ def _show_login() -> None:
                 elif len(fp_new) < 6:
                     st.error("Password must be at least 6 characters.")
                 else:
-                    users_path = BASE_DIR / "users.json"
-                    with open(users_path) as _uf:
+                    with open(USERS_PATH) as _uf:
                         _udata = json.load(_uf)
                     matched = False
                     for _u in _udata["users"]:
@@ -202,17 +284,20 @@ def _show_login() -> None:
                             matched = True
                             break
                     if matched:
-                        with open(users_path, "w") as _uf:
+                        with open(USERS_PATH, "w") as _uf:
                             json.dump(_udata, _uf, indent=2)
                         st.success("Password updated. You can now sign in.")
                     else:
                         st.error("Username not found.")
 
-    st.markdown("<br><br>", unsafe_allow_html=True)
-    st.markdown("---")
+    # ---- Footer ----
+    st.markdown("<br>", unsafe_allow_html=True)
     st.markdown(
         """
-        <div style="text-align:center;font-size:12px;color:#94a3b8;">
+        <div style="text-align:center;font-size:11px;color:#475569;margin-top:1rem;">
+            <div style="margin-bottom:0.3rem;">
+                Powered by ChromaDB &middot; Groq &middot; Streamlit
+            </div>
             Built by
             <a href="https://www.linkedin.com/in/monika-kushwaha-52443735/"
                target="_blank" style="color:#60a5fa;text-decoration:none;">
@@ -261,7 +346,6 @@ _project_names = ["All Projects"] + [p["name"] for p in _projects_data]
 # -----------------------------------------------------------------------
 def _user_label(name: str) -> str:
     """Plain-text label for the popover trigger (Streamlit escapes HTML in labels)."""
-    initials = "".join(w[0].upper() for w in name.split()[:2]) or "U"
     return f"👤 {name}"
 
 

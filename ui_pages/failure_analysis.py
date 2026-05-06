@@ -88,13 +88,11 @@ def _normalise_source(src):
 
 def _render_sources(sources, key_prefix: str = ""):
     """
-    Per-source UI:
-      - chunk-text expander (shows the actual retrieved text)
-      - inline PDF download button if the source PDF was persisted on disk
+    Per-source UI — renders as styled containers (NOT expanders) to avoid
+    Streamlit's nested-expander restriction when called inside a parent expander.
     """
     from rag.ingestion import get_source_pdf_path
 
-    # De-dup by filename so we only render one download button per file
     seen_files = set()
 
     for j, raw in enumerate(sources, 1):
@@ -108,45 +106,41 @@ def _render_sources(sources, key_prefix: str = ""):
         score_badge = ""
         if isinstance(score, (int, float)):
             score_badge = (
-                "🟢 " if score > 0.7 else ("🟡 " if score > 0.4 else "🔴 ")
-            ) + f"`{score:.3f}`"
+                "🟢" if score > 0.7 else ("🟡" if score > 0.4 else "🔴")
+            ) + f" {score:.3f}"
 
-        header = f"📄 `{fname}` · Chunk {chunk} · Page {page}"
-        if score_badge:
-            header += f" · {score_badge}"
+        # Styled source card (no expander — avoids nesting violation)
+        st.markdown(
+            f"<div style='background:#1e293b;border:1px solid #334155;"
+            f"border-radius:8px;padding:0.6rem 0.9rem;margin-bottom:0.5rem;'>"
+            f"<div style='font-size:0.82rem;color:#94a3b8;font-weight:600;'>"
+            f"📄 {fname} · Chunk {chunk} · Page {page}"
+            f"{(' · ' + score_badge) if score_badge else ''}</div>"
+            + (
+                f"<div style='margin-top:0.4rem;font-size:0.8rem;color:#e2e8f0;"
+                f"line-height:1.55;white-space:pre-wrap;max-height:120px;"
+                f"overflow-y:auto;'>{text}</div>"
+                if text else
+                "<div style='margin-top:0.3rem;font-size:0.78rem;color:#64748b;'>"
+                "Chunk text not stored — re-run evaluation to capture.</div>"
+            )
+            + "</div>",
+            unsafe_allow_html=True,
+        )
 
-        with st.expander(header, expanded=False):
-            if text:
-                st.markdown(
-                    f"<div style='background:#1e293b;border-radius:6px;"
-                    f"padding:0.75rem 1rem;font-size:0.85rem;color:#e2e8f0;"
-                    f"line-height:1.6;white-space:pre-wrap;'>{text}</div>",
-                    unsafe_allow_html=True,
-                )
-            else:
-                st.caption(
-                    "Chunk text not stored in this evaluation report — "
-                    "re-run the dataset evaluation to capture it."
-                )
-
-            # Download button for the original PDF (one per filename)
-            if fname not in seen_files:
-                seen_files.add(fname)
-                pdf_path = get_source_pdf_path(fname)
-                if pdf_path.exists():
-                    with open(pdf_path, "rb") as fh:
-                        st.download_button(
-                            label=f"⬇ Download {fname}",
-                            data=fh.read(),
-                            file_name=fname,
-                            mime="application/pdf",
-                            key=f"{key_prefix}_dl_{j}_{fname}",
-                            use_container_width=False,
-                        )
-                else:
-                    st.caption(
-                        f"Original PDF (`{fname}`) is not available on disk. "
-                        "Re-upload it on the **RAG Testing → Document Upload** page to enable download."
+        # Download button for the original PDF (one per filename)
+        if fname not in seen_files:
+            seen_files.add(fname)
+            pdf_path = get_source_pdf_path(fname)
+            if pdf_path.exists():
+                with open(pdf_path, "rb") as fh:
+                    st.download_button(
+                        label=f"⬇ Download {fname}",
+                        data=fh.read(),
+                        file_name=fname,
+                        mime="application/pdf",
+                        key=f"{key_prefix}_dl_{j}_{fname}",
+                        use_container_width=False,
                     )
 
 
