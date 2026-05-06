@@ -13,6 +13,7 @@ import json
 import sys
 from pathlib import Path
 from datetime import datetime
+from typing import List
 
 import streamlit as st
 
@@ -29,7 +30,7 @@ AVAILABLE_MODELS = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "mixtral-
 # Helpers
 # -----------------------------------------------------------------------
 
-def _parse_dataset(file) -> list[dict]:
+def _parse_dataset(file) -> List[dict]:
     """Parse uploaded CSV or JSON into list of {prompt, expected_answer}."""
     name = file.name.lower()
     if name.endswith(".json"):
@@ -57,7 +58,7 @@ def _cosine_sim(a, b) -> float:
     return float(np.dot(va, vb) / (na * nb))
 
 
-def _run_batch(dataset: list[dict], model: str, top_k: int) -> list[dict]:
+def _run_batch(dataset: List[dict], model: str, top_k: int) -> List[dict]:
     """Run every prompt through the RAG pipeline and evaluate."""
     from rag.rag_pipeline import run_rag_query
     from rag.embeddings import embed_texts

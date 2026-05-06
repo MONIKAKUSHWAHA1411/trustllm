@@ -12,6 +12,8 @@ hallucination_risk : Estimated probability the answer contains hallucinations
                      (1 - faithfulness).
 """
 
+from typing import List
+
 import numpy as np
 
 from .embeddings import embed_texts
@@ -21,7 +23,7 @@ from .embeddings import embed_texts
 # Helpers
 # -----------------------------------------------------------------------
 
-def _cosine_similarity(a: list[float], b: list[float]) -> float:
+def _cosine_similarity(a: List[float], b: List[float]) -> float:
     """Compute cosine similarity between two embedding vectors."""
     va = np.array(a, dtype=np.float32)
     vb = np.array(b, dtype=np.float32)
@@ -32,7 +34,7 @@ def _cosine_similarity(a: list[float], b: list[float]) -> float:
     return float(np.dot(va, vb) / (norm_a * norm_b))
 
 
-def _mean_similarity(query_vec: list[float], doc_vecs: list[list[float]]) -> float:
+def _mean_similarity(query_vec: List[float], doc_vecs: List[List[float]]) -> float:
     """Return the average cosine similarity of a query against a list of docs."""
     if not doc_vecs:
         return 0.0
@@ -47,7 +49,7 @@ def _mean_similarity(query_vec: list[float], doc_vecs: list[list[float]]) -> flo
 def evaluate_rag(
     query: str,
     answer: str,
-    context_docs: list[dict],
+    context_docs: List[dict],
 ) -> dict:
     """
     Evaluate the quality of a RAG response.

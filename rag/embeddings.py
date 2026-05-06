@@ -8,6 +8,8 @@ The function is instantiated once and cached so it is not reloaded on
 every call (lazy singleton pattern).
 """
 
+from typing import List
+
 import chromadb.utils.embedding_functions as ef
 
 _embedding_fn = None
@@ -26,7 +28,7 @@ def get_embedding_function():
     return _embedding_fn
 
 
-def embed_texts(texts: list[str]) -> list[list[float]]:
+def embed_texts(texts: List[str]) -> List[List[float]]:
     """
     Embed a list of strings and return a list of float vectors.
 
