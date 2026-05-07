@@ -211,12 +211,11 @@ def _show_login() -> None:
         footer {visibility: hidden;}
         header[data-testid="stHeader"] {visibility: hidden;}
         section[data-testid="stSidebar"] { display: none !important; }
-        /* ── Page background — indigo gradient shows through form area ── */
-        .stApp { background: linear-gradient(160deg,#1e1b4b 0%,#312e81 30%,#4f46e5 65%,#5b21b6 100%) !important; }
+        /* ── Page background — white for login/form area ── */
+        .stApp { background: #ffffff !important; }
         section.main { background: transparent !important; }
         section.main .block-container { padding: 0 !important; max-width: 100% !important; background: transparent !important; }
         /* ── Make ALL Streamlit intermediate containers transparent ── */
-        /* so the .stApp indigo gradient shows through everywhere     */
         [data-testid="stMain"],
         [data-testid="stMainBlockContainer"],
         [data-testid="stAppViewBlockContainer"],
@@ -226,20 +225,18 @@ def _show_login() -> None:
         [data-testid="stColumn"],
         [data-testid="column"],
         .stColumn, .element-container { background: transparent !important; }
-        /* ── Form card — frosted-glass panel on indigo ── */
+        /* ── Form card — clean white card on white bg ── */
         [data-testid="stForm"] {
-            background: rgba(255,255,255,0.1) !important;
-            backdrop-filter: blur(16px) !important;
-            -webkit-backdrop-filter: blur(16px) !important;
+            background: white !important;
+            border: 1px solid #e5e7eb !important;
             border-radius: 14px !important;
             padding: 1.5rem 1.5rem 0.75rem !important;
-            box-shadow: 0 8px 40px rgba(0,0,0,0.3) !important;
-            border: 1px solid rgba(255,255,255,0.18) !important;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.07) !important;
         }
         [data-testid="stForm"] label,
         [data-testid="stForm"] label p,
         [data-testid="stForm"] [data-testid="stWidgetLabel"] p {
-            color: white !important; font-weight: 500 !important;
+            color: #374151 !important; font-weight: 500 !important;
         }
         /* ── Scroll entrance animations (Chrome 115+) ── */
         @keyframes fadeInUp {
@@ -258,25 +255,25 @@ def _show_login() -> None:
             animation: fadeInUp 0.9s ease both;
             animation-timeline: view(); animation-range: entry 0% entry 20%;
         }
-        /* ── Form inputs — glass on indigo ── */
+        /* ── Form inputs — clean on white bg ── */
         [data-testid="stForm"] input {
-            background: rgba(255,255,255,0.12) !important;
-            border: 1px solid rgba(255,255,255,0.25) !important;
-            color: white !important;
+            background: #f9fafb !important;
+            border: 1px solid #e5e7eb !important;
+            color: #111827 !important;
             border-radius: 8px !important;
             font-size: 0.95rem !important;
         }
         [data-testid="stForm"] input:focus {
-            border-color: rgba(255,255,255,0.6) !important;
-            box-shadow: 0 0 0 3px rgba(255,255,255,0.12) !important;
+            border-color: #4f46e5 !important;
+            box-shadow: 0 0 0 3px rgba(79,70,229,0.12) !important;
         }
         [data-testid="stForm"] input::placeholder {
-            color: rgba(255,255,255,0.5) !important; opacity: 1 !important;
+            color: #9ca3af !important; opacity: 1 !important;
         }
-        /* ── Form submit button — solid white on dark bg ── */
+        /* ── Form submit button — solid indigo ── */
         [data-testid="stForm"] .stButton > button {
-            background: rgba(255,255,255,0.92) !important;
-            color: #1e1b4b !important;
+            background: #4f46e5 !important;
+            color: white !important;
             font-weight: 700 !important;
             font-size: 1rem !important;
             padding: 0.7rem 1rem !important;
@@ -284,65 +281,65 @@ def _show_login() -> None:
             border: none !important;
         }
         [data-testid="stForm"] .stButton > button:hover {
-            background: white !important; color: #312e81 !important;
+            background: #4338ca !important;
         }
         /* ── Column-area buttons (Try demo, Create account) ── */
         [data-testid="column"] .stButton > button,
         [data-testid="stColumn"] .stButton > button {
-            background: rgba(255,255,255,0.15) !important;
-            border: 1px solid rgba(255,255,255,0.3) !important;
-            color: white !important;
-            font-weight: 600 !important;
+            background: white !important;
+            border: 1px solid #e5e7eb !important;
+            color: #374151 !important;
+            font-weight: 500 !important;
         }
         [data-testid="column"] .stButton > button:hover,
         [data-testid="stColumn"] .stButton > button:hover {
-            background: rgba(255,255,255,0.25) !important;
+            background: #f9fafb !important; border-color: #d1d5db !important;
         }
-        /* ── Forgot password expander — glass ── */
+        /* ── Forgot password expander — light ── */
         [data-testid="stExpander"] {
-            background: rgba(255,255,255,0.08) !important;
-            border: 1px solid rgba(255,255,255,0.18) !important;
+            background: white !important;
+            border: 1px solid #e5e7eb !important;
             border-radius: 10px !important;
         }
         [data-testid="stExpander"] summary p,
         [data-testid="stExpander"] summary span {
-            color: rgba(255,255,255,0.9) !important;
+            color: #374151 !important;
             font-weight: 600 !important; font-size: 0.875rem !important;
         }
-        [data-testid="stExpander"] label { color: rgba(255,255,255,0.85) !important; }
+        [data-testid="stExpander"] label { color: #374151 !important; }
         [data-testid="stExpander"] input {
-            border-color: rgba(255,255,255,0.2) !important;
-            background: rgba(255,255,255,0.1) !important;
-            color: white !important;
+            border-color: #e5e7eb !important;
+            background: #f9fafb !important;
+            color: #111827 !important;
         }
         [data-testid="stExpander"] input::placeholder {
-            color: rgba(255,255,255,0.45) !important; opacity:1 !important;
+            color: #9ca3af !important; opacity:1 !important;
         }
         [data-testid="stExpander"] input:focus {
-            border-color: rgba(255,255,255,0.5) !important;
-            box-shadow: 0 0 0 3px rgba(255,255,255,0.1) !important;
+            border-color: #4f46e5 !important;
+            box-shadow: 0 0 0 3px rgba(79,70,229,0.12) !important;
         }
         [data-testid="stExpander"] .stButton > button {
-            background: rgba(255,255,255,0.15) !important;
+            background: #4f46e5 !important;
             color: white !important;
-            border: 1px solid rgba(255,255,255,0.25) !important;
+            border: none !important;
             font-weight: 600 !important;
         }
         [data-testid="stExpander"] .stButton > button:hover {
-            background: rgba(255,255,255,0.25) !important;
+            background: #4338ca !important;
         }
-        /* ── All text in login column area — white on dark bg ── */
+        /* ── All text in login column area — dark on white bg ── */
         [data-testid="column"] label,
         [data-testid="stColumn"] label,
         [data-testid="column"] [data-testid="stMarkdownContainer"] p,
         [data-testid="stTextInput"] label,
         [data-testid="stTextInput"] label p,
         .stTextInput label, .stTextInput label p {
-            color: white !important;
+            color: #374151 !important;
         }
-        [data-testid="column"] input, .stTextInput input { color: white !important; }
+        [data-testid="column"] input, .stTextInput input { color: #111827 !important; }
         [data-testid="column"] input::placeholder, .stTextInput input::placeholder {
-            color: rgba(255,255,255,0.5) !important; opacity:1 !important;
+            color: #9ca3af !important; opacity:1 !important;
         }
         </style>
     """), unsafe_allow_html=True)
@@ -664,10 +661,10 @@ def _show_login() -> None:
 
     # ── ARCHITECTURE / HOW IT WORKS ────────────────────────────────────
     st.markdown(_h("""
-        <div id="pipeline-section" style="padding:4rem 3rem;background:#0f172a;">
+        <div id="pipeline-section" style="padding:4rem 3rem;background:#0d3b2e;">
         <div style="max-width:960px;margin:0 auto;">
         <div style="text-align:center;margin-bottom:3rem;">
-        <div style="font-size:1rem;font-weight:900;color:#818cf8;text-transform:uppercase;
+        <div style="font-size:1rem;font-weight:900;color:#4ade80;text-transform:uppercase;
                     letter-spacing:0.14em;margin-bottom:1.1rem;">HOW IT WORKS</div>
         <div style="font-size:2.75rem;font-weight:900;color:white;letter-spacing:-0.03em;line-height:1.2;">
         The TrustLLM Pipeline
@@ -675,83 +672,85 @@ def _show_login() -> None:
         </div>
 
         <div style="margin-bottom:2rem;">
-        <div style="font-size:0.65rem;font-weight:600;color:#475569;letter-spacing:0.08em;
+        <div style="font-size:0.65rem;font-weight:600;color:rgba(255,255,255,0.45);letter-spacing:0.08em;
                     text-transform:uppercase;margin-bottom:1rem;">Evaluation Pipeline</div>
         <div style="display:flex;align-items:center;flex-wrap:wrap;gap:0.25rem;justify-content:center;">
-        <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;
+        <div style="background:#1a4a35;border:1px solid #2d6a4f;border-radius:10px;
                     padding:0.75rem 1rem;text-align:center;min-width:106px;">
         <div style="font-size:1.1rem;margin-bottom:0.3rem;">📂</div>
-        <div style="font-size:0.7rem;font-weight:700;color:#e2e8f0;">Datasets</div>
-        <div style="font-size:0.55rem;color:#64748b;margin-top:0.1rem;">Prompts &amp; answers</div>
+        <div style="font-size:0.7rem;font-weight:700;color:#d1fae5;">Datasets</div>
+        <div style="font-size:0.55rem;color:#6ee7b7;margin-top:0.1rem;">Prompts &amp; answers</div>
         </div>
-        <div style="color:#475569;font-size:1.1rem;padding:0 0.4rem;">→</div>
-        <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;
+        <div style="color:#4ade80;font-size:1.1rem;padding:0 0.4rem;">→</div>
+        <div style="background:#1a4a35;border:1px solid #2d6a4f;border-radius:10px;
                     padding:0.75rem 1rem;text-align:center;min-width:106px;">
         <div style="font-size:1.1rem;margin-bottom:0.3rem;">🤖</div>
-        <div style="font-size:0.7rem;font-weight:700;color:#e2e8f0;">LLM Runner</div>
-        <div style="font-size:0.55rem;color:#64748b;margin-top:0.1rem;">GPT, Claude, Mistral</div>
+        <div style="font-size:0.7rem;font-weight:700;color:#d1fae5;">LLM Runner</div>
+        <div style="font-size:0.55rem;color:#6ee7b7;margin-top:0.1rem;">GPT, Claude, Mistral</div>
         </div>
-        <div style="color:#475569;font-size:1.1rem;padding:0 0.4rem;">→</div>
-        <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;
+        <div style="color:#4ade80;font-size:1.1rem;padding:0 0.4rem;">→</div>
+        <div style="background:#1a4a35;border:1px solid #2d6a4f;border-radius:10px;
                     padding:0.75rem 1rem;text-align:center;min-width:106px;">
         <div style="font-size:1.1rem;margin-bottom:0.3rem;">⚖️</div>
-        <div style="font-size:0.7rem;font-weight:700;color:#e2e8f0;">Evaluator</div>
-        <div style="font-size:0.55rem;color:#64748b;margin-top:0.1rem;">Score responses</div>
+        <div style="font-size:0.7rem;font-weight:700;color:#d1fae5;">Evaluator</div>
+        <div style="font-size:0.55rem;color:#6ee7b7;margin-top:0.1rem;">Score responses</div>
         </div>
-        <div style="color:#475569;font-size:1.1rem;padding:0 0.4rem;">→</div>
-        <div style="background:#312e81;border:1px solid #4338ca;border-radius:10px;
-                    padding:0.75rem 1rem;text-align:center;min-width:106px;">
+        <div style="color:#4ade80;font-size:1.1rem;padding:0 0.4rem;">→</div>
+        <div style="background:#166534;border:1px solid #4ade80;border-radius:10px;
+                    padding:0.75rem 1rem;text-align:center;min-width:106px;
+                    box-shadow:0 0 16px rgba(74,222,128,0.25);">
         <div style="font-size:1.1rem;margin-bottom:0.3rem;">🛡</div>
-        <div style="font-size:0.7rem;font-weight:700;color:#a5b4fc;">Trust Score</div>
-        <div style="font-size:0.55rem;color:#818cf8;margin-top:0.1rem;">Composite metric</div>
+        <div style="font-size:0.7rem;font-weight:700;color:#4ade80;">Trust Score</div>
+        <div style="font-size:0.55rem;color:#86efac;margin-top:0.1rem;">Composite metric</div>
         </div>
-        <div style="color:#475569;font-size:1.1rem;padding:0 0.4rem;">→</div>
-        <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;
+        <div style="color:#4ade80;font-size:1.1rem;padding:0 0.4rem;">→</div>
+        <div style="background:#1a4a35;border:1px solid #2d6a4f;border-radius:10px;
                     padding:0.75rem 1rem;text-align:center;min-width:106px;">
         <div style="font-size:1.1rem;margin-bottom:0.3rem;">📊</div>
-        <div style="font-size:0.7rem;font-weight:700;color:#e2e8f0;">Dashboard</div>
-        <div style="font-size:0.55rem;color:#64748b;margin-top:0.1rem;">Visualize &amp; act</div>
+        <div style="font-size:0.7rem;font-weight:700;color:#d1fae5;">Dashboard</div>
+        <div style="font-size:0.55rem;color:#6ee7b7;margin-top:0.1rem;">Visualize &amp; act</div>
         </div>
         </div>
         </div>
 
         <div>
-        <div style="font-size:0.65rem;font-weight:600;color:#475569;letter-spacing:0.08em;
+        <div style="font-size:0.65rem;font-weight:600;color:rgba(255,255,255,0.45);letter-spacing:0.08em;
                     text-transform:uppercase;margin-bottom:1rem;">RAG / Document Pipeline</div>
         <div style="display:flex;align-items:center;flex-wrap:wrap;gap:0.25rem;justify-content:center;">
-        <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;
+        <div style="background:#1a4a35;border:1px solid #2d6a4f;border-radius:10px;
                     padding:0.75rem 1rem;text-align:center;min-width:106px;">
         <div style="font-size:1.1rem;margin-bottom:0.3rem;">📄</div>
-        <div style="font-size:0.7rem;font-weight:700;color:#e2e8f0;">PDF / Docs</div>
-        <div style="font-size:0.55rem;color:#64748b;margin-top:0.1rem;">Source material</div>
+        <div style="font-size:0.7rem;font-weight:700;color:#d1fae5;">PDF / Docs</div>
+        <div style="font-size:0.55rem;color:#6ee7b7;margin-top:0.1rem;">Source material</div>
         </div>
-        <div style="color:#475569;font-size:1.1rem;padding:0 0.4rem;">→</div>
-        <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;
+        <div style="color:#4ade80;font-size:1.1rem;padding:0 0.4rem;">→</div>
+        <div style="background:#1a4a35;border:1px solid #2d6a4f;border-radius:10px;
                     padding:0.75rem 1rem;text-align:center;min-width:106px;">
         <div style="font-size:1.1rem;margin-bottom:0.3rem;">✂️</div>
-        <div style="font-size:0.7rem;font-weight:700;color:#e2e8f0;">RAG Ingestion</div>
-        <div style="font-size:0.55rem;color:#64748b;margin-top:0.1rem;">Chunk &amp; embed</div>
+        <div style="font-size:0.7rem;font-weight:700;color:#d1fae5;">RAG Ingestion</div>
+        <div style="font-size:0.55rem;color:#6ee7b7;margin-top:0.1rem;">Chunk &amp; embed</div>
         </div>
-        <div style="color:#475569;font-size:1.1rem;padding:0 0.4rem;">→</div>
-        <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;
+        <div style="color:#4ade80;font-size:1.1rem;padding:0 0.4rem;">→</div>
+        <div style="background:#1a4a35;border:1px solid #2d6a4f;border-radius:10px;
                     padding:0.75rem 1rem;text-align:center;min-width:106px;">
         <div style="font-size:1.1rem;margin-bottom:0.3rem;">🗄️</div>
-        <div style="font-size:0.7rem;font-weight:700;color:#e2e8f0;">ChromaDB</div>
-        <div style="font-size:0.55rem;color:#64748b;margin-top:0.1rem;">Vector store</div>
+        <div style="font-size:0.7rem;font-weight:700;color:#d1fae5;">ChromaDB</div>
+        <div style="font-size:0.55rem;color:#6ee7b7;margin-top:0.1rem;">Vector store</div>
         </div>
-        <div style="color:#475569;font-size:1.1rem;padding:0 0.4rem;">→</div>
-        <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;
+        <div style="color:#4ade80;font-size:1.1rem;padding:0 0.4rem;">→</div>
+        <div style="background:#1a4a35;border:1px solid #2d6a4f;border-radius:10px;
                     padding:0.75rem 1rem;text-align:center;min-width:106px;">
         <div style="font-size:1.1rem;margin-bottom:0.3rem;">🔍</div>
-        <div style="font-size:0.7rem;font-weight:700;color:#e2e8f0;">Retriever</div>
-        <div style="font-size:0.55rem;color:#64748b;margin-top:0.1rem;">Semantic search</div>
+        <div style="font-size:0.7rem;font-weight:700;color:#d1fae5;">Retriever</div>
+        <div style="font-size:0.55rem;color:#6ee7b7;margin-top:0.1rem;">Semantic search</div>
         </div>
-        <div style="color:#475569;font-size:1.1rem;padding:0 0.4rem;">→</div>
-        <div style="background:#312e81;border:1px solid #4338ca;border-radius:10px;
-                    padding:0.75rem 1rem;text-align:center;min-width:106px;">
+        <div style="color:#4ade80;font-size:1.1rem;padding:0 0.4rem;">→</div>
+        <div style="background:#166534;border:1px solid #4ade80;border-radius:10px;
+                    padding:0.75rem 1rem;text-align:center;min-width:106px;
+                    box-shadow:0 0 16px rgba(74,222,128,0.25);">
         <div style="font-size:1.1rem;margin-bottom:0.3rem;">🧪</div>
-        <div style="font-size:0.7rem;font-weight:700;color:#a5b4fc;">RAG Eval</div>
-        <div style="font-size:0.55rem;color:#818cf8;margin-top:0.1rem;">Fidelity score</div>
+        <div style="font-size:0.7rem;font-weight:700;color:#4ade80;">RAG Eval</div>
+        <div style="font-size:0.55rem;color:#86efac;margin-top:0.1rem;">Fidelity score</div>
         </div>
         </div>
         </div>
@@ -787,17 +786,16 @@ def _show_login() -> None:
     # ── SIGN-IN SECTION HEADER ────────────────────────────────────────
     st.markdown(_h("""
         <div id="signin-section"
-             style="padding:5rem 2rem 3rem;
-                    background:linear-gradient(135deg,#312e81 0%,#4f46e5 55%,#7c3aed 100%);">
+             style="padding:5rem 2rem 3rem;background:#ffffff;
+                    border-top:1px solid #f1f5f9;">
         <div style="max-width:440px;margin:0 auto;text-align:center;">
-        <div style="background:rgba(255,255,255,0.15);width:60px;height:60px;border-radius:16px;
+        <div style="background:#4f46e5;width:60px;height:60px;border-radius:16px;
                     display:inline-flex;align-items:center;justify-content:center;
                     font-size:1.75rem;color:white;margin-bottom:1.25rem;
-                    border:1px solid rgba(255,255,255,0.25);
-                    box-shadow:0 8px 24px rgba(0,0,0,0.2);">🛡</div>
-        <div style="font-size:2.5rem;font-weight:900;color:white;letter-spacing:-0.04em;
+                    box-shadow:0 8px 24px rgba(79,70,229,0.3);">🛡</div>
+        <div style="font-size:2.5rem;font-weight:900;color:#111827;letter-spacing:-0.04em;
                     margin-bottom:0.5rem;line-height:1.1;">Welcome back</div>
-        <div style="font-size:1.1rem;color:#c7d2fe;font-weight:400;">Sign in to your TrustLLM account</div>
+        <div style="font-size:1.1rem;color:#6b7280;font-weight:400;">Sign in to your TrustLLM account</div>
         </div>
         </div>
     """), unsafe_allow_html=True)
@@ -850,9 +848,9 @@ def _show_login() -> None:
 
         st.markdown(_h("""
             <div style="display:flex;align-items:center;gap:0.75rem;margin:0 0 1rem 0;">
-            <div style="flex:1;border-top:1px solid rgba(255,255,255,0.3);"></div>
-            <span style="color:rgba(255,255,255,0.75);font-size:0.8rem;font-weight:500;white-space:nowrap;">or continue with email</span>
-            <div style="flex:1;border-top:1px solid rgba(255,255,255,0.3);"></div>
+            <div style="flex:1;border-top:1px solid #e5e7eb;"></div>
+            <span style="color:#9ca3af;font-size:0.8rem;font-weight:500;white-space:nowrap;">or continue with email</span>
+            <div style="flex:1;border-top:1px solid #e5e7eb;"></div>
             </div>
         """), unsafe_allow_html=True)
 
@@ -949,9 +947,9 @@ def _show_login() -> None:
 
         st.markdown(_h("""
             <div style="text-align:center;padding:1rem 0 3rem;">
-            <span style="color:rgba(255,255,255,0.6);font-size:0.8rem;">
-            Demo — Username: <strong style="color:rgba(255,255,255,0.9);">TestUser</strong>
-            &nbsp;·&nbsp; Password: <strong style="color:rgba(255,255,255,0.9);">User123</strong>
+            <span style="color:#9ca3af;font-size:0.8rem;">
+            Demo — Username: <strong style="color:#374151;">TestUser</strong>
+            &nbsp;·&nbsp; Password: <strong style="color:#374151;">User123</strong>
             </span>
             </div>
         """), unsafe_allow_html=True)
