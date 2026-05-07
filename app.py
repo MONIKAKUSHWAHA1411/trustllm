@@ -296,6 +296,27 @@ def _show_login() -> None:
         [data-testid="stExpander"] .stButton > button:hover {
             background: #4338ca !important;
         }
+        /* ── Login column: force all labels + text black on white bg ── */
+        [data-testid="column"] label,
+        [data-testid="column"] [data-testid="stMarkdownContainer"] p,
+        [data-testid="column"] span.st-emotion-cache-1gulkj5,
+        [data-testid="stTextInput"] label,
+        [data-testid="stTextInput"] label p,
+        .stTextInput label, .stTextInput label p {
+            color: #111827 !important;
+        }
+        /* ── Placeholder text — dark gray so it's clearly readable ── */
+        [data-testid="column"] input::placeholder,
+        [data-testid="stForm"] input::placeholder,
+        .stTextInput input::placeholder {
+            color: #6b7280 !important;
+            opacity: 1 !important;
+        }
+        /* ── Input text (typed chars) always black ── */
+        [data-testid="column"] input,
+        .stTextInput input {
+            color: #111827 !important;
+        }
         </style>
     """), unsafe_allow_html=True)
 
@@ -820,9 +841,9 @@ def _show_login() -> None:
 
         st.markdown(_h("""
             <div style="display:flex;align-items:center;gap:0.75rem;margin:0 0 1rem 0;">
-            <div style="flex:1;border-top:1px solid rgba(255,255,255,0.25);"></div>
-            <span style="color:rgba(255,255,255,0.65);font-size:0.8rem;white-space:nowrap;">or continue with email</span>
-            <div style="flex:1;border-top:1px solid rgba(255,255,255,0.25);"></div>
+            <div style="flex:1;border-top:1px solid #d1d5db;"></div>
+            <span style="color:#374151;font-size:0.8rem;font-weight:500;white-space:nowrap;">or continue with email</span>
+            <div style="flex:1;border-top:1px solid #d1d5db;"></div>
             </div>
         """), unsafe_allow_html=True)
 
