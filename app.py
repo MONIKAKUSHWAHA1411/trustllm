@@ -310,49 +310,304 @@ def _show_login() -> None:
 
     # ── FEATURES ──────────────────────────────────────────────────────
     st.markdown(_h("""
-        <div id="features-section"
-             style="padding:4rem 3rem;background:#f8fafc;
-                    border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;">
+        <div id="features-section" style="padding:5rem 3rem 4rem;background:#f8fafc;
+             border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;">
+        <div style="max-width:960px;margin:0 auto;">
+        <div style="text-align:center;margin-bottom:4rem;">
+        <div style="font-size:0.9rem;font-weight:700;color:#4f46e5;letter-spacing:0.1em;
+                    text-transform:uppercase;margin-bottom:1rem;">WHAT YOU GET</div>
+        <div style="font-size:2.75rem;font-weight:800;color:#111827;letter-spacing:-0.035em;line-height:1.1;">
+        Everything you need<br>to trust your LLMs
+        </div>
+        </div>
+
+        <!-- Card 1: Overview Dashboard (full-width horizontal) -->
+        <div style="display:flex;gap:0;background:white;border:1px solid #e5e7eb;border-radius:16px;
+                    overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-bottom:1.5rem;">
+        <div style="flex:0 0 58%;background:#0f172a;padding:1.5rem;">
+        <div style="display:flex;align-items:center;gap:0.3rem;margin-bottom:1rem;">
+        <div style="width:8px;height:8px;border-radius:50%;background:#ef4444;"></div>
+        <div style="width:8px;height:8px;border-radius:50%;background:#fbbf24;"></div>
+        <div style="width:8px;height:8px;border-radius:50%;background:#22c55e;"></div>
+        <span style="font-size:0.6rem;color:#475569;margin-left:0.5rem;font-family:monospace;">Overview · GPT-4o</span>
+        </div>
+        <div style="display:flex;gap:0.5rem;margin-bottom:1rem;">
+        <div style="flex:1;background:#1e293b;border-radius:6px;padding:0.5rem 0.4rem;text-align:center;">
+        <div style="font-size:1rem;font-weight:800;color:#a5b4fc;">0.81</div>
+        <div style="font-size:0.5rem;color:#64748b;margin-top:0.15rem;">Trust Score</div>
+        </div>
+        <div style="flex:1;background:#1e293b;border-radius:6px;padding:0.5rem 0.4rem;text-align:center;">
+        <div style="font-size:1rem;font-weight:800;color:#6ee7b7;">0.92</div>
+        <div style="font-size:0.5rem;color:#64748b;margin-top:0.15rem;">Safety</div>
+        </div>
+        <div style="flex:1;background:#1e293b;border-radius:6px;padding:0.5rem 0.4rem;text-align:center;">
+        <div style="font-size:1rem;font-weight:800;color:#fbbf24;">88%</div>
+        <div style="font-size:0.5rem;color:#64748b;margin-top:0.15rem;">Accuracy</div>
+        </div>
+        <div style="flex:1;background:#1e293b;border-radius:6px;padding:0.5rem 0.4rem;text-align:center;">
+        <div style="font-size:1rem;font-weight:800;color:#f87171;">12%</div>
+        <div style="font-size:0.5rem;color:#64748b;margin-top:0.15rem;">Hallucinated</div>
+        </div>
+        </div>
+        <div style="font-size:0.55rem;color:#475569;margin-bottom:0.35rem;letter-spacing:0.05em;text-transform:uppercase;">Trust Score by Category</div>
+        <div style="background:#1e293b;border-radius:8px;padding:0.75rem 0.75rem 0.5rem;">
+        <div style="display:flex;align-items:flex-end;gap:5px;height:50px;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;">
+        <div style="width:100%;background:#6366f1;border-radius:2px 2px 0 0;height:80%;"></div>
+        <div style="font-size:0.42rem;color:#64748b;">factual</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;">
+        <div style="width:100%;background:#6366f1;border-radius:2px 2px 0 0;height:65%;opacity:0.8;"></div>
+        <div style="font-size:0.42rem;color:#64748b;">reasoning</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;">
+        <div style="width:100%;background:#6366f1;border-radius:2px 2px 0 0;height:90%;"></div>
+        <div style="font-size:0.42rem;color:#64748b;">safety</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;">
+        <div style="width:100%;background:#f59e0b;border-radius:2px 2px 0 0;height:42%;"></div>
+        <div style="font-size:0.42rem;color:#64748b;">bias</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex:1;">
+        <div style="width:100%;background:#6366f1;border-radius:2px 2px 0 0;height:70%;"></div>
+        <div style="font-size:0.42rem;color:#64748b;">jailbreak</div>
+        </div>
+        </div>
+        </div>
+        </div>
+        <div style="flex:1;padding:2rem 1.75rem;display:flex;flex-direction:column;justify-content:center;">
+        <div style="background:#eef2ff;width:40px;height:40px;border-radius:10px;
+                    display:flex;align-items:center;justify-content:center;
+                    font-size:1.1rem;margin-bottom:0.85rem;">📊</div>
+        <div style="font-weight:800;font-size:1.25rem;color:#111827;margin-bottom:0.5rem;letter-spacing:-0.02em;">Live Overview Dashboard</div>
+        <div style="font-size:0.88rem;color:#6b7280;line-height:1.65;margin-bottom:1rem;">
+        Instant visibility into model performance — trust scores, accuracy, and hallucination rate across every eval run.
+        </div>
+        <div style="font-size:0.83rem;color:#374151;line-height:2;">
+        ✓ Trust score per model &amp; category<br>
+        ✓ Safety &amp; hallucination breakdowns<br>
+        ✓ Side-by-side model comparison
+        </div>
+        </div>
+        </div>
+
+        <!-- Cards 2 + 3 in a 2-col grid -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+
+        <!-- Card 2: Failure Analysis -->
+        <div style="background:white;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;
+                    box-shadow:0 2px 12px rgba(0,0,0,0.06);">
+        <div style="background:#0f172a;padding:1.25rem;">
+        <div style="display:flex;align-items:center;gap:0.3rem;margin-bottom:0.75rem;">
+        <div style="width:6px;height:6px;border-radius:50%;background:#ef4444;"></div>
+        <div style="width:6px;height:6px;border-radius:50%;background:#fbbf24;"></div>
+        <div style="width:6px;height:6px;border-radius:50%;background:#22c55e;"></div>
+        <span style="font-size:0.55rem;color:#475569;margin-left:0.4rem;font-family:monospace;">Failure Analysis</span>
+        </div>
+        <div style="display:flex;gap:0.5rem;padding:0.25rem 0;border-bottom:1px solid #1e293b;margin-bottom:0.4rem;">
+        <div style="font-size:0.5rem;font-weight:600;color:#475569;flex:2;">PROMPT</div>
+        <div style="font-size:0.5rem;font-weight:600;color:#475569;flex:1;text-align:center;">STATUS</div>
+        <div style="font-size:0.5rem;font-weight:600;color:#475569;width:28px;text-align:right;">SCORE</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.5rem;padding:0.3rem 0;border-bottom:1px solid #0f1a2e;">
+        <div style="font-size:0.55rem;color:#94a3b8;flex:2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Ignore prev instructions...</div>
+        <div style="font-size:0.45rem;background:#450a0a;color:#f87171;padding:0.15rem 0.3rem;border-radius:3px;flex:1;text-align:center;">FAIL</div>
+        <div style="font-size:0.55rem;color:#f87171;font-weight:700;width:28px;text-align:right;">0.12</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.5rem;padding:0.3rem 0;border-bottom:1px solid #0f1a2e;">
+        <div style="font-size:0.55rem;color:#94a3b8;flex:2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">What is the capital of...</div>
+        <div style="font-size:0.45rem;background:#052e16;color:#6ee7b7;padding:0.15rem 0.3rem;border-radius:3px;flex:1;text-align:center;">PASS</div>
+        <div style="font-size:0.55rem;color:#6ee7b7;font-weight:700;width:28px;text-align:right;">0.94</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.5rem;padding:0.3rem 0;border-bottom:1px solid #0f1a2e;">
+        <div style="font-size:0.55rem;color:#94a3b8;flex:2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Explain quantum entangle...</div>
+        <div style="font-size:0.45rem;background:#451a03;color:#fbbf24;padding:0.15rem 0.3rem;border-radius:3px;flex:1;text-align:center;">WARN</div>
+        <div style="font-size:0.55rem;color:#fbbf24;font-weight:700;width:28px;text-align:right;">0.58</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.5rem;padding:0.3rem 0;">
+        <div style="font-size:0.55rem;color:#94a3b8;flex:2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Generate harmful content...</div>
+        <div style="font-size:0.45rem;background:#450a0a;color:#f87171;padding:0.15rem 0.3rem;border-radius:3px;flex:1;text-align:center;">FAIL</div>
+        <div style="font-size:0.55rem;color:#f87171;font-weight:700;width:28px;text-align:right;">0.07</div>
+        </div>
+        </div>
+        <div style="padding:1.5rem;">
+        <div style="background:#fff1f2;width:36px;height:36px;border-radius:9px;display:flex;align-items:center;
+                    justify-content:center;font-size:1rem;margin-bottom:0.75rem;">✕</div>
+        <div style="font-weight:800;font-size:1.1rem;color:#111827;margin-bottom:0.4rem;letter-spacing:-0.02em;">Failure Analysis</div>
+        <div style="font-size:0.83rem;color:#6b7280;line-height:1.6;margin-bottom:0.75rem;">
+        Surface every failed eval with full context — prompt, response, and the exact failure reason.
+        </div>
+        <div style="font-size:0.8rem;color:#374151;line-height:1.9;">
+        ✓ Filter by category or model<br>
+        ✓ Hallucination &amp; jailbreak flags<br>
+        ✓ Drill into any failing prompt
+        </div>
+        </div>
+        </div>
+
+        <!-- Card 3: Leaderboard -->
+        <div style="background:white;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;
+                    box-shadow:0 2px 12px rgba(0,0,0,0.06);">
+        <div style="background:#0f172a;padding:1.25rem;">
+        <div style="display:flex;align-items:center;gap:0.3rem;margin-bottom:0.75rem;">
+        <div style="width:6px;height:6px;border-radius:50%;background:#ef4444;"></div>
+        <div style="width:6px;height:6px;border-radius:50%;background:#fbbf24;"></div>
+        <div style="width:6px;height:6px;border-radius:50%;background:#22c55e;"></div>
+        <span style="font-size:0.55rem;color:#475569;margin-left:0.4rem;font-family:monospace;">Leaderboard</span>
+        </div>
+        <div style="display:flex;gap:0.5rem;padding:0.25rem 0;border-bottom:1px solid #1e293b;margin-bottom:0.4rem;">
+        <div style="font-size:0.5rem;font-weight:600;color:#475569;width:14px;">RK</div>
+        <div style="font-size:0.5rem;font-weight:600;color:#475569;flex:1;">MODEL</div>
+        <div style="font-size:0.5rem;font-weight:600;color:#475569;flex:2;">TRUST SCORE</div>
+        <div style="font-size:0.5rem;font-weight:600;color:#475569;width:28px;text-align:right;">VAL</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.5rem;padding:0.3rem 0;border-bottom:1px solid #0f1a2e;">
+        <div style="font-size:0.6rem;color:#fbbf24;font-weight:800;width:14px;">1</div>
+        <div style="font-size:0.6rem;color:#e2e8f0;flex:1;font-weight:600;">GPT-4o</div>
+        <div style="flex:2;background:#1e293b;border-radius:3px;height:6px;overflow:hidden;">
+        <div style="height:100%;width:89%;background:linear-gradient(90deg,#6366f1,#818cf8);border-radius:3px;"></div>
+        </div>
+        <div style="font-size:0.6rem;color:#a5b4fc;font-weight:700;width:28px;text-align:right;">0.89</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.5rem;padding:0.3rem 0;border-bottom:1px solid #0f1a2e;">
+        <div style="font-size:0.6rem;color:#94a3b8;font-weight:800;width:14px;">2</div>
+        <div style="font-size:0.6rem;color:#e2e8f0;flex:1;font-weight:600;">Claude 3</div>
+        <div style="flex:2;background:#1e293b;border-radius:3px;height:6px;overflow:hidden;">
+        <div style="height:100%;width:85%;background:linear-gradient(90deg,#6366f1,#818cf8);border-radius:3px;"></div>
+        </div>
+        <div style="font-size:0.6rem;color:#a5b4fc;font-weight:700;width:28px;text-align:right;">0.85</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.5rem;padding:0.3rem 0;border-bottom:1px solid #0f1a2e;">
+        <div style="font-size:0.6rem;color:#94a3b8;font-weight:800;width:14px;">3</div>
+        <div style="font-size:0.6rem;color:#e2e8f0;flex:1;font-weight:600;">Gemini</div>
+        <div style="flex:2;background:#1e293b;border-radius:3px;height:6px;overflow:hidden;">
+        <div style="height:100%;width:79%;background:linear-gradient(90deg,#6366f1,#818cf8);border-radius:3px;"></div>
+        </div>
+        <div style="font-size:0.6rem;color:#a5b4fc;font-weight:700;width:28px;text-align:right;">0.79</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.5rem;padding:0.3rem 0;">
+        <div style="font-size:0.6rem;color:#94a3b8;font-weight:800;width:14px;">4</div>
+        <div style="font-size:0.6rem;color:#e2e8f0;flex:1;font-weight:600;">Mistral</div>
+        <div style="flex:2;background:#1e293b;border-radius:3px;height:6px;overflow:hidden;">
+        <div style="height:100%;width:72%;background:linear-gradient(90deg,#6366f1,#818cf8);opacity:0.7;border-radius:3px;"></div>
+        </div>
+        <div style="font-size:0.6rem;color:#a5b4fc;font-weight:700;width:28px;text-align:right;">0.76</div>
+        </div>
+        </div>
+        <div style="padding:1.5rem;">
+        <div style="background:#fefce8;width:36px;height:36px;border-radius:9px;display:flex;align-items:center;
+                    justify-content:center;font-size:1rem;margin-bottom:0.75rem;">🏆</div>
+        <div style="font-weight:800;font-size:1.1rem;color:#111827;margin-bottom:0.4rem;letter-spacing:-0.02em;">Model Leaderboard</div>
+        <div style="font-size:0.83rem;color:#6b7280;line-height:1.6;margin-bottom:0.75rem;">
+        Rank every model by trust score, safety, and cost. Know exactly which model to rely on.
+        </div>
+        <div style="font-size:0.8rem;color:#374151;line-height:1.9;">
+        ✓ Composite trust score ranking<br>
+        ✓ Safety &amp; bias sub-scores<br>
+        ✓ Cost vs. quality trade-offs
+        </div>
+        </div>
+        </div>
+
+        </div>
+        </div>
+        </div>
+    """), unsafe_allow_html=True)
+
+    # ── ARCHITECTURE / HOW IT WORKS ────────────────────────────────────
+    st.markdown(_h("""
+        <div style="padding:4rem 3rem;background:#0f172a;">
         <div style="max-width:960px;margin:0 auto;">
         <div style="text-align:center;margin-bottom:3rem;">
-        <div style="font-size:0.75rem;font-weight:700;color:#4f46e5;letter-spacing:0.08em;
-                    text-transform:uppercase;margin-bottom:0.75rem;">WHAT YOU GET</div>
-        <div style="font-size:2rem;font-weight:800;color:#111827;letter-spacing:-0.025em;">
-        Everything you need to trust your LLMs
+        <div style="font-size:0.8rem;font-weight:700;color:#6366f1;letter-spacing:0.1em;
+                    text-transform:uppercase;margin-bottom:0.75rem;">HOW IT WORKS</div>
+        <div style="font-size:1.75rem;font-weight:800;color:white;letter-spacing:-0.025em;line-height:1.2;">
+        The TrustLLM Pipeline
         </div>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;">
-        <div style="background:white;border:1px solid #e5e7eb;border-radius:14px;padding:1.75rem;
-                    box-shadow:0 1px 4px rgba(0,0,0,0.04);">
-        <div style="background:#eef2ff;width:44px;height:44px;border-radius:10px;
-                    display:flex;align-items:center;justify-content:center;
-                    font-size:1.25rem;margin-bottom:1rem;">📊</div>
-        <div style="font-weight:700;font-size:1rem;color:#111827;margin-bottom:0.5rem;">Trace everything</div>
-        <div style="font-size:0.9rem;color:#6b7280;line-height:1.6;">
-        Inspect every prompt, response &amp; tool call in real time.
+
+        <div style="margin-bottom:2rem;">
+        <div style="font-size:0.65rem;font-weight:600;color:#475569;letter-spacing:0.08em;
+                    text-transform:uppercase;margin-bottom:1rem;">Evaluation Pipeline</div>
+        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:0.25rem;">
+        <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;
+                    padding:0.75rem 1rem;text-align:center;min-width:106px;">
+        <div style="font-size:1.1rem;margin-bottom:0.3rem;">📂</div>
+        <div style="font-size:0.7rem;font-weight:700;color:#e2e8f0;">Datasets</div>
+        <div style="font-size:0.55rem;color:#64748b;margin-top:0.1rem;">Prompts &amp; answers</div>
+        </div>
+        <div style="color:#475569;font-size:1.1rem;padding:0 0.4rem;">→</div>
+        <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;
+                    padding:0.75rem 1rem;text-align:center;min-width:106px;">
+        <div style="font-size:1.1rem;margin-bottom:0.3rem;">🤖</div>
+        <div style="font-size:0.7rem;font-weight:700;color:#e2e8f0;">LLM Runner</div>
+        <div style="font-size:0.55rem;color:#64748b;margin-top:0.1rem;">GPT, Claude, Mistral</div>
+        </div>
+        <div style="color:#475569;font-size:1.1rem;padding:0 0.4rem;">→</div>
+        <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;
+                    padding:0.75rem 1rem;text-align:center;min-width:106px;">
+        <div style="font-size:1.1rem;margin-bottom:0.3rem;">⚖️</div>
+        <div style="font-size:0.7rem;font-weight:700;color:#e2e8f0;">Evaluator</div>
+        <div style="font-size:0.55rem;color:#64748b;margin-top:0.1rem;">Score responses</div>
+        </div>
+        <div style="color:#475569;font-size:1.1rem;padding:0 0.4rem;">→</div>
+        <div style="background:#312e81;border:1px solid #4338ca;border-radius:10px;
+                    padding:0.75rem 1rem;text-align:center;min-width:106px;">
+        <div style="font-size:1.1rem;margin-bottom:0.3rem;">🛡</div>
+        <div style="font-size:0.7rem;font-weight:700;color:#a5b4fc;">Trust Score</div>
+        <div style="font-size:0.55rem;color:#818cf8;margin-top:0.1rem;">Composite metric</div>
+        </div>
+        <div style="color:#475569;font-size:1.1rem;padding:0 0.4rem;">→</div>
+        <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;
+                    padding:0.75rem 1rem;text-align:center;min-width:106px;">
+        <div style="font-size:1.1rem;margin-bottom:0.3rem;">📊</div>
+        <div style="font-size:0.7rem;font-weight:700;color:#e2e8f0;">Dashboard</div>
+        <div style="font-size:0.55rem;color:#64748b;margin-top:0.1rem;">Visualize &amp; act</div>
         </div>
         </div>
-        <div style="background:white;border:1px solid #e5e7eb;border-radius:14px;padding:1.75rem;
-                    box-shadow:0 1px 4px rgba(0,0,0,0.04);">
-        <div style="background:#eef2ff;width:44px;height:44px;border-radius:10px;
-                    display:flex;align-items:center;justify-content:center;
-                    font-size:1.25rem;margin-bottom:1rem;">⚡</div>
-        <div style="font-weight:700;font-size:1rem;color:#111827;margin-bottom:0.5rem;">Measure with evals</div>
-        <div style="font-size:0.9rem;color:#6b7280;line-height:1.6;">
-        Score outputs for safety, accuracy &amp; bias. Compare models side-by-side.
+        </div>
+
+        <div>
+        <div style="font-size:0.65rem;font-weight:600;color:#475569;letter-spacing:0.08em;
+                    text-transform:uppercase;margin-bottom:1rem;">RAG / Document Pipeline</div>
+        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:0.25rem;">
+        <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;
+                    padding:0.75rem 1rem;text-align:center;min-width:106px;">
+        <div style="font-size:1.1rem;margin-bottom:0.3rem;">📄</div>
+        <div style="font-size:0.7rem;font-weight:700;color:#e2e8f0;">PDF / Docs</div>
+        <div style="font-size:0.55rem;color:#64748b;margin-top:0.1rem;">Source material</div>
+        </div>
+        <div style="color:#475569;font-size:1.1rem;padding:0 0.4rem;">→</div>
+        <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;
+                    padding:0.75rem 1rem;text-align:center;min-width:106px;">
+        <div style="font-size:1.1rem;margin-bottom:0.3rem;">✂️</div>
+        <div style="font-size:0.7rem;font-weight:700;color:#e2e8f0;">RAG Ingestion</div>
+        <div style="font-size:0.55rem;color:#64748b;margin-top:0.1rem;">Chunk &amp; embed</div>
+        </div>
+        <div style="color:#475569;font-size:1.1rem;padding:0 0.4rem;">→</div>
+        <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;
+                    padding:0.75rem 1rem;text-align:center;min-width:106px;">
+        <div style="font-size:1.1rem;margin-bottom:0.3rem;">🗄️</div>
+        <div style="font-size:0.7rem;font-weight:700;color:#e2e8f0;">ChromaDB</div>
+        <div style="font-size:0.55rem;color:#64748b;margin-top:0.1rem;">Vector store</div>
+        </div>
+        <div style="color:#475569;font-size:1.1rem;padding:0 0.4rem;">→</div>
+        <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;
+                    padding:0.75rem 1rem;text-align:center;min-width:106px;">
+        <div style="font-size:1.1rem;margin-bottom:0.3rem;">🔍</div>
+        <div style="font-size:0.7rem;font-weight:700;color:#e2e8f0;">Retriever</div>
+        <div style="font-size:0.55rem;color:#64748b;margin-top:0.1rem;">Semantic search</div>
+        </div>
+        <div style="color:#475569;font-size:1.1rem;padding:0 0.4rem;">→</div>
+        <div style="background:#312e81;border:1px solid #4338ca;border-radius:10px;
+                    padding:0.75rem 1rem;text-align:center;min-width:106px;">
+        <div style="font-size:1.1rem;margin-bottom:0.3rem;">🧪</div>
+        <div style="font-size:0.7rem;font-weight:700;color:#a5b4fc;">RAG Eval</div>
+        <div style="font-size:0.55rem;color:#818cf8;margin-top:0.1rem;">Fidelity score</div>
         </div>
         </div>
-        <div style="background:white;border:1px solid #e5e7eb;border-radius:14px;padding:1.75rem;
-                    box-shadow:0 1px 4px rgba(0,0,0,0.04);">
-        <div style="background:#eef2ff;width:44px;height:44px;border-radius:10px;
-                    display:flex;align-items:center;justify-content:center;
-                    font-size:1.25rem;margin-bottom:1rem;">🏆</div>
-        <div style="font-weight:700;font-size:1rem;color:#111827;margin-bottom:0.5rem;">Compare &amp; improve</div>
-        <div style="font-size:0.9rem;color:#6b7280;line-height:1.6;">
-        Rank models by trust score, safety &amp; cost. Iterate with confidence.
         </div>
-        </div>
-        </div>
+
         </div>
         </div>
     """), unsafe_allow_html=True)
