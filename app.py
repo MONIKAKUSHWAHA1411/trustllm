@@ -211,15 +211,36 @@ def _show_login() -> None:
         footer {visibility: hidden;}
         header[data-testid="stHeader"] {visibility: hidden;}
         section[data-testid="stSidebar"] { display: none !important; }
-        .stApp { background: #ffffff !important; }
-        section.main .block-container { padding: 0 !important; max-width: 100% !important; }
+        /* ── Page background — indigo gradient shows through form area ── */
+        .stApp { background: linear-gradient(160deg,#1e1b4b 0%,#312e81 30%,#4f46e5 65%,#5b21b6 100%) !important; }
+        section.main { background: transparent !important; }
+        section.main .block-container { padding: 0 !important; max-width: 100% !important; background: transparent !important; }
+        /* ── Form card — white floating card on dark bg ── */
         [data-testid="stForm"] {
-            background: transparent !important;
+            background: white !important;
+            border-radius: 14px !important;
+            padding: 1.5rem 1.5rem 0.75rem !important;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2) !important;
             border: none !important;
-            box-shadow: none !important;
-            padding: 0 !important;
         }
         [data-testid="stForm"] label { color: #374151 !important; font-weight: 500 !important; }
+        /* ── Scroll entrance animations (Chrome 115+) ── */
+        @keyframes fadeInUp {
+            from { opacity:0; transform:translateY(44px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+        #why-section {
+            animation: fadeInUp 0.8s ease both;
+            animation-timeline: view(); animation-range: entry 0% entry 25%;
+        }
+        #features-section {
+            animation: fadeInUp 0.9s ease both;
+            animation-timeline: view(); animation-range: entry 0% entry 20%;
+        }
+        #pipeline-section {
+            animation: fadeInUp 0.9s ease both;
+            animation-timeline: view(); animation-range: entry 0% entry 20%;
+        }
         [data-testid="stForm"] input {
             background-color: #f9fafb !important;
             border: 1px solid #e5e7eb !important;
@@ -338,6 +359,68 @@ def _show_login() -> None:
            style="background:white;color:#374151;text-decoration:none;border:1px solid #d1d5db;
                   font-size:1rem;font-weight:500;padding:0.8rem 2rem;border-radius:8px;">
         See how it works</a>
+        </div>
+        </div>
+    """), unsafe_allow_html=True)
+
+    # ── WHY TRUSTLLM ──────────────────────────────────────────────────
+    st.markdown(_h("""
+        <div id="why-section" style="padding:5rem 3rem;background:#ffffff;
+             border-top:1px solid #f1f5f9;">
+        <div style="max-width:900px;margin:0 auto;">
+
+        <div style="text-align:center;margin-bottom:4rem;">
+        <div style="display:inline-block;background:#fff1f2;color:#e11d48;padding:0.45rem 1.2rem;
+                    border-radius:8px;font-size:0.85rem;font-weight:800;letter-spacing:0.06em;
+                    text-transform:uppercase;margin-bottom:1.25rem;">WHY TRUSTLLM</div>
+        <div style="font-size:3rem;font-weight:900;color:#111827;letter-spacing:-0.04em;
+                    line-height:1.1;margin-bottom:1.25rem;">
+        AI fails differently than<br>normal software.
+        </div>
+        <div style="font-size:1.2rem;color:#6b7280;line-height:1.75;max-width:640px;margin:0 auto;">
+        Traditional monitoring was built for deterministic code. LLMs are probabilistic — the same
+        prompt can return different answers, and errors are often subtle, contextual, or outright invisible
+        without specialized evaluation. You need a new kind of observability.
+        </div>
+        </div>
+
+        <!-- 3-pillar grid -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;">
+
+        <div style="border:1px solid #e5e7eb;border-radius:16px;padding:2rem;
+                    background:linear-gradient(135deg,#fafbff 0%,#f5f3ff 100%);">
+        <div style="font-size:2rem;margin-bottom:1rem;">📈</div>
+        <div style="font-weight:800;font-size:1.15rem;color:#111827;margin-bottom:0.5rem;
+                    letter-spacing:-0.02em;">Scalable eval runs</div>
+        <div style="font-size:0.95rem;color:#6b7280;line-height:1.65;">
+        Run hundreds of prompts across multiple models in minutes. Catch regressions before they
+        reach your users — not after.
+        </div>
+        </div>
+
+        <div style="border:1px solid #e5e7eb;border-radius:16px;padding:2rem;
+                    background:linear-gradient(135deg,#fafbff 0%,#ecfdf5 100%);">
+        <div style="font-size:2rem;margin-bottom:1rem;">🎯</div>
+        <div style="font-weight:800;font-size:1.15rem;color:#111827;margin-bottom:0.5rem;
+                    letter-spacing:-0.02em;">Live performance monitoring</div>
+        <div style="font-size:0.95rem;color:#6b7280;line-height:1.65;">
+        Track trust scores, accuracy, and safety metrics over time. Know exactly when a model update
+        changes your product's behaviour.
+        </div>
+        </div>
+
+        <div style="border:1px solid #e5e7eb;border-radius:16px;padding:2rem;
+                    background:linear-gradient(135deg,#fafbff 0%,#fffbeb 100%);">
+        <div style="font-size:2rem;margin-bottom:1rem;">🔔</div>
+        <div style="font-weight:800;font-size:1.15rem;color:#111827;margin-bottom:0.5rem;
+                    letter-spacing:-0.02em;">Catch issues early</div>
+        <div style="font-size:0.95rem;color:#6b7280;line-height:1.65;">
+        Hallucination spikes, jailbreak attempts, and bias drift surface automatically —
+        so your team can act before your users even notice.
+        </div>
+        </div>
+
+        </div>
         </div>
         </div>
     """), unsafe_allow_html=True)
@@ -550,7 +633,7 @@ def _show_login() -> None:
 
     # ── ARCHITECTURE / HOW IT WORKS ────────────────────────────────────
     st.markdown(_h("""
-        <div style="padding:4rem 3rem;background:#0f172a;">
+        <div id="pipeline-section" style="padding:4rem 3rem;background:#0f172a;">
         <div style="max-width:960px;margin:0 auto;">
         <div style="text-align:center;margin-bottom:3rem;">
         <div style="display:inline-block;background:#4f46e5;color:white;padding:0.55rem 1.5rem;
@@ -564,7 +647,7 @@ def _show_login() -> None:
         <div style="margin-bottom:2rem;">
         <div style="font-size:0.65rem;font-weight:600;color:#475569;letter-spacing:0.08em;
                     text-transform:uppercase;margin-bottom:1rem;">Evaluation Pipeline</div>
-        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:0.25rem;">
+        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:0.25rem;justify-content:center;">
         <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;
                     padding:0.75rem 1rem;text-align:center;min-width:106px;">
         <div style="font-size:1.1rem;margin-bottom:0.3rem;">📂</div>
@@ -605,7 +688,7 @@ def _show_login() -> None:
         <div>
         <div style="font-size:0.65rem;font-weight:600;color:#475569;letter-spacing:0.08em;
                     text-transform:uppercase;margin-bottom:1rem;">RAG / Document Pipeline</div>
-        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:0.25rem;">
+        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:0.25rem;justify-content:center;">
         <div style="background:#1e293b;border:1px solid #334155;border-radius:10px;
                     padding:0.75rem 1rem;text-align:center;min-width:106px;">
         <div style="font-size:1.1rem;margin-bottom:0.3rem;">📄</div>
@@ -737,9 +820,9 @@ def _show_login() -> None:
 
         st.markdown(_h("""
             <div style="display:flex;align-items:center;gap:0.75rem;margin:0 0 1rem 0;">
-            <div style="flex:1;border-top:1px solid #e5e7eb;"></div>
-            <span style="color:#9ca3af;font-size:0.8rem;white-space:nowrap;">or continue with email</span>
-            <div style="flex:1;border-top:1px solid #e5e7eb;"></div>
+            <div style="flex:1;border-top:1px solid rgba(255,255,255,0.25);"></div>
+            <span style="color:rgba(255,255,255,0.65);font-size:0.8rem;white-space:nowrap;">or continue with email</span>
+            <div style="flex:1;border-top:1px solid rgba(255,255,255,0.25);"></div>
             </div>
         """), unsafe_allow_html=True)
 
@@ -836,9 +919,9 @@ def _show_login() -> None:
 
         st.markdown(_h("""
             <div style="text-align:center;padding:1rem 0 3rem;">
-            <span style="color:#9ca3af;font-size:0.8rem;">
-            Demo — Username: <strong style="color:#374151;">TestUser</strong>
-            &nbsp;·&nbsp; Password: <strong style="color:#374151;">User123</strong>
+            <span style="color:rgba(255,255,255,0.6);font-size:0.8rem;">
+            Demo — Username: <strong style="color:rgba(255,255,255,0.9);">TestUser</strong>
+            &nbsp;·&nbsp; Password: <strong style="color:rgba(255,255,255,0.9);">User123</strong>
             </span>
             </div>
         """), unsafe_allow_html=True)
