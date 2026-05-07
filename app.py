@@ -410,17 +410,17 @@ def _show_login() -> None:
 
     # ── WHY TRUSTLLM ──────────────────────────────────────────────────
     st.markdown(_h("""
-        <div id="why-section" style="padding:5rem 3rem;background:linear-gradient(160deg,#1e1b4b 0%,#312e81 60%,#4338ca 100%);">
+        <div id="why-section" style="padding:5rem 3rem;background:#0d3b2e;">
         <div style="max-width:900px;margin:0 auto;">
 
         <div style="text-align:center;margin-bottom:4rem;">
-        <div style="font-size:1rem;font-weight:900;color:#a5b4fc;text-transform:uppercase;
+        <div style="font-size:1rem;font-weight:900;color:#4ade80;text-transform:uppercase;
                     letter-spacing:0.14em;margin-bottom:1.1rem;">WHY TRUSTLLM</div>
         <div style="font-size:3.25rem;font-weight:900;color:#ffffff;letter-spacing:-0.04em;
                     line-height:1.1;margin-bottom:1.25rem;">
         AI fails differently than<br>normal software.
         </div>
-        <div style="font-size:1.2rem;color:rgba(199,210,254,0.85);line-height:1.75;max-width:640px;margin:0 auto;">
+        <div style="font-size:1.2rem;color:rgba(255,255,255,0.72);line-height:1.75;max-width:640px;margin:0 auto;">
         Traditional monitoring was built for deterministic code. LLMs are probabilistic — the same
         prompt can return different answers, and errors are often subtle, contextual, or outright invisible
         without specialized evaluation. You need a new kind of observability.
@@ -430,34 +430,34 @@ def _show_login() -> None:
         <!-- 3-pillar grid -->
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;">
 
-        <div style="border:1px solid rgba(165,180,252,0.2);border-radius:16px;padding:2rem;
-                    background:rgba(255,255,255,0.07);backdrop-filter:blur(8px);">
+        <div style="border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:2rem;
+                    background:rgba(255,255,255,0.06);backdrop-filter:blur(8px);">
         <div style="font-size:2rem;margin-bottom:1rem;">📈</div>
-        <div style="font-weight:800;font-size:1.15rem;color:#e0e7ff;margin-bottom:0.5rem;
+        <div style="font-weight:800;font-size:1.15rem;color:#ffffff;margin-bottom:0.5rem;
                     letter-spacing:-0.02em;">Scalable eval runs</div>
-        <div style="font-size:0.95rem;color:rgba(199,210,254,0.75);line-height:1.65;">
+        <div style="font-size:0.95rem;color:rgba(255,255,255,0.65);line-height:1.65;">
         Run hundreds of prompts across multiple models in minutes. Catch regressions before they
         reach your users — not after.
         </div>
         </div>
 
-        <div style="border:1px solid rgba(165,180,252,0.2);border-radius:16px;padding:2rem;
-                    background:rgba(255,255,255,0.07);backdrop-filter:blur(8px);">
+        <div style="border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:2rem;
+                    background:rgba(255,255,255,0.06);backdrop-filter:blur(8px);">
         <div style="font-size:2rem;margin-bottom:1rem;">🎯</div>
-        <div style="font-weight:800;font-size:1.15rem;color:#e0e7ff;margin-bottom:0.5rem;
+        <div style="font-weight:800;font-size:1.15rem;color:#ffffff;margin-bottom:0.5rem;
                     letter-spacing:-0.02em;">Live performance monitoring</div>
-        <div style="font-size:0.95rem;color:rgba(199,210,254,0.75);line-height:1.65;">
+        <div style="font-size:0.95rem;color:rgba(255,255,255,0.65);line-height:1.65;">
         Track trust scores, accuracy, and safety metrics over time. Know exactly when a model update
         changes your product's behaviour.
         </div>
         </div>
 
-        <div style="border:1px solid rgba(165,180,252,0.2);border-radius:16px;padding:2rem;
-                    background:rgba(255,255,255,0.07);backdrop-filter:blur(8px);">
+        <div style="border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:2rem;
+                    background:rgba(255,255,255,0.06);backdrop-filter:blur(8px);">
         <div style="font-size:2rem;margin-bottom:1rem;">🔔</div>
-        <div style="font-weight:800;font-size:1.15rem;color:#e0e7ff;margin-bottom:0.5rem;
+        <div style="font-weight:800;font-size:1.15rem;color:#ffffff;margin-bottom:0.5rem;
                     letter-spacing:-0.02em;">Catch issues early</div>
-        <div style="font-size:0.95rem;color:rgba(199,210,254,0.75);line-height:1.65;">
+        <div style="font-size:0.95rem;color:rgba(255,255,255,0.65);line-height:1.65;">
         Hallucination spikes, jailbreak attempts, and bias drift surface automatically —
         so your team can act before your users even notice.
         </div>
@@ -470,24 +470,29 @@ def _show_login() -> None:
 
     # ── FEATURES ──────────────────────────────────────────────────────
     st.markdown(_h("""
-        <div id="features-section" style="padding:5rem 3rem 4rem;background:#f8f9ff;">
+        <div id="features-section" style="
+            padding:5rem 3rem 4rem;
+            background:#ffffff;">
         <div style="max-width:1000px;margin:0 auto;">
         <div style="text-align:center;margin-bottom:4rem;">
-        <div style="font-size:1rem;font-weight:900;color:#4f46e5;text-transform:uppercase;
-                    letter-spacing:0.14em;margin-bottom:1.1rem;">WHAT YOU GET</div>
+        <div style="display:inline-block;font-size:0.8rem;font-weight:800;color:#670D2F;
+                    text-transform:uppercase;letter-spacing:0.18em;margin-bottom:1.1rem;
+                    background:#fdf2f5;border:1px solid rgba(103,13,47,0.18);border-radius:100px;
+                    padding:0.35rem 1.1rem;">WHAT YOU GET</div>
         <div style="font-size:3.25rem;font-weight:900;color:#1e1b4b;letter-spacing:-0.04em;line-height:1.1;">
         Everything you need<br>to trust your LLMs
         </div>
         </div>
 
-        <!-- 3 feature cards — clean, light, no dark panels -->
+        <!-- 3 feature cards — glassmorphism on gradient bg -->
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.75rem;">
 
         <!-- Card 1: Overview Dashboard -->
-        <div style="background:white;border:1px solid #e0e7ff;border-radius:20px;overflow:hidden;
-                    box-shadow:0 6px 28px rgba(79,70,229,0.10);display:flex;flex-direction:column;">
+        <div style="border-radius:22px;overflow:hidden;display:flex;flex-direction:column;
+                    box-shadow:0 8px 32px rgba(81,29,67,0.18),0 2px 6px rgba(81,29,67,0.08);
+                    border:1px solid rgba(81,29,67,0.12);">
         <!-- gradient header -->
-        <div style="background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);padding:2rem 1.75rem 1.5rem;">
+        <div style="background:linear-gradient(135deg,#511D43 0%,#3B1C32 100%);padding:2rem 1.75rem 1.5rem;">
           <div style="font-size:2.4rem;margin-bottom:0.75rem;">📊</div>
           <div style="font-weight:800;font-size:1.3rem;color:white;letter-spacing:-0.02em;line-height:1.2;">
             Overview Dashboard
@@ -534,12 +539,14 @@ def _show_login() -> None:
             </div>
           </div>
         </div>
-        <!-- card body -->
-        <div style="padding:1.5rem;flex:1;">
-          <div style="font-size:0.95rem;color:#4b5563;line-height:1.7;margin-bottom:1rem;">
+        <!-- glass card body -->
+        <div style="padding:1.5rem;flex:1;
+                    background:rgba(255,255,255,0.72);backdrop-filter:blur(14px);
+                    -webkit-backdrop-filter:blur(14px);">
+          <div style="font-size:0.95rem;color:#374151;line-height:1.7;margin-bottom:1rem;">
             Trust scores, accuracy &amp; hallucination rate at a glance for every model.
           </div>
-          <div style="font-size:0.9rem;color:#374151;line-height:2.0;">
+          <div style="font-size:0.88rem;color:#511D43;font-weight:600;line-height:2.1;">
             ✓ Per-model &amp; category scores<br>
             ✓ Hallucination breakdown<br>
             ✓ Side-by-side comparison
@@ -548,10 +555,11 @@ def _show_login() -> None:
         </div>
 
         <!-- Card 2: Failure Analysis -->
-        <div style="background:white;border:1px solid #fce7f3;border-radius:20px;overflow:hidden;
-                    box-shadow:0 6px 28px rgba(236,72,153,0.08);display:flex;flex-direction:column;">
+        <div style="border-radius:22px;overflow:hidden;display:flex;flex-direction:column;
+                    box-shadow:0 8px 32px rgba(103,13,47,0.18),0 2px 6px rgba(103,13,47,0.08);
+                    border:1px solid rgba(103,13,47,0.12);">
         <!-- gradient header -->
-        <div style="background:linear-gradient(135deg,#be185d 0%,#e11d48 100%);padding:2rem 1.75rem 1.5rem;">
+        <div style="background:linear-gradient(135deg,#670D2F 0%,#3A0519 100%);padding:2rem 1.75rem 1.5rem;">
           <div style="font-size:2.4rem;margin-bottom:0.75rem;">🔍</div>
           <div style="font-weight:800;font-size:1.3rem;color:white;letter-spacing:-0.02em;line-height:1.2;">
             Failure Analysis
@@ -580,12 +588,14 @@ def _show_login() -> None:
             </div>
           </div>
         </div>
-        <!-- card body -->
-        <div style="padding:1.5rem;flex:1;">
-          <div style="font-size:0.95rem;color:#4b5563;line-height:1.7;margin-bottom:1rem;">
+        <!-- glass card body -->
+        <div style="padding:1.5rem;flex:1;
+                    background:rgba(255,255,255,0.72);backdrop-filter:blur(14px);
+                    -webkit-backdrop-filter:blur(14px);">
+          <div style="font-size:0.95rem;color:#374151;line-height:1.7;margin-bottom:1rem;">
             Surface every failed eval with the prompt, response &amp; exact failure reason.
           </div>
-          <div style="font-size:0.9rem;color:#374151;line-height:2.0;">
+          <div style="font-size:0.88rem;color:#670D2F;font-weight:600;line-height:2.1;">
             ✓ Filter by category or model<br>
             ✓ Hallucination &amp; jailbreak flags<br>
             ✓ Drill into any failing prompt
@@ -594,10 +604,11 @@ def _show_login() -> None:
         </div>
 
         <!-- Card 3: Model Leaderboard -->
-        <div style="background:white;border:1px solid #fef9c3;border-radius:20px;overflow:hidden;
-                    box-shadow:0 6px 28px rgba(234,179,8,0.10);display:flex;flex-direction:column;">
+        <div style="border-radius:22px;overflow:hidden;display:flex;flex-direction:column;
+                    box-shadow:0 8px 32px rgba(116,10,3,0.18),0 2px 6px rgba(116,10,3,0.08);
+                    border:1px solid rgba(116,10,3,0.12);">
         <!-- gradient header -->
-        <div style="background:linear-gradient(135deg,#b45309 0%,#d97706 100%);padding:2rem 1.75rem 1.5rem;">
+        <div style="background:linear-gradient(135deg,#740A03 0%,#511D43 100%);padding:2rem 1.75rem 1.5rem;">
           <div style="font-size:2.4rem;margin-bottom:0.75rem;">🏆</div>
           <div style="font-weight:800;font-size:1.3rem;color:white;letter-spacing:-0.02em;line-height:1.2;">
             Model Leaderboard
@@ -641,12 +652,14 @@ def _show_login() -> None:
             </div>
           </div>
         </div>
-        <!-- card body -->
-        <div style="padding:1.5rem;flex:1;">
-          <div style="font-size:0.95rem;color:#4b5563;line-height:1.7;margin-bottom:1rem;">
+        <!-- glass card body -->
+        <div style="padding:1.5rem;flex:1;
+                    background:rgba(255,255,255,0.72);backdrop-filter:blur(14px);
+                    -webkit-backdrop-filter:blur(14px);">
+          <div style="font-size:0.95rem;color:#374151;line-height:1.7;margin-bottom:1rem;">
             Rank every model by trust score, safety, and cost in one unified view.
           </div>
-          <div style="font-size:0.9rem;color:#374151;line-height:2.0;">
+          <div style="font-size:0.88rem;color:#740A03;font-weight:600;line-height:2.1;">
             ✓ Composite trust score ranking<br>
             ✓ Safety &amp; bias sub-scores<br>
             ✓ Cost vs. quality trade-offs
@@ -761,23 +774,23 @@ def _show_login() -> None:
 
     # ── STATS STRIP ───────────────────────────────────────────────────
     st.markdown(_h(f"""
-        <div style="background:#111827;padding:3.5rem 3rem;">
+        <div style="background:#0d3b2e;padding:3.5rem 3rem;border-top:1px solid rgba(255,255,255,0.08);">
         <div style="max-width:700px;margin:0 auto;
                     display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;text-align:center;">
         <div>
         <div style="font-size:3.5rem;font-weight:900;color:white;letter-spacing:-0.04em;line-height:1;">
         {stats["prompts"]}</div>
-        <div style="color:#6b7280;font-size:0.9rem;margin-top:0.4rem;">Prompts evaluated</div>
+        <div style="color:rgba(255,255,255,0.6);font-size:0.9rem;margin-top:0.4rem;">Prompts evaluated</div>
         </div>
         <div>
         <div style="font-size:3.5rem;font-weight:900;color:white;letter-spacing:-0.04em;line-height:1;">
         {stats["models"]}</div>
-        <div style="color:#6b7280;font-size:0.9rem;margin-top:0.4rem;">Models tested</div>
+        <div style="color:rgba(255,255,255,0.6);font-size:0.9rem;margin-top:0.4rem;">Models tested</div>
         </div>
         <div>
         <div style="font-size:3.5rem;font-weight:900;color:white;letter-spacing:-0.04em;line-height:1;">
         {stats["avg_trust"]}</div>
-        <div style="color:#6b7280;font-size:0.9rem;margin-top:0.4rem;">Avg trust score</div>
+        <div style="color:rgba(255,255,255,0.6);font-size:0.9rem;margin-top:0.4rem;">Avg trust score</div>
         </div>
         </div>
         </div>
