@@ -214,7 +214,36 @@ def _show_login() -> None:
         /* ── Page background — lavender for login/form area ── */
         .stApp { background: #ede9fe !important; }
         section.main { background: transparent !important; }
-        section.main .block-container { padding: 0 !important; max-width: 100% !important; background: transparent !important; }
+        /* ── Full-width: strip ALL Streamlit wrapper padding/margins ── */
+        section.main .block-container,
+        [data-testid="stMainBlockContainer"],
+        [data-testid="stAppViewBlockContainer"] {
+            padding: 0 !important;
+            max-width: 100% !important;
+            width: 100% !important;
+            background: transparent !important;
+        }
+        [data-testid="stVerticalBlock"],
+        [data-testid="stVerticalBlockBorderWrapper"] {
+            width: 100% !important;
+            max-width: 100% !important;
+            padding: 0 !important;
+            gap: 0 !important;
+        }
+        .element-container,
+        [data-testid="element-container"] {
+            width: 100% !important;
+            max-width: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+        div[data-testid="stMarkdownContainer"],
+        div[data-testid="stMarkdownContainer"] > div {
+            width: 100% !important;
+            max-width: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
         /* ── Make ALL Streamlit intermediate containers transparent ── */
         [data-testid="stMain"],
         [data-testid="stMainBlockContainer"],
@@ -433,9 +462,9 @@ def _show_login() -> None:
         <div style="border:1px solid rgba(165,180,252,0.2);border-radius:16px;padding:2rem;
                     background:rgba(255,255,255,0.07);backdrop-filter:blur(8px);">
         <div style="font-size:2rem;margin-bottom:1rem;">📈</div>
-        <div style="font-weight:800;font-size:1.15rem;color:#e0e7ff;margin-bottom:0.5rem;
+        <div style="font-weight:800;font-size:1.15rem;color:#ffffff;margin-bottom:0.5rem;
                     letter-spacing:-0.02em;">Scalable eval runs</div>
-        <div style="font-size:0.95rem;color:rgba(199,210,254,0.75);line-height:1.65;">
+        <div style="font-size:0.95rem;color:rgba(255,255,255,0.82);line-height:1.65;">
         Run hundreds of prompts across multiple models in minutes. Catch regressions before they
         reach your users — not after.
         </div>
@@ -444,9 +473,9 @@ def _show_login() -> None:
         <div style="border:1px solid rgba(165,180,252,0.2);border-radius:16px;padding:2rem;
                     background:rgba(255,255,255,0.07);backdrop-filter:blur(8px);">
         <div style="font-size:2rem;margin-bottom:1rem;">🎯</div>
-        <div style="font-weight:800;font-size:1.15rem;color:#e0e7ff;margin-bottom:0.5rem;
+        <div style="font-weight:800;font-size:1.15rem;color:#ffffff;margin-bottom:0.5rem;
                     letter-spacing:-0.02em;">Live performance monitoring</div>
-        <div style="font-size:0.95rem;color:rgba(199,210,254,0.75);line-height:1.65;">
+        <div style="font-size:0.95rem;color:rgba(255,255,255,0.82);line-height:1.65;">
         Track trust scores, accuracy, and safety metrics over time. Know exactly when a model update
         changes your product's behaviour.
         </div>
@@ -455,9 +484,9 @@ def _show_login() -> None:
         <div style="border:1px solid rgba(165,180,252,0.2);border-radius:16px;padding:2rem;
                     background:rgba(255,255,255,0.07);backdrop-filter:blur(8px);">
         <div style="font-size:2rem;margin-bottom:1rem;">🔔</div>
-        <div style="font-weight:800;font-size:1.15rem;color:#e0e7ff;margin-bottom:0.5rem;
+        <div style="font-weight:800;font-size:1.15rem;color:#ffffff;margin-bottom:0.5rem;
                     letter-spacing:-0.02em;">Catch issues early</div>
-        <div style="font-size:0.95rem;color:rgba(199,210,254,0.75);line-height:1.65;">
+        <div style="font-size:0.95rem;color:rgba(255,255,255,0.82);line-height:1.65;">
         Hallucination spikes, jailbreak attempts, and bias drift surface automatically —
         so your team can act before your users even notice.
         </div>
