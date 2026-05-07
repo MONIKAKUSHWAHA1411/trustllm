@@ -413,19 +413,17 @@ def _show_login() -> None:
 
     # ── WHY TRUSTLLM ──────────────────────────────────────────────────
     st.markdown(_h("""
-        <div id="why-section" style="padding:5rem 3rem;background:#ffffff;
-             border-top:1px solid #f1f5f9;">
+        <div id="why-section" style="padding:5rem 3rem;background:linear-gradient(160deg,#1e1b4b 0%,#312e81 60%,#4338ca 100%);">
         <div style="max-width:900px;margin:0 auto;">
 
         <div style="text-align:center;margin-bottom:4rem;">
-        <div style="display:inline-block;background:#fff1f2;color:#e11d48;padding:0.45rem 1.2rem;
-                    border-radius:8px;font-size:0.85rem;font-weight:800;letter-spacing:0.06em;
-                    text-transform:uppercase;margin-bottom:1.25rem;">WHY TRUSTLLM</div>
-        <div style="font-size:3rem;font-weight:900;color:#111827;letter-spacing:-0.04em;
+        <div style="font-size:1rem;font-weight:900;color:#a5b4fc;text-transform:uppercase;
+                    letter-spacing:0.14em;margin-bottom:1.1rem;">WHY TRUSTLLM</div>
+        <div style="font-size:3.25rem;font-weight:900;color:#ffffff;letter-spacing:-0.04em;
                     line-height:1.1;margin-bottom:1.25rem;">
         AI fails differently than<br>normal software.
         </div>
-        <div style="font-size:1.2rem;color:#6b7280;line-height:1.75;max-width:640px;margin:0 auto;">
+        <div style="font-size:1.2rem;color:rgba(199,210,254,0.85);line-height:1.75;max-width:640px;margin:0 auto;">
         Traditional monitoring was built for deterministic code. LLMs are probabilistic — the same
         prompt can return different answers, and errors are often subtle, contextual, or outright invisible
         without specialized evaluation. You need a new kind of observability.
@@ -435,34 +433,34 @@ def _show_login() -> None:
         <!-- 3-pillar grid -->
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;">
 
-        <div style="border:1px solid #e5e7eb;border-radius:16px;padding:2rem;
-                    background:linear-gradient(135deg,#fafbff 0%,#f5f3ff 100%);">
+        <div style="border:1px solid rgba(165,180,252,0.2);border-radius:16px;padding:2rem;
+                    background:rgba(255,255,255,0.07);backdrop-filter:blur(8px);">
         <div style="font-size:2rem;margin-bottom:1rem;">📈</div>
-        <div style="font-weight:800;font-size:1.15rem;color:#111827;margin-bottom:0.5rem;
+        <div style="font-weight:800;font-size:1.15rem;color:#e0e7ff;margin-bottom:0.5rem;
                     letter-spacing:-0.02em;">Scalable eval runs</div>
-        <div style="font-size:0.95rem;color:#6b7280;line-height:1.65;">
+        <div style="font-size:0.95rem;color:rgba(199,210,254,0.75);line-height:1.65;">
         Run hundreds of prompts across multiple models in minutes. Catch regressions before they
         reach your users — not after.
         </div>
         </div>
 
-        <div style="border:1px solid #e5e7eb;border-radius:16px;padding:2rem;
-                    background:linear-gradient(135deg,#fafbff 0%,#ecfdf5 100%);">
+        <div style="border:1px solid rgba(165,180,252,0.2);border-radius:16px;padding:2rem;
+                    background:rgba(255,255,255,0.07);backdrop-filter:blur(8px);">
         <div style="font-size:2rem;margin-bottom:1rem;">🎯</div>
-        <div style="font-weight:800;font-size:1.15rem;color:#111827;margin-bottom:0.5rem;
+        <div style="font-weight:800;font-size:1.15rem;color:#e0e7ff;margin-bottom:0.5rem;
                     letter-spacing:-0.02em;">Live performance monitoring</div>
-        <div style="font-size:0.95rem;color:#6b7280;line-height:1.65;">
+        <div style="font-size:0.95rem;color:rgba(199,210,254,0.75);line-height:1.65;">
         Track trust scores, accuracy, and safety metrics over time. Know exactly when a model update
         changes your product's behaviour.
         </div>
         </div>
 
-        <div style="border:1px solid #e5e7eb;border-radius:16px;padding:2rem;
-                    background:linear-gradient(135deg,#fafbff 0%,#fffbeb 100%);">
+        <div style="border:1px solid rgba(165,180,252,0.2);border-radius:16px;padding:2rem;
+                    background:rgba(255,255,255,0.07);backdrop-filter:blur(8px);">
         <div style="font-size:2rem;margin-bottom:1rem;">🔔</div>
-        <div style="font-weight:800;font-size:1.15rem;color:#111827;margin-bottom:0.5rem;
+        <div style="font-weight:800;font-size:1.15rem;color:#e0e7ff;margin-bottom:0.5rem;
                     letter-spacing:-0.02em;">Catch issues early</div>
-        <div style="font-size:0.95rem;color:#6b7280;line-height:1.65;">
+        <div style="font-size:0.95rem;color:rgba(199,210,254,0.75);line-height:1.65;">
         Hallucination spikes, jailbreak attempts, and bias drift surface automatically —
         so your team can act before your users even notice.
         </div>
@@ -475,14 +473,12 @@ def _show_login() -> None:
 
     # ── FEATURES ──────────────────────────────────────────────────────
     st.markdown(_h("""
-        <div id="features-section" style="padding:5rem 3rem 4rem;background:#eef2ff;
-             border-top:1px solid #e5e7eb;border-bottom:1px solid #c7d2fe;">
+        <div id="features-section" style="padding:5rem 3rem 4rem;background:#f8f9ff;">
         <div style="max-width:1000px;margin:0 auto;">
         <div style="text-align:center;margin-bottom:4rem;">
-        <div style="display:inline-block;background:#4f46e5;color:white;padding:0.55rem 1.5rem;
-                    border-radius:8px;font-size:1.1rem;font-weight:800;letter-spacing:0.05em;
-                    text-transform:uppercase;margin-bottom:1.25rem;">WHAT YOU GET</div>
-        <div style="font-size:3.25rem;font-weight:800;color:#1e1b4b;letter-spacing:-0.04em;line-height:1.1;">
+        <div style="font-size:1rem;font-weight:900;color:#4f46e5;text-transform:uppercase;
+                    letter-spacing:0.14em;margin-bottom:1.1rem;">WHAT YOU GET</div>
+        <div style="font-size:3.25rem;font-weight:900;color:#1e1b4b;letter-spacing:-0.04em;line-height:1.1;">
         Everything you need<br>to trust your LLMs
         </div>
         </div>
@@ -671,10 +667,9 @@ def _show_login() -> None:
         <div id="pipeline-section" style="padding:4rem 3rem;background:#0f172a;">
         <div style="max-width:960px;margin:0 auto;">
         <div style="text-align:center;margin-bottom:3rem;">
-        <div style="display:inline-block;background:#4f46e5;color:white;padding:0.55rem 1.5rem;
-                    border-radius:8px;font-size:1.1rem;font-weight:800;letter-spacing:0.05em;
-                    text-transform:uppercase;margin-bottom:1.25rem;">HOW IT WORKS</div>
-        <div style="font-size:2.25rem;font-weight:800;color:white;letter-spacing:-0.03em;line-height:1.2;">
+        <div style="font-size:1rem;font-weight:900;color:#818cf8;text-transform:uppercase;
+                    letter-spacing:0.14em;margin-bottom:1.1rem;">HOW IT WORKS</div>
+        <div style="font-size:2.75rem;font-weight:900;color:white;letter-spacing:-0.03em;line-height:1.2;">
         The TrustLLM Pipeline
         </div>
         </div>
