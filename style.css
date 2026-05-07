@@ -16,51 +16,79 @@ section.main {
     color: #111827;
 }
 
-/* Global text contrast for main content area — BLACK on white backgrounds */
+/* ================================================================
+   GLOBAL TEXT — BLACK on white backgrounds (post-login pages)
+   These rules target every Streamlit element that renders text.
+   ================================================================ */
+
+/* Base: make all text in main section black */
+section.main { color: #111827 !important; }
+
+/* Paragraph / span / list / table text */
 section.main p,
 section.main span,
 section.main li,
 section.main td,
-section.main th,
-section.main label,
-section.main div[data-testid="stMarkdownContainer"] p,
-section.main [data-testid="stMarkdownContainer"] span {
-    color: #111827 !important;
-}
+section.main th { color: #111827 !important; }
 
+/* Headings — st.title / st.header / st.subheader */
 section.main h1,
 section.main h2,
 section.main h3,
 section.main h4,
 section.main h5,
-section.main h6 {
-    color: #111827 !important;
-}
+section.main h6,
+h1, h2, h3, h4, h5, h6 { color: #111827 !important; }
 
-/* All labels (form fields, checkboxes, radios, selects) — always black */
-label, label p, label span {
-    color: #111827 !important;
-}
+/* Streamlit heading wrapper (newer versions) */
+[data-testid="stHeadingWithActionElements"],
+[data-testid="stHeadingWithActionElements"] * { color: #111827 !important; }
 
-/* Input / textarea typed text — always black */
+/* st.write / st.markdown output */
+[data-testid="stMarkdownContainer"],
+[data-testid="stMarkdownContainer"] p,
+[data-testid="stMarkdownContainer"] span,
+[data-testid="stMarkdownContainer"] li,
+[data-testid="stMarkdownContainer"] h1,
+[data-testid="stMarkdownContainer"] h2,
+[data-testid="stMarkdownContainer"] h3 { color: #111827 !important; }
+
+/* Widget labels (selectbox, slider, text_input, etc.) */
+[data-testid="stWidgetLabel"],
+[data-testid="stWidgetLabel"] *,
+[data-testid="stWidgetLabel"] p,
+[data-testid="stWidgetLabel"] label,
+section.main label,
+section.main label p,
+section.main label span { color: #111827 !important; }
+
+/* Selectbox / multiselect value text */
+[data-baseweb="select"] div,
+[data-baseweb="select"] span,
+[data-baseweb="select"] [data-testid="stMarkdownContainer"] p { color: #111827 !important; }
+
+/* Slider min/max/value text */
+[data-testid="stSlider"] p,
+[data-testid="stSlider"] span,
+[data-testid="stSlider"] [role="slider"] { color: #111827 !important; }
+
+/* Input / textarea text */
 input:not([type="range"]),
-textarea,
-select {
-    color: #111827 !important;
-}
+textarea { color: #111827 !important; }
 
-/* Input placeholder — visible medium gray */
-input::placeholder,
-textarea::placeholder {
+/* Input placeholder — readable gray */
+input::placeholder, textarea::placeholder {
     color: #6b7280 !important;
     opacity: 1 !important;
 }
 
-/* Selectbox, multiselect option text */
-[data-baseweb="select"] [data-testid="stMarkdownContainer"] p,
-[data-baseweb="select"] span {
-    color: #111827 !important;
-}
+/* st.caption / small text */
+[data-testid="stCaptionContainer"] p,
+small { color: #6b7280 !important; }
+
+/* st.info / st.success / st.warning / st.error boxes */
+[data-testid="stNotification"] p,
+[data-testid="stAlert"] p { color: #111827 !important; }
 
 /* stWrite / st.write text */
 section.main [data-testid="stMarkdownContainer"] p {

@@ -215,15 +215,32 @@ def _show_login() -> None:
         .stApp { background: linear-gradient(160deg,#1e1b4b 0%,#312e81 30%,#4f46e5 65%,#5b21b6 100%) !important; }
         section.main { background: transparent !important; }
         section.main .block-container { padding: 0 !important; max-width: 100% !important; background: transparent !important; }
-        /* ── Form card — white floating card on dark bg ── */
+        /* ── Make ALL Streamlit intermediate containers transparent ── */
+        /* so the .stApp indigo gradient shows through everywhere     */
+        [data-testid="stMain"],
+        [data-testid="stMainBlockContainer"],
+        [data-testid="stAppViewBlockContainer"],
+        [data-testid="stVerticalBlock"],
+        [data-testid="stVerticalBlockBorderWrapper"],
+        [data-testid="stHorizontalBlock"],
+        [data-testid="stColumn"],
+        [data-testid="column"],
+        .stColumn, .element-container { background: transparent !important; }
+        /* ── Form card — frosted-glass panel on indigo ── */
         [data-testid="stForm"] {
-            background: white !important;
+            background: rgba(255,255,255,0.1) !important;
+            backdrop-filter: blur(16px) !important;
+            -webkit-backdrop-filter: blur(16px) !important;
             border-radius: 14px !important;
             padding: 1.5rem 1.5rem 0.75rem !important;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2) !important;
-            border: none !important;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.3) !important;
+            border: 1px solid rgba(255,255,255,0.18) !important;
         }
-        [data-testid="stForm"] label { color: #374151 !important; font-weight: 500 !important; }
+        [data-testid="stForm"] label,
+        [data-testid="stForm"] label p,
+        [data-testid="stForm"] [data-testid="stWidgetLabel"] p {
+            color: white !important; font-weight: 500 !important;
+        }
         /* ── Scroll entrance animations (Chrome 115+) ── */
         @keyframes fadeInUp {
             from { opacity:0; transform:translateY(44px); }
@@ -241,81 +258,91 @@ def _show_login() -> None:
             animation: fadeInUp 0.9s ease both;
             animation-timeline: view(); animation-range: entry 0% entry 20%;
         }
+        /* ── Form inputs — glass on indigo ── */
         [data-testid="stForm"] input {
-            background-color: #f9fafb !important;
-            border: 1px solid #e5e7eb !important;
-            color: #111827 !important;
+            background: rgba(255,255,255,0.12) !important;
+            border: 1px solid rgba(255,255,255,0.25) !important;
+            color: white !important;
             border-radius: 8px !important;
             font-size: 0.95rem !important;
         }
         [data-testid="stForm"] input:focus {
-            border-color: #4f46e5 !important;
-            box-shadow: 0 0 0 3px rgba(79,70,229,0.12) !important;
+            border-color: rgba(255,255,255,0.6) !important;
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.12) !important;
         }
+        [data-testid="stForm"] input::placeholder {
+            color: rgba(255,255,255,0.5) !important; opacity: 1 !important;
+        }
+        /* ── Form submit button — solid white on dark bg ── */
         [data-testid="stForm"] .stButton > button {
-            background-color: #4f46e5 !important;
-            color: white !important;
-            font-weight: 600 !important;
+            background: rgba(255,255,255,0.92) !important;
+            color: #1e1b4b !important;
+            font-weight: 700 !important;
             font-size: 1rem !important;
             padding: 0.7rem 1rem !important;
             border-radius: 8px !important;
             border: none !important;
         }
-        [data-testid="stForm"] .stButton > button:hover { background-color: #4338ca !important; }
-        /* ── Forgot password expander ── */
+        [data-testid="stForm"] .stButton > button:hover {
+            background: white !important; color: #312e81 !important;
+        }
+        /* ── Column-area buttons (Try demo, Create account) ── */
+        [data-testid="column"] .stButton > button,
+        [data-testid="stColumn"] .stButton > button {
+            background: rgba(255,255,255,0.15) !important;
+            border: 1px solid rgba(255,255,255,0.3) !important;
+            color: white !important;
+            font-weight: 600 !important;
+        }
+        [data-testid="column"] .stButton > button:hover,
+        [data-testid="stColumn"] .stButton > button:hover {
+            background: rgba(255,255,255,0.25) !important;
+        }
+        /* ── Forgot password expander — glass ── */
         [data-testid="stExpander"] {
-            background: #f5f3ff !important;
-            border: 1px solid #c7d2fe !important;
+            background: rgba(255,255,255,0.08) !important;
+            border: 1px solid rgba(255,255,255,0.18) !important;
             border-radius: 10px !important;
         }
         [data-testid="stExpander"] summary p,
         [data-testid="stExpander"] summary span {
-            color: #4f46e5 !important;
-            font-weight: 600 !important;
-            font-size: 0.875rem !important;
+            color: rgba(255,255,255,0.9) !important;
+            font-weight: 600 !important; font-size: 0.875rem !important;
         }
-        [data-testid="stExpander"] label {
-            color: #4f46e5 !important;
-            font-weight: 500 !important;
-        }
+        [data-testid="stExpander"] label { color: rgba(255,255,255,0.85) !important; }
         [data-testid="stExpander"] input {
-            border-color: #c7d2fe !important;
-            background: white !important;
-            color: #111827 !important;
+            border-color: rgba(255,255,255,0.2) !important;
+            background: rgba(255,255,255,0.1) !important;
+            color: white !important;
+        }
+        [data-testid="stExpander"] input::placeholder {
+            color: rgba(255,255,255,0.45) !important; opacity:1 !important;
         }
         [data-testid="stExpander"] input:focus {
-            border-color: #4f46e5 !important;
-            box-shadow: 0 0 0 3px rgba(79,70,229,0.15) !important;
+            border-color: rgba(255,255,255,0.5) !important;
+            box-shadow: 0 0 0 3px rgba(255,255,255,0.1) !important;
         }
         [data-testid="stExpander"] .stButton > button {
-            background: #4f46e5 !important;
+            background: rgba(255,255,255,0.15) !important;
             color: white !important;
-            border: none !important;
+            border: 1px solid rgba(255,255,255,0.25) !important;
             font-weight: 600 !important;
         }
         [data-testid="stExpander"] .stButton > button:hover {
-            background: #4338ca !important;
+            background: rgba(255,255,255,0.25) !important;
         }
-        /* ── Login column: force all labels + text black on white bg ── */
+        /* ── All text in login column area — white on dark bg ── */
         [data-testid="column"] label,
+        [data-testid="stColumn"] label,
         [data-testid="column"] [data-testid="stMarkdownContainer"] p,
-        [data-testid="column"] span.st-emotion-cache-1gulkj5,
         [data-testid="stTextInput"] label,
         [data-testid="stTextInput"] label p,
         .stTextInput label, .stTextInput label p {
-            color: #111827 !important;
+            color: white !important;
         }
-        /* ── Placeholder text — dark gray so it's clearly readable ── */
-        [data-testid="column"] input::placeholder,
-        [data-testid="stForm"] input::placeholder,
-        .stTextInput input::placeholder {
-            color: #6b7280 !important;
-            opacity: 1 !important;
-        }
-        /* ── Input text (typed chars) always black ── */
-        [data-testid="column"] input,
-        .stTextInput input {
-            color: #111827 !important;
+        [data-testid="column"] input, .stTextInput input { color: white !important; }
+        [data-testid="column"] input::placeholder, .stTextInput input::placeholder {
+            color: rgba(255,255,255,0.5) !important; opacity:1 !important;
         }
         </style>
     """), unsafe_allow_html=True)
@@ -841,9 +868,9 @@ def _show_login() -> None:
 
         st.markdown(_h("""
             <div style="display:flex;align-items:center;gap:0.75rem;margin:0 0 1rem 0;">
-            <div style="flex:1;border-top:1px solid #d1d5db;"></div>
-            <span style="color:#374151;font-size:0.8rem;font-weight:500;white-space:nowrap;">or continue with email</span>
-            <div style="flex:1;border-top:1px solid #d1d5db;"></div>
+            <div style="flex:1;border-top:1px solid rgba(255,255,255,0.3);"></div>
+            <span style="color:rgba(255,255,255,0.75);font-size:0.8rem;font-weight:500;white-space:nowrap;">or continue with email</span>
+            <div style="flex:1;border-top:1px solid rgba(255,255,255,0.3);"></div>
             </div>
         """), unsafe_allow_html=True)
 
