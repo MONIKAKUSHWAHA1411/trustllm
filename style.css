@@ -520,3 +520,102 @@ div[data-testid="stCheckbox"] span[class*="st-"] {
     border-radius: 4px;
     background: #4f46e5;
 }
+
+/* ================================================================
+   POST-LOGIN: COMPREHENSIVE BLACK TEXT — catches every Streamlit
+   element that can render invisible text on a white background.
+   ================================================================ */
+
+/* Radio buttons */
+[data-testid="stRadio"] label,
+[data-testid="stRadio"] label p,
+[data-testid="stRadio"] label span { color: #111827 !important; }
+
+/* Selectbox / multiselect labels */
+[data-testid="stSelectbox"] label,
+[data-testid="stSelectbox"] label p,
+[data-testid="stMultiSelect"] label,
+[data-testid="stMultiSelect"] label p { color: #111827 !important; }
+
+/* Selectbox dropdown options */
+[data-baseweb="menu"] li,
+[data-baseweb="menu"] [role="option"],
+[data-baseweb="option"],
+[data-baseweb="option"] * { color: #111827 !important; }
+
+/* Text / number / date / time input labels */
+[data-testid="stTextInput"] label,
+[data-testid="stTextInput"] label p,
+[data-testid="stNumberInput"] label,
+[data-testid="stNumberInput"] label p,
+[data-testid="stTextArea"] label,
+[data-testid="stTextArea"] label p,
+[data-testid="stDateInput"] label,
+[data-testid="stDateInput"] label p,
+[data-testid="stTimeInput"] label,
+[data-testid="stTimeInput"] label p,
+[data-testid="stFileUploader"] label,
+[data-testid="stFileUploader"] label p { color: #111827 !important; }
+
+/* Number input up/down arrow text */
+[data-testid="stNumberInput"] input { color: #111827 !important; }
+
+/* Slider label and value */
+[data-testid="stSlider"] label,
+[data-testid="stSlider"] label p,
+[data-testid="stSlider"] [data-testid="stTickBarMin"],
+[data-testid="stSlider"] [data-testid="stTickBarMax"] { color: #111827 !important; }
+
+/* st.write / st.text */
+[data-testid="stText"],
+[data-testid="stText"] p { color: #111827 !important; }
+
+/* Metric widget */
+[data-testid="stMetricValue"],
+[data-testid="stMetricLabel"],
+[data-testid="stMetricDelta"] { color: #111827 !important; }
+
+/* Expander header + body */
+[data-testid="stExpander"] summary,
+[data-testid="stExpander"] summary p,
+[data-testid="stExpander"] summary span,
+[data-testid="stExpander"] [data-testid="stMarkdownContainer"] p { color: #111827 !important; }
+
+/* Tab labels */
+[data-baseweb="tab"] [data-testid="stMarkdownContainer"] p { color: #6b7280 !important; }
+[aria-selected="true"][data-baseweb="tab"] [data-testid="stMarkdownContainer"] p { color: #4f46e5 !important; }
+
+/* Dataframe / table */
+[data-testid="stDataFrame"] * { color: #111827 !important; }
+.dvn-scroller .cell-grid-canvas { color: #111827 !important; }
+
+/* Column headers in dataframe */
+[data-testid="stDataFrame"] th,
+[data-testid="stDataFrame"] td { color: #111827 !important; }
+
+/* Alert / info / warning / error boxes */
+[data-testid="stAlert"],
+[data-testid="stAlert"] p,
+[data-testid="stAlert"] span,
+[data-testid="stNotification"],
+[data-testid="stNotification"] p { color: #111827 !important; }
+
+/* Button text for non-primary buttons */
+[data-testid="stBaseButton-secondary"],
+[data-testid="stBaseButton-secondary"] p { color: #374151 !important; }
+
+/* Code blocks */
+[data-testid="stCode"] code,
+.stCodeBlock code { color: #1e1b4b !important; }
+
+/* Input helper text */
+[data-testid="InputInstructions"] { color: #6b7280 !important; }
+
+/* Any remaining stMarkdownContainer text */
+.stMarkdown p,
+.stMarkdown span,
+.stMarkdown li,
+.stMarkdown h1,
+.stMarkdown h2,
+.stMarkdown h3,
+.stMarkdown h4 { color: #111827 !important; }

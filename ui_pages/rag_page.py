@@ -62,23 +62,22 @@ def _highlight_keywords(text: str, query: str) -> str:
 
 
 def _copy_button(text: str):
-    """Render a JS clipboard copy button."""
-    import json
-    import streamlit.components.v1 as components
-    escaped = json.dumps(text)
-    components.html(
-        f"""
-        <button
-          onclick="navigator.clipboard.writeText({escaped});
+    """Render a JS clipboard copy button via st.markdown (works on Streamlit Cloud)."""
+    import html as _html
+    # html.escape encodes quotes so the text is safe inside a data-* attribute
+    escaped = _html.escape(text, quote=True)
+    st.markdown(
+        f"""<button
+          onclick="navigator.clipboard.writeText(this.dataset.text);
                    this.textContent='✓ Copied!';
                    setTimeout(()=>this.textContent='📋 Copy Response',2000);"
-          style="background:#334155;color:#e2e8f0;border:1px solid #475569;
+          data-text="{escaped}"
+          style="background:#6366f1;color:white;border:none;
                  padding:6px 18px;border-radius:6px;cursor:pointer;
-                 font-size:13px;font-family:sans-serif;">
+                 font-size:13px;font-family:sans-serif;margin:4px 0;">
           📋 Copy Response
-        </button>
-        """,
-        height=44,
+        </button>""",
+        unsafe_allow_html=True,
     )
 
 
