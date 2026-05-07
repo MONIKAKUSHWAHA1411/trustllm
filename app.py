@@ -11,6 +11,7 @@ Auth flow:
 
 import json
 import os
+import textwrap
 from pathlib import Path
 from typing import Optional, List
 
@@ -36,6 +37,11 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
+
+
+def _h(html: str) -> str:
+    """Strip common indentation so Markdown never reads indented HTML as a code block."""
+    return textwrap.dedent(html).strip()
 
 
 def _load_css() -> None:
@@ -196,99 +202,258 @@ def _try_demo_login() -> None:
 
 
 def _show_login() -> None:
-    st.markdown(
-        """<style>
-        section[data-testid="stSidebar"] { display: none !important; }
-        header[data-testid="stHeader"] { display: none !important; }
-        .block-container { padding: 0 !important; max-width: 100% !important; }
-        </style>""",
-        unsafe_allow_html=True,
-    )
-
     stats = _hero_stats()
     bars  = _preview_bars(stats)
 
-    # ---- Split layout: hero left | form right ----
-    hero_col, form_col = st.columns([1.4, 1])
+    st.markdown(_h("""
+        <style>
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+        header[data-testid="stHeader"] {visibility: hidden;}
+        section[data-testid="stSidebar"] { display: none !important; }
+        .stApp { background: #ffffff !important; }
+        section.main .block-container { padding: 0 !important; max-width: 100% !important; }
+        [data-testid="stForm"] {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+        }
+        [data-testid="stForm"] label { color: #374151 !important; font-weight: 500 !important; }
+        [data-testid="stForm"] input {
+            background-color: #f9fafb !important;
+            border: 1px solid #e5e7eb !important;
+            color: #111827 !important;
+            border-radius: 8px !important;
+            font-size: 0.95rem !important;
+        }
+        [data-testid="stForm"] input:focus {
+            border-color: #4f46e5 !important;
+            box-shadow: 0 0 0 3px rgba(79,70,229,0.12) !important;
+        }
+        [data-testid="stForm"] .stButton > button {
+            background-color: #4f46e5 !important;
+            color: white !important;
+            font-weight: 600 !important;
+            font-size: 1rem !important;
+            padding: 0.7rem 1rem !important;
+            border-radius: 8px !important;
+            border: none !important;
+        }
+        [data-testid="stForm"] .stButton > button:hover { background-color: #4338ca !important; }
+        </style>
+    """), unsafe_allow_html=True)
 
-    with hero_col:
-        st.markdown(
-            f"""
-            <div class="login-hero-pane" style="padding:3rem 2.5rem;min-height:100vh;">
-                <div class="hero-eyebrow">✦ LLM Evaluation Platform</div>
-                <div class="hero-headline">
-                    Evaluate LLMs<br>you can <span>actually trust.</span>
-                </div>
-                <div class="hero-sub">
-                    Score every model response for correctness, safety, and hallucination.
-                    Surface failures fast. Ship with confidence.
-                </div>
-                <div class="hero-stats">
-                    <div class="hero-stat-box">
-                        <div class="hero-stat-num">{stats["prompts"]}</div>
-                        <div class="hero-stat-desc">Prompts evaluated</div>
-                    </div>
-                    <div class="hero-stat-box">
-                        <div class="hero-stat-num">{stats["models"]}</div>
-                        <div class="hero-stat-desc">Models tested</div>
-                    </div>
-                    <div class="hero-stat-box">
-                        <div class="hero-stat-num">{stats["avg_trust"]}</div>
-                        <div class="hero-stat-desc">Avg trust score</div>
-                    </div>
-                </div>
-                <div class="preview-mini">
-                    <div class="preview-mini-title">Trust score by model</div>
-                    {bars}
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+    # ── STICKY TOP NAV ─────────────────────────────────────────────────
+    st.markdown(_h("""
+        <div style="position:sticky;top:0;z-index:200;background:rgba(255,255,255,0.95);
+                    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+                    border-bottom:1px solid #e5e7eb;padding:0 3rem;height:64px;
+                    display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:0.6rem;">
+        <div style="background:#4f46e5;width:32px;height:32px;border-radius:8px;
+                    display:flex;align-items:center;justify-content:center;
+                    font-size:1rem;color:white;">🛡</div>
+        <span style="font-weight:800;font-size:1.1rem;color:#111827;letter-spacing:-0.02em;">TrustLLM</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem;">
+        <a href="#signin-section"
+           style="color:#6b7280;text-decoration:none;font-size:0.9rem;font-weight:500;
+                  padding:0.4rem 0.9rem;border-radius:7px;border:1px solid #e5e7eb;background:white;">
+        Sign in</a>
+        <a href="#signin-section"
+           style="background:#4f46e5;color:white;text-decoration:none;
+                  font-size:0.9rem;font-weight:600;padding:0.4rem 1rem;border-radius:7px;">
+        Get started →</a>
+        </div>
+        </div>
+    """), unsafe_allow_html=True)
 
+    # ── HERO ──────────────────────────────────────────────────────────
+    st.markdown(_h("""
+        <div style="text-align:center;padding:5rem 2rem 3rem;
+                    background:linear-gradient(180deg,#fafbff 0%,#ffffff 100%);">
+        <div style="display:inline-flex;align-items:center;gap:0.45rem;
+                    background:#eef2ff;border:1px solid #c7d2fe;
+                    color:#4f46e5;font-size:0.75rem;font-weight:700;letter-spacing:0.06em;
+                    padding:0.3rem 0.9rem;border-radius:20px;margin-bottom:1.75rem;">
+        ✦ LLM EVALUATION PLATFORM
+        </div>
+        <div style="font-size:5rem;font-weight:900;color:#111827;line-height:1.05;
+                    letter-spacing:-0.04em;margin:0 0 0.1em 0;">
+        Evaluate LLMs
+        </div>
+        <div style="font-size:5rem;font-weight:900;line-height:1.05;letter-spacing:-0.04em;
+                    margin:0 0 1.5rem 0;
+                    background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);
+                    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+                    background-clip:text;">
+        you can actually trust.
+        </div>
+        <div style="font-size:1.25rem;color:#6b7280;line-height:1.7;
+                    max-width:600px;margin:0 auto 2.5rem;">
+        Score every model response for correctness, safety, and hallucination.
+        Surface failures fast. Ship with confidence.
+        </div>
+        <div style="display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;">
+        <a href="#signin-section"
+           style="background:#4f46e5;color:white;text-decoration:none;
+                  font-size:1rem;font-weight:600;padding:0.8rem 2rem;border-radius:8px;">
+        Start evaluating →</a>
+        <a href="#features-section"
+           style="background:white;color:#374151;text-decoration:none;border:1px solid #d1d5db;
+                  font-size:1rem;font-weight:500;padding:0.8rem 2rem;border-radius:8px;">
+        See how it works</a>
+        </div>
+        </div>
+    """), unsafe_allow_html=True)
+
+    # ── FEATURES ──────────────────────────────────────────────────────
+    st.markdown(_h("""
+        <div id="features-section"
+             style="padding:4rem 3rem;background:#f8fafc;
+                    border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;">
+        <div style="max-width:960px;margin:0 auto;">
+        <div style="text-align:center;margin-bottom:3rem;">
+        <div style="font-size:0.75rem;font-weight:700;color:#4f46e5;letter-spacing:0.08em;
+                    text-transform:uppercase;margin-bottom:0.75rem;">WHAT YOU GET</div>
+        <div style="font-size:2rem;font-weight:800;color:#111827;letter-spacing:-0.025em;">
+        Everything you need to trust your LLMs
+        </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;">
+        <div style="background:white;border:1px solid #e5e7eb;border-radius:14px;padding:1.75rem;
+                    box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+        <div style="background:#eef2ff;width:44px;height:44px;border-radius:10px;
+                    display:flex;align-items:center;justify-content:center;
+                    font-size:1.25rem;margin-bottom:1rem;">📊</div>
+        <div style="font-weight:700;font-size:1rem;color:#111827;margin-bottom:0.5rem;">Trace everything</div>
+        <div style="font-size:0.9rem;color:#6b7280;line-height:1.6;">
+        Inspect every prompt, response &amp; tool call in real time.
+        </div>
+        </div>
+        <div style="background:white;border:1px solid #e5e7eb;border-radius:14px;padding:1.75rem;
+                    box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+        <div style="background:#eef2ff;width:44px;height:44px;border-radius:10px;
+                    display:flex;align-items:center;justify-content:center;
+                    font-size:1.25rem;margin-bottom:1rem;">⚡</div>
+        <div style="font-weight:700;font-size:1rem;color:#111827;margin-bottom:0.5rem;">Measure with evals</div>
+        <div style="font-size:0.9rem;color:#6b7280;line-height:1.6;">
+        Score outputs for safety, accuracy &amp; bias. Compare models side-by-side.
+        </div>
+        </div>
+        <div style="background:white;border:1px solid #e5e7eb;border-radius:14px;padding:1.75rem;
+                    box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+        <div style="background:#eef2ff;width:44px;height:44px;border-radius:10px;
+                    display:flex;align-items:center;justify-content:center;
+                    font-size:1.25rem;margin-bottom:1rem;">🏆</div>
+        <div style="font-weight:700;font-size:1rem;color:#111827;margin-bottom:0.5rem;">Compare &amp; improve</div>
+        <div style="font-size:0.9rem;color:#6b7280;line-height:1.6;">
+        Rank models by trust score, safety &amp; cost. Iterate with confidence.
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+    """), unsafe_allow_html=True)
+
+    # ── STATS STRIP ───────────────────────────────────────────────────
+    st.markdown(_h(f"""
+        <div style="background:#111827;padding:3.5rem 3rem;">
+        <div style="max-width:700px;margin:0 auto;
+                    display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;text-align:center;">
+        <div>
+        <div style="font-size:3.5rem;font-weight:900;color:white;letter-spacing:-0.04em;line-height:1;">
+        {stats["prompts"]}</div>
+        <div style="color:#6b7280;font-size:0.9rem;margin-top:0.4rem;">Prompts evaluated</div>
+        </div>
+        <div>
+        <div style="font-size:3.5rem;font-weight:900;color:white;letter-spacing:-0.04em;line-height:1;">
+        {stats["models"]}</div>
+        <div style="color:#6b7280;font-size:0.9rem;margin-top:0.4rem;">Models tested</div>
+        </div>
+        <div>
+        <div style="font-size:3.5rem;font-weight:900;color:white;letter-spacing:-0.04em;line-height:1;">
+        {stats["avg_trust"]}</div>
+        <div style="color:#6b7280;font-size:0.9rem;margin-top:0.4rem;">Avg trust score</div>
+        </div>
+        </div>
+        </div>
+    """), unsafe_allow_html=True)
+
+    # ── SIGN-IN SECTION HEADER ────────────────────────────────────────
+    st.markdown(_h("""
+        <div id="signin-section"
+             style="padding:5rem 2rem 2rem;background:#f8fafc;border-top:1px solid #e5e7eb;">
+        <div style="max-width:440px;margin:0 auto;text-align:center;">
+        <div style="background:#4f46e5;width:48px;height:48px;border-radius:12px;
+                    display:inline-flex;align-items:center;justify-content:center;
+                    font-size:1.4rem;color:white;margin-bottom:1rem;">🛡</div>
+        <div style="font-size:1.75rem;font-weight:800;color:#111827;letter-spacing:-0.025em;
+                    margin-bottom:0.3rem;">Welcome back</div>
+        <div style="font-size:0.95rem;color:#6b7280;">Sign in to your TrustLLM account</div>
+        </div>
+        </div>
+    """), unsafe_allow_html=True)
+
+    # ── FORM CARD ─────────────────────────────────────────────────────
+    _, form_col, _ = st.columns([1, 2, 1])
     with form_col:
-        st.markdown(
-            """
-            <div style="padding:2.5rem 1rem 0.5rem;">
-                <div class="form-logo">
-                    <div class="form-logo-icon">🛡</div>
-                    <span class="form-logo-name">TrustLLM</span>
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-        # ---- Google OAuth ----
+        # Google OAuth (Supabase) or HTML demo button
         if is_configured():
             try:
                 auth_url = get_auth_url()
-                st.markdown(
-                    f"""<a href="{auth_url}" target="_self" class="google-signin-btn">
-                        <svg width="17" height="17" viewBox="0 0 48 48" style="margin-right:9px;vertical-align:middle;">
-                            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-                            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-                            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-                            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-                        </svg>
-                        Continue with Google
-                    </a>""",
-                    unsafe_allow_html=True,
-                )
-                st.markdown('<div class="or-divider">or</div>', unsafe_allow_html=True)
+                st.markdown(_h(f"""
+                    <div style="margin-bottom:1rem;">
+                    <a href="{auth_url}" target="_self"
+                       style="display:flex;align-items:center;justify-content:center;gap:0.6rem;
+                              background:white;color:#374151;border:1px solid #d1d5db;
+                              border-radius:8px;padding:0.7rem 1rem;font-size:0.9rem;font-weight:500;
+                              text-decoration:none;width:100%;box-sizing:border-box;">
+                    <svg width="17" height="17" viewBox="0 0 48 48" style="flex-shrink:0;">
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                    </svg>
+                    Continue with Google
+                    </a>
+                    </div>
+                """), unsafe_allow_html=True)
             except Exception:
                 pass
+        else:
+            st.markdown(_h("""
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1rem;">
+                <button style="background:white;color:#374151;border:1px solid #d1d5db;border-radius:8px;
+                               padding:0.7rem 0.5rem;font-size:0.875rem;font-weight:500;cursor:pointer;
+                               width:100%;font-family:inherit;"
+                        onclick="var b=this;b.textContent='Not available in demo';
+                                 setTimeout(function(){b.textContent='🔵 Continue with Google'},2500)">
+                🔵 Continue with Google
+                </button>
+                <button style="background:#24292e;color:white;border:1px solid #1b1f23;border-radius:8px;
+                               padding:0.7rem 0.5rem;font-size:0.875rem;font-weight:500;cursor:pointer;
+                               width:100%;font-family:inherit;"
+                        onclick="var b=this;b.textContent='Not available in demo';
+                                 setTimeout(function(){b.textContent='⬛ Continue with GitHub'},2500)">
+                ⬛ Continue with GitHub
+                </button>
+                </div>
+            """), unsafe_allow_html=True)
 
-        # ---- Mode toggle: sign in vs create ----
+        st.markdown(_h("""
+            <div style="display:flex;align-items:center;gap:0.75rem;margin:0 0 1rem 0;">
+            <div style="flex:1;border-top:1px solid #e5e7eb;"></div>
+            <span style="color:#9ca3af;font-size:0.8rem;white-space:nowrap;">or continue with email</span>
+            <div style="flex:1;border-top:1px solid #e5e7eb;"></div>
+            </div>
+        """), unsafe_allow_html=True)
+
         if "login_mode" not in st.session_state:
             st.session_state.login_mode = "signin"
 
         if st.session_state.login_mode == "signin":
-            st.markdown(
-                '<div class="form-headline">Welcome back</div>'
-                '<div class="form-sub">Sign in to your account</div>',
-                unsafe_allow_html=True,
-            )
             with st.form("login_form"):
                 username = st.text_input("Username", placeholder="Enter your username")
                 password = st.text_input("Password", type="password", placeholder="Enter your password")
@@ -312,7 +477,6 @@ def _show_login() -> None:
                 if st.button("⚡ Try demo — no sign-up needed", use_container_width=True, key="try_demo"):
                     _try_demo_login()
 
-            st.markdown("<br>", unsafe_allow_html=True)
             c1, c2 = st.columns([1, 1])
             with c1:
                 if st.button("Create account →", key="to_create", use_container_width=True):
@@ -347,11 +511,6 @@ def _show_login() -> None:
                                 st.error("Username not found.")
 
         else:  # create account
-            st.markdown(
-                '<div class="form-headline">Create account</div>'
-                '<div class="form-sub">Free forever — no credit card needed</div>',
-                unsafe_allow_html=True,
-            )
             with st.form("create_account_form"):
                 new_name  = st.text_input("Display Name", placeholder="Your full name")
                 new_user  = st.text_input("Username", placeholder="Choose a username")
@@ -378,24 +537,29 @@ def _show_login() -> None:
                     else:
                         st.error("Username already taken.")
 
-            st.markdown("<br>", unsafe_allow_html=True)
             if st.button("← Back to sign in", key="to_signin", use_container_width=True):
                 st.session_state.login_mode = "signin"
                 st.rerun()
 
-    # Footer
-    st.markdown(
-        """
-        <div style="text-align:center;font-size:11px;color:#3f3f46;padding:1.5rem 0 0.5rem;">
-            Powered by ChromaDB · Groq · Streamlit ·
-            <a href="https://www.linkedin.com/in/monika-kushwaha-52443735/"
-               target="_blank" style="color:#52525b;text-decoration:none;">
-               Built by Monika Kushwaha
-            </a>
+        st.markdown(_h("""
+            <div style="text-align:center;padding:1rem 0 3rem;">
+            <span style="color:#9ca3af;font-size:0.8rem;">
+            Demo — Username: <strong style="color:#374151;">TestUser</strong>
+            &nbsp;·&nbsp; Password: <strong style="color:#374151;">User123</strong>
+            </span>
+            </div>
+        """), unsafe_allow_html=True)
+
+    # ── FOOTER ────────────────────────────────────────────────────────
+    st.markdown(_h("""
+        <div style="background:#111827;padding:2rem 3rem;text-align:center;">
+        <span style="color:#6b7280;font-size:0.8rem;">
+        © 2025 TrustLLM · Powered by ChromaDB · Groq · Streamlit ·
+        Built by <a href="https://www.linkedin.com/in/monika-kushwaha-52443735/"
+        target="_blank" style="color:#6366f1;text-decoration:none;">Monika Kushwaha</a>
+        </span>
         </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    """), unsafe_allow_html=True)
 
 
 # -----------------------------------------------------------------------
@@ -597,12 +761,15 @@ header = st.container()
 with header:
     h1, h2, h3, h4, h5 = st.columns([1.2, 2, 2, 1.1, 1.1])
     with h1:
-        st.markdown(
-            '<p style="color:#fafafa;font-weight:700;font-size:0.92rem;'
-            'margin:0.3rem 0;white-space:nowrap;letter-spacing:-0.01em;">'
-            '🛡 TrustLLM</p>',
-            unsafe_allow_html=True,
-        )
+        st.markdown(_h("""
+            <div style="display:flex;align-items:center;gap:0.5rem;padding-top:0.3rem;">
+            <div style="background:#4f46e5;width:24px;height:24px;border-radius:5px;
+                        display:flex;align-items:center;justify-content:center;
+                        font-size:0.75rem;color:white;">🛡</div>
+            <span style="font-weight:700;color:#111827;font-size:0.95rem;
+                         letter-spacing:-0.01em;">TrustLLM</span>
+            </div>
+        """), unsafe_allow_html=True)
     with h2:
         selected_project = st.selectbox(
             "Project", _project_names, label_visibility="collapsed"
