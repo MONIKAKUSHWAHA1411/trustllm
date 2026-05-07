@@ -16,6 +16,13 @@ section.main {
     color: #111827;
 }
 
+/* Remove Streamlit's default side padding so full-width sections reach the edges */
+section.main .block-container {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    max-width: 100% !important;
+}
+
 /* ================================================================
    GLOBAL TEXT — BLACK on white backgrounds (post-login pages)
    These rules target every Streamlit element that renders text.

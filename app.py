@@ -211,8 +211,8 @@ def _show_login() -> None:
         footer {visibility: hidden;}
         header[data-testid="stHeader"] {visibility: hidden;}
         section[data-testid="stSidebar"] { display: none !important; }
-        /* ── Page background — white for login/form area ── */
-        .stApp { background: #ffffff !important; }
+        /* ── Page background — lavender for login/form area ── */
+        .stApp { background: #ede9fe !important; }
         section.main { background: transparent !important; }
         section.main .block-container { padding: 0 !important; max-width: 100% !important; background: transparent !important; }
         /* ── Make ALL Streamlit intermediate containers transparent ── */
@@ -709,12 +709,11 @@ def _show_login() -> None:
         <div style="font-size:0.55rem;color:#6ee7b7;margin-top:0.1rem;">Score responses</div>
         </div>
         <div style="color:#4ade80;font-size:1.1rem;padding:0 0.4rem;">→</div>
-        <div style="background:#166534;border:1px solid #4ade80;border-radius:10px;
-                    padding:0.75rem 1rem;text-align:center;min-width:106px;
-                    box-shadow:0 0 16px rgba(74,222,128,0.25);">
+        <div style="background:#1a4a35;border:1px solid #2d6a4f;border-radius:10px;
+                    padding:0.75rem 1rem;text-align:center;min-width:106px;">
         <div style="font-size:1.1rem;margin-bottom:0.3rem;">🛡</div>
-        <div style="font-size:0.7rem;font-weight:700;color:#4ade80;">Trust Score</div>
-        <div style="font-size:0.55rem;color:#86efac;margin-top:0.1rem;">Composite metric</div>
+        <div style="font-size:0.7rem;font-weight:700;color:#d1fae5;">Trust Score</div>
+        <div style="font-size:0.55rem;color:#6ee7b7;margin-top:0.1rem;">Composite metric</div>
         </div>
         <div style="color:#4ade80;font-size:1.1rem;padding:0 0.4rem;">→</div>
         <div style="background:#1a4a35;border:1px solid #2d6a4f;border-radius:10px;
@@ -758,12 +757,11 @@ def _show_login() -> None:
         <div style="font-size:0.55rem;color:#6ee7b7;margin-top:0.1rem;">Semantic search</div>
         </div>
         <div style="color:#4ade80;font-size:1.1rem;padding:0 0.4rem;">→</div>
-        <div style="background:#166534;border:1px solid #4ade80;border-radius:10px;
-                    padding:0.75rem 1rem;text-align:center;min-width:106px;
-                    box-shadow:0 0 16px rgba(74,222,128,0.25);">
+        <div style="background:#1a4a35;border:1px solid #2d6a4f;border-radius:10px;
+                    padding:0.75rem 1rem;text-align:center;min-width:106px;">
         <div style="font-size:1.1rem;margin-bottom:0.3rem;">🧪</div>
-        <div style="font-size:0.7rem;font-weight:700;color:#4ade80;">RAG Eval</div>
-        <div style="font-size:0.55rem;color:#86efac;margin-top:0.1rem;">Fidelity score</div>
+        <div style="font-size:0.7rem;font-weight:700;color:#d1fae5;">RAG Eval</div>
+        <div style="font-size:0.55rem;color:#6ee7b7;margin-top:0.1rem;">Fidelity score</div>
         </div>
         </div>
         </div>
@@ -799,7 +797,7 @@ def _show_login() -> None:
     # ── SIGN-IN SECTION HEADER ────────────────────────────────────────
     st.markdown(_h("""
         <div id="signin-section"
-             style="padding:5rem 2rem 3rem;background:#ede9fe;
+             style="padding:5rem 2rem 3rem;background:transparent;
                     border-top:1px solid #f1f5f9;">
         <div style="max-width:440px;margin:0 auto;text-align:center;">
         <div style="background:#4f46e5;width:60px;height:60px;border-radius:16px;
@@ -990,11 +988,11 @@ def _show_login() -> None:
 
     # ── FOOTER ────────────────────────────────────────────────────────
     st.markdown(_h("""
-        <div style="background:#111827;padding:2rem 3rem;text-align:center;">
-        <span style="color:#6b7280;font-size:0.8rem;">
+        <div style="background:#1e1b4b;padding:2rem 3rem;text-align:center;">
+        <span style="color:rgba(255,255,255,0.75);font-size:0.8rem;">
         © 2025 TrustLLM · Powered by ChromaDB · Groq · Streamlit ·
         Built by <a href="https://www.linkedin.com/in/monika-kushwaha-52443735/"
-        target="_blank" style="color:#6366f1;text-decoration:none;">Monika Kushwaha</a>
+        target="_blank" style="color:#a5b4fc;text-decoration:none;">Monika Kushwaha</a>
         </span>
         </div>
     """), unsafe_allow_html=True)
