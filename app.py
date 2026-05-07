@@ -597,7 +597,12 @@ header = st.container()
 with header:
     h1, h2, h3, h4, h5 = st.columns([1.2, 2, 2, 1.1, 1.1])
     with h1:
-        st.markdown("**🛡 TrustLLM**")
+        st.markdown(
+            '<p style="color:#fafafa;font-weight:700;font-size:0.92rem;'
+            'margin:0.3rem 0;white-space:nowrap;letter-spacing:-0.01em;">'
+            '🛡 TrustLLM</p>',
+            unsafe_allow_html=True,
+        )
     with h2:
         selected_project = st.selectbox(
             "Project", _project_names, label_visibility="collapsed"

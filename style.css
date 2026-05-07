@@ -69,9 +69,25 @@ section[data-testid="stSidebar"] .stButton button:hover {
 
 section.main > div { background-color: #09090b !important; }
 
+/* Hide the native Streamlit header so only our custom header shows */
+header[data-testid="stHeader"] { display: none !important; }
+
 .block-container {
-    padding-top: 1.5rem !important;
+    padding-top: 0.5rem !important;
     padding-bottom: 2rem !important;
+}
+
+/* ===== Top header bar ===== */
+/* The first stHorizontalBlock in the page is our header row */
+[data-testid="stHorizontalBlock"]:first-of-type {
+    background: #0f0f13 !important;
+    border-bottom: 1px solid #27272a !important;
+    padding-top: 0.35rem !important;
+    padding-bottom: 0.35rem !important;
+    margin-left: -1rem !important;
+    margin-right: -1rem !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
 }
 
 /* ===== Typography ===== */
