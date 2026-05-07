@@ -16,21 +16,50 @@ section.main {
     color: #111827;
 }
 
-/* Global text contrast for main content area */
+/* Global text contrast for main content area — BLACK on white backgrounds */
 section.main p,
 section.main span,
 section.main li,
 section.main td,
 section.main th,
-section.main label {
-    color: #374151;
+section.main label,
+section.main div[data-testid="stMarkdownContainer"] p,
+section.main [data-testid="stMarkdownContainer"] span {
+    color: #111827 !important;
 }
 
 section.main h1,
 section.main h2,
 section.main h3,
-section.main h4 {
-    color: #111827;
+section.main h4,
+section.main h5,
+section.main h6 {
+    color: #111827 !important;
+}
+
+/* All labels (form fields, checkboxes, radios, selects) — always black */
+label, label p, label span {
+    color: #111827 !important;
+}
+
+/* Input / textarea typed text — always black */
+input:not([type="range"]),
+textarea,
+select {
+    color: #111827 !important;
+}
+
+/* Input placeholder — visible medium gray */
+input::placeholder,
+textarea::placeholder {
+    color: #6b7280 !important;
+    opacity: 1 !important;
+}
+
+/* Selectbox, multiselect option text */
+[data-baseweb="select"] [data-testid="stMarkdownContainer"] p,
+[data-baseweb="select"] span {
+    color: #111827 !important;
 }
 
 /* stWrite / st.write text */
