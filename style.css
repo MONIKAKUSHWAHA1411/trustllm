@@ -1,20 +1,73 @@
-/* ===== Sidebar ===== */
+/* ============================================================
+   TrustLLM  ·  Braintrust-Inspired Design System
+   ============================================================ */
 
-section[data-testid="stSidebar"] {
-    background-color: #0f172a;
+/* ===== Base ===== */
+html, body, .stApp {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
 }
 
-/* Sidebar expanded state */
+.stApp {
+    background-color: #F8FAFC !important;
+}
+
+section.main {
+    background-color: #F8FAFC;
+    color: #111827;
+}
+
+/* Global text contrast for main content area */
+section.main p,
+section.main span,
+section.main li,
+section.main td,
+section.main th,
+section.main label {
+    color: #374151;
+}
+
+section.main h1,
+section.main h2,
+section.main h3,
+section.main h4 {
+    color: #111827;
+}
+
+/* stWrite / st.write text */
+section.main [data-testid="stMarkdownContainer"] p {
+    color: #374151 !important;
+}
+
+/* Caption text */
+section.main [data-testid="stCaptionContainer"] p {
+    color: #6b7280 !important;
+}
+
+/* ===== Headings ===== */
+h1 {
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+
+h2, h3 {
+    font-weight: 600;
+}
+
+/* ===== Sidebar ===== */
+section[data-testid="stSidebar"] {
+    background-color: #0f172a !important;
+    border-right: 1px solid #1e293b !important;
+}
+
 section[data-testid="stSidebar"]:not([aria-expanded="false"]) {
-    width: 220px !important;
-    min-width: 220px !important;
+    width: 240px !important;
+    min-width: 240px !important;
 }
 
 section[data-testid="stSidebar"]:not([aria-expanded="false"]) > div {
-    width: 220px !important;
+    width: 240px !important;
 }
 
-/* Sidebar collapsed state - allow natural width */
 section[data-testid="stSidebar"][aria-expanded="false"] {
     width: auto !important;
     min-width: auto !important;
@@ -25,157 +78,388 @@ section[data-testid="stSidebar"][aria-expanded="false"] > div {
 }
 
 section[data-testid="stSidebar"] * {
-    color: #e2e8f0;
-}
-
-/* ===== Typography ===== */
-
-h1, h2, h3 {
-    color: #e5e7eb;
-}
-
-/* ===== Buttons ===== */
-
-.stButton button {
-    background-color: #2563eb;
-    color: white !important;
-    border-radius: 8px;
-    border: none;
-}
-
-.stButton button:hover {
-    background-color: #1d4ed8;
-}
-
-/* ===== Pagination buttons (subtler) ===== */
-
-.pagination-nav .stButton button {
-    background-color: transparent;
-    color: #94a3b8 !important;
-    border: 1px solid #334155;
-    font-size: 0.85rem;
-}
-
-.pagination-nav .stButton button:hover {
-    background-color: #1e293b;
     color: #e2e8f0 !important;
 }
 
-/* ===== Header action buttons ===== */
+section[data-testid="stSidebar"] p,
+section[data-testid="stSidebar"] small {
+    color: #94a3b8 !important;
+}
 
+section[data-testid="stSidebar"] h2 {
+    color: #f1f5f9 !important;
+    font-size: 1rem !important;
+}
+
+/* Sidebar radio nav items */
+section[data-testid="stSidebar"] .stRadio label {
+    color: #cbd5e1 !important;
+    font-size: 0.875rem !important;
+    padding: 0.35rem 0.5rem !important;
+    border-radius: 6px !important;
+}
+
+/* ===== Primary Buttons ===== */
+.stButton > button {
+    background-color: #4f46e5 !important;
+    color: white !important;
+    border-radius: 6px !important;
+    border: none !important;
+    font-weight: 500 !important;
+    font-size: 0.875rem !important;
+    padding: 0.5rem 1.25rem !important;
+    transition: background-color 0.15s ease, box-shadow 0.15s ease !important;
+    letter-spacing: 0.01em;
+}
+
+.stButton > button:hover {
+    background-color: #4338ca !important;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3) !important;
+    border: none !important;
+}
+
+.stButton > button:active {
+    background-color: #3730a3 !important;
+}
+
+/* ===== Secondary / Back button wrapper ===== */
+.btn-secondary .stButton > button {
+    background-color: transparent !important;
+    color: #6b7280 !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: none !important;
+    font-weight: 400 !important;
+}
+
+.btn-secondary .stButton > button:hover {
+    background-color: #f9fafb !important;
+    color: #374151 !important;
+    border-color: #d1d5db !important;
+    box-shadow: none !important;
+}
+
+/* ===== Social login buttons ===== */
+.btn-google .stButton > button {
+    background-color: white !important;
+    color: #374151 !important;
+    border: 1px solid #d1d5db !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+    font-weight: 500 !important;
+}
+
+.btn-google .stButton > button:hover {
+    background-color: #f9fafb !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
+}
+
+.btn-github .stButton > button {
+    background-color: #24292e !important;
+    color: white !important;
+    border: 1px solid #1b1f23 !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2) !important;
+    font-weight: 500 !important;
+}
+
+.btn-github .stButton > button:hover {
+    background-color: #1a1e22 !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3) !important;
+}
+
+/* Sidebar sign-out button */
+section[data-testid="stSidebar"] .stButton > button {
+    background-color: transparent !important;
+    color: #94a3b8 !important;
+    border: 1px solid #334155 !important;
+    font-size: 0.8rem !important;
+    box-shadow: none !important;
+}
+
+section[data-testid="stSidebar"] .stButton > button:hover {
+    background-color: #1e293b !important;
+    color: #e2e8f0 !important;
+    box-shadow: none !important;
+}
+
+/* Pagination buttons */
+.pagination-nav .stButton > button {
+    background-color: white !important;
+    color: #6b7280 !important;
+    border: 1px solid #e5e7eb !important;
+    font-size: 0.8rem !important;
+    box-shadow: none !important;
+}
+
+.pagination-nav .stButton > button:hover {
+    background-color: #f9fafb !important;
+    color: #374151 !important;
+    box-shadow: none !important;
+}
+
+/* ===== Header action buttons ===== */
 .header-btn {
     display: inline-block;
     width: 100%;
     text-align: center;
-    padding: 0.45rem 0.75rem;
-    background-color: #1e293b;
-    color: #e2e8f0 !important;
-    border: 1px solid #334155;
-    border-radius: 8px;
+    padding: 0.4rem 0.75rem;
+    background-color: white;
+    color: #374151 !important;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
     text-decoration: none !important;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 500;
-    transition: background-color 0.15s ease;
+    transition: all 0.15s ease;
 }
 
 .header-btn:hover {
-    background-color: #334155;
+    background-color: #f9fafb;
+    border-color: #d1d5db;
+    color: #111827 !important;
 }
 
-/* ===== Header divider ===== */
-
+/* ===== Dividers ===== */
 hr.header-divider {
     margin: 0.25rem 0 1rem 0;
     border: none;
-    border-top: 1px solid #1e293b;
+    border-top: 1px solid #e5e7eb;
 }
 
-/* ===== Section divider (under page titles) ===== */
-
 hr.section-divider {
-    margin: 0 0 1.25rem 0;
+    margin: 0 0 1.5rem 0;
     border: none;
-    border-top: 1px solid #1e293b;
+    border-top: 1px solid #e5e7eb;
 }
 
 /* ===== KPI Metric Cards ===== */
-
 .metric-card {
-    background: linear-gradient(135deg, #111827 0%, #1e293b 100%);
-    border: 1px solid #334155;
-    border-radius: 14px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
     padding: 1.25rem 1rem;
     text-align: center;
-    min-height: 170px;
+    min-height: 160px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .metric-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.15);
+    box-shadow: 0 8px 24px rgba(79, 70, 229, 0.1);
+    border-color: #c7d2fe;
 }
 
 .metric-icon {
-    font-size: 1.75rem;
-    margin-bottom: 0.4rem;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .metric-value {
     font-size: 2rem;
     font-weight: 700;
-    color: #f1f5f9;
+    color: #111827;
     line-height: 1.2;
 }
 
 .metric-label {
-    font-size: 0.8rem;
+    font-size: 0.72rem;
     font-weight: 600;
-    color: #94a3b8;
+    color: #6b7280;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
-    margin-top: 0.25rem;
+    letter-spacing: 0.05em;
+    margin-top: 0.3rem;
 }
 
 .metric-context {
     font-size: 0.7rem;
-    color: #64748b;
+    color: #9ca3af;
     margin-top: 0.2rem;
 }
 
-/* ===== Legacy metric containers (other pages) ===== */
-
+/* ===== Legacy metric containers ===== */
 [data-testid="metric-container"] {
-    background-color: #111827;
+    background-color: white;
+    border: 1px solid #e5e7eb;
     border-radius: 10px;
     padding: 15px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 
-/* ===== Login page ===== */
+[data-testid="stMetricValue"] {
+    color: #111827 !important;
+}
 
+[data-testid="stMetricLabel"] {
+    color: #6b7280 !important;
+}
+
+/* ===== Form inputs ===== */
+.stTextInput > div > div > input,
+.stTextAreaInput > div > div > textarea {
+    border-color: #e5e7eb !important;
+    border-radius: 6px !important;
+    color: #111827 !important;
+    background-color: white !important;
+    font-size: 0.875rem !important;
+}
+
+.stTextInput > div > div > input:focus {
+    border-color: #4f46e5 !important;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12) !important;
+}
+
+/* ===== Login Form ===== */
 [data-testid="stForm"] {
-    background-color: #1e293b;
-    border: 1px solid #475569;
+    background-color: white;
+    border: 1px solid #e5e7eb;
     border-radius: 14px;
-    padding: 1.5rem;
+    padding: 2rem;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
 }
 
 [data-testid="stForm"] label {
-    color: #f1f5f9 !important;
-    font-weight: 600 !important;
-    font-size: 0.9rem !important;
+    color: #374151 !important;
+    font-weight: 500 !important;
+    font-size: 0.875rem !important;
 }
 
 [data-testid="stForm"] input {
-    background-color: #0f172a !important;
-    border: 1px solid #475569 !important;
-    color: #f1f5f9 !important;
+    background-color: #f9fafb !important;
+    border: 1px solid #e5e7eb !important;
+    color: #111827 !important;
+    border-radius: 6px !important;
 }
 
-/* Hide "Press Enter to submit form" tooltip */
+[data-testid="stForm"] input:focus {
+    border-color: #4f46e5 !important;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12) !important;
+}
+
 [data-testid="stForm"] [data-testid="InputInstructions"] {
     display: none !important;
+}
+
+[data-testid="stForm"] .stButton > button {
+    background-color: #4f46e5 !important;
+    color: white !important;
+    font-weight: 600 !important;
+    font-size: 0.875rem !important;
+}
+
+[data-testid="stForm"] .stButton > button:hover {
+    background-color: #4338ca !important;
+}
+
+/* ===== Checkboxes — ensure text is visible ===== */
+div[data-testid="stCheckbox"] label {
+    color: #111827 !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+}
+
+div[data-testid="stCheckbox"] label p {
+    color: #111827 !important;
+    font-size: 0.9rem !important;
+}
+
+div[data-testid="stCheckbox"] label span[data-testid="stMarkdownContainer"] p {
+    color: #111827 !important;
+}
+
+div[data-testid="stCheckbox"] span[class*="st-"] {
+    color: #111827 !important;
+}
+
+/* ===== Select boxes ===== */
+.stSelectbox [data-baseweb="select"] > div {
+    background-color: white;
+    border-color: #e5e7eb;
+    border-radius: 6px;
+    color: #374151;
+}
+
+/* ===== DataFrames ===== */
+.stDataFrame {
+    border: 1px solid #e5e7eb !important;
+    border-radius: 10px !important;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+/* ===== Tabs ===== */
+.stTabs [data-baseweb="tab-list"] {
+    border-bottom: 1px solid #e5e7eb;
+    gap: 0;
+}
+
+.stTabs [data-baseweb="tab"] {
+    color: #6b7280 !important;
+    font-weight: 500;
+    font-size: 0.875rem;
+    border-bottom: 2px solid transparent !important;
+    padding: 0.5rem 1rem !important;
+    background: transparent !important;
+}
+
+.stTabs [aria-selected="true"] {
+    color: #4f46e5 !important;
+    border-bottom: 2px solid #4f46e5 !important;
+}
+
+/* ===== Expanders ===== */
+.stExpander {
+    border: 1px solid #e5e7eb !important;
+    border-radius: 8px !important;
+    background: white !important;
+}
+
+/* ===== Alert boxes ===== */
+.stAlert {
+    border-radius: 8px !important;
+}
+
+/* ===== Progress bars ===== */
+.stProgress > div > div {
+    background-color: #4f46e5 !important;
+}
+
+/* ===== Sidebar nav section labels ===== */
+.nav-section {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #475569 !important;
+    padding: 0.6rem 0 0.2rem 0;
+    margin: 0;
+}
+
+/* ===== Onboarding step indicator ===== */
+.step-track {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 2rem;
+}
+
+.step-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #e5e7eb;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.step-dot.done {
+    background: #4f46e5;
+}
+
+.step-dot.active {
+    width: 24px;
+    border-radius: 4px;
+    background: #4f46e5;
 }
