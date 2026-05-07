@@ -39,12 +39,12 @@ def _get_client():
     )
 
 
-def get_auth_url() -> str:
-    """Build the Supabase OAuth URL (Google provider) to redirect the user to."""
+def get_auth_url(provider: str = "google") -> str:
+    """Build the Supabase OAuth URL for the given provider (google or github)."""
     client = _get_client()
     redirect_uri = _secret("OAUTH_REDIRECT_URI", "http://localhost:8501")
     resp = client.auth.sign_in_with_oauth({
-        "provider": "google",
+        "provider": provider,
         "options": {
             "redirect_to": redirect_uri,
         },
