@@ -994,11 +994,15 @@ def _show_login() -> None:
 
     # ── FOOTER ────────────────────────────────────────────────────────
     st.markdown(_h("""
-        <div style="background:#1e1b4b;padding:2rem 3rem;text-align:center;">
-        <span style="color:rgba(255,255,255,0.75);font-size:0.8rem;">
+        <style>
+        #trustllm-footer span { color: rgba(255,255,255,0.85) !important; }
+        #trustllm-footer a { color: #a5b4fc !important; text-decoration: none !important; }
+        </style>
+        <div id="trustllm-footer" style="background:#1e1b4b;padding:2rem 3rem;text-align:center;">
+        <span style="font-size:0.8rem;">
         © 2025 TrustLLM · Powered by ChromaDB · Groq · Streamlit ·
         Built by <a href="https://www.linkedin.com/in/monika-kushwaha-52443735/"
-        target="_blank" style="color:#a5b4fc;text-decoration:none;">Monika Kushwaha</a>
+        target="_blank">Monika Kushwaha</a>
         </span>
         </div>
     """), unsafe_allow_html=True)
