@@ -25,7 +25,12 @@ except ImportError:
     pass
 
 from db.database import init_db, upsert_user, touch_user
-from auth.supabase_auth import is_configured, get_auth_url, exchange_code
+from auth.google_oauth import (
+    is_configured as _google_configured,
+    get_auth_url as _google_auth_url,
+    exchange_code as _google_exchange_code,
+    generate_state as _google_generate_state,
+)
 
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -63,8 +68,14 @@ def _load_local_users() -> List[dict]:
 
 
 def _authenticate_local(username: str, password: str) -> Optional[dict]:
+    """Authenticate by username OR email (case-insensitive)."""
+    identifier = username.strip().lower()
     for u in _load_local_users():
-        if u["username"] == username and u["password"] == password:
+        match = (
+            u["username"].lower() == identifier
+            or u.get("email", "").lower() == identifier
+        )
+        if match and u["password"] == password:
             return u
     return None
 
@@ -107,16 +118,23 @@ def _handle_oauth_callback() -> None:
     code = params.get("code")
     if not code:
         return
+    # Optional state validation (CSRF guard)
+    returned_state = params.get("state", "")
+    stored_state = st.session_state.get("oauth_state", "")
     st.query_params.clear()
+    if stored_state and returned_state != stored_state:
+        st.error("OAuth state mismatch — possible CSRF. Please try signing in again.")
+        return
     with st.spinner("Signing you in…"):
         try:
-            user_info = exchange_code(code)
+            user_info = _google_exchange_code(code)
         except Exception as exc:
             st.error(f"Sign-in failed: {exc}")
             return
     db_user = upsert_user(user_info)
     st.session_state["logged_in"] = True
     st.session_state["user"] = db_user or user_info
+    st.session_state.pop("oauth_state", None)
     st.rerun()
 
 
@@ -820,13 +838,14 @@ def _show_login() -> None:
     # ── FORM CARD ─────────────────────────────────────────────────────
     _, form_col, _ = st.columns([1, 2, 1])
     with form_col:
-        # Google + GitHub OAuth (Supabase) or demo placeholders
-        if is_configured():
+        # Google OAuth button — active when GOOGLE_CLIENT_ID + GOOGLE_CLIENT_SECRET are set
+        if _google_configured():
             try:
-                google_url = get_auth_url("google")
-                github_url = get_auth_url("github")
+                _state = _google_generate_state()
+                st.session_state["oauth_state"] = _state
+                google_url = _google_auth_url(_state)
                 st.markdown(_h(f"""
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1rem;">
+                    <div style="display:grid;grid-template-columns:1fr;gap:0.75rem;margin-bottom:1rem;">
                     <a href="{google_url}" target="_self"
                        style="display:flex;align-items:center;justify-content:center;gap:0.55rem;
                               background:white;color:#374151;border:1px solid #d1d5db;
@@ -840,46 +859,22 @@ def _show_login() -> None:
                     </svg>
                     Continue with Google
                     </a>
-                    <a href="{github_url}" target="_self"
-                       style="display:flex;align-items:center;justify-content:center;gap:0.55rem;
-                              background:#24292e;color:white;border:1px solid #1b1f23;
-                              border-radius:8px;padding:0.7rem 0.5rem;font-size:0.875rem;font-weight:500;
-                              text-decoration:none;box-sizing:border-box;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="white" style="flex-shrink:0;">
-                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577
-                             0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756
-                             -1.333-1.756-1.09-.745.083-.73.083-.73 1.205.085 1.838 1.236 1.838 1.236
-                             1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466
-                             -1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176
-                             0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405
-                             2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23
-                             1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22
-                             0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295
-                             24 12c0-6.63-5.37-12-12-12z"/>
-                    </svg>
-                    Continue with GitHub
-                    </a>
                     </div>
                 """), unsafe_allow_html=True)
-            except Exception:
-                pass
+            except Exception as _e:
+                st.warning(f"Google sign-in unavailable: {_e}")
         else:
             st.markdown(_h("""
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1rem;">
+                <div style="display:grid;grid-template-columns:1fr;gap:0.75rem;margin-bottom:1rem;">
                 <button style="background:white;color:#374151;border:1px solid #d1d5db;border-radius:8px;
-                               padding:0.7rem 0.5rem;font-size:0.875rem;font-weight:500;cursor:pointer;
-                               width:100%;font-family:inherit;opacity:0.6;cursor:not-allowed;">
+                               padding:0.7rem 0.5rem;font-size:0.875rem;font-weight:500;
+                               width:100%;font-family:inherit;opacity:0.5;cursor:not-allowed;">
                 🔵 Continue with Google
-                </button>
-                <button style="background:#24292e;color:white;border:1px solid #1b1f23;border-radius:8px;
-                               padding:0.7rem 0.5rem;font-size:0.875rem;font-weight:500;cursor:pointer;
-                               width:100%;font-family:inherit;opacity:0.6;cursor:not-allowed;">
-                ⬛ Continue with GitHub
                 </button>
                 </div>
                 <div style="text-align:center;margin-bottom:0.5rem;">
                 <span style="font-size:0.75rem;color:#9ca3af;">
-                ⚙️ OAuth not configured — add Supabase credentials to enable
+                ⚙️ Add GOOGLE_CLIENT_ID &amp; GOOGLE_CLIENT_SECRET to secrets to enable
                 </span>
                 </div>
             """), unsafe_allow_html=True)
@@ -897,7 +892,7 @@ def _show_login() -> None:
 
         if st.session_state.login_mode == "signin":
             with st.form("login_form"):
-                username = st.text_input("Username", placeholder="Enter your username")
+                username = st.text_input("Username or Email", placeholder="Enter your username or email")
                 password = st.text_input("Password", type="password", placeholder="Enter your password")
                 submitted = st.form_submit_button("Sign in →", use_container_width=True)
 
@@ -915,7 +910,7 @@ def _show_login() -> None:
                     else:
                         st.error("Invalid username or password.")
 
-            if not is_configured():
+            if not _google_configured():
                 if st.button("⚡ Try demo — no sign-up needed", use_container_width=True, key="try_demo"):
                     _try_demo_login()
 

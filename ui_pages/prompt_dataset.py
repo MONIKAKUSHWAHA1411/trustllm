@@ -20,8 +20,16 @@ import streamlit as st
 BASE_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(BASE_DIR))
 
-REPORT_PATH  = BASE_DIR / "reports" / "batch_eval_results.json"
 PASS_THRESHOLD = 0.55   # cosine sim above this = pass
+
+
+def _report_path() -> Path:
+    """Return the per-user batch eval report path, creating the directory if needed."""
+    user_id = st.session_state.get("user", {}).get("id", "default")
+    safe_id = "".join(c if c.isalnum() or c in "-_" else "_" for c in user_id)
+    path = BASE_DIR / "reports" / safe_id / "batch_eval_results.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    return path
 
 AVAILABLE_MODELS = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "gemma2-9b-it"]
 
@@ -164,21 +172,29 @@ def render():
             results_accum.extend(row_result)
             progress.progress((i + 1) / len(dataset))
 
-        # Persist
-        REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
-        with open(REPORT_PATH, "w") as f:
+        # Persist per-user
+        rp = _report_path()
+        with open(rp, "w") as f:
             json.dump(results_accum, f, indent=2)
 
+        current_uid = st.session_state.get("user", {}).get("id", "default")
         st.session_state["batch_results"] = results_accum
+        st.session_state["batch_results_owner"] = current_uid
         # Set session state for leaderboard tracking
         st.session_state["current_dataset_name"] = uploaded.name.replace("." + uploaded.name.split(".")[-1], "")
         st.session_state["current_model"] = model
         st.success(f"Evaluation complete — {len(results_accum)} prompts processed.")
 
-    # --- Load stored results if available ---
-    if "batch_results" not in st.session_state and REPORT_PATH.exists():
-        with open(REPORT_PATH) as f:
+    # --- Load stored results if available (evict if owned by a different user) ---
+    rp = _report_path()
+    current_uid = st.session_state.get("user", {}).get("id", "default")
+    if st.session_state.get("batch_results_owner") != current_uid:
+        st.session_state.pop("batch_results", None)
+        st.session_state.pop("batch_results_owner", None)
+    if "batch_results" not in st.session_state and rp.exists():
+        with open(rp) as f:
             st.session_state["batch_results"] = json.load(f)
+        st.session_state["batch_results_owner"] = current_uid
 
     results = st.session_state.get("batch_results")
     if not results:
@@ -285,6 +301,7 @@ def render():
 
     if st.button("🗑 Clear Results"):
         del st.session_state["batch_results"]
-        if REPORT_PATH.exists():
-            REPORT_PATH.unlink()
+        rp = _report_path()
+        if rp.exists():
+            rp.unlink()
         st.rerun()

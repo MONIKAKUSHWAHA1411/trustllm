@@ -5,8 +5,16 @@ import random
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parents[1]
-RESULTS_PATH = BASE_DIR / "reports" / "results.json"
 PROMPTS_PATH = BASE_DIR / "datasets" / "prompts.json"
+
+
+def _results_path() -> Path:
+    """Return the per-user run eval results path, creating the directory if needed."""
+    user_id = st.session_state.get("user", {}).get("id", "default")
+    safe_id = "".join(c if c.isalnum() or c in "-_" else "_" for c in user_id)
+    path = BASE_DIR / "reports" / safe_id / "results.json"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    return path
 
 
 def _load_prompts_by_category(category):
@@ -65,8 +73,9 @@ def render():
 
         prompts = _load_prompts_by_category(category)
 
-        if RESULTS_PATH.exists():
-            with open(RESULTS_PATH) as f:
+        rp = _results_path()
+        if rp.exists():
+            with open(rp) as f:
                 existing = json.load(f)
         else:
             existing = []
@@ -85,7 +94,7 @@ def render():
 
         existing.extend(new_results)
 
-        with open(RESULTS_PATH, "w") as f:
+        with open(rp, "w") as f:
             json.dump(existing, f, indent=2)
 
         st.success(f"Evaluation completed — {runs} results saved for **{model}**")

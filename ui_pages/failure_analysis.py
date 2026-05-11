@@ -14,8 +14,14 @@ import pandas as pd
 import streamlit as st
 
 BASE_DIR    = Path(__file__).resolve().parents[1]
-REPORT_PATH = BASE_DIR / "reports" / "batch_eval_results.json"
 PASS_THRESHOLD = 0.55   # must match prompt_dataset.py
+
+
+def _report_path() -> Path:
+    """Return the per-user batch eval report path."""
+    user_id = st.session_state.get("user", {}).get("id", "default")
+    safe_id = "".join(c if c.isalnum() or c in "-_" else "_" for c in user_id)
+    return BASE_DIR / "reports" / safe_id / "batch_eval_results.json"
 
 
 # -----------------------------------------------------------------------
@@ -183,12 +189,18 @@ def render():
     )
     st.markdown('<hr class="section-divider">', unsafe_allow_html=True)
 
-    # Load results
+    # Load results (user-specific file, evict if owned by a different user)
+    rp = _report_path()
+    current_uid = st.session_state.get("user", {}).get("id", "default")
+    if st.session_state.get("batch_results_owner") != current_uid:
+        st.session_state.pop("batch_results", None)
+        st.session_state.pop("batch_results_owner", None)
     results = st.session_state.get("batch_results")
-    if results is None and REPORT_PATH.exists():
-        with open(REPORT_PATH) as f:
+    if results is None and rp.exists():
+        with open(rp) as f:
             results = json.load(f)
         st.session_state["batch_results"] = results
+        st.session_state["batch_results_owner"] = current_uid
 
     if not results:
         st.info(

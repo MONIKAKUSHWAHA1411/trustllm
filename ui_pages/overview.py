@@ -25,7 +25,9 @@ def render():
     st.caption("Evaluate reliability, safety, and factual accuracy of LLM outputs.")
     st.markdown('<hr class="section-divider">', unsafe_allow_html=True)
 
-    results_path = BASE_DIR / "reports" / "results.json"
+    user_id = st.session_state.get("user", {}).get("id", "default")
+    safe_id = "".join(c if c.isalnum() or c in "-_" else "_" for c in user_id)
+    results_path = BASE_DIR / "reports" / safe_id / "results.json"
     if not results_path.exists():
         st.info(
             "📊 **No evaluation results yet.** "
