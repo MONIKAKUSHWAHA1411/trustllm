@@ -426,7 +426,7 @@ def _show_login() -> None:
                     line-height:1.1;margin-bottom:1.25rem;">
         AI fails differently than<br>normal software.
         </div>
-        <div style="font-size:1.2rem;color:rgba(199,210,254,0.85);line-height:1.75;max-width:640px;margin:0 auto;">
+        <div style="font-size:1.2rem;color:#7DD3FC;line-height:1.75;max-width:640px;margin:0 auto;">
         Traditional monitoring was built for deterministic code. LLMs are probabilistic — the same
         prompt can return different answers, and errors are often subtle, contextual, or outright invisible
         without specialized evaluation. You need a new kind of observability.
@@ -441,7 +441,7 @@ def _show_login() -> None:
         <div style="font-size:2rem;margin-bottom:1rem;">📈</div>
         <div style="font-weight:800;font-size:1.15rem;color:#ffffff;margin-bottom:0.5rem;
                     letter-spacing:-0.02em;">Scalable eval runs</div>
-        <div style="font-size:0.95rem;color:rgba(255,255,255,0.88);line-height:1.65;">
+        <div style="font-size:0.95rem;color:#7DD3FC;line-height:1.65;">
         Run hundreds of prompts across multiple models in minutes. Catch regressions before they
         reach your users — not after.
         </div>
@@ -452,7 +452,7 @@ def _show_login() -> None:
         <div style="font-size:2rem;margin-bottom:1rem;">🎯</div>
         <div style="font-weight:800;font-size:1.15rem;color:#ffffff;margin-bottom:0.5rem;
                     letter-spacing:-0.02em;">Live performance monitoring</div>
-        <div style="font-size:0.95rem;color:rgba(255,255,255,0.88);line-height:1.65;">
+        <div style="font-size:0.95rem;color:#7DD3FC;line-height:1.65;">
         Track trust scores, accuracy, and safety metrics over time. Know exactly when a model update
         changes your product's behaviour.
         </div>
@@ -463,7 +463,7 @@ def _show_login() -> None:
         <div style="font-size:2rem;margin-bottom:1rem;">🔔</div>
         <div style="font-weight:800;font-size:1.15rem;color:#ffffff;margin-bottom:0.5rem;
                     letter-spacing:-0.02em;">Catch issues early</div>
-        <div style="font-size:0.95rem;color:rgba(255,255,255,0.88);line-height:1.65;">
+        <div style="font-size:0.95rem;color:#7DD3FC;line-height:1.65;">
         Hallucination spikes, jailbreak attempts, and bias drift surface automatically —
         so your team can act before your users even notice.
         </div>
@@ -691,7 +691,7 @@ def _show_login() -> None:
         </div>
 
         <div style="margin-bottom:2rem;">
-        <div style="font-size:0.65rem;font-weight:600;color:rgba(255,255,255,0.45);letter-spacing:0.08em;
+        <div style="font-size:0.65rem;font-weight:600;color:#7DD3FC;letter-spacing:0.08em;
                     text-transform:uppercase;margin-bottom:1rem;">Evaluation Pipeline</div>
         <div style="display:flex;align-items:center;flex-wrap:wrap;gap:0.25rem;justify-content:center;">
         <div style="background:#1a4a35;border:1px solid #2d6a4f;border-radius:10px;
@@ -732,7 +732,7 @@ def _show_login() -> None:
         </div>
 
         <div>
-        <div style="font-size:0.65rem;font-weight:600;color:rgba(255,255,255,0.45);letter-spacing:0.08em;
+        <div style="font-size:0.65rem;font-weight:600;color:#7DD3FC;letter-spacing:0.08em;
                     text-transform:uppercase;margin-bottom:1rem;">RAG / Document Pipeline</div>
         <div style="display:flex;align-items:center;flex-wrap:wrap;gap:0.25rem;justify-content:center;">
         <div style="background:#1a4a35;border:1px solid #2d6a4f;border-radius:10px;
@@ -784,17 +784,17 @@ def _show_login() -> None:
         <div>
         <div style="font-size:3.5rem;font-weight:900;color:white;letter-spacing:-0.04em;line-height:1;">
         {stats["prompts"]}</div>
-        <div style="color:rgba(255,255,255,0.6);font-size:0.9rem;margin-top:0.4rem;">Prompts evaluated</div>
+        <div style="color:#7DD3FC;font-size:0.9rem;margin-top:0.4rem;">Prompts evaluated</div>
         </div>
         <div>
         <div style="font-size:3.5rem;font-weight:900;color:white;letter-spacing:-0.04em;line-height:1;">
         {stats["models"]}</div>
-        <div style="color:rgba(255,255,255,0.6);font-size:0.9rem;margin-top:0.4rem;">Models tested</div>
+        <div style="color:#7DD3FC;font-size:0.9rem;margin-top:0.4rem;">Models tested</div>
         </div>
         <div>
         <div style="font-size:3.5rem;font-weight:900;color:white;letter-spacing:-0.04em;line-height:1;">
         {stats["avg_trust"]}</div>
-        <div style="color:rgba(255,255,255,0.6);font-size:0.9rem;margin-top:0.4rem;">Avg trust score</div>
+        <div style="color:#7DD3FC;font-size:0.9rem;margin-top:0.4rem;">Avg trust score</div>
         </div>
         </div>
         </div>
