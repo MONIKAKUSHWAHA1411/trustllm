@@ -26,9 +26,8 @@ def _secret(key: str, default: str = "") -> str:
     except Exception:
         return os.getenv(key, default)
 
-GOOGLE_CLIENT_ID     = _secret("GOOGLE_CLIENT_ID")
-GOOGLE_CLIENT_SECRET = _secret("GOOGLE_CLIENT_SECRET")
-REDIRECT_URI         = _secret("OAUTH_REDIRECT_URI", "http://localhost:8501")
+# NOTE: Do NOT read secrets at module level — st.secrets is unavailable at import time.
+# All credential reads happen inside functions via _secret() at call time.
 
 _AUTHORIZATION_URL = "https://accounts.google.com/o/oauth2/v2/auth"
 _TOKEN_URL         = "https://oauth2.googleapis.com/token"

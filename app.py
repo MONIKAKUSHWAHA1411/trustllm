@@ -31,6 +31,12 @@ from auth.google_oauth import (
     exchange_code as _google_exchange_code,
     generate_state as _google_generate_state,
 )
+from auth.github_oauth import (
+    is_configured as _github_configured,
+    get_auth_url as _github_auth_url,
+    exchange_code as _github_exchange_code,
+    generate_state as _github_generate_state,
+)
 
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -118,23 +124,34 @@ def _handle_oauth_callback() -> None:
     code = params.get("code")
     if not code:
         return
-    # Optional state validation (CSRF guard)
+
+    # CSRF guard — state stored before redirect
     returned_state = params.get("state", "")
-    stored_state = st.session_state.get("oauth_state", "")
+    stored_state   = st.session_state.get("oauth_state", "")
+    provider       = st.session_state.get("oauth_provider", "google")
+
+    # Clear URL params immediately so a page refresh doesn't re-trigger the callback
     st.query_params.clear()
+
     if stored_state and returned_state != stored_state:
         st.error("OAuth state mismatch — possible CSRF. Please try signing in again.")
         return
+
     with st.spinner("Signing you in…"):
         try:
-            user_info = _google_exchange_code(code)
+            if provider == "github":
+                user_info = _github_exchange_code(code)
+            else:
+                user_info = _google_exchange_code(code)
         except Exception as exc:
             st.error(f"Sign-in failed: {exc}")
             return
+
     db_user = upsert_user(user_info)
-    st.session_state["logged_in"] = True
-    st.session_state["user"] = db_user or user_info
-    st.session_state.pop("oauth_state", None)
+    st.session_state["logged_in"]  = True
+    st.session_state["user"]       = db_user or user_info
+    st.session_state.pop("oauth_state",    None)
+    st.session_state.pop("oauth_provider", None)
     st.rerun()
 
 
@@ -884,43 +901,92 @@ def _show_login() -> None:
     # ── FORM CARD ─────────────────────────────────────────────────────
     _, form_col, _ = st.columns([1, 2, 1])
     with form_col:
-        # Google OAuth button — active when GOOGLE_CLIENT_ID + GOOGLE_CLIENT_SECRET are set
-        if _google_configured():
+        # ── OAuth buttons ────────────────────────────────────────────
+        _google_ok = _google_configured()
+        _github_ok = _github_configured()
+
+        if _google_ok or _github_ok:
             try:
-                _state = _google_generate_state()
-                st.session_state["oauth_state"] = _state
-                google_url = _google_auth_url(_state)
-                st.markdown(_h(f"""
-                    <div style="display:grid;grid-template-columns:1fr;gap:0.75rem;margin-bottom:1rem;">
-                    <a href="{google_url}" target="_self"
-                       style="display:flex;align-items:center;justify-content:center;gap:0.55rem;
-                              background:white;color:#374151;border:1px solid #d1d5db;
-                              border-radius:8px;padding:0.7rem 0.5rem;font-size:0.875rem;font-weight:500;
-                              text-decoration:none;box-sizing:border-box;">
-                    <svg width="16" height="16" viewBox="0 0 48 48" style="flex-shrink:0;">
-                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-                    </svg>
-                    Continue with Google
-                    </a>
-                    </div>
-                """), unsafe_allow_html=True)
+                btn_cols = st.columns(2) if (_google_ok and _github_ok) else [None, None]
+
+                # Google button
+                if _google_ok:
+                    _g_state = _google_generate_state()
+                    st.session_state["oauth_state"]    = _g_state
+                    st.session_state["oauth_provider"] = "google"
+                    google_url = _google_auth_url(_g_state)
+                    google_html = f"""
+                        <a href="{google_url}" target="_self"
+                           style="display:flex;align-items:center;justify-content:center;gap:0.55rem;
+                                  background:white;color:#374151;border:1px solid #d1d5db;
+                                  border-radius:8px;padding:0.7rem 0.5rem;font-size:0.875rem;font-weight:500;
+                                  text-decoration:none;box-sizing:border-box;width:100%;">
+                        <svg width="16" height="16" viewBox="0 0 48 48" style="flex-shrink:0;">
+                        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                        </svg>
+                        Continue with Google
+                        </a>"""
+                    if _github_ok and btn_cols[0]:
+                        with btn_cols[0]:
+                            st.markdown(google_html, unsafe_allow_html=True)
+                    else:
+                        st.markdown(f'<div style="margin-bottom:0.75rem;">{google_html}</div>', unsafe_allow_html=True)
+
+                # GitHub button
+                if _github_ok:
+                    _gh_state = _github_generate_state()
+                    st.session_state["oauth_state"]    = _gh_state
+                    st.session_state["oauth_provider"] = "github"
+                    github_url = _github_auth_url(_gh_state)
+                    github_html = f"""
+                        <a href="{github_url}" target="_self"
+                           style="display:flex;align-items:center;justify-content:center;gap:0.55rem;
+                                  background:#24292e;color:white;border:1px solid #24292e;
+                                  border-radius:8px;padding:0.7rem 0.5rem;font-size:0.875rem;font-weight:500;
+                                  text-decoration:none;box-sizing:border-box;width:100%;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="white" style="flex-shrink:0;">
+                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577
+                        0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755
+                        -1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305
+                        3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38
+                        1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399
+                        3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24
+                        2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81
+                        1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24
+                        17.295 24 12c0-6.63-5.37-12-12-12z"/>
+                        </svg>
+                        Continue with GitHub
+                        </a>"""
+                    if _google_ok and btn_cols[1]:
+                        with btn_cols[1]:
+                            st.markdown(github_html, unsafe_allow_html=True)
+                    else:
+                        st.markdown(f'<div style="margin-bottom:0.75rem;">{github_html}</div>', unsafe_allow_html=True)
+
+                st.markdown("<div style='margin-bottom:0.25rem;'></div>", unsafe_allow_html=True)
+
             except Exception as _e:
-                st.warning(f"Google sign-in unavailable: {_e}")
+                st.warning(f"OAuth sign-in unavailable: {_e}")
         else:
             st.markdown(_h("""
-                <div style="display:grid;grid-template-columns:1fr;gap:0.75rem;margin-bottom:1rem;">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1rem;">
                 <button style="background:white;color:#374151;border:1px solid #d1d5db;border-radius:8px;
                                padding:0.7rem 0.5rem;font-size:0.875rem;font-weight:500;
-                               width:100%;font-family:inherit;opacity:0.5;cursor:not-allowed;">
-                🔵 Continue with Google
+                               font-family:inherit;opacity:0.45;cursor:not-allowed;">
+                🌐 Continue with Google
+                </button>
+                <button style="background:#24292e;color:white;border:1px solid #24292e;border-radius:8px;
+                               padding:0.7rem 0.5rem;font-size:0.875rem;font-weight:500;
+                               font-family:inherit;opacity:0.45;cursor:not-allowed;">
+                ⬛ Continue with GitHub
                 </button>
                 </div>
                 <div style="text-align:center;margin-bottom:0.5rem;">
                 <span style="font-size:0.75rem;color:#9ca3af;">
-                ⚙️ Add GOOGLE_CLIENT_ID &amp; GOOGLE_CLIENT_SECRET to secrets to enable
+                ⚙️ OAuth not configured — add Supabase credentials to enable
                 </span>
                 </div>
             """), unsafe_allow_html=True)
