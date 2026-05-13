@@ -365,12 +365,59 @@ def _show_login() -> None:
         [data-testid="column"] input::placeholder, .stTextInput input::placeholder {
             color: #9ca3af !important; opacity:1 !important;
         }
+
+        /* ── RESPONSIVE — mobile (≤768px) ─────────────────────────── */
+        @media (max-width: 768px) {
+            /* Nav */
+            #top-nav { padding: 0 1rem !important; height: 56px !important; }
+            #top-nav [style*="gap:0.75rem"] { gap: 0.4rem !important; }
+            #top-nav [style*="font-size:0.9rem"] { font-size: 0.8rem !important; padding: 0.35rem 0.6rem !important; }
+
+            /* Hero */
+            #hero-section { padding: 2.5rem 1.25rem 2rem !important; }
+            #hero-section [style*="font-size:5rem"] { font-size: 2.5rem !important; line-height: 1.1 !important; }
+            #hero-section [style*="font-size:1.25rem"] { font-size: 1rem !important; }
+            #hero-section [style*="font-size:1rem"][style*="padding:0.8rem 2rem"] {
+                padding: 0.7rem 1.25rem !important; font-size: 0.95rem !important;
+            }
+
+            /* Why TrustLLM */
+            #why-section { padding: 2.5rem 1.25rem !important; }
+            #why-section [style*="font-size:3.25rem"] { font-size: 2rem !important; }
+            #why-section [style*="font-size:1.2rem"] { font-size: 0.95rem !important; }
+            #why-section [style*="grid-template-columns:repeat(3,1fr)"] { grid-template-columns: 1fr !important; gap: 1rem !important; }
+
+            /* Features */
+            #features-section { padding: 2.5rem 1.25rem !important; }
+            #features-section [style*="font-size:3.25rem"] { font-size: 2rem !important; }
+            #features-section [style*="grid-template-columns:repeat(3,1fr)"] { grid-template-columns: 1fr !important; gap: 1.25rem !important; }
+
+            /* Pipeline / How It Works */
+            #pipeline-section { padding: 2.5rem 1.25rem !important; }
+            #pipeline-section [style*="font-size:2.75rem"] { font-size: 1.75rem !important; }
+            #pipeline-section [style*="display:flex;align-items:center;flex-wrap:wrap"] {
+                gap: 0.4rem !important; justify-content: center !important;
+            }
+            #pipeline-section [style*="min-width:106px"] { min-width: 80px !important; padding: 0.6rem 0.6rem !important; }
+
+            /* Stats strip */
+            #stats-strip { padding: 2.5rem 1.25rem !important; }
+            #stats-strip [style*="grid-template-columns:repeat(3,1fr)"] { grid-template-columns: 1fr !important; gap: 1.5rem !important; }
+            #stats-strip [style*="font-size:3.5rem"] { font-size: 2.5rem !important; }
+
+            /* Sign-in / login section */
+            #signin-section { padding: 2.5rem 1.25rem !important; }
+            #signin-section [style*="font-size:2.5rem"] { font-size: 1.75rem !important; }
+
+            /* Footer */
+            #trustllm-footer { padding: 1.5rem 1.25rem !important; }
+        }
         </style>
     """), unsafe_allow_html=True)
 
     # ── STICKY TOP NAV ─────────────────────────────────────────────────
     st.markdown(_h("""
-        <div style="position:sticky;top:0;z-index:200;background:rgba(255,255,255,0.95);
+        <div id="top-nav" style="position:sticky;top:0;z-index:200;background:rgba(255,255,255,0.95);
                     backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
                     border-bottom:1px solid #e5e7eb;padding:0 3rem;height:64px;
                     display:flex;align-items:center;justify-content:space-between;">
@@ -395,7 +442,7 @@ def _show_login() -> None:
 
     # ── HERO ──────────────────────────────────────────────────────────
     st.markdown(_h("""
-        <div style="text-align:center;padding:5rem 2rem 3rem;
+        <div id="hero-section" style="text-align:center;padding:5rem 2rem 3rem;
                     background:linear-gradient(180deg,#fafbff 0%,#ffffff 100%);">
         <div style="display:inline-flex;align-items:center;gap:0.45rem;
                     background:#eef2ff;border:1px solid #c7d2fe;
@@ -796,7 +843,7 @@ def _show_login() -> None:
 
     # ── STATS STRIP ───────────────────────────────────────────────────
     st.markdown(_h(f"""
-        <div style="background:#1e1b4b;padding:3.5rem 3rem;border-top:1px solid rgba(165,180,252,0.1);">
+        <div id="stats-strip" style="background:#1e1b4b;padding:3.5rem 3rem;border-top:1px solid rgba(165,180,252,0.1);">
         <div style="max-width:700px;margin:0 auto;
                     display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;text-align:center;">
         <div>
