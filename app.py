@@ -370,47 +370,46 @@ def _show_login() -> None:
         @media (max-width: 768px) {
             /* Nav */
             #top-nav { padding: 0 1rem !important; height: 56px !important; }
-            #top-nav [style*="gap:0.75rem"] { gap: 0.4rem !important; }
-            #top-nav [style*="font-size:0.9rem"] { font-size: 0.8rem !important; padding: 0.35rem 0.6rem !important; }
 
             /* Hero */
             #hero-section { padding: 2.5rem 1.25rem 2rem !important; }
-            #hero-section [style*="font-size:5rem"] { font-size: 2.5rem !important; line-height: 1.1 !important; }
-            #hero-section [style*="font-size:1.25rem"] { font-size: 1rem !important; }
-            #hero-section [style*="font-size:1rem"][style*="padding:0.8rem 2rem"] {
-                padding: 0.7rem 1.25rem !important; font-size: 0.95rem !important;
+            .hero-title { font-size: 2.4rem !important; line-height: 1.1 !important; letter-spacing: -0.02em !important; }
+
+            /* 3-col grids → single column */
+            .grid-3col {
+                grid-template-columns: 1fr !important;
+                gap: 1.25rem !important;
             }
 
-            /* Why TrustLLM */
+            /* Section paddings */
             #why-section { padding: 2.5rem 1.25rem !important; }
-            #why-section [style*="font-size:3.25rem"] { font-size: 2rem !important; }
-            #why-section [style*="font-size:1.2rem"] { font-size: 0.95rem !important; }
-            #why-section [style*="grid-template-columns:repeat(3,1fr)"] { grid-template-columns: 1fr !important; gap: 1rem !important; }
-
-            /* Features */
             #features-section { padding: 2.5rem 1.25rem !important; }
-            #features-section [style*="font-size:3.25rem"] { font-size: 2rem !important; }
-            #features-section [style*="grid-template-columns:repeat(3,1fr)"] { grid-template-columns: 1fr !important; gap: 1.25rem !important; }
-
-            /* Pipeline / How It Works */
             #pipeline-section { padding: 2.5rem 1.25rem !important; }
-            #pipeline-section [style*="font-size:2.75rem"] { font-size: 1.75rem !important; }
-            #pipeline-section [style*="display:flex;align-items:center;flex-wrap:wrap"] {
-                gap: 0.4rem !important; justify-content: center !important;
-            }
-            #pipeline-section [style*="min-width:106px"] { min-width: 80px !important; padding: 0.6rem 0.6rem !important; }
-
-            /* Stats strip */
-            #stats-strip { padding: 2.5rem 1.25rem !important; }
-            #stats-strip [style*="grid-template-columns:repeat(3,1fr)"] { grid-template-columns: 1fr !important; gap: 1.5rem !important; }
-            #stats-strip [style*="font-size:3.5rem"] { font-size: 2.5rem !important; }
-
-            /* Sign-in / login section */
-            #signin-section { padding: 2.5rem 1.25rem !important; }
-            #signin-section [style*="font-size:2.5rem"] { font-size: 1.75rem !important; }
-
-            /* Footer */
+            #stats-strip { padding: 2rem 1.25rem !important; }
+            #signin-section { padding: 2rem 1.25rem !important; }
             #trustllm-footer { padding: 1.5rem 1.25rem !important; }
+
+            /* Section headings */
+            #why-section [style*="font-size:3.25rem"],
+            #features-section [style*="font-size:3.25rem"] { font-size: 1.9rem !important; }
+
+            /* Pipeline title */
+            .pipeline-title { font-size: 1.75rem !important; word-break: break-word !important; }
+
+            /* Pipeline boxes */
+            #pipeline-section [style*="min-width:106px"] {
+                min-width: 76px !important;
+                padding: 0.5rem 0.5rem !important;
+            }
+            #pipeline-section [style*="font-size:0.7rem;font-weight:700"] { font-size: 0.6rem !important; }
+            #pipeline-section [style*="font-size:0.55rem"] { font-size: 0.5rem !important; }
+
+            /* Stats numbers */
+            #stats-strip [style*="font-size:3.5rem"] { font-size: 2.4rem !important; }
+
+            /* Feature card headers — fix text wrapping */
+            #features-section [style*="font-size:1.35rem"] { font-size: 1.1rem !important; }
+            #features-section [style*="font-size:1.4rem"] { font-size: 1.1rem !important; }
         }
         </style>
     """), unsafe_allow_html=True)
@@ -450,11 +449,11 @@ def _show_login() -> None:
                     padding:0.3rem 0.9rem;border-radius:20px;margin-bottom:1.75rem;">
         ✦ LLM EVALUATION PLATFORM
         </div>
-        <div style="font-size:5rem;font-weight:900;color:#111827;line-height:1.05;
+        <div class="hero-title" style="font-size:5rem;font-weight:900;color:#111827;line-height:1.05;
                     letter-spacing:-0.04em;margin:0 0 0.1em 0;">
         Evaluate LLMs
         </div>
-        <div style="font-size:5rem;font-weight:900;line-height:1.05;letter-spacing:-0.04em;
+        <div class="hero-title" style="font-size:5rem;font-weight:900;line-height:1.05;letter-spacing:-0.04em;
                     margin:0 0 1.5rem 0;
                     background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);
                     -webkit-background-clip:text;-webkit-text-fill-color:transparent;
@@ -499,7 +498,7 @@ def _show_login() -> None:
         </div>
 
         <!-- 3-pillar grid -->
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;">
+        <div class="grid-3col" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;">
 
         <div style="border:1px solid rgba(165,180,252,0.2);border-radius:16px;padding:2rem;
                     background:rgba(255,255,255,0.07);backdrop-filter:blur(8px);">
@@ -556,7 +555,7 @@ def _show_login() -> None:
         </div>
 
         <!-- 3 feature cards — glassmorphism on gradient bg -->
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.75rem;">
+        <div class="grid-3col" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.75rem;">
 
         <!-- Card 1: Overview Dashboard -->
         <div style="border-radius:22px;overflow:hidden;display:flex;flex-direction:column;
@@ -750,7 +749,7 @@ def _show_login() -> None:
         <div style="text-align:center;margin-bottom:3rem;">
         <div style="font-size:1rem;font-weight:900;color:#4ade80;text-transform:uppercase;
                     letter-spacing:0.14em;margin-bottom:1.1rem;">HOW IT WORKS</div>
-        <div style="font-size:2.75rem;font-weight:900;color:white;letter-spacing:-0.03em;line-height:1.2;">
+        <div class="pipeline-title" style="font-size:2.75rem;font-weight:900;color:white;letter-spacing:-0.03em;line-height:1.2;">
         The TrustLLM Pipeline
         </div>
         </div>
@@ -844,7 +843,7 @@ def _show_login() -> None:
     # ── STATS STRIP ───────────────────────────────────────────────────
     st.markdown(_h(f"""
         <div id="stats-strip" style="background:#1e1b4b;padding:3.5rem 3rem;border-top:1px solid rgba(165,180,252,0.1);">
-        <div style="max-width:700px;margin:0 auto;
+        <div class="grid-3col" style="max-width:700px;margin:0 auto;
                     display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;text-align:center;">
         <div>
         <div style="font-size:3.5rem;font-weight:900;color:white;letter-spacing:-0.04em;line-height:1;">
