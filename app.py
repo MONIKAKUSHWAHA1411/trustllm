@@ -903,6 +903,24 @@ def _show_login() -> None:
         _google_ok = _google_configured()
         _github_ok = _github_configured()
 
+        # OAuth debug panel — visible only when ?debug=oauth in URL
+        if st.query_params.get("debug") == "oauth":
+            _redirect_uri = os.getenv("OAUTH_REDIRECT_URI", "")
+            try:
+                _redirect_uri = st.secrets.get("OAUTH_REDIRECT_URI", _redirect_uri)
+            except Exception:
+                pass
+            with st.expander("🔧 OAuth debug", expanded=True):
+                st.write({
+                    "google_configured": _google_ok,
+                    "github_configured": _github_ok,
+                    "OAUTH_REDIRECT_URI": _redirect_uri or "(not set — defaults to http://localhost:8501)",
+                })
+                if _google_ok:
+                    st.code(_google_auth_url("google:DEBUG"), language="text")
+                if _github_ok:
+                    st.code(_github_auth_url("github:DEBUG"), language="text")
+
         if _google_ok or _github_ok:
             try:
                 btn_cols = st.columns(2) if (_google_ok and _github_ok) else [None, None]
@@ -912,7 +930,7 @@ def _show_login() -> None:
                     _g_state = "google:" + _google_generate_state()
                     google_url = _google_auth_url(_g_state)
                     google_html = f"""
-                        <a href="{google_url}" target="_self"
+                        <a href="{google_url}" target="_top"
                            style="display:flex;align-items:center;justify-content:center;gap:0.55rem;
                                   background:white;color:#374151;border:1px solid #d1d5db;
                                   border-radius:8px;padding:0.7rem 0.5rem;font-size:0.875rem;font-weight:500;
@@ -936,7 +954,7 @@ def _show_login() -> None:
                     _gh_state = "github:" + _github_generate_state()
                     github_url = _github_auth_url(_gh_state)
                     github_html = f"""
-                        <a href="{github_url}" target="_self"
+                        <a href="{github_url}" target="_top"
                            style="display:flex;align-items:center;justify-content:center;gap:0.55rem;
                                   background:#24292e;color:white;border:1px solid #24292e;
                                   border-radius:8px;padding:0.7rem 0.5rem;font-size:0.875rem;font-weight:500;
