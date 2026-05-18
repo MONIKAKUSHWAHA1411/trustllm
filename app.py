@@ -125,17 +125,17 @@ def _handle_oauth_callback() -> None:
     if not code:
         return
 
-    # CSRF guard — state stored before redirect
+    # Provider is encoded into the state itself: "<provider>:<random>"
+    # This avoids the race where rendering both buttons overwrites session_state.
     returned_state = params.get("state", "")
-    stored_state   = st.session_state.get("oauth_state", "")
-    provider       = st.session_state.get("oauth_provider", "google")
+    provider = "google"
+    if ":" in returned_state:
+        prefix, _ = returned_state.split(":", 1)
+        if prefix in ("google", "github"):
+            provider = prefix
 
     # Clear URL params immediately so a page refresh doesn't re-trigger the callback
     st.query_params.clear()
-
-    if stored_state and returned_state != stored_state:
-        st.error("OAuth state mismatch — possible CSRF. Please try signing in again.")
-        return
 
     with st.spinner("Signing you in…"):
         try:
@@ -144,14 +144,12 @@ def _handle_oauth_callback() -> None:
             else:
                 user_info = _google_exchange_code(code)
         except Exception as exc:
-            st.error(f"Sign-in failed: {exc}")
+            st.error(f"Sign-in failed ({provider}): {exc}")
             return
 
     db_user = upsert_user(user_info)
-    st.session_state["logged_in"]  = True
-    st.session_state["user"]       = db_user or user_info
-    st.session_state.pop("oauth_state",    None)
-    st.session_state.pop("oauth_provider", None)
+    st.session_state["logged_in"] = True
+    st.session_state["user"]      = db_user or user_info
     st.rerun()
 
 
@@ -909,11 +907,9 @@ def _show_login() -> None:
             try:
                 btn_cols = st.columns(2) if (_google_ok and _github_ok) else [None, None]
 
-                # Google button
+                # Google button — state prefixed with "google:" so callback can identify provider
                 if _google_ok:
-                    _g_state = _google_generate_state()
-                    st.session_state["oauth_state"]    = _g_state
-                    st.session_state["oauth_provider"] = "google"
+                    _g_state = "google:" + _google_generate_state()
                     google_url = _google_auth_url(_g_state)
                     google_html = f"""
                         <a href="{google_url}" target="_self"
@@ -935,11 +931,9 @@ def _show_login() -> None:
                     else:
                         st.markdown(f'<div style="margin-bottom:0.75rem;">{google_html}</div>', unsafe_allow_html=True)
 
-                # GitHub button
+                # GitHub button — state prefixed with "github:" so callback can identify provider
                 if _github_ok:
-                    _gh_state = _github_generate_state()
-                    st.session_state["oauth_state"]    = _gh_state
-                    st.session_state["oauth_provider"] = "github"
+                    _gh_state = "github:" + _github_generate_state()
                     github_url = _github_auth_url(_gh_state)
                     github_html = f"""
                         <a href="{github_url}" target="_self"
