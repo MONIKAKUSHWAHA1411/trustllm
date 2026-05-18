@@ -65,16 +65,60 @@ def exchange_code(code: str) -> dict:
     Exchange the authorisation code for tokens, fetch user-info from Google,
     and return a normalised dict:
         { id, name, email, picture }
+
+    Uses requests directly (not authlib) so we can surface Google's exact
+    error JSON when something fails.
     """
-    client = OAuth2Session(
-        client_id=_secret("GOOGLE_CLIENT_ID"),
-        client_secret=_secret("GOOGLE_CLIENT_SECRET"),
-        redirect_uri=_secret("OAUTH_REDIRECT_URI", "http://localhost:8501"),
+    import requests
+
+    client_id     = _secret("GOOGLE_CLIENT_ID")
+    client_secret = _secret("GOOGLE_CLIENT_SECRET")
+    redirect_uri  = _secret("OAUTH_REDIRECT_URI", "http://localhost:8501")
+
+    token_resp = requests.post(
+        _TOKEN_URL,
+        data={
+            "grant_type":    "authorization_code",
+            "code":          code,
+            "redirect_uri":  redirect_uri,
+            "client_id":     client_id,
+            "client_secret": client_secret,
+        },
+        headers={"Accept": "application/json"},
+        timeout=15,
     )
-    client.fetch_token(_TOKEN_URL, code=code)
-    resp = client.get(_USERINFO_URL)
-    resp.raise_for_status()
-    raw = resp.json()
+
+    if not token_resp.ok:
+        # Surface Google's exact error PLUS diagnostic info about the code we sent
+        try:
+            err = token_resp.json()
+        except Exception:
+            err = {"error": token_resp.text}
+        diagnostic = (
+            f"code_len={len(code)}, "
+            f"code_head={code[:6]!r}, "
+            f"code_tail={code[-4:]!r}, "
+            f"redirect_uri={redirect_uri!r}, "
+            f"client_id_tail=...{client_id[-12:] if client_id else ''}, "
+            f"status={token_resp.status_code}"
+        )
+        raise Exception(
+            f"{err.get('error', 'token_exchange_failed')}: "
+            f"{err.get('error_description', '')} | {diagnostic}"
+        )
+
+    token_data = token_resp.json()
+    access_token = token_data.get("access_token")
+    if not access_token:
+        raise Exception(f"No access_token in token response: {token_data}")
+
+    user_resp = requests.get(
+        _USERINFO_URL,
+        headers={"Authorization": f"Bearer {access_token}"},
+        timeout=15,
+    )
+    user_resp.raise_for_status()
+    raw = user_resp.json()
 
     return {
         "id":      raw.get("sub", raw.get("id", "")),
