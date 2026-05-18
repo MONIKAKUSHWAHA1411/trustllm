@@ -125,17 +125,28 @@ def _handle_oauth_callback() -> None:
     if not code:
         return
 
-    # Provider is encoded into the state itself: "<provider>:<random>"
-    # This avoids the race where rendering both buttons overwrites session_state.
+    # CRITICAL: prevent double-exchange.
+    # Streamlit reruns the script when URL params change. Without this guard,
+    # the same authorization code gets sent to Google twice — the second
+    # attempt fails with "invalid_grant: Malformed auth code" because the
+    # code is single-use.
+    if st.session_state.get("_oauth_processing") == code:
+        return
+    if st.session_state.get("_oauth_used_code") == code:
+        # Already exchanged this code successfully — clean up the URL and bail
+        st.query_params.clear()
+        return
+
+    # Mark this code as in-flight BEFORE any work, so reruns see the guard
+    st.session_state["_oauth_processing"] = code
+
+    # Decode provider from state ("google:..." or "github:...")
     returned_state = params.get("state", "")
     provider = "google"
     if ":" in returned_state:
         prefix, _ = returned_state.split(":", 1)
         if prefix in ("google", "github"):
             provider = prefix
-
-    # Clear URL params immediately so a page refresh doesn't re-trigger the callback
-    st.query_params.clear()
 
     with st.spinner("Signing you in…"):
         try:
@@ -144,8 +155,16 @@ def _handle_oauth_callback() -> None:
             else:
                 user_info = _google_exchange_code(code)
         except Exception as exc:
+            # Release the lock so user can retry with a fresh code
+            st.session_state.pop("_oauth_processing", None)
+            st.query_params.clear()
             st.error(f"Sign-in failed ({provider}): {exc}")
             return
+
+    # Mark code as fully used; clear in-flight lock
+    st.session_state["_oauth_used_code"] = code
+    st.session_state.pop("_oauth_processing", None)
+    st.query_params.clear()
 
     db_user = upsert_user(user_info)
     st.session_state["logged_in"] = True
