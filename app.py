@@ -155,7 +155,10 @@ def _handle_oauth_callback() -> None:
             else:
                 user_info = _google_exchange_code(code)
         except Exception as exc:
-            # Release the lock so user can retry with a fresh code
+            # Mark this exact code as already-tried so an auto-rerun
+            # doesn't re-fire the same exchange and stack a 2nd error.
+            # User can still retry by clicking the button (new code each time).
+            st.session_state["_oauth_used_code"] = code
             st.session_state.pop("_oauth_processing", None)
             st.query_params.clear()
             st.error(f"Sign-in failed ({provider}): {exc}")
