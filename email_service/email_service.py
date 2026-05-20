@@ -77,3 +77,36 @@ def send_welcome_email_async(to_email: str, display_name: str = "") -> threading
 def send_welcome_email_sync(to_email: str, display_name: str = "") -> bool:
     """Blocking send — useful for testing or CLI scripts."""
     return _deliver(to_email, display_name)
+
+
+def send_welcome_email_with_result(to_email: str, display_name: str = "") -> tuple:
+    """Sync send that returns (success: bool, message: str) for UI display.
+
+    Surfaces the exact failure reason (missing key, Resend rejection, etc.)
+    so it can be shown to the user during signup. Unlike _deliver, this does
+    not swallow exceptions — it captures the message for the caller.
+    """
+    try:
+        import resend  # lazy import; app must start even if resend isn't installed
+    except Exception as e:
+        return False, f"resend package not importable: {type(e).__name__}: {e}"
+
+    api_key = _secret("RESEND_API_KEY", "")
+    if not api_key:
+        return False, "RESEND_API_KEY is not set in Streamlit secrets"
+
+    resend.api_key = api_key
+    from_addr = _secret("EMAIL_FROM", "monikakushwaha@trustllm.site")
+
+    try:
+        result = resend.Emails.send({
+            "from": from_addr,
+            "to": [to_email],
+            "subject": "Welcome to TrustLLM 🚀",
+            "html": get_welcome_html(display_name),
+            "text": get_welcome_text(display_name),
+        })
+        rid = result.get("id") if isinstance(result, dict) else getattr(result, "id", "?")
+        return True, f"Email queued via Resend (id={rid}, from={from_addr})"
+    except Exception as e:
+        return False, f"Resend rejected send (from={from_addr}): {type(e).__name__}: {e}"
