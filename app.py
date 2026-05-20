@@ -1114,26 +1114,15 @@ def _show_login() -> None:
                 else:
                     created = _create_local_user(new_user, new_pass, new_name, new_email)
                     if created:
-                        st.success("Account created!")
-                        # Synchronous welcome-email send with visible result.
-                        # Sync (not async) so the user can see the exact outcome
-                        # right here on the page — easier to diagnose Resend
-                        # config issues than chasing background-thread logs.
                         if new_email:
-                            with st.spinner(f"Sending welcome email to {new_email}..."):
-                                try:
-                                    from email_service.email_service import send_welcome_email_with_result
-                                    ok, msg = send_welcome_email_with_result(new_email, new_name or new_user)
-                                except Exception as _e:
-                                    ok, msg = False, f"dispatch error: {type(_e).__name__}: {_e}"
-                            if ok:
-                                st.info(f"📧 {msg}")
-                            else:
-                                st.warning(f"📧 Welcome email did not send — {msg}")
-                        st.markdown("**Click below to sign in →**")
-                        if st.button("Go to sign in", key="post_signup_signin", use_container_width=True):
-                            st.session_state.login_mode = "signin"
-                            st.rerun()
+                            try:
+                                from email_service.email_service import send_welcome_email_async
+                                send_welcome_email_async(new_email, new_name or new_user)
+                            except Exception as _e:
+                                print(f"[signup] welcome email dispatch failed: {_e}")
+                        st.success("Account created! Sign in below.")
+                        st.session_state.login_mode = "signin"
+                        st.rerun()
                     else:
                         st.error("Username already taken.")
 

@@ -128,7 +128,7 @@ def get_welcome_html(display_name: str = "") -> str:
                        border:1px solid rgba(139,92,246,0.15);
                        border-radius:20px;padding:36px 36px 28px;">
               <p style="margin:0 0 12px;font-size:0.95rem;color:#a5b4fc;
-                        font-weight:600;letter-spacing:0.04em;text-transform:uppercase;">
+                        font-weight:600;letter-spacing:0.04em;">
                 {greeting}
               </p>
               <p style="margin:0;font-size:1.05rem;line-height:1.65;color:#e5e7eb;">
