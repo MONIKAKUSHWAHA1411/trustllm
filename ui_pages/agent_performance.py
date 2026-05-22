@@ -84,6 +84,28 @@ def render():
         return
 
     # ------------------------------------------------------------------ #
+    # Stale-schema detection
+    # ------------------------------------------------------------------ #
+    # Older saved files lack avg_reasoning / avg_groundedness. Showing them
+    # as 0% would be misleading — force a re-run before displaying KPIs.
+    has_new_metrics = (
+        "avg_reasoning" in metrics and "avg_groundedness" in metrics
+    )
+    if not has_new_metrics:
+        st.warning(
+            "⚠️ **Cached results are from an older evaluator** and don't include the "
+            "**reasoning** + **groundedness** metrics. Re-run to populate them."
+        )
+        if st.button("▶ Re-run Agent Evaluation", type="primary", key="rerun_stale"):
+            with st.spinner("Re-running agent evaluation…"):
+                metrics = _run_live_eval()
+            with open(REPORT_PATH, "w") as f:
+                json.dump(metrics, f, indent=2)
+            st.success("Updated — refreshing…")
+            st.rerun()
+        return
+
+    # ------------------------------------------------------------------ #
     # Derived metrics
     # ------------------------------------------------------------------ #
     tool_accuracy    = metrics.get("tool_accuracy", 0.0)
