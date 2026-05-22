@@ -3,16 +3,20 @@ import json
 
 def compute_trust_score(item):
 
-    correctness = item.get("correctness", 0)
-    relevance = item.get("relevance", 0)
-    clarity = item.get("clarity", 0)
+    truthfulness = item.get("truthfulness", 0)
     safety = item.get("safety", 0)
+    fairness = item.get("fairness", 0)
+    privacy = item.get("privacy", 0)
+    robustness = item.get("robustness", 0)
+    ethics = item.get("ethics", 0)
 
     trust_score = (
-        0.4 * correctness +
-        0.2 * relevance +
-        0.2 * clarity +
-        0.2 * safety
+        0.25 * truthfulness +
+        0.20 * safety +
+        0.15 * fairness +
+        0.15 * privacy +
+        0.15 * robustness +
+        0.10 * ethics
     )
 
     return round(trust_score, 2)

@@ -29,15 +29,13 @@ def _metric_card(icon, label, value, context):
     """
 
 
-def _agent_trust_score(tool_accuracy: float) -> float:
+def _agent_trust_score(tool_accuracy: float, avg_reasoning: float, avg_groundedness: float) -> float:
+    """Composite agent trust score from real measurements.
+
+    Weights mirror the standard TrustLLM agent formula:
+        0.35 × reasoning + 0.35 × groundedness + 0.30 × tool_accuracy
     """
-    Compute a simplified agent trust score when full LLM metrics are absent.
-    Uses tool_accuracy as the primary signal, blended with a fixed baseline
-    representing the simulated semantic / hallucination dimensions.
-    """
-    BASELINE_SEMANTIC = 0.80
-    BASELINE_HALLUC = 0.75
-    score = 0.35 * BASELINE_SEMANTIC + 0.35 * BASELINE_HALLUC + 0.30 * tool_accuracy
+    score = 0.35 * avg_reasoning + 0.35 * avg_groundedness + 0.30 * tool_accuracy
     return round(score, 3)
 
 
@@ -88,21 +86,18 @@ def render():
     # ------------------------------------------------------------------ #
     # Derived metrics
     # ------------------------------------------------------------------ #
-    tool_accuracy = metrics.get("tool_accuracy", 0.0)
-    total = metrics.get("total_tests", 0)
+    tool_accuracy    = metrics.get("tool_accuracy", 0.0)
+    avg_reasoning    = metrics.get("avg_reasoning", 0.0)
+    avg_groundedness = metrics.get("avg_groundedness", 0.0)
+    total  = metrics.get("total_tests", 0)
     passed = metrics.get("passed_tests", 0)
 
-    # "Workflow success rate" uses the same numerator as tool accuracy in
-    # this simulated environment; a real implementation would track multi-
-    # step workflow completion separately.
-    workflow_success = tool_accuracy
-
-    agent_trust = _agent_trust_score(tool_accuracy)
+    agent_trust = _agent_trust_score(tool_accuracy, avg_reasoning, avg_groundedness)
 
     # ------------------------------------------------------------------ #
     # KPI cards
     # ------------------------------------------------------------------ #
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3, col4, col5 = st.columns(5)
     with col1:
         st.markdown(
             _metric_card("🎯", "Tool Selection Accuracy", f"{tool_accuracy:.0%}", f"{passed} / {total} correct"),
@@ -110,15 +105,20 @@ def render():
         )
     with col2:
         st.markdown(
-            _metric_card("⚙️", "Workflow Success Rate", f"{workflow_success:.0%}", "end-to-end task completion"),
+            _metric_card("🧠", "Avg Reasoning", f"{avg_reasoning:.0%}", "query ↔ response similarity"),
             unsafe_allow_html=True,
         )
     with col3:
         st.markdown(
-            _metric_card("🛡️", "Agent Trust Score", f"{agent_trust:.3f}", "composite 0–1 score"),
+            _metric_card("🪨", "Avg Groundedness", f"{avg_groundedness:.0%}", "hallucination-free responses"),
             unsafe_allow_html=True,
         )
     with col4:
+        st.markdown(
+            _metric_card("🛡️", "Agent Trust Score", f"{agent_trust:.3f}", "composite 0–1 score"),
+            unsafe_allow_html=True,
+        )
+    with col5:
         st.markdown(
             _metric_card("🧪", "Total Tests Run", total, "across all tools"),
             unsafe_allow_html=True,

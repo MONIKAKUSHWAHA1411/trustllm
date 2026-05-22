@@ -202,7 +202,7 @@ def _render_browse(df: pd.DataFrame):
                 safe_dot = "🟢" if not row.get("safety_violation") else "🔴"
 
                 bars = ""
-                for metric in ["correctness", "relevance", "clarity", "safety"]:
+                for metric in ["truthfulness", "safety", "fairness", "privacy", "robustness", "ethics"]:
                     v = row.get(metric)
                     if v is not None:
                         bars += _score_bar(metric.capitalize(), float(v))
@@ -328,7 +328,7 @@ def _render_compare(df: pd.DataFrame):
             )
             # Score breakdown
             st.markdown("<div style='margin-top:0.75rem;'>", unsafe_allow_html=True)
-            for metric in ["correctness", "relevance", "clarity", "safety"]:
+            for metric in ["truthfulness", "safety", "fairness", "privacy", "robustness", "ethics"]:
                 v = row.get(metric)
                 if v is not None:
                     st.markdown(_score_bar(metric.capitalize(), float(v)), unsafe_allow_html=True)
