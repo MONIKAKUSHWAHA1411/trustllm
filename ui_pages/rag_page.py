@@ -418,9 +418,11 @@ def _tab_evaluation():
             st.error(f"Evaluation error: {e}")
             return
 
-    cr = metrics["context_relevance"]
-    fa = metrics["faithfulness"]
-    hr = metrics["hallucination_risk"]
+    cr  = metrics["context_relevance"]
+    fa  = metrics["faithfulness"]
+    hr  = metrics["hallucination_risk"]
+    rak = metrics.get("recall_at_k", 0.0)
+    prec = metrics.get("precision", 0.0)
     confidence = _confidence_score(fa, cr, hr)
 
     # --- Confidence score hero ---
@@ -462,7 +464,7 @@ def _tab_evaluation():
     st.markdown("<br>", unsafe_allow_html=True)
 
     # --- Individual metrics ---
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3, col4, col5 = st.columns(5)
     with col1:
         st.metric("🎯 Context Relevance", f"{cr:.2%}",
                   help="How relevant are retrieved chunks to the query?")
@@ -476,6 +478,14 @@ def _tab_evaluation():
         st.metric(f"{risk_color} Hallucination Risk", f"{hr:.2%}",
                   help="Estimated probability of hallucination (lower = better)")
         st.progress(hr)
+    with col4:
+        st.metric("📡 Recall@K", f"{rak:.2%}",
+                  help="Fraction of retrieved chunks above the relevance threshold.")
+        st.progress(rak)
+    with col5:
+        st.metric("🎯 Precision", f"{prec:.2%}",
+                  help="Average retrieval score across fetched chunks — signal density.")
+        st.progress(prec)
 
     # --- Latency metrics ---
     latency = result.get("latency", {})

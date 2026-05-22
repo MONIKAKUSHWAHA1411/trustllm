@@ -1,7 +1,7 @@
 """
 rag/evaluator.py — TrustLLM RAG Module
 =========================================
-Computes three evaluation metrics for a RAG response using
+Computes evaluation metrics for a RAG response using
 cosine similarity on embeddings.  No external judge LLM needed.
 
 Metrics
@@ -10,6 +10,8 @@ context_relevance  : How relevant are the retrieved chunks to the query?
 faithfulness       : Is the answer grounded in the retrieved context?
 hallucination_risk : Estimated probability the answer contains hallucinations
                      (1 - faithfulness).
+recall_at_k        : Fraction of retrieved chunks above the relevance threshold.
+precision          : Quality-weighted average of raw retrieval scores.
 """
 
 from typing import List
@@ -73,6 +75,8 @@ def evaluate_rag(
             "context_relevance": 0.0,
             "faithfulness": 0.0,
             "hallucination_risk": 1.0,
+            "recall_at_k": 0.0,
+            "precision": 0.0,
         }
 
     doc_texts = [d["text"] for d in context_docs]
@@ -100,8 +104,24 @@ def evaluate_rag(
     faithfulness = max(0.0, min(1.0, faithfulness))
     hallucination_risk = round(1.0 - faithfulness, 4)
 
+    # --- Recall@K ---
+    # Fraction of retrieved chunks whose raw retrieval score clears the
+    # relevance threshold — approximates "did we surface enough relevant docs?"
+    RECALL_THRESHOLD = 0.35
+    raw_scores = [doc.get("score", 0.0) for doc in context_docs]
+    relevant_count = sum(1 for s in raw_scores if s >= RECALL_THRESHOLD)
+    recall_at_k = round(relevant_count / len(context_docs), 4)
+
+    # --- Precision ---
+    # Average raw retrieval score across all retrieved chunks — measures
+    # the overall quality/signal density of what was fetched.
+    precision = round(sum(raw_scores) / len(raw_scores), 4) if raw_scores else 0.0
+    precision = max(0.0, min(1.0, precision))
+
     return {
         "context_relevance": context_relevance,
         "faithfulness": faithfulness,
         "hallucination_risk": hallucination_risk,
+        "recall_at_k": recall_at_k,
+        "precision": precision,
     }
