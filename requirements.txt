@@ -19,3 +19,13 @@ authlib>=1.0.0
 
 # Email
 resend>=2.0.0
+
+# Pro: cloud model providers (BYOK — bring your own key)
+anthropic>=0.39.0
+openai>=1.50.0
+google-generativeai>=0.8.0
+mistralai>=1.2.0
+huggingface_hub>=0.26.0
+
+# Pro: encrypt user API keys at rest
+cryptography>=43.0.0

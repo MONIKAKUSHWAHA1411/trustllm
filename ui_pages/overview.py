@@ -6,10 +6,25 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 
-# Only show models that produce real Groq-backed evaluations.
-# Anything else (mistral/phi/phi3/claude/gemini-pro/gpt) is historical data
-# from the pre-upgrade simulation and is hidden from the dashboard.
-REAL_MODELS = {"Llama 3.3 70B", "Llama 3.1 8B"}
+# Only show models that produce real LLM-backed evaluations.
+# Historical simulated entries (lowercase "mistral", "phi", "phi3", "claude",
+# "gemini-pro", "gpt") are hidden. Real Groq Llama + Pro BYOK models pass through.
+_GROQ_MODELS = {"Llama 3.3 70B", "Llama 3.1 8B"}
+
+
+def _build_real_models() -> set:
+    """Union of Groq labels + all Pro provider model display names."""
+    real = set(_GROQ_MODELS)
+    try:
+        from llm_runner.providers import list_all_models
+        for _provider, display, _model_id in list_all_models():
+            real.add(display)
+    except Exception:
+        pass
+    return real
+
+
+REAL_MODELS = _build_real_models()
 
 
 def _metric_card(icon, label, value, context):

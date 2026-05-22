@@ -20,6 +20,13 @@ BASE_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(BASE_DIR))
 
 from evaluation_engine.judge import judge_response, DIMENSIONS
+from auth.api_keys import get_key as get_user_api_key
+from llm_runner.providers import (
+    PROVIDERS as PRO_PROVIDERS,
+    list_all_models as list_all_pro_models,
+    get_provider_for_model,
+    generate_response as pro_generate_response,
+)
 
 PROMPTS_PATH = BASE_DIR / "datasets" / "prompts.json"
 
@@ -27,8 +34,6 @@ GROQ_MODELS = {
     "Llama 3.3 70B":   "llama-3.3-70b-versatile",
     "Llama 3.1 8B":    "llama-3.1-8b-instant",
 }
-PRO_MODELS = ["GPT-4o — Pro ✦", "Claude 3 — Pro ✦", "Gemini 1.5 — Pro ✦"]
-PRO_FALLBACK_MODEL = "llama-3.1-8b-instant"
 
 
 def _results_path() -> Path:
@@ -46,7 +51,7 @@ def _load_prompts_by_category(category):
     return [p for p in prompts if p["category"] == category]
 
 
-def _generate_response(prompt: str, model_id: str) -> str:
+def _generate_groq(prompt: str, model_id: str) -> str:
     """Call Groq to generate an answer for the prompt."""
     from rag.rag_pipeline import _get_groq_client
     client = _get_groq_client()
@@ -59,14 +64,25 @@ def _generate_response(prompt: str, model_id: str) -> str:
     return resp.choices[0].message.content.strip()
 
 
-def _evaluate_prompt(prompt_item, model_id, model_label):
+def _generate_response(prompt: str, model_id: str, is_pro: bool) -> str:
+    """Dispatch generation: Pro models route to BYOK provider, Groq otherwise."""
+    if is_pro:
+        provider = get_provider_for_model(model_id)
+        api_key = get_user_api_key(provider)
+        if not api_key:
+            raise RuntimeError(f"NO_API_KEY:{provider}")
+        return pro_generate_response(provider, model_id, prompt, api_key)
+    return _generate_groq(prompt, model_id)
+
+
+def _evaluate_prompt(prompt_item, model_id, model_label, is_pro=False):
     """Run a single prompt: generate → judge → score."""
     from evaluation_engine.hallucination_detector import detect_hallucination
 
     prompt = prompt_item["prompt"]
 
-    response = _generate_response(prompt, model_id)
-    scores = judge_response(prompt, response)  # uses default small judge model
+    response = _generate_response(prompt, model_id, is_pro=is_pro)
+    scores = judge_response(prompt, response)  # judge always uses small Groq model
     hallucination = detect_hallucination(response, prompt=prompt)
     trust_score = round(sum(scores.values()) / 6, 3)
 
@@ -94,24 +110,45 @@ def render():
     st.caption("Run prompts through a real LLM and score the response across six trust dimensions.")
     st.markdown('<hr class="section-divider">', unsafe_allow_html=True)
 
-    groq_options = [f"{name} (Groq)" for name in GROQ_MODELS]
-    model_options = groq_options + PRO_MODELS
-    model_selection = st.selectbox("Select Model", model_options)
+    # Build the model dropdown: Groq Llama options first, then BYOK Pro models.
+    # Pro labels are tagged with provider so we can resolve them back to model IDs.
+    groq_options = [(label, label, GROQ_MODELS[label], False, None)
+                    for label in GROQ_MODELS]
+    pro_options = []
+    for provider_id, display, model_id_pro in list_all_pro_models():
+        provider_meta = PRO_PROVIDERS[provider_id]
+        pro_options.append((
+            f"{display} — {provider_meta['display_name']} ✦",  # display in dropdown
+            display,                                           # short label saved to results
+            model_id_pro,                                      # actual model id for API
+            True,                                              # is_pro
+            provider_id,                                       # provider key
+        ))
 
-    if "Pro ✦" in model_selection:
-        st.info(
-            "Cloud models (GPT-4o, Claude 3, Gemini 1.5) are coming in **TrustLLM Pro**. "
-            "Using **Llama 3.1 8B (Groq)** as fallback for this run — results will be "
-            "saved under the actual underlying model (Llama 3.1 8B) to keep the dashboard honest."
-        )
-        model_id = PRO_FALLBACK_MODEL
-        # Save under the actual model that ran, NOT the Pro label — keeps the
-        # dashboard truthful about which model produced the results.
-        model_label = "Llama 3.1 8B"
-    else:
-        label = model_selection.replace(" (Groq)", "")
-        model_id = GROQ_MODELS[label]
-        model_label = label
+    options = groq_options + pro_options
+    selection_labels = [opt[0] for opt in options]
+    chosen_idx = selection_labels.index(
+        st.selectbox("Select Model", selection_labels)
+    )
+    _, model_label, model_id, is_pro_model, provider_id = options[chosen_idx]
+
+    # Pro path: require the user has the right API key set
+    if is_pro_model:
+        api_key = get_user_api_key(provider_id)
+        if not api_key:
+            provider_display = PRO_PROVIDERS[provider_id]["display_name"]
+            provider_url = PRO_PROVIDERS[provider_id]["api_key_url"]
+            st.warning(
+                f"🔑 **No API key configured for {provider_display}.** "
+                f"Add your key in the **API Keys** page (in the sidebar), "
+                f"or [get one here]({provider_url})."
+            )
+            if st.button("Go to API Keys settings", type="primary"):
+                st.session_state["nav_page"] = "API Keys"
+                st.rerun()
+            return
+        else:
+            st.success(f"✓ Using your {PRO_PROVIDERS[provider_id]['display_name']} API key.")
 
     category = st.selectbox(
         "Category",
@@ -119,10 +156,16 @@ def render():
     )
     runs = st.slider("Number of Prompts", 1, 50, 10)
 
-    st.caption(
-        "ℹ️ Each prompt makes **2 Groq calls** (generate + judge). "
-        "Free-tier rate limits apply — for 50+ prompts use the CLI pipeline."
-    )
+    if is_pro_model:
+        st.caption(
+            "ℹ️ Each prompt makes **1 call to your provider** (generate) + **1 Groq call** (judge). "
+            "Your provider's rate limits apply."
+        )
+    else:
+        st.caption(
+            "ℹ️ Each prompt makes **2 Groq calls** (generate + judge). "
+            "Free-tier rate limits apply — for 50+ prompts use the CLI pipeline."
+        )
 
     if st.button("Run Evaluation", type="primary"):
         try:
@@ -155,7 +198,7 @@ def render():
             status.info(f"Evaluating {i + 1}/{runs} · *{preview}…*")
 
             try:
-                result = _evaluate_prompt(prompt_item, model_id, model_label)
+                result = _evaluate_prompt(prompt_item, model_id, model_label, is_pro=is_pro_model)
                 new_results.append(result)
             except Exception as e:
                 errors.append(f"Prompt {i + 1}: {type(e).__name__}: {e}")

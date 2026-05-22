@@ -1168,6 +1168,7 @@ _CMD_PAGES = [
     ("Prompt Dataset",    "📂", "Data"),
     ("Query History",     "🕘", "Data"),
     ("Profile",           "👤", "Account"),
+    ("API Keys",          "🔑", "Account"),
 ]
 
 
@@ -1333,6 +1334,7 @@ from ui_pages.rag_page          import render as rag_testing
 from ui_pages.prompt_dataset    import render as prompt_dataset
 from ui_pages.failure_analysis  import render as failure_analysis
 from ui_pages.profile           import render as profile_page
+from ui_pages.api_keys          import render as api_keys_page
 from ui_pages.query_history     import render as query_history_page
 
 # -----------------------------------------------------------------------
@@ -1435,6 +1437,7 @@ _SECTIONS = {
     ],
     "ACCOUNT": [
         ("👤", "Profile"),
+        ("🔑", "API Keys"),
     ],
 }
 
@@ -1486,6 +1489,24 @@ for section, items in _SECTIONS.items():
 
 st.sidebar.markdown('<hr style="border:none;border-top:1px solid #18181b;margin:0.75rem 0 0.5rem;">', unsafe_allow_html=True)
 
+# -----------------------------------------------------------------------
+# Get-your-own-key quick-links (TrustLLM Pro BYOK)
+# -----------------------------------------------------------------------
+from llm_runner.providers import PROVIDERS as _PRO_PROVIDERS  # noqa: E402
+
+st.sidebar.markdown('<div class="sb-section">GET API KEYS</div>', unsafe_allow_html=True)
+_link_html_parts = []
+for _pid, _meta in _PRO_PROVIDERS.items():
+    _link_html_parts.append(
+        f'<a href="{_meta["api_key_url"]}" target="_blank" rel="noopener" '
+        f'style="display:block;padding:0.25rem 0.75rem;font-size:0.8rem;color:#a1a1aa;'
+        f'text-decoration:none;border-radius:4px;">'
+        f'↗ {_meta["display_name"]}</a>'
+    )
+st.sidebar.markdown("".join(_link_html_parts), unsafe_allow_html=True)
+
+st.sidebar.markdown('<hr style="border:none;border-top:1px solid #18181b;margin:0.75rem 0 0.5rem;">', unsafe_allow_html=True)
+
 st.sidebar.markdown(
     '<div style="font-size:0.7rem;color:#3f3f46;padding:0 0.75rem 0.25rem;text-align:center;">'
     'Press <kbd style="background:#18181b;border-radius:3px;padding:0.05rem 0.3rem;'
@@ -1517,6 +1538,7 @@ _routes = {
     "Failure Analysis":  failure_analysis,
     "Query History":     query_history_page,
     "Profile":           profile_page,
+    "API Keys":          api_keys_page,
 }
 
 _routes.get(page, overview)()

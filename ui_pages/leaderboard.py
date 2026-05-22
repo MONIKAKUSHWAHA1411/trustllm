@@ -6,8 +6,23 @@ from datetime import datetime
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 
-# Only show real Groq-backed models. Historical simulated entries are hidden.
-REAL_MODELS = {"Llama 3.3 70B", "Llama 3.1 8B"}
+# Only show real LLM-backed models. Historical simulated entries are hidden.
+_GROQ_MODELS = {"Llama 3.3 70B", "Llama 3.1 8B"}
+
+
+def _build_real_models() -> set:
+    """Union of Groq labels + all Pro provider model display names."""
+    real = set(_GROQ_MODELS)
+    try:
+        from llm_runner.providers import list_all_models
+        for _provider, display, _model_id in list_all_models():
+            real.add(display)
+    except Exception:
+        pass
+    return real
+
+
+REAL_MODELS = _build_real_models()
 
 
 def _user_report_dir() -> Path:
