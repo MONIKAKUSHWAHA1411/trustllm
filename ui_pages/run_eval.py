@@ -101,10 +101,13 @@ def render():
     if "Pro ✦" in model_selection:
         st.info(
             "Cloud models (GPT-4o, Claude 3, Gemini 1.5) are coming in **TrustLLM Pro**. "
-            "Using **Llama 3.1 8B (Groq)** as fallback for this run."
+            "Using **Llama 3.1 8B (Groq)** as fallback for this run — results will be "
+            "saved under the actual underlying model (Llama 3.1 8B) to keep the dashboard honest."
         )
         model_id = PRO_FALLBACK_MODEL
-        model_label = model_selection.replace(" ✦", "")
+        # Save under the actual model that ran, NOT the Pro label — keeps the
+        # dashboard truthful about which model produced the results.
+        model_label = "Llama 3.1 8B"
     else:
         label = model_selection.replace(" (Groq)", "")
         model_id = GROQ_MODELS[label]

@@ -6,6 +6,9 @@ from datetime import datetime
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 
+# Only show real Groq-backed models. Historical simulated entries are hidden.
+REAL_MODELS = {"Llama 3.3 70B", "Llama 3.1 8B"}
+
 
 def _user_report_dir() -> Path:
     """Return (and create) the per-user reports directory."""
@@ -103,7 +106,21 @@ def render():
     if not entries:
         st.info("No leaderboard entries yet. Run a dataset evaluation in **Prompt Dataset** to see results here.")
         return
-    
+
+    # Filter to only real Groq-backed models — hide historical simulated entries.
+    total = len(entries)
+    entries = [e for e in entries if e.get("model") in REAL_MODELS]
+    hidden = total - len(entries)
+    if hidden > 0:
+        st.caption(f"🧹 {hidden} entries from historical simulated runs are hidden.")
+
+    if not entries:
+        st.info(
+            "No real leaderboard entries yet. Run a dataset evaluation with a "
+            "Groq Llama model to populate this view."
+        )
+        return
+
     # Create leaderboard dataframe
     leaderboard_df = pd.DataFrame(entries)
     # Sort by accuracy descending, then by timestamp (most recent first)
