@@ -22,7 +22,6 @@ from .retriever import retrieve_documents, TOP_K
 AVAILABLE_MODELS = [
     "llama-3.3-70b-versatile",
     "llama-3.1-8b-instant",
-    "gemma2-9b-it",
 ]
 DEFAULT_MODEL = AVAILABLE_MODELS[0]
 

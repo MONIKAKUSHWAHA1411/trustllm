@@ -26,7 +26,6 @@ PROMPTS_PATH = BASE_DIR / "datasets" / "prompts.json"
 GROQ_MODELS = {
     "Llama 3.3 70B":   "llama-3.3-70b-versatile",
     "Llama 3.1 8B":    "llama-3.1-8b-instant",
-    "Gemma 2 9B":      "gemma2-9b-it",
 }
 PRO_MODELS = ["GPT-4o — Pro ✦", "Claude 3 — Pro ✦", "Gemini 1.5 — Pro ✦"]
 PRO_FALLBACK_MODEL = "llama-3.1-8b-instant"

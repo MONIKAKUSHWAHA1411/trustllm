@@ -31,7 +31,7 @@ def _report_path() -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
     return path
 
-AVAILABLE_MODELS = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "gemma2-9b-it"]
+AVAILABLE_MODELS = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant"]
 
 
 # -----------------------------------------------------------------------
