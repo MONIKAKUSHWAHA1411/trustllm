@@ -243,10 +243,14 @@ def render():
 
     dataset_name = st.session_state.get("current_dataset_name", "rag_eval")
     model_name = st.session_state.get("current_model", "unknown")
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    username = st.session_state.get("user", {}).get("display_name") or st.session_state.get("user", {}).get("username", "")
 
     import sys
+    from datetime import timezone, timedelta
     from pathlib import Path
+    _IST = timezone(timedelta(hours=5, minutes=30))
+    timestamp = datetime.now(_IST).strftime("%Y%m%d_%H%M%S")
+
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     from export_report import export_csv, export_json, export_pdf
 
@@ -254,9 +258,9 @@ def render():
     with e1:
         export_csv(results, df_raw, dataset_name, timestamp)
     with e2:
-        export_json(results, model_name, dataset_name, timestamp, pass_rate, hall_rate, avg_sim, avg_lat)
+        export_json(results, model_name, dataset_name, timestamp, pass_rate, hall_rate, avg_sim, avg_lat, username=username)
     with e3:
-        export_pdf(results, model_name, dataset_name, timestamp, pass_rate, hall_rate, avg_sim, avg_lat, len(results))
+        export_pdf(results, model_name, dataset_name, timestamp, pass_rate, hall_rate, avg_sim, avg_lat, len(results), username=username)
     
     # --- Per-row table ---
     st.markdown("<br>", unsafe_allow_html=True)
@@ -293,9 +297,11 @@ def render():
     df_display = df_raw[["Prompt", "Expected", "Model Answer", "_sim_fmt", "Pass", "Latency (s)"]].copy()
     df_display.columns = ["Prompt", "Expected", "Model Answer", "Similarity", "Pass", "Latency (s)"]
 
-    # Highlight failed rows with slightly red background using pandas Styler
+    # Failed rows: red background + white text so they're readable in both themes
     def _highlight_failures(row):
-        return ["background-color: #3b0f0f" if row["Pass"] == "❌" else "" for _ in row]
+        if row["Pass"] == "❌":
+            return ["background-color: #ef4444; color: white" for _ in row]
+        return ["" for _ in row]
 
     st.dataframe(df_display.style.apply(_highlight_failures, axis=1), use_container_width=True)
 

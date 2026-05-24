@@ -1505,6 +1505,32 @@ for _pid, _meta in _PRO_PROVIDERS.items():
     )
 st.sidebar.markdown("".join(_link_html_parts), unsafe_allow_html=True)
 
+# Quick inline API key paste — lets users activate Pro without going to the Settings page
+with st.sidebar.expander("➕ Paste API key (Pro)", expanded=False):
+    _provider_names  = [_meta["display_name"] for _meta in _PRO_PROVIDERS.values()]
+    _provider_ids    = list(_PRO_PROVIDERS.keys())
+    _sel_display     = st.selectbox("Provider", _provider_names, key="sb_quick_provider", label_visibility="collapsed")
+    _sel_pid         = _provider_ids[_provider_names.index(_sel_display)]
+    _quick_key       = st.text_input(
+        "API key",
+        type="password",
+        placeholder=_PRO_PROVIDERS[_sel_pid]["key_prefix_hint"],
+        key="sb_quick_key_input",
+        label_visibility="collapsed",
+    )
+    if st.button("Save key", key="sb_quick_save", type="primary", use_container_width=True, disabled=not _quick_key.strip()):
+        try:
+            from auth.api_keys import set_key as _set_key_fn, encryption_configured as _enc_ok
+            if not _enc_ok():
+                st.error("Encryption not configured — add API_KEYS_ENCRYPTION_KEY to Streamlit secrets.")
+            elif _set_key_fn(_sel_pid, _quick_key.strip()):
+                st.success(f"✓ {_sel_display} key saved!")
+                st.rerun()
+            else:
+                st.error("Save failed. Check your Streamlit secrets.")
+        except Exception as _e:
+            st.error(f"Error: {_e}")
+
 st.sidebar.markdown('<hr style="border:none;border-top:1px solid #18181b;margin:0.75rem 0 0.5rem;">', unsafe_allow_html=True)
 
 st.sidebar.markdown(
