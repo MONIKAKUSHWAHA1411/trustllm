@@ -67,25 +67,14 @@ def render():
         st.info("📊 No evaluations recorded yet. Run an evaluation to populate this view.")
         return
 
-    # Filter out historical simulated entries — only show real Groq-backed runs.
-    total_rows = len(df)
-    df = df[df["model"].isin(REAL_MODELS)]
-    simulated_count = total_rows - len(df)
+    # Auto-purge simulated entries on every page load — no button required.
+    real_rows = [row for row in data if row.get("model") in REAL_MODELS]
+    if len(real_rows) < len(data):
+        with open(results_path, "w") as f:
+            json.dump(real_rows, f, indent=2)
+        data = real_rows
 
-    if simulated_count > 0:
-        col_info, col_btn = st.columns([4, 1])
-        with col_info:
-            st.info(
-                f"🧹 **{simulated_count}** older simulated evaluation entries are hidden "
-                f"(models that aren't backed by real LLM calls). Showing {len(df)} real results."
-            )
-        with col_btn:
-            if st.button("🗑 Clean up", help="Permanently delete simulated entries from the saved results file"):
-                with open(results_path, "w") as f:
-                    json.dump([row for row in data if row.get("model") in REAL_MODELS], f, indent=2)
-                st.success(f"Removed {simulated_count} simulated entries.")
-                st.rerun()
-
+    df = pd.DataFrame(data)
     if df.empty:
         st.info(
             "📊 No real evaluations yet. Open **Run Evaluation**, pick a Groq Llama model, "
