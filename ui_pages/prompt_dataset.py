@@ -298,13 +298,14 @@ def render():
     df_display.columns = ["Prompt", "Expected", "Model Answer", "Similarity", "Pass", "Latency (s)"]
 
     # Failed rows: iOS-red bg + bold white text (matches Delete-button aesthetic)
+    _FAIL_STYLE = (
+        "background-color: #ff3b30; color: #ffffff; font-weight: 600; "
+        "font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif"
+    )
+
     def _highlight_failures(row):
         if row["Pass"] == "❌":
-            return [
-                "background-color: #ff3b30; color: #ffffff; font-weight: 600; "
-                "font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif"
-                for _ in row
-            ]
+            return [_FAIL_STYLE for _ in row]
         return ["" for _ in row]
 
     st.dataframe(df_display.style.apply(_highlight_failures, axis=1), use_container_width=True)

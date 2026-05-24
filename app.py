@@ -1522,14 +1522,14 @@ with st.sidebar.expander("➕ Paste API key (Pro)", expanded=False):
         try:
             from auth.api_keys import set_key as _set_key_fn, encryption_configured as _enc_ok
             if not _enc_ok():
-                st.error("Encryption not configured — add API_KEYS_ENCRYPTION_KEY to Streamlit secrets.")
+                st.toast("❌ Encryption not configured — add API_KEYS_ENCRYPTION_KEY to Streamlit secrets.", icon="🔐")
             elif _set_key_fn(_sel_pid, _quick_key.strip()):
-                st.success(f"✓ {_sel_display} key saved!")
+                st.toast(f"✅ {_sel_display} API key saved successfully!", icon="🔑")
                 st.rerun()
             else:
-                st.error("Save failed. Check your Streamlit secrets.")
+                st.toast("❌ Save failed — check your Streamlit secrets.", icon="⚠️")
         except Exception as _e:
-            st.error(f"Error: {_e}")
+            st.toast(f"❌ Error: {_e}", icon="⚠️")
 
 st.sidebar.markdown('<hr style="border:none;border-top:1px solid #18181b;margin:0.75rem 0 0.5rem;">', unsafe_allow_html=True)
 
