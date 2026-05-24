@@ -44,8 +44,14 @@ def _score_bar(label: str, value: float) -> str:
     )
 
 
+def _results_path() -> Path:
+    user_id = st.session_state.get("user", {}).get("id", "default")
+    safe_id = "".join(c if c.isalnum() or c in "-_" else "_" for c in user_id)
+    return BASE_DIR / "reports" / safe_id / "results.json"
+
+
 def _load_data():
-    path = BASE_DIR / "reports" / "results.json"
+    path = _results_path()
     if not path.exists():
         return None
     with open(path) as f:

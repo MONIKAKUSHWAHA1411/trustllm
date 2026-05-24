@@ -187,8 +187,19 @@ def render():
         st.session_state["batch_results"] = results_accum
         st.session_state["batch_results_owner"] = current_uid
         # Set session state for leaderboard tracking
-        st.session_state["current_dataset_name"] = uploaded.name.replace("." + uploaded.name.split(".")[-1], "")
-        st.session_state["current_model"] = _MODEL_DISPLAY.get(model, model)
+        _ds_name = uploaded.name.replace("." + uploaded.name.split(".")[-1], "")
+        _model_display = _MODEL_DISPLAY.get(model, model)
+        st.session_state["current_dataset_name"] = _ds_name
+        st.session_state["current_model"] = _model_display
+        # Persist so model/dataset survive page reloads (for leaderboard + PDF)
+        _meta_path = _report_path().parent / "eval_metadata.json"
+        import json as _json
+        with open(_meta_path, "w") as _mf:
+            _json.dump({
+                "model":   _model_display,
+                "dataset": _ds_name,
+                "user":    st.session_state.get("user", {}).get("display_name", ""),
+            }, _mf)
         st.success(f"Evaluation complete — {len(results_accum)} prompts processed.")
 
     # --- Load stored results if available (evict if owned by a different user) ---
@@ -247,9 +258,22 @@ def render():
     st.subheader("Export Evaluation Report")
     st.caption("Download this evaluation in CSV, JSON, or PDF format.")
 
-    dataset_name = st.session_state.get("current_dataset_name", "rag_eval")
-    model_name = st.session_state.get("current_model", "unknown")
-    username = st.session_state.get("user", {}).get("display_name") or st.session_state.get("user", {}).get("username", "")
+    # Read persisted metadata as fallback so exports survive page reloads
+    _meta_fallback = {}
+    try:
+        import json as _json2
+        with open(_report_path().parent / "eval_metadata.json") as _mf:
+            _meta_fallback = _json2.load(_mf)
+    except Exception:
+        pass
+
+    dataset_name = st.session_state.get("current_dataset_name") or _meta_fallback.get("dataset", "rag_eval")
+    model_name   = st.session_state.get("current_model")        or _meta_fallback.get("model", "unknown")
+    username = (
+        st.session_state.get("user", {}).get("display_name")
+        or st.session_state.get("user", {}).get("username")
+        or _meta_fallback.get("user", "")
+    )
 
     import sys
     from datetime import timezone, timedelta

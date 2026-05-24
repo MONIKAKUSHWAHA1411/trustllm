@@ -74,19 +74,40 @@ def render():
     standard_report_path = user_dir / "results.json"
     cache_path = user_dir / "dataset_leaderboard.json"
 
-    # Load batch evaluation results and update leaderboard
+    # --- Batch eval (Prompt Dataset) → leaderboard ---
     if batch_report_path.exists():
         with open(batch_report_path, "r") as f:
             batch_data = json.load(f)
 
-        dataset_name = st.session_state.get("current_dataset_name", "rag_eval")
-        model_name = st.session_state.get("current_model", "unknown")
+        # Read persisted metadata so model name survives page reloads
+        meta_path = user_dir / "eval_metadata.json"
+        try:
+            with open(meta_path) as f:
+                meta = json.load(f)
+        except Exception:
+            meta = {}
 
-        if batch_data and model_name != "unknown":
+        dataset_name = st.session_state.get("current_dataset_name") or meta.get("dataset", "rag_eval")
+        model_name   = st.session_state.get("current_model")        or meta.get("model", "unknown")
+
+        if batch_data and model_name and model_name != "unknown":
             total = len(batch_data)
             passed = sum(1 for r in batch_data if r.get("passed", False))
             accuracy = passed / total if total > 0 else 0.0
             _add_leaderboard_entry(model_name, dataset_name, accuracy, total, passed)
+
+    # --- Run Evaluation (results.json) → leaderboard ---
+    if standard_report_path.exists():
+        with open(standard_report_path, "r") as f:
+            standard_data = json.load(f)
+        df_std = pd.DataFrame(standard_data)
+        if not df_std.empty and "model" in df_std.columns and "trust_score" in df_std.columns:
+            for model in df_std["model"].unique():
+                model_data = df_std[df_std["model"] == model]
+                avg_trust  = model_data["trust_score"].mean()
+                total_std  = len(model_data)
+                passed_std = int((model_data["trust_score"] >= 0.8).sum())
+                _add_leaderboard_entry(model, "run_eval", avg_trust, total_std, passed_std)
 
     # Load leaderboard entries
     try:
@@ -96,30 +117,8 @@ def render():
     except (FileNotFoundError, json.JSONDecodeError):
         entries = []
 
-    # Also include standard eval results
-    if standard_report_path.exists() and entries:
-        with open(standard_report_path, "r") as f:
-            standard_data = json.load(f)
-        
-        df = pd.DataFrame(standard_data)
-        if "model" in df.columns and "trust_score" in df.columns:
-            for model in df["model"].unique():
-                model_data = df[df["model"] == model]
-                avg_trust = model_data["trust_score"].mean()
-                # Check if this model already exists with standard dataset
-                existing = any(e["model"] == model and e["dataset"] == "standard" for e in entries)
-                if not existing:
-                    entries.append({
-                        "model": model,
-                        "dataset": "standard",
-                        "accuracy": avg_trust,
-                        "total": len(model_data),
-                        "passed": 0,
-                        "timestamp": datetime.now().isoformat()
-                    })
-    
     if not entries:
-        st.info("No leaderboard entries yet. Run a dataset evaluation in **Prompt Dataset** to see results here.")
+        st.info("No leaderboard entries yet. Run an evaluation via **Run Evaluation** or **Prompt Dataset**.")
         return
 
     # Filter to only real Groq-backed models — hide historical simulated entries.
