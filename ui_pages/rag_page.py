@@ -463,8 +463,8 @@ def _tab_evaluation():
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # --- Individual metrics ---
-    col1, col2, col3, col4, col5 = st.columns(5)
+    # --- Individual metrics — row 1: quality signals ---
+    col1, col2, col3 = st.columns(3)
     with col1:
         st.metric("🎯 Context Relevance", f"{cr:.2%}",
                   help="How relevant are retrieved chunks to the query?")
@@ -478,6 +478,10 @@ def _tab_evaluation():
         st.metric(f"{risk_color} Hallucination Risk", f"{hr:.2%}",
                   help="Estimated probability of hallucination (lower = better)")
         st.progress(hr)
+
+    # --- Row 2: retrieval metrics ---
+    st.markdown("<br>", unsafe_allow_html=True)
+    col4, col5, _ = st.columns([1, 1, 1])
     with col4:
         st.metric("📡 Recall@K", f"{rak:.2%}",
                   help="Fraction of retrieved chunks above the relevance threshold.")
