@@ -233,8 +233,10 @@ def export_pdf(results, model: str, dataset_name: str, timestamp: str, pass_rate
     ]
     for row_idx, r in enumerate(results[:50], 1):
         if not r.get("passed"):
-            row_styles.append(("BACKGROUND", (0, row_idx), (-1, row_idx), colors.HexColor("#ef4444")))
+            # iOS-red (#ff3b30) + white bold — mirrors the Delete-button aesthetic
+            row_styles.append(("BACKGROUND", (0, row_idx), (-1, row_idx), colors.HexColor("#ff3b30")))
             row_styles.append(("TEXTCOLOR",  (0, row_idx), (-1, row_idx), colors.white))
+            row_styles.append(("FONTNAME",   (0, row_idx), (-1, row_idx), "Helvetica-Bold"))
         else:
             bg = colors.white if row_idx % 2 == 1 else colors.HexColor("#f8fafc")
             row_styles.append(("BACKGROUND", (0, row_idx), (-1, row_idx), bg))

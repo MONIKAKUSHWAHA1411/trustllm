@@ -297,10 +297,14 @@ def render():
     df_display = df_raw[["Prompt", "Expected", "Model Answer", "_sim_fmt", "Pass", "Latency (s)"]].copy()
     df_display.columns = ["Prompt", "Expected", "Model Answer", "Similarity", "Pass", "Latency (s)"]
 
-    # Failed rows: red background + white text so they're readable in both themes
+    # Failed rows: iOS-red bg + bold white text (matches Delete-button aesthetic)
     def _highlight_failures(row):
         if row["Pass"] == "❌":
-            return ["background-color: #ef4444; color: white" for _ in row]
+            return [
+                "background-color: #ff3b30; color: #ffffff; font-weight: 600; "
+                "font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif"
+                for _ in row
+            ]
         return ["" for _ in row]
 
     st.dataframe(df_display.style.apply(_highlight_failures, axis=1), use_container_width=True)
