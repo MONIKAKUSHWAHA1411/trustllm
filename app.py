@@ -1518,18 +1518,26 @@ with st.sidebar.expander("➕ Paste API key (Pro)", expanded=False):
         key="sb_quick_key_input",
         label_visibility="collapsed",
     )
+    # Show persistent inline feedback so the message survives any rerun
+    _key_msg = st.session_state.pop("_sb_key_msg", None)
+    if _key_msg:
+        if _key_msg.startswith("✅"):
+            st.success(_key_msg)
+        else:
+            st.error(_key_msg)
+
     if st.button("Save key", key="sb_quick_save", type="primary", use_container_width=True, disabled=not _quick_key.strip()):
         try:
             from auth.api_keys import set_key as _set_key_fn, encryption_configured as _enc_ok
             if not _enc_ok():
-                st.toast("❌ Encryption not configured — add API_KEYS_ENCRYPTION_KEY to Streamlit secrets.", icon="🔐")
+                st.session_state["_sb_key_msg"] = "❌ Encryption not configured — add API_KEYS_ENCRYPTION_KEY to Streamlit secrets."
             elif _set_key_fn(_sel_pid, _quick_key.strip()):
-                st.toast(f"✅ {_sel_display} API key saved successfully!", icon="🔑")
-                st.rerun()
+                st.session_state["_sb_key_msg"] = f"✅ {_sel_display} API key saved successfully!"
             else:
-                st.toast("❌ Save failed — check your Streamlit secrets.", icon="⚠️")
+                st.session_state["_sb_key_msg"] = "❌ Save failed — check your Streamlit secrets."
         except Exception as _e:
-            st.toast(f"❌ Error: {_e}", icon="⚠️")
+            st.session_state["_sb_key_msg"] = f"❌ Error: {_e}"
+        st.rerun()
 
 st.sidebar.markdown('<hr style="border:none;border-top:1px solid #18181b;margin:0.75rem 0 0.5rem;">', unsafe_allow_html=True)
 

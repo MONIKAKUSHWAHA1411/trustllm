@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parents[1]
 # Only show models that produce real LLM-backed evaluations.
 # Historical simulated entries (lowercase "mistral", "phi", "phi3", "claude",
 # "gemini-pro", "gpt") are hidden. Real Groq Llama + Pro BYOK models pass through.
-_GROQ_MODELS = {"Llama 3.3 70B", "Llama 3.1 8B"}
+_GROQ_MODELS = {"Llama 3.3 70B", "Llama 3.1 8B", "llama-3.3-70b-versatile", "llama-3.1-8b-instant"}
 
 
 def _build_real_models() -> set:

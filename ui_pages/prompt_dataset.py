@@ -33,6 +33,12 @@ def _report_path() -> Path:
 
 AVAILABLE_MODELS = ["llama-3.3-70b-versatile", "llama-3.1-8b-instant"]
 
+# Map Groq API IDs → leaderboard display names so filters match
+_MODEL_DISPLAY = {
+    "llama-3.3-70b-versatile": "Llama 3.3 70B",
+    "llama-3.1-8b-instant":    "Llama 3.1 8B",
+}
+
 
 # -----------------------------------------------------------------------
 # Helpers
@@ -182,7 +188,7 @@ def render():
         st.session_state["batch_results_owner"] = current_uid
         # Set session state for leaderboard tracking
         st.session_state["current_dataset_name"] = uploaded.name.replace("." + uploaded.name.split(".")[-1], "")
-        st.session_state["current_model"] = model
+        st.session_state["current_model"] = _MODEL_DISPLAY.get(model, model)
         st.success(f"Evaluation complete — {len(results_accum)} prompts processed.")
 
     # --- Load stored results if available (evict if owned by a different user) ---
@@ -298,10 +304,7 @@ def render():
     df_display.columns = ["Prompt", "Expected", "Model Answer", "Similarity", "Pass", "Latency (s)"]
 
     # Failed rows: iOS-red bg + bold white text (matches Delete-button aesthetic)
-    _FAIL_STYLE = (
-        "background-color: #ff3b30; color: #ffffff; font-weight: 600; "
-        "font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif"
-    )
+    _FAIL_STYLE = "background-color: #fecaca; color: #1a1a1a; font-weight: 600"
 
     def _highlight_failures(row):
         if row["Pass"] == "❌":

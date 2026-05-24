@@ -7,7 +7,7 @@ from datetime import datetime
 BASE_DIR = Path(__file__).resolve().parents[1]
 
 # Only show real LLM-backed models. Historical simulated entries are hidden.
-_GROQ_MODELS = {"Llama 3.3 70B", "Llama 3.1 8B"}
+_GROQ_MODELS = {"Llama 3.3 70B", "Llama 3.1 8B", "llama-3.3-70b-versatile", "llama-3.1-8b-instant"}
 
 
 def _build_real_models() -> set:
