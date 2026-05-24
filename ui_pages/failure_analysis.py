@@ -17,11 +17,49 @@ BASE_DIR    = Path(__file__).resolve().parents[1]
 PASS_THRESHOLD = 0.55   # must match prompt_dataset.py
 
 
-def _report_path() -> Path:
-    """Return the per-user batch eval report path."""
+def _user_dir() -> Path:
     user_id = st.session_state.get("user", {}).get("id", "default")
     safe_id = "".join(c if c.isalnum() or c in "-_" else "_" for c in user_id)
-    return BASE_DIR / "reports" / safe_id / "batch_eval_results.json"
+    return BASE_DIR / "reports" / safe_id
+
+
+def _report_path() -> Path:
+    """Return the per-user batch eval report path (Prompt Dataset)."""
+    return _user_dir() / "batch_eval_results.json"
+
+
+def _run_eval_failures() -> list:
+    """
+    Load per-user results.json (Run Evaluation) and convert to the
+    batch-eval schema so both sources render uniformly.
+    Only returns rows where trust_score < 0.8 (the SLA threshold).
+    """
+    path = _user_dir() / "results.json"
+    if not path.exists():
+        return []
+    try:
+        with open(path) as f:
+            rows = json.load(f)
+    except Exception:
+        return []
+
+    converted = []
+    for r in rows:
+        trust = r.get("trust_score", 1.0)
+        if trust >= 0.8:
+            continue  # passed — skip
+        converted.append({
+            "prompt":          r.get("prompt", ""),
+            "expected_answer": r.get("expected_answer", ""),
+            "model_answer":    r.get("response", ""),
+            "similarity":      round(trust, 4),   # use trust_score as proxy
+            "passed":          False,
+            "latency_s":       0.0,
+            "sources":         [],
+            "_source":         "run_eval",
+            "model":           r.get("model", ""),
+        })
+    return converted
 
 
 # -----------------------------------------------------------------------
@@ -185,27 +223,36 @@ def render():
     st.title("Failure Analysis")
     st.caption(
         "Cases where the model produced answers that diverged from expected. "
-        "Run a dataset evaluation first via **Prompt Dataset** to populate this view."
+        "Populated from **Run Evaluation** and **Prompt Dataset** results."
     )
     st.markdown('<hr class="section-divider">', unsafe_allow_html=True)
 
-    # Load results (user-specific file, evict if owned by a different user)
+    # --- Load Prompt Dataset batch results ---
     rp = _report_path()
     current_uid = st.session_state.get("user", {}).get("id", "default")
     if st.session_state.get("batch_results_owner") != current_uid:
         st.session_state.pop("batch_results", None)
         st.session_state.pop("batch_results_owner", None)
-    results = st.session_state.get("batch_results")
-    if results is None and rp.exists():
+    batch_results = st.session_state.get("batch_results")
+    if batch_results is None and rp.exists():
         with open(rp) as f:
-            results = json.load(f)
-        st.session_state["batch_results"] = results
+            batch_results = json.load(f)
+        st.session_state["batch_results"] = batch_results
         st.session_state["batch_results_owner"] = current_uid
+
+    batch_results = batch_results or []
+
+    # --- Merge with Run Evaluation failures ---
+    run_eval_failures = _run_eval_failures()
+    # Avoid duplicates: only add run_eval rows whose prompt isn't already in batch
+    batch_prompts = {r["prompt"] for r in batch_results}
+    extra = [r for r in run_eval_failures if r["prompt"] not in batch_prompts]
+    results = batch_results + extra
 
     if not results:
         st.info(
-            "No batch evaluation results found. "
-            "Go to **Prompt Dataset** and run an evaluation first."
+            "No evaluation results found. "
+            "Go to **Run Evaluation** or **Prompt Dataset** and run an evaluation first."
         )
         return
 

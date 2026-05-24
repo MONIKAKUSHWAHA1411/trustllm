@@ -40,8 +40,8 @@ PROVIDERS: Dict[str, dict] = {
         "api_key_url": "https://aistudio.google.com/app/apikey",
         "key_prefix_hint": "AIza...",
         "models": [
-            ("Gemini 1.5 Pro", "gemini-1.5-pro"),
-            ("Gemini 1.5 Flash", "gemini-1.5-flash"),
+            ("Gemini 2.0 Flash", "gemini-2.0-flash"),
+            ("Gemini 2.0 Flash Lite", "gemini-2.0-flash-lite"),
         ],
     },
     "mistral": {
