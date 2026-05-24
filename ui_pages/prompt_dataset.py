@@ -208,14 +208,33 @@ def render():
     if st.session_state.get("batch_results_owner") != current_uid:
         st.session_state.pop("batch_results", None)
         st.session_state.pop("batch_results_owner", None)
+    _loaded_from_disk = False
     if "batch_results" not in st.session_state and rp.exists():
         with open(rp) as f:
             st.session_state["batch_results"] = json.load(f)
         st.session_state["batch_results_owner"] = current_uid
+        _loaded_from_disk = True
 
     results = st.session_state.get("batch_results")
     if not results:
         return
+
+    if _loaded_from_disk and not run_btn:
+        _meta_fallback2 = {}
+        try:
+            with open(rp.parent / "eval_metadata.json") as _mf2:
+                _meta_fallback2 = json.load(_mf2)
+        except Exception:
+            pass
+        _prev_model   = st.session_state.get("current_model")   or _meta_fallback2.get("model", "")
+        _prev_dataset = st.session_state.get("current_dataset_name") or _meta_fallback2.get("dataset", "")
+        _label_parts = []
+        if _prev_dataset:
+            _label_parts.append(f"dataset **{_prev_dataset}**")
+        if _prev_model:
+            _label_parts.append(f"model **{_prev_model}**")
+        _label = " · ".join(_label_parts) or "a previous run"
+        st.info(f"📂 **{len(results)} previous results loaded** from {_label}. Run a new evaluation above to replace them.")
 
     # --- Summary metrics ---
     st.markdown("<br>", unsafe_allow_html=True)

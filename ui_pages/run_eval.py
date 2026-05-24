@@ -223,3 +223,61 @@ def render():
             with st.expander(f"⚠️ {len(errors)} prompt(s) failed during evaluation"):
                 for e in errors:
                     st.code(e)
+
+        # Refresh session cache after a new run
+        with open(rp) as f:
+            st.session_state["run_eval_results"] = json.load(f)
+        st.session_state["run_eval_results_owner"] = st.session_state.get("user", {}).get("id", "default")
+
+    # --- Load previous results for returning users ---
+    rp = _results_path()
+    current_uid = st.session_state.get("user", {}).get("id", "default")
+    if st.session_state.get("run_eval_results_owner") != current_uid:
+        st.session_state.pop("run_eval_results", None)
+        st.session_state.pop("run_eval_results_owner", None)
+
+    if "run_eval_results" not in st.session_state and rp.exists():
+        with open(rp) as f:
+            st.session_state["run_eval_results"] = json.load(f)
+        st.session_state["run_eval_results_owner"] = current_uid
+
+    prev_results = st.session_state.get("run_eval_results")
+    if not prev_results:
+        return
+
+    # --- Summary banner ---
+    import pandas as pd
+    df = pd.DataFrame(prev_results)
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.info(
+        f"📂 **{len(prev_results)} evaluation results** loaded "
+        f"— showing cumulative history for your account."
+    )
+    st.subheader("Evaluation History")
+
+    avg_trust = round(df["trust_score"].mean(), 3) if "trust_score" in df.columns else 0
+    models_run = df["model"].nunique() if "model" in df.columns else 0
+
+    h1, h2, h3 = st.columns(3)
+    h1.metric("Total Prompts Evaluated", len(prev_results))
+    h2.metric("Avg Trust Score", f"{avg_trust:.0%}")
+    h3.metric("Models Used", models_run)
+
+    # --- Results table ---
+    display_cols = ["prompt", "model", "category", "trust_score"]
+    show_cols = [c for c in display_cols if c in df.columns]
+    df_show = df[show_cols].copy()
+    if "prompt" in df_show.columns:
+        df_show["prompt"] = df_show["prompt"].str[:80]
+    if "trust_score" in df_show.columns:
+        df_show["trust_score"] = df_show["trust_score"].apply(lambda x: f"{x:.0%}")
+    df_show.columns = [c.replace("_", " ").title() for c in df_show.columns]
+
+    st.dataframe(df_show, use_container_width=True, hide_index=True)
+
+    if st.button("🗑 Clear Evaluation History"):
+        st.session_state.pop("run_eval_results", None)
+        st.session_state.pop("run_eval_results_owner", None)
+        if rp.exists():
+            rp.unlink()
+        st.rerun()
