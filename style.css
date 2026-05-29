@@ -123,6 +123,17 @@ section[data-testid="stSidebar"] {
     border-right: 1px solid #1e293b !important;
 }
 
+/* Remove excessive top padding so the user avatar/branding sits near the top */
+section[data-testid="stSidebar"] > div:first-child {
+    padding-top: 0.25rem !important;
+}
+section[data-testid="stSidebar"] [data-testid="stSidebarContent"] {
+    padding-top: 0 !important;
+}
+section[data-testid="stSidebar"] .block-container {
+    padding-top: 0.25rem !important;
+}
+
 section[data-testid="stSidebar"]:not([aria-expanded="false"]) {
     width: 240px !important;
     min-width: 240px !important;
