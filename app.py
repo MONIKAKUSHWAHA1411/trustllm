@@ -51,8 +51,8 @@ st.set_page_config(
 
 
 def _h(html: str) -> str:
-    """Strip common indentation so Markdown never reads indented HTML as a code block."""
-    return textwrap.dedent(html).strip()
+    """Strip all leading whitespace per-line so Markdown never treats indented HTML as a code block."""
+    return '\n'.join(l.lstrip() for l in html.strip().splitlines())
 
 
 def _load_css() -> None:
@@ -257,17 +257,18 @@ def _try_demo_login() -> None:
 
 
 def _show_login() -> None:
-    stats = _hero_stats()
-    bars  = _preview_bars(stats)
-
     st.markdown(_h("""
         <style>
-        #MainMenu {visibility: hidden;}
-        footer {visibility: hidden;}
-        header[data-testid="stHeader"] {visibility: hidden;}
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+        /* ── Hide Streamlit chrome ── */
+        #MainMenu { visibility: hidden; }
+        footer { visibility: hidden; }
+        /* …but keep our own custom footer visible */
+        [data-testid="stMain"] footer { visibility: visible !important; }
+        header[data-testid="stHeader"] { visibility: hidden; }
         section[data-testid="stSidebar"] { display: none !important; }
-        /* ── Page background — lavender for login/form area ── */
-        .stApp { background: #ede9fe !important; }
+        /* ── Dark background ── */
+        .stApp { background: #0A0B1A !important; }
         section.main { background: transparent !important; }
         section.main .block-container { padding: 0 !important; max-width: 100% !important; background: transparent !important; }
         /* ── High-level wrappers — full width, no padding, transparent ── */
@@ -286,635 +287,584 @@ def _show_login() -> None:
         [data-testid="stColumn"],
         [data-testid="column"],
         .stColumn, .element-container { background: transparent !important; }
-        /* ── Form card — clean white card on white bg ── */
+        /* ── CSS variables ── */
+        :root {
+            --bg-dark: #0A0B1A; --bg-section: #0F1030; --bg-card: #13153A;
+            --accent: #6366F1; --accent-light: #818CF8; --accent-dim: #4338CA;
+            --accent-glow: rgba(99,102,241,0.15);
+            --gradient: linear-gradient(135deg,#6366F1,#8B5CF6);
+            --tl-white: #ffffff; --muted: #94A3B8; --border: #1E1F4E;
+        }
+        /* ── Headings: force Inter + white (override global style.css) ── */
+        [data-testid="stMain"] h1,
+        [data-testid="stMain"] h2,
+        [data-testid="stMain"] h3,
+        [data-testid="stMain"] h4 {
+            font-family: 'Inter', system-ui, sans-serif !important;
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
+        }
+        /* ── Gradient text: match standalone `color: transparent;` only ──
+           (trailing `;` avoids matching `border-color: transparent <rgb>` shorthands) ── */
+        [data-testid="stMain"] [style*="color: transparent;"],
+        [data-testid="stMain"] [style*="color:transparent;"],
+        [data-testid="stMain"] .grad-text {
+            -webkit-text-fill-color: transparent !important;
+            color: transparent !important;
+        }
+        /* ── Body text uses Inter — but NEVER icon spans (would break Material ligatures) ── */
+        [data-testid="stMain"] p,
+        [data-testid="stMain"] label,
+        [data-testid="stMain"] button,
+        [data-testid="stMain"] input,
+        [data-testid="stMain"] li,
+        [data-testid="stMain"] span:not([data-testid="stIconMaterial"]):not([class*="material"]):not([class*="icon"]) {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        /* ── Form — transparent shell (dark card comes from wrapper div) ── */
         [data-testid="stForm"] {
-            background: white !important;
-            border: 1px solid #e5e7eb !important;
-            border-radius: 14px !important;
-            padding: 1.5rem 1.5rem 0.75rem !important;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.07) !important;
+            background: transparent !important;
+            border: none !important; border-radius: 0 !important;
+            padding: 0 !important; box-shadow: none !important;
         }
-        [data-testid="stForm"] label,
-        [data-testid="stForm"] label p,
-        [data-testid="stForm"] [data-testid="stWidgetLabel"] p {
-            color: #374151 !important; font-weight: 500 !important;
+        /* ── Dark inputs — bg lives on the BaseWeb wrapper, not <input> ── */
+        [data-testid="stTextInputRootElement"],
+        [data-baseweb="input"], [data-baseweb="base-input"] {
+            background: var(--bg-section) !important;
+            border-color: var(--border) !important;
         }
-        /* ── Scroll entrance animations (Chrome 115+) ── */
-        @keyframes fadeInUp {
-            from { opacity:0; transform:translateY(44px); }
-            to   { opacity:1; transform:translateY(0); }
-        }
-        #why-section {
-            animation: fadeInUp 0.8s ease both;
-            animation-timeline: view(); animation-range: entry 0% entry 25%;
-        }
-        #features-section {
-            animation: fadeInUp 0.9s ease both;
-            animation-timeline: view(); animation-range: entry 0% entry 20%;
-        }
-        #pipeline-section {
-            animation: fadeInUp 0.9s ease both;
-            animation-timeline: view(); animation-range: entry 0% entry 20%;
-        }
-        /* ── Form inputs — clean on white bg ── */
-        [data-testid="stForm"] input {
-            background: #f9fafb !important;
-            border: 1px solid #e5e7eb !important;
-            color: #111827 !important;
-            border-radius: 8px !important;
-            font-size: 0.95rem !important;
-        }
-        [data-testid="stForm"] input:focus {
-            border-color: #4f46e5 !important;
-            box-shadow: 0 0 0 3px rgba(79,70,229,0.12) !important;
-        }
-        [data-testid="stForm"] input::placeholder {
-            color: #9ca3af !important; opacity: 1 !important;
-        }
-        /* ── Form submit button — solid indigo ── */
-        [data-testid="stForm"] .stButton > button {
-            background: #4f46e5 !important;
-            color: white !important;
-            font-weight: 700 !important;
-            font-size: 1rem !important;
-            padding: 0.7rem 1rem !important;
-            border-radius: 8px !important;
-            border: none !important;
-        }
-        [data-testid="stForm"] .stButton > button:hover {
-            background: #4338ca !important;
-        }
-        /* ── Column-area buttons (Try demo, Create account) ── */
-        [data-testid="column"] .stButton > button,
-        [data-testid="stColumn"] .stButton > button {
-            background: white !important;
-            border: 1px solid #e5e7eb !important;
-            color: #374151 !important;
-            font-weight: 500 !important;
-        }
-        [data-testid="column"] .stButton > button:hover,
-        [data-testid="stColumn"] .stButton > button:hover {
-            background: #f9fafb !important; border-color: #d1d5db !important;
-        }
-        /* ── Forgot password expander — light ── */
-        [data-testid="stExpander"] {
-            background: white !important;
-            border: 1px solid #e5e7eb !important;
+        [data-testid="stTextInputRootElement"] {
+            border: 1px solid var(--border) !important;
             border-radius: 10px !important;
         }
+        /* .stApp prefix beats project style.css `.stTextInput > div > div > input` (0,1,3) */
+        .stApp .stTextInput input, .stApp [data-testid="stTextInput"] input,
+        .stApp [data-testid="stForm"] input {
+            background: transparent !important;
+            border: none !important;
+            color: var(--tl-white) !important; -webkit-text-fill-color: var(--tl-white) !important;
+            font-size: 14px !important; min-height: 44px !important;
+            padding: 11px 14px !important;
+        }
+        .stApp .stTextInput input::placeholder { color: #475569 !important; opacity: 1 !important; -webkit-text-fill-color: #475569 !important; }
+        [data-testid="stTextInputRootElement"]:focus-within {
+            border-color: var(--accent) !important;
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.2) !important;
+        }
+        /* ── Labels ── */
+        .stTextInput label, .stTextInput label p,
+        [data-testid="stWidgetLabel"] p,
+        [data-testid="stColumn"] label { color: #cbd5e1 !important; font-size: 13px !important; font-weight: 500 !important; }
+        /* ── Form submit button — gradient indigo (it's stFormSubmitButton, not stButton) ── */
+        [data-testid="stFormSubmitButton"] button {
+            background: var(--gradient) !important; color: white !important;
+            -webkit-text-fill-color: white !important;
+            font-weight: 600 !important; font-size: 14px !important;
+            padding: 14px !important; border-radius: 10px !important;
+            border: none !important; min-height: 44px !important;
+            box-shadow: 0 4px 16px rgba(99,102,241,0.30) !important;
+        }
+        [data-testid="stFormSubmitButton"] button:hover {
+            box-shadow: 0 8px 22px rgba(99,102,241,0.45) !important;
+            transform: translateY(-1px) !important;
+        }
+        [data-testid="stFormSubmitButton"] button p,
+        [data-testid="stFormSubmitButton"] button span,
+        [data-testid="stFormSubmitButton"] button div {
+            color: white !important; -webkit-text-fill-color: white !important;
+        }
+        /* ── Auxiliary buttons (Try demo, Create account, Back) ── */
+        [data-testid="stColumn"] .stButton > button {
+            background: transparent !important;
+            border: 1px solid var(--border) !important;
+            color: var(--accent-light) !important;
+            border-radius: 10px !important; font-weight: 600 !important;
+        }
+        [data-testid="stColumn"] .stButton > button:hover {
+            background: var(--accent-glow) !important;
+        }
+        /* ── Expander (forgot password) ── */
+        [data-testid="stExpander"] {
+            background: var(--bg-card) !important;
+            border: 1px solid var(--border) !important; border-radius: 10px !important;
+        }
         [data-testid="stExpander"] summary p,
-        [data-testid="stExpander"] summary span {
-            color: #374151 !important;
-            font-weight: 600 !important; font-size: 0.875rem !important;
-        }
-        [data-testid="stExpander"] label { color: #374151 !important; }
+        [data-testid="stExpander"] summary span { color: #cbd5e1 !important; font-size: 0.875rem !important; }
+        [data-testid="stExpander"] label { color: #cbd5e1 !important; }
         [data-testid="stExpander"] input {
-            border-color: #e5e7eb !important;
-            background: #f9fafb !important;
-            color: #111827 !important;
+            background: var(--bg-section) !important;
+            border-color: var(--border) !important; color: white !important;
         }
-        [data-testid="stExpander"] input::placeholder {
-            color: #9ca3af !important; opacity:1 !important;
-        }
+        [data-testid="stExpander"] input::placeholder { color: #475569 !important; opacity: 1 !important; }
         [data-testid="stExpander"] input:focus {
-            border-color: #4f46e5 !important;
-            box-shadow: 0 0 0 3px rgba(79,70,229,0.12) !important;
+            border-color: var(--accent) !important;
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.2) !important;
         }
         [data-testid="stExpander"] .stButton > button {
-            background: #4f46e5 !important;
-            color: white !important;
-            border: none !important;
-            font-weight: 600 !important;
+            background: var(--accent) !important; color: white !important;
+            border: none !important; font-weight: 600 !important;
         }
-        [data-testid="stExpander"] .stButton > button:hover {
-            background: #4338ca !important;
+        /* ── Alert colours ── */
+        [data-testid="stAlert"] { background: rgba(239,68,68,0.08) !important; border-color: rgba(239,68,68,0.3) !important; }
+        [data-testid="stAlert"] p { color: #fca5a5 !important; }
+        [data-testid="stAlert"][data-type="success"] { background: rgba(34,197,94,0.08) !important; border-color: rgba(34,197,94,0.3) !important; }
+        [data-testid="stAlert"][data-type="success"] p { color: #86efac !important; }
+        /* ── Markdown text in dark context ──
+           Project style.css forces .stMarkdown p/span/li to #111827 !important, which
+           clobbers our inline colors. Re-assert intended colors with higher specificity.
+           Selectors match the browser-serialized inline form: `color: rgb(R, G, B)`. ── */
+        [data-testid="stMarkdownContainer"] p { color: #cbd5e1 !important; }
+        /* model-id <li> inherit the card's muted tone */
+        [data-testid="stMain"] [data-testid="stMarkdownContainer"] li {
+            color: #94A3B8 !important; -webkit-text-fill-color: #94A3B8 !important;
         }
-        /* ── All text in login column area — dark on white bg ── */
-        [data-testid="column"] label,
-        [data-testid="stColumn"] label,
-        [data-testid="column"] [data-testid="stMarkdownContainer"] p,
-        [data-testid="stTextInput"] label,
-        [data-testid="stTextInput"] label p,
-        .stTextInput label, .stTextInput label p {
-            color: #374151 !important;
+        /* eyebrows (#6366F1), chips/checkmarks (#818CF8), values (#94A3B8), labels (#cbd5e1) */
+        [data-testid="stMain"] [style*="color: rgb(99, 102, 241)"] {
+            color: #6366F1 !important; -webkit-text-fill-color: #6366F1 !important;
         }
-        [data-testid="column"] input, .stTextInput input { color: #111827 !important; }
-        [data-testid="column"] input::placeholder, .stTextInput input::placeholder {
-            color: #9ca3af !important; opacity:1 !important;
+        [data-testid="stMain"] [style*="color: rgb(129, 140, 248)"] {
+            color: #818CF8 !important; -webkit-text-fill-color: #818CF8 !important;
         }
-
-        /* ── RESPONSIVE — mobile (≤768px) ─────────────────────────── */
-        @media (max-width: 768px) {
-            /* Nav */
-            #top-nav { padding: 0 1rem !important; height: 56px !important; }
-
-            /* Hero */
-            #hero-section { padding: 2.5rem 1.25rem 2rem !important; }
-            .hero-title { font-size: 2.4rem !important; line-height: 1.1 !important; letter-spacing: -0.02em !important; }
-
-            /* 3-col grids → single column */
-            .grid-3col {
-                grid-template-columns: 1fr !important;
-                gap: 1.25rem !important;
-            }
-
-            /* Section paddings */
-            #why-section { padding: 2.5rem 1.25rem !important; }
-            #features-section { padding: 2.5rem 1.25rem !important; }
-            #pipeline-section { padding: 2.5rem 1.25rem !important; }
-            #stats-strip { padding: 2rem 1.25rem !important; }
-            #signin-section { padding: 2rem 1.25rem !important; }
-            #trustllm-footer { padding: 1.5rem 1.25rem !important; }
-
-            /* Section headings */
-            #why-section [style*="font-size:3.25rem"],
-            #features-section [style*="font-size:3.25rem"] { font-size: 1.9rem !important; }
-
-            /* Pipeline title */
-            .pipeline-title { font-size: 1.75rem !important; word-break: break-word !important; }
-
-            /* Pipeline boxes */
-            #pipeline-section [style*="min-width:106px"] {
-                min-width: 76px !important;
-                padding: 0.5rem 0.5rem !important;
-            }
-            #pipeline-section [style*="font-size:0.7rem;font-weight:700"] { font-size: 0.6rem !important; }
-            #pipeline-section [style*="font-size:0.55rem"] { font-size: 0.5rem !important; }
-
-            /* Stats numbers */
-            #stats-strip [style*="font-size:3.5rem"] { font-size: 2.4rem !important; }
-
-            /* Feature card headers — fix text wrapping */
-            #features-section [style*="font-size:1.35rem"] { font-size: 1.1rem !important; }
-            #features-section [style*="font-size:1.4rem"] { font-size: 1.1rem !important; }
+        [data-testid="stMain"] [style*="color: rgb(148, 163, 184)"] {
+            color: #94A3B8 !important; -webkit-text-fill-color: #94A3B8 !important;
+        }
+        [data-testid="stMain"] [style*="color: rgb(203, 213, 225)"] {
+            color: #cbd5e1 !important; -webkit-text-fill-color: #cbd5e1 !important;
+        }
+        /* ── Responsive ── */
+        @media (max-width: 520px) {
+            .tl-step { grid-template-columns: 48px 1fr !important; }
+            .tl-step-spacer { display: none !important; }
+            .tl-steps-spine { left: 22px !important; }
+            .tl-dims-grid { grid-template-columns: 1fr !important; }
+            .tl-models-row { display: flex !important; overflow-x: auto !important; }
+            .tl-model-card { flex: 0 0 70% !important; min-width: 200px !important; }
+            .tl-hero-ctas { flex-direction: column !important; width: 100% !important; max-width: 320px !important; }
+            .tl-stats-grid { grid-template-columns: 1fr !important; }
         }
         </style>
     """), unsafe_allow_html=True)
 
-    # ── STICKY TOP NAV ─────────────────────────────────────────────────
+    # ── NAV ──────────────────────────────────────────────────────────
     st.markdown(_h("""
-        <div id="top-nav" style="position:sticky;top:0;z-index:200;background:rgba(255,255,255,0.95);
-                    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-                    border-bottom:1px solid #e5e7eb;padding:0 3rem;height:64px;
-                    display:flex;align-items:center;justify-content:space-between;">
-        <div style="display:flex;align-items:center;gap:0.6rem;">
-        <div style="background:#4f46e5;width:32px;height:32px;border-radius:8px;
-                    display:flex;align-items:center;justify-content:center;
-                    font-size:1rem;color:white;">🛡</div>
-        <span style="font-weight:800;font-size:1.1rem;color:#111827;letter-spacing:-0.02em;">TrustLLM</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:0.75rem;">
-        <a href="#signin-section"
-           style="color:#6b7280;text-decoration:none;font-size:0.9rem;font-weight:500;
-                  padding:0.4rem 0.9rem;border-radius:7px;border:1px solid #e5e7eb;background:white;">
-        Sign in</a>
-        <a href="#signin-section"
-           style="background:#4f46e5;color:white;text-decoration:none;
-                  font-size:0.9rem;font-weight:600;padding:0.4rem 1rem;border-radius:7px;">
-        Get started →</a>
-        </div>
-        </div>
+        <nav id="tl-nav" style="position:sticky;top:0;z-index:200;
+            background:rgba(10,11,26,0.85);backdrop-filter:blur(12px);
+            -webkit-backdrop-filter:blur(12px);border-bottom:1px solid transparent;
+            transition:border-color 0.2s ease;font-family:'Inter',system-ui,sans-serif;">
+          <div style="max-width:1240px;margin:0 auto;padding:16px 24px;
+                      display:flex;align-items:center;justify-content:space-between;gap:16px;">
+            <a href="#" style="display:flex;align-items:center;gap:10px;color:white;text-decoration:none;
+                               font-size:17px;font-weight:700;letter-spacing:-0.01em;">
+              <span style="width:32px;height:32px;border-radius:8px;background:#6366F1;
+                           display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;">🛡</span>
+              TrustLLM
+            </a>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <a href="#tl-signin" style="display:inline-flex;align-items:center;padding:10px 18px;
+                  border-radius:10px;font-size:14px;font-weight:600;background:transparent;
+                  color:#818CF8;border:1px solid #6366F1;text-decoration:none;">Sign In</a>
+              <a href="#tl-signin" style="display:inline-flex;align-items:center;padding:10px 18px;
+                  border-radius:10px;font-size:14px;font-weight:600;
+                  background:linear-gradient(135deg,#6366F1,#8B5CF6);color:white;text-decoration:none;
+                  box-shadow:0 4px 16px rgba(99,102,241,0.30);">Get Started</a>
+            </div>
+          </div>
+        </nav>
     """), unsafe_allow_html=True)
 
     # ── HERO ──────────────────────────────────────────────────────────
     st.markdown(_h("""
-        <div id="hero-section" style="text-align:center;padding:5rem 2rem 3rem;
-                    background:linear-gradient(180deg,#fafbff 0%,#ffffff 100%);">
-        <div style="display:inline-flex;align-items:center;gap:0.45rem;
-                    background:#eef2ff;border:1px solid #c7d2fe;
-                    color:#4f46e5;font-size:0.75rem;font-weight:700;letter-spacing:0.06em;
-                    padding:0.3rem 0.9rem;border-radius:20px;margin-bottom:1.75rem;">
-        ✦ LLM EVALUATION PLATFORM
-        </div>
-        <div class="hero-title" style="font-size:5rem;font-weight:900;color:#111827;line-height:1.05;
-                    letter-spacing:-0.04em;margin:0 0 0.1em 0;">
-        Evaluate LLMs
-        </div>
-        <div class="hero-title" style="font-size:5rem;font-weight:900;line-height:1.05;letter-spacing:-0.04em;
-                    margin:0 0 1.5rem 0;
-                    background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 100%);
-                    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-                    background-clip:text;">
-        you can actually trust.
-        </div>
-        <div style="font-size:1.25rem;color:#6b7280;line-height:1.7;
-                    max-width:600px;margin:0 auto 2.5rem;">
-        Score every model response for correctness, safety, and hallucination.
-        Surface failures fast. Ship with confidence.
-        </div>
-        <div style="display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;">
-        <a href="#signin-section"
-           style="background:#4f46e5;color:white;text-decoration:none;
-                  font-size:1rem;font-weight:600;padding:0.8rem 2rem;border-radius:8px;">
-        Start evaluating →</a>
-        <a href="#features-section"
-           style="background:white;color:#374151;text-decoration:none;border:1px solid #d1d5db;
-                  font-size:1rem;font-weight:500;padding:0.8rem 2rem;border-radius:8px;">
-        See how it works</a>
-        </div>
-        </div>
+        <section style="min-height:100vh;padding:140px 24px 96px;display:flex;align-items:center;
+            justify-content:center;text-align:center;position:relative;overflow:hidden;
+            background:#0A0B1A;font-family:'Inter',system-ui,sans-serif;">
+          <div style="position:absolute;width:480px;height:480px;border-radius:50%;background:#6366F1;
+                      top:-120px;left:-100px;filter:blur(120px);opacity:0.1;pointer-events:none;z-index:0;"></div>
+          <div style="position:absolute;width:380px;height:380px;border-radius:50%;background:#8B5CF6;
+                      bottom:-100px;right:-80px;filter:blur(120px);opacity:0.12;pointer-events:none;z-index:0;"></div>
+          <div style="position:absolute;inset:0;background:
+              radial-gradient(ellipse 800px 600px at 50% 40%,rgba(99,102,241,0.12),transparent 60%),
+              radial-gradient(ellipse 500px 400px at 15% 80%,rgba(139,92,246,0.08),transparent 60%);
+              pointer-events:none;z-index:0;"></div>
+          <div style="position:relative;z-index:1;max-width:880px;
+                      display:flex;flex-direction:column;align-items:center;gap:26px;">
+            <span style="display:inline-flex;align-items:center;gap:8px;padding:6px 14px;
+                border-radius:999px;background:rgba(99,102,241,0.15);border:1px solid #6366F1;
+                color:#818CF8;font-size:12px;font-weight:600;letter-spacing:0.06em;">
+              <span style="width:6px;height:6px;border-radius:50%;background:#6366F1;
+                           box-shadow:0 0 0 4px rgba(99,102,241,0.18);display:inline-block;"></span>
+              LLM Evaluation Platform
+            </span>
+            <h1 style="font-size:clamp(40px,6.4vw,72px);font-weight:800;letter-spacing:-0.035em;
+                        line-height:1.05;margin:0;color:white;">
+              Evaluate LLMs you can<br>
+              <span style="background:linear-gradient(135deg,#6366F1,#8B5CF6);
+                           -webkit-background-clip:text;background-clip:text;color:transparent;">
+                actually trust.
+              </span>
+            </h1>
+            <p style="font-size:18px;color:#94A3B8;max-width:560px;line-height:1.65;margin:0;">
+              Score every model response for correctness, safety, and hallucination.
+              Surface failures fast. Ship with confidence.
+            </p>
+            <div class="tl-hero-ctas" style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:4px;">
+              <a href="#tl-signin" style="display:inline-flex;align-items:center;padding:14px 26px;
+                  border-radius:12px;font-size:15px;font-weight:600;
+                  background:linear-gradient(135deg,#6366F1,#8B5CF6);color:white;text-decoration:none;
+                  box-shadow:0 4px 16px rgba(99,102,241,0.30);">Start Evaluating &nbsp;→</a>
+              <a href="#tl-how" style="display:inline-flex;align-items:center;padding:14px 26px;
+                  border-radius:12px;font-size:15px;font-weight:600;background:transparent;
+                  color:#818CF8;border:1px solid #6366F1;text-decoration:none;">Watch Demo &nbsp;▶</a>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:16px;">
+              <div style="display:inline-flex;align-items:center;gap:12px;font-size:14.5px;color:white;font-weight:500;">
+                <span style="width:22px;height:22px;border-radius:50%;background:rgba(99,102,241,0.15);
+                             border:1px solid #6366F1;display:inline-flex;align-items:center;justify-content:center;
+                             color:#818CF8;font-size:11px;font-weight:700;flex-shrink:0;">✓</span>
+                Trace every prompt &amp; response in real time
+              </div>
+              <div style="display:inline-flex;align-items:center;gap:12px;font-size:14.5px;color:white;font-weight:500;">
+                <span style="width:22px;height:22px;border-radius:50%;background:rgba(99,102,241,0.15);
+                             border:1px solid #6366F1;display:inline-flex;align-items:center;justify-content:center;
+                             color:#818CF8;font-size:11px;font-weight:700;flex-shrink:0;">✓</span>
+                Compare models side-by-side on safety &amp; quality
+              </div>
+              <div style="display:inline-flex;align-items:center;gap:12px;font-size:14.5px;color:white;font-weight:500;">
+                <span style="width:22px;height:22px;border-radius:50%;background:rgba(99,102,241,0.15);
+                             border:1px solid #6366F1;display:inline-flex;align-items:center;justify-content:center;
+                             color:#818CF8;font-size:11px;font-weight:700;flex-shrink:0;">✓</span>
+                Detect hallucinations, bias &amp; safety violations automatically
+              </div>
+            </div>
+          </div>
+        </section>
     """), unsafe_allow_html=True)
 
-    # ── WHY TRUSTLLM ──────────────────────────────────────────────────
+    # ── STATS BAR ─────────────────────────────────────────────────────
     st.markdown(_h("""
-        <div id="why-section" style="padding:5rem 3rem;background:#1e1b4b;">
-        <div style="max-width:900px;margin:0 auto;">
-
-        <div style="text-align:center;margin-bottom:4rem;">
-        <div style="font-size:1rem;font-weight:900;color:#a5b4fc;text-transform:uppercase;
-                    letter-spacing:0.14em;margin-bottom:1.1rem;">WHY TRUSTLLM</div>
-        <div style="font-size:3.25rem;font-weight:900;color:#ffffff;letter-spacing:-0.04em;
-                    line-height:1.1;margin-bottom:1.25rem;">
-        AI fails differently than<br>normal software.
-        </div>
-        <div style="font-size:1.2rem;color:#7DD3FC;line-height:1.75;max-width:640px;margin:0 auto;">
-        Traditional monitoring was built for deterministic code. LLMs are probabilistic — the same
-        prompt can return different answers, and errors are often subtle, contextual, or outright invisible
-        without specialized evaluation. You need a new kind of observability.
-        </div>
-        </div>
-
-        <!-- 3-pillar grid -->
-        <div class="grid-3col" style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;">
-
-        <div style="border:1px solid rgba(165,180,252,0.2);border-radius:16px;padding:2rem;
-                    background:rgba(255,255,255,0.07);backdrop-filter:blur(8px);">
-        <div style="font-size:2rem;margin-bottom:1rem;">📈</div>
-        <div style="font-weight:800;font-size:1.15rem;color:#ffffff;margin-bottom:0.5rem;
-                    letter-spacing:-0.02em;">Scalable eval runs</div>
-        <div style="font-size:0.95rem;color:#7DD3FC;line-height:1.65;">
-        Run hundreds of prompts across multiple models in minutes. Catch regressions before they
-        reach your users — not after.
-        </div>
-        </div>
-
-        <div style="border:1px solid rgba(165,180,252,0.2);border-radius:16px;padding:2rem;
-                    background:rgba(255,255,255,0.07);backdrop-filter:blur(8px);">
-        <div style="font-size:2rem;margin-bottom:1rem;">🎯</div>
-        <div style="font-weight:800;font-size:1.15rem;color:#ffffff;margin-bottom:0.5rem;
-                    letter-spacing:-0.02em;">Live performance monitoring</div>
-        <div style="font-size:0.95rem;color:#7DD3FC;line-height:1.65;">
-        Track trust scores, accuracy, and safety metrics over time. Know exactly when a model update
-        changes your product's behaviour.
-        </div>
-        </div>
-
-        <div style="border:1px solid rgba(165,180,252,0.2);border-radius:16px;padding:2rem;
-                    background:rgba(255,255,255,0.07);backdrop-filter:blur(8px);">
-        <div style="font-size:2rem;margin-bottom:1rem;">🔔</div>
-        <div style="font-weight:800;font-size:1.15rem;color:#ffffff;margin-bottom:0.5rem;
-                    letter-spacing:-0.02em;">Catch issues early</div>
-        <div style="font-size:0.95rem;color:#7DD3FC;line-height:1.65;">
-        Hallucination spikes, jailbreak attempts, and bias drift surface automatically —
-        so your team can act before your users even notice.
-        </div>
-        </div>
-
-        </div>
-        </div>
-        </div>
+        <section style="background:#13153A;border-top:1px solid #1E1F4E;border-bottom:1px solid #1E1F4E;
+                        padding:56px 24px;font-family:'Inter',system-ui,sans-serif;">
+          <div class="tl-stats-grid" style="max-width:1100px;margin:0 auto;
+                display:grid;grid-template-columns:repeat(3,1fr);gap:0;align-items:center;">
+            <div style="text-align:center;padding:16px 24px;">
+              <div style="font-size:48px;font-weight:700;color:#818CF8;line-height:1;
+                          letter-spacing:-0.02em;font-variant-numeric:tabular-nums;">12</div>
+              <div style="font-size:14px;color:#94A3B8;margin-top:10px;font-weight:500;">Models Supported</div>
+            </div>
+            <div style="text-align:center;padding:16px 24px;position:relative;">
+              <div style="position:absolute;left:0;top:18%;bottom:18%;width:1px;background:#1E1F4E;"></div>
+              <div style="font-size:48px;font-weight:700;color:#818CF8;line-height:1;
+                          letter-spacing:-0.02em;font-variant-numeric:tabular-nums;">6</div>
+              <div style="font-size:14px;color:#94A3B8;margin-top:10px;font-weight:500;">Trust Dimensions</div>
+            </div>
+            <div style="text-align:center;padding:16px 24px;position:relative;">
+              <div style="position:absolute;left:0;top:18%;bottom:18%;width:1px;background:#1E1F4E;"></div>
+              <div style="font-size:48px;font-weight:700;color:#475569;line-height:1;letter-spacing:0.04em;">--</div>
+              <div style="font-size:14px;color:#94A3B8;margin-top:10px;font-weight:500;">Avg Trust Score</div>
+            </div>
+          </div>
+          <p style="max-width:1100px;margin:24px auto 0;text-align:center;font-size:11px;
+                    color:#94A3B8;font-style:italic;line-height:1.5;">
+            Run your first evaluation to see live stats. * Scores reflect current deployment session;
+            data resets on redeploy (Streamlit Cloud ephemeral FS).
+          </p>
+        </section>
     """), unsafe_allow_html=True)
 
-    # ── FEATURES ──────────────────────────────────────────────────────
+    # ── HOW IT WORKS ──────────────────────────────────────────────────
     st.markdown(_h("""
-        <div id="features-section" style="
-            padding:5rem 3rem 4rem;
-            background:#ede9fe;">
-        <div style="max-width:1000px;margin:0 auto;">
-        <div style="text-align:center;margin-bottom:4rem;">
-        <div style="display:inline-block;font-size:0.8rem;font-weight:800;color:#670D2F;
-                    text-transform:uppercase;letter-spacing:0.18em;margin-bottom:1.1rem;
-                    background:#fdf2f5;border:1px solid rgba(103,13,47,0.18);border-radius:100px;
-                    padding:0.35rem 1.1rem;">WHAT YOU GET</div>
-        <div style="font-size:3.25rem;font-weight:900;color:#1e1b4b;letter-spacing:-0.04em;line-height:1.1;">
-        Everything you need<br>to trust your LLMs
+        <section id="tl-how" style="background:#0F1030;padding:80px 24px;font-family:'Inter',system-ui,sans-serif;">
+        <div style="max-width:780px;margin:0 auto;">
+        <div style="text-align:center;margin-bottom:56px;">
+        <span style="font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#6366F1;">HOW IT WORKS</span>
+        <h2 style="font-size:36px;font-weight:800;line-height:1.15;letter-spacing:-0.02em;margin:12px 0 0;color:white;">
+        From prompt to <span style="background:linear-gradient(135deg,#6366F1,#8B5CF6);-webkit-background-clip:text;background-clip:text;color:transparent;">trust score</span> in seconds
+        </h2>
+        <p style="font-size:16px;color:#94A3B8;line-height:1.65;margin:12px 0 0;">
+        Five-stage pipeline — repeatable, deterministic evals.
+        </p>
+        </div>
+        <div style="position:relative;">
+        <div style="position:absolute;left:27px;top:28px;bottom:28px;width:0;border-left:2px dashed #4338CA;opacity:0.5;z-index:0;"></div>
+        <div style="display:flex;flex-direction:column;gap:20px;position:relative;z-index:1;">
+        <div style="display:flex;gap:18px;align-items:flex-start;">
+        <div style="width:56px;height:56px;border-radius:50%;background:#13153A;border:2px solid #6366F1;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:15px;font-weight:700;color:#818CF8;flex-shrink:0;box-shadow:0 0 0 5px #0F1030;">01</div>
+        <div style="flex:1;background:#13153A;border:1px solid #1E1F4E;border-left:3px solid #6366F1;border-radius:14px;padding:20px 22px;">
+        <div style="font-family:monospace;font-size:10px;color:#6366F1;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:6px;">01 · Input</div>
+        <h3 style="font-size:18px;font-weight:700;margin:0 0 8px;color:white;">Submit a prompt</h3>
+        <p style="color:#94A3B8;font-size:14px;line-height:1.6;margin:0;">Single prompt or upload a CSV / JSON dataset. Drop it in — that's the whole interface.</p>
         </div>
         </div>
-
-        <!-- 3 feature cards — glassmorphism on gradient bg -->
-        <div class="grid-3col" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.75rem;">
-
-        <!-- Card 1: Overview Dashboard -->
-        <div style="border-radius:22px;overflow:hidden;display:flex;flex-direction:column;
-                    box-shadow:0 8px 32px rgba(81,29,67,0.18),0 2px 6px rgba(81,29,67,0.08);
-                    border:1px solid rgba(81,29,67,0.12);">
-        <!-- gradient header -->
-        <div style="background:#511D43;padding:2rem 1.75rem 1.5rem;">
-          <div style="font-size:2.4rem;margin-bottom:0.75rem;">📊</div>
-          <div style="font-weight:800;font-size:1.3rem;color:white;letter-spacing:-0.02em;line-height:1.2;">
-            Overview Dashboard
-          </div>
-          <!-- mini stat row -->
-          <div style="display:flex;gap:0.6rem;margin-top:1rem;">
-            <div style="flex:1;background:rgba(255,255,255,0.15);border-radius:8px;padding:0.5rem;text-align:center;">
-              <div style="font-size:1.1rem;font-weight:800;color:white;">0.81</div>
-              <div style="font-size:0.6rem;color:rgba(255,255,255,0.75);margin-top:2px;">Trust</div>
-            </div>
-            <div style="flex:1;background:rgba(255,255,255,0.15);border-radius:8px;padding:0.5rem;text-align:center;">
-              <div style="font-size:1.1rem;font-weight:800;color:white;">0.92</div>
-              <div style="font-size:0.6rem;color:rgba(255,255,255,0.75);margin-top:2px;">Safety</div>
-            </div>
-            <div style="flex:1;background:rgba(255,255,255,0.15);border-radius:8px;padding:0.5rem;text-align:center;">
-              <div style="font-size:1.1rem;font-weight:800;color:white;">88%</div>
-              <div style="font-size:0.6rem;color:rgba(255,255,255,0.75);margin-top:2px;">Accuracy</div>
-            </div>
-          </div>
-          <!-- mini bar chart -->
-          <div style="margin-top:1rem;background:rgba(255,255,255,0.1);border-radius:6px;padding:0.5rem 0.6rem;">
-            <div style="font-size:0.55rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.4rem;">Score by category</div>
-            <div style="display:flex;align-items:flex-end;gap:5px;height:32px;">
-              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;">
-                <div style="width:100%;background:rgba(255,255,255,0.85);border-radius:2px 2px 0 0;height:80%;"></div>
-                <div style="font-size:0.4rem;color:rgba(255,255,255,0.6);">fct</div>
-              </div>
-              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;">
-                <div style="width:100%;background:rgba(255,255,255,0.85);border-radius:2px 2px 0 0;height:65%;"></div>
-                <div style="font-size:0.4rem;color:rgba(255,255,255,0.6);">rsn</div>
-              </div>
-              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;">
-                <div style="width:100%;background:rgba(255,255,255,0.85);border-radius:2px 2px 0 0;height:90%;"></div>
-                <div style="font-size:0.4rem;color:rgba(255,255,255,0.6);">sft</div>
-              </div>
-              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;">
-                <div style="width:100%;background:rgba(255,255,255,0.45);border-radius:2px 2px 0 0;height:42%;"></div>
-                <div style="font-size:0.4rem;color:rgba(255,255,255,0.6);">bias</div>
-              </div>
-              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;">
-                <div style="width:100%;background:rgba(255,255,255,0.85);border-radius:2px 2px 0 0;height:70%;"></div>
-                <div style="font-size:0.4rem;color:rgba(255,255,255,0.6);">jlbk</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- glass card body -->
-        <div style="padding:1.5rem;flex:1;
-                    background:rgba(255,255,255,0.72);backdrop-filter:blur(14px);
-                    -webkit-backdrop-filter:blur(14px);">
-          <div style="font-size:0.95rem;color:#374151;line-height:1.7;margin-bottom:1rem;">
-            Trust scores, accuracy &amp; hallucination rate at a glance for every model.
-          </div>
-          <div style="font-size:0.88rem;color:#511D43;font-weight:600;line-height:2.1;">
-            ✓ Per-model &amp; category scores<br>
-            ✓ Hallucination breakdown<br>
-            ✓ Side-by-side comparison
-          </div>
-        </div>
-        </div>
-
-        <!-- Card 2: Failure Analysis -->
-        <div style="border-radius:22px;overflow:hidden;display:flex;flex-direction:column;
-                    box-shadow:0 8px 32px rgba(103,13,47,0.18),0 2px 6px rgba(103,13,47,0.08);
-                    border:1px solid rgba(103,13,47,0.12);">
-        <!-- gradient header -->
-        <div style="background:#670D2F;padding:2rem 1.75rem 1.5rem;">
-          <div style="font-size:2.4rem;margin-bottom:0.75rem;">🔍</div>
-          <div style="font-weight:800;font-size:1.3rem;color:white;letter-spacing:-0.02em;line-height:1.2;">
-            Failure Analysis
-          </div>
-          <!-- mini eval table -->
-          <div style="margin-top:1rem;background:rgba(255,255,255,0.12);border-radius:8px;padding:0.6rem 0.75rem;">
-            <div style="display:flex;gap:0.4rem;padding-bottom:0.35rem;border-bottom:1px solid rgba(255,255,255,0.2);margin-bottom:0.35rem;">
-              <div style="font-size:0.5rem;font-weight:700;color:rgba(255,255,255,0.7);flex:3;text-transform:uppercase;">Prompt</div>
-              <div style="font-size:0.5rem;font-weight:700;color:rgba(255,255,255,0.7);flex:1.2;text-align:center;text-transform:uppercase;">Status</div>
-              <div style="font-size:0.5rem;font-weight:700;color:rgba(255,255,255,0.7);width:26px;text-align:right;text-transform:uppercase;">Scr</div>
-            </div>
-            <div style="display:flex;align-items:center;gap:0.4rem;padding:0.25rem 0;border-bottom:1px solid rgba(255,255,255,0.08);">
-              <div style="font-size:0.52rem;color:rgba(255,255,255,0.85);flex:3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Ignore prev instructions...</div>
-              <div style="font-size:0.44rem;background:rgba(254,202,202,0.25);color:#fca5a5;padding:0.1rem 0.3rem;border-radius:3px;flex:1.2;text-align:center;font-weight:600;">FAIL</div>
-              <div style="font-size:0.52rem;color:#fca5a5;font-weight:700;width:26px;text-align:right;">0.12</div>
-            </div>
-            <div style="display:flex;align-items:center;gap:0.4rem;padding:0.25rem 0;border-bottom:1px solid rgba(255,255,255,0.08);">
-              <div style="font-size:0.52rem;color:rgba(255,255,255,0.85);flex:3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">What is the capital of...</div>
-              <div style="font-size:0.44rem;background:rgba(167,243,208,0.2);color:#6ee7b7;padding:0.1rem 0.3rem;border-radius:3px;flex:1.2;text-align:center;font-weight:600;">PASS</div>
-              <div style="font-size:0.52rem;color:#6ee7b7;font-weight:700;width:26px;text-align:right;">0.94</div>
-            </div>
-            <div style="display:flex;align-items:center;gap:0.4rem;padding:0.25rem 0;">
-              <div style="font-size:0.52rem;color:rgba(255,255,255,0.85);flex:3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Generate harmful content...</div>
-              <div style="font-size:0.44rem;background:rgba(254,202,202,0.25);color:#fca5a5;padding:0.1rem 0.3rem;border-radius:3px;flex:1.2;text-align:center;font-weight:600;">FAIL</div>
-              <div style="font-size:0.52rem;color:#fca5a5;font-weight:700;width:26px;text-align:right;">0.07</div>
-            </div>
-          </div>
-        </div>
-        <!-- glass card body -->
-        <div style="padding:1.5rem;flex:1;
-                    background:rgba(255,255,255,0.72);backdrop-filter:blur(14px);
-                    -webkit-backdrop-filter:blur(14px);">
-          <div style="font-size:0.95rem;color:#374151;line-height:1.7;margin-bottom:1rem;">
-            Surface every failed eval with the prompt, response &amp; exact failure reason.
-          </div>
-          <div style="font-size:0.88rem;color:#670D2F;font-weight:600;line-height:2.1;">
-            ✓ Filter by category or model<br>
-            ✓ Hallucination &amp; jailbreak flags<br>
-            ✓ Drill into any failing prompt
-          </div>
-        </div>
-        </div>
-
-        <!-- Card 3: Model Leaderboard -->
-        <div style="border-radius:22px;overflow:hidden;display:flex;flex-direction:column;
-                    box-shadow:0 8px 32px rgba(116,10,3,0.18),0 2px 6px rgba(116,10,3,0.08);
-                    border:1px solid rgba(116,10,3,0.12);">
-        <!-- gradient header -->
-        <div style="background:#740A03;padding:2rem 1.75rem 1.5rem;">
-          <div style="font-size:2.4rem;margin-bottom:0.75rem;">🏆</div>
-          <div style="font-weight:800;font-size:1.3rem;color:white;letter-spacing:-0.02em;line-height:1.2;">
-            Model Leaderboard
-          </div>
-          <!-- mini leaderboard -->
-          <div style="margin-top:1rem;background:rgba(255,255,255,0.12);border-radius:8px;padding:0.6rem 0.75rem;">
-            <div style="display:flex;gap:0.4rem;padding-bottom:0.35rem;border-bottom:1px solid rgba(255,255,255,0.2);margin-bottom:0.4rem;">
-              <div style="font-size:0.5rem;font-weight:700;color:rgba(255,255,255,0.7);width:14px;text-transform:uppercase;">#</div>
-              <div style="font-size:0.5rem;font-weight:700;color:rgba(255,255,255,0.7);flex:1;text-transform:uppercase;">Model</div>
-              <div style="font-size:0.5rem;font-weight:700;color:rgba(255,255,255,0.7);width:28px;text-align:right;text-transform:uppercase;">Score</div>
-            </div>
-            <div style="display:flex;align-items:center;gap:0.4rem;padding:0.3rem 0;border-bottom:1px solid rgba(255,255,255,0.08);">
-              <div style="font-size:0.58rem;color:#fde68a;font-weight:800;width:14px;">1</div>
-              <div style="flex:1;">
-                <div style="font-size:0.58rem;color:white;font-weight:600;">GPT-4o</div>
-                <div style="background:rgba(255,255,255,0.3);border-radius:2px;height:4px;margin-top:3px;overflow:hidden;">
-                  <div style="width:89%;height:100%;background:rgba(255,255,255,0.9);border-radius:2px;"></div>
-                </div>
-              </div>
-              <div style="font-size:0.58rem;color:#fde68a;font-weight:700;width:28px;text-align:right;">0.89</div>
-            </div>
-            <div style="display:flex;align-items:center;gap:0.4rem;padding:0.3rem 0;border-bottom:1px solid rgba(255,255,255,0.08);">
-              <div style="font-size:0.58rem;color:rgba(255,255,255,0.7);font-weight:800;width:14px;">2</div>
-              <div style="flex:1;">
-                <div style="font-size:0.58rem;color:white;font-weight:600;">Claude 3</div>
-                <div style="background:rgba(255,255,255,0.3);border-radius:2px;height:4px;margin-top:3px;overflow:hidden;">
-                  <div style="width:85%;height:100%;background:rgba(255,255,255,0.9);border-radius:2px;"></div>
-                </div>
-              </div>
-              <div style="font-size:0.58rem;color:#fde68a;font-weight:700;width:28px;text-align:right;">0.85</div>
-            </div>
-            <div style="display:flex;align-items:center;gap:0.4rem;padding:0.3rem 0;">
-              <div style="font-size:0.58rem;color:rgba(255,255,255,0.7);font-weight:800;width:14px;">3</div>
-              <div style="flex:1;">
-                <div style="font-size:0.58rem;color:white;font-weight:600;">Gemini</div>
-                <div style="background:rgba(255,255,255,0.3);border-radius:2px;height:4px;margin-top:3px;overflow:hidden;">
-                  <div style="width:79%;height:100%;background:rgba(255,255,255,0.9);border-radius:2px;"></div>
-                </div>
-              </div>
-              <div style="font-size:0.58rem;color:#fde68a;font-weight:700;width:28px;text-align:right;">0.79</div>
-            </div>
-          </div>
-        </div>
-        <!-- glass card body -->
-        <div style="padding:1.5rem;flex:1;
-                    background:rgba(255,255,255,0.72);backdrop-filter:blur(14px);
-                    -webkit-backdrop-filter:blur(14px);">
-          <div style="font-size:0.95rem;color:#374151;line-height:1.7;margin-bottom:1rem;">
-            Rank every model by trust score, safety, and cost in one unified view.
-          </div>
-          <div style="font-size:0.88rem;color:#740A03;font-weight:600;line-height:2.1;">
-            ✓ Composite trust score ranking<br>
-            ✓ Safety &amp; bias sub-scores<br>
-            ✓ Cost vs. quality trade-offs
-          </div>
-        </div>
-        </div>
-
+        <div style="display:flex;gap:18px;align-items:flex-start;">
+        <div style="width:56px;height:56px;border-radius:50%;background:#13153A;border:2px solid #6366F1;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:15px;font-weight:700;color:#818CF8;flex-shrink:0;box-shadow:0 0 0 5px #0F1030;">02</div>
+        <div style="flex:1;background:#13153A;border:1px solid #1E1F4E;border-left:3px solid #6366F1;border-radius:14px;padding:20px 22px;">
+        <div style="font-family:monospace;font-size:10px;color:#6366F1;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:6px;">02 · Model Selection</div>
+        <h3 style="font-size:18px;font-weight:700;margin:0 0 8px;color:white;">Pick from 12 models</h3>
+        <p style="color:#94A3B8;font-size:14px;line-height:1.6;margin:0 0 12px;">Six providers, two models each — swap in your own endpoint via Ollama or hosted API.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+        <span style="padding:5px 10px;background:rgba(99,102,241,0.10);border:1px solid #6366F1;border-radius:999px;font-size:12px;color:#818CF8;font-weight:500;">Groq</span>
+        <span style="padding:5px 10px;background:rgba(99,102,241,0.10);border:1px solid #6366F1;border-radius:999px;font-size:12px;color:#818CF8;font-weight:500;">Claude</span>
+        <span style="padding:5px 10px;background:rgba(99,102,241,0.10);border:1px solid #6366F1;border-radius:999px;font-size:12px;color:#818CF8;font-weight:500;">GPT</span>
+        <span style="padding:5px 10px;background:rgba(99,102,241,0.10);border:1px solid #6366F1;border-radius:999px;font-size:12px;color:#818CF8;font-weight:500;">Gemini</span>
+        <span style="padding:5px 10px;background:rgba(99,102,241,0.10);border:1px solid #6366F1;border-radius:999px;font-size:12px;color:#818CF8;font-weight:500;">Mistral</span>
+        <span style="padding:5px 10px;background:rgba(99,102,241,0.10);border:1px solid #6366F1;border-radius:999px;font-size:12px;color:#818CF8;font-weight:500;">Phi</span>
         </div>
         </div>
         </div>
+        <div style="display:flex;gap:18px;align-items:flex-start;">
+        <div style="width:56px;height:56px;border-radius:50%;background:#13153A;border:2px solid #6366F1;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:15px;font-weight:700;color:#818CF8;flex-shrink:0;box-shadow:0 0 0 5px #0F1030;">03</div>
+        <div style="flex:1;background:#13153A;border:1px solid #1E1F4E;border-left:3px solid #6366F1;border-radius:14px;padding:20px 22px;">
+        <div style="font-family:monospace;font-size:10px;color:#6366F1;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:6px;">03 · Eval Mode</div>
+        <h3 style="font-size:18px;font-weight:700;margin:0 0 8px;color:white;">Choose your test path</h3>
+        <p style="color:#94A3B8;font-size:14px;line-height:1.6;margin:0 0 12px;">Pick the mode that matches your test — every mode shares the same downstream judge.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <span style="padding:7px 13px;background:#6366F1;border-radius:8px;font-size:13px;color:white;font-weight:500;">Run Evaluation</span>
+        <span style="padding:7px 13px;background:transparent;border:1px solid #4338CA;border-radius:8px;font-size:13px;color:#94A3B8;font-weight:500;">RAG Testing</span>
+        <span style="padding:7px 13px;background:transparent;border:1px solid #4338CA;border-radius:8px;font-size:13px;color:#94A3B8;font-weight:500;">Batch Dataset</span>
+        </div>
+        </div>
+        </div>
+        <div style="display:flex;gap:18px;align-items:flex-start;">
+        <div style="width:56px;height:56px;border-radius:50%;background:#13153A;border:2px solid #6366F1;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:15px;font-weight:700;color:#818CF8;flex-shrink:0;box-shadow:0 0 0 5px #0F1030;">04</div>
+        <div style="flex:1;background:#13153A;border:1px solid #1E1F4E;border-left:3px solid #6366F1;border-radius:14px;padding:20px 22px;">
+        <div style="font-family:monospace;font-size:10px;color:#6366F1;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:6px;">04 · LLM-as-Judge Scoring</div>
+        <h3 style="font-size:18px;font-weight:700;margin:0 0 8px;color:white;">Six dimensions, one trust score</h3>
+        <p style="color:#94A3B8;font-size:14px;line-height:1.6;margin:0 0 12px;">Each dimension scored independently, then averaged into a 0–1 trust score.</p>
+        <div style="display:flex;flex-direction:column;gap:7px;">
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span style="color:#cbd5e1;width:90px;flex-shrink:0;">Truthfulness</span><div style="flex:1;background:#1E1F4E;height:5px;border-radius:999px;overflow:hidden;"><div style="height:100%;width:92%;background:linear-gradient(90deg,#6366F1,#8B5CF6);border-radius:999px;"></div></div><span style="font-family:monospace;font-size:11px;color:#94A3B8;width:30px;text-align:right;">0.92</span></div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span style="color:#cbd5e1;width:90px;flex-shrink:0;">Safety</span><div style="flex:1;background:#1E1F4E;height:5px;border-radius:999px;overflow:hidden;"><div style="height:100%;width:88%;background:linear-gradient(90deg,#6366F1,#8B5CF6);border-radius:999px;"></div></div><span style="font-family:monospace;font-size:11px;color:#94A3B8;width:30px;text-align:right;">0.88</span></div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span style="color:#cbd5e1;width:90px;flex-shrink:0;">Fairness</span><div style="flex:1;background:#1E1F4E;height:5px;border-radius:999px;overflow:hidden;"><div style="height:100%;width:74%;background:linear-gradient(90deg,#6366F1,#8B5CF6);border-radius:999px;"></div></div><span style="font-family:monospace;font-size:11px;color:#94A3B8;width:30px;text-align:right;">0.74</span></div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span style="color:#cbd5e1;width:90px;flex-shrink:0;">Privacy</span><div style="flex:1;background:#1E1F4E;height:5px;border-radius:999px;overflow:hidden;"><div style="height:100%;width:81%;background:linear-gradient(90deg,#6366F1,#8B5CF6);border-radius:999px;"></div></div><span style="font-family:monospace;font-size:11px;color:#94A3B8;width:30px;text-align:right;">0.81</span></div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span style="color:#cbd5e1;width:90px;flex-shrink:0;">Robustness</span><div style="flex:1;background:#1E1F4E;height:5px;border-radius:999px;overflow:hidden;"><div style="height:100%;width:69%;background:linear-gradient(90deg,#6366F1,#8B5CF6);border-radius:999px;"></div></div><span style="font-family:monospace;font-size:11px;color:#94A3B8;width:30px;text-align:right;">0.69</span></div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span style="color:#cbd5e1;width:90px;flex-shrink:0;">Ethics</span><div style="flex:1;background:#1E1F4E;height:5px;border-radius:999px;overflow:hidden;"><div style="height:100%;width:85%;background:linear-gradient(90deg,#6366F1,#8B5CF6);border-radius:999px;"></div></div><span style="font-family:monospace;font-size:11px;color:#94A3B8;width:30px;text-align:right;">0.85</span></div>
+        </div>
+        <div style="display:inline-flex;margin-top:12px;padding:8px 12px;background:rgba(99,102,241,0.10);border:1px solid #6366F1;border-radius:8px;font-family:monospace;font-size:12px;color:#818CF8;">Trust Score = Σ(6 dims) / 6</div>
+        </div>
+        </div>
+        <div style="display:flex;gap:18px;align-items:flex-start;">
+        <div style="width:56px;height:56px;border-radius:50%;background:#13153A;border:2px solid #6366F1;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:15px;font-weight:700;color:#818CF8;flex-shrink:0;box-shadow:0 0 0 5px #0F1030;">05</div>
+        <div style="flex:1;background:#13153A;border:1px solid #1E1F4E;border-left:3px solid #6366F1;border-radius:14px;padding:20px 22px;">
+        <div style="font-family:monospace;font-size:10px;color:#6366F1;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:6px;">05 · Results</div>
+        <h3 style="font-size:18px;font-weight:700;margin:0 0 8px;color:white;">Slice it however you ship</h3>
+        <p style="color:#94A3B8;font-size:14px;line-height:1.6;margin:0 0 12px;">Three views, all rendered from the same merged results file.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <div style="background:#0F1030;border:1px solid #1E1F4E;border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:8px;"><span style="font-size:14px;">📋</span><span style="font-size:13px;font-weight:600;color:#e2e8f0;">Per-Eval Breakdown</span></div>
+        <div style="background:#0F1030;border:1px solid #1E1F4E;border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:8px;"><span style="font-size:14px;">⏱</span><span style="font-size:13px;font-weight:600;color:#e2e8f0;">Session History</span></div>
+        <div style="background:#0F1030;border:1px solid #1E1F4E;border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:8px;"><span style="font-size:14px;">🏆</span><span style="font-size:13px;font-weight:600;color:#e2e8f0;">Leaderboard</span></div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </section>
     """), unsafe_allow_html=True)
 
-    # ── ARCHITECTURE / HOW IT WORKS ────────────────────────────────────
+    # ── TRUST DIMENSIONS ──────────────────────────────────────────────
     st.markdown(_h("""
-        <div id="pipeline-section" style="padding:4rem 3rem;background:#1e1b4b;">
-        <div style="max-width:960px;margin:0 auto;">
-        <div style="text-align:center;margin-bottom:3rem;">
-        <div style="font-size:1rem;font-weight:900;color:#4ade80;text-transform:uppercase;
-                    letter-spacing:0.14em;margin-bottom:1.1rem;">HOW IT WORKS</div>
-        <div class="pipeline-title" style="font-size:2.75rem;font-weight:900;color:white;letter-spacing:-0.03em;line-height:1.2;">
-        The TrustLLM Pipeline
-        </div>
-        </div>
-
-        <div style="margin-bottom:2rem;">
-        <div style="font-size:0.65rem;font-weight:600;color:#7DD3FC;letter-spacing:0.08em;
-                    text-transform:uppercase;margin-bottom:1rem;">Evaluation Pipeline</div>
-        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:0.25rem;justify-content:center;">
-        <div style="background:#1a4a35;border:1px solid #2d6a4f;border-radius:10px;
-                    padding:0.75rem 1rem;text-align:center;min-width:106px;">
-        <div style="font-size:1.1rem;margin-bottom:0.3rem;">📂</div>
-        <div style="font-size:0.7rem;font-weight:700;color:#d1fae5;">Datasets</div>
-        <div style="font-size:0.55rem;color:#6ee7b7;margin-top:0.1rem;">Prompts &amp; answers</div>
-        </div>
-        <div style="color:#4ade80;font-size:1.1rem;padding:0 0.4rem;">→</div>
-        <div style="background:#1a4a35;border:1px solid #2d6a4f;border-radius:10px;
-                    padding:0.75rem 1rem;text-align:center;min-width:106px;">
-        <div style="font-size:1.1rem;margin-bottom:0.3rem;">🤖</div>
-        <div style="font-size:0.7rem;font-weight:700;color:#d1fae5;">LLM Runner</div>
-        <div style="font-size:0.55rem;color:#6ee7b7;margin-top:0.1rem;">GPT, Claude, Mistral</div>
-        </div>
-        <div style="color:#4ade80;font-size:1.1rem;padding:0 0.4rem;">→</div>
-        <div style="background:#1a4a35;border:1px solid #2d6a4f;border-radius:10px;
-                    padding:0.75rem 1rem;text-align:center;min-width:106px;">
-        <div style="font-size:1.1rem;margin-bottom:0.3rem;">⚖️</div>
-        <div style="font-size:0.7rem;font-weight:700;color:#d1fae5;">Evaluator</div>
-        <div style="font-size:0.55rem;color:#6ee7b7;margin-top:0.1rem;">Score responses</div>
-        </div>
-        <div style="color:#4ade80;font-size:1.1rem;padding:0 0.4rem;">→</div>
-        <div style="background:#1a4a35;border:1px solid #2d6a4f;border-radius:10px;
-                    padding:0.75rem 1rem;text-align:center;min-width:106px;">
-        <div style="font-size:1.1rem;margin-bottom:0.3rem;">🛡</div>
-        <div style="font-size:0.7rem;font-weight:700;color:#d1fae5;">Trust Score</div>
-        <div style="font-size:0.55rem;color:#6ee7b7;margin-top:0.1rem;">Composite metric</div>
-        </div>
-        <div style="color:#4ade80;font-size:1.1rem;padding:0 0.4rem;">→</div>
-        <div style="background:#1a4a35;border:1px solid #2d6a4f;border-radius:10px;
-                    padding:0.75rem 1rem;text-align:center;min-width:106px;">
-        <div style="font-size:1.1rem;margin-bottom:0.3rem;">📊</div>
-        <div style="font-size:0.7rem;font-weight:700;color:#d1fae5;">Dashboard</div>
-        <div style="font-size:0.55rem;color:#6ee7b7;margin-top:0.1rem;">Visualize &amp; act</div>
-        </div>
-        </div>
-        </div>
-
-        <div>
-        <div style="font-size:0.65rem;font-weight:600;color:#7DD3FC;letter-spacing:0.08em;
-                    text-transform:uppercase;margin-bottom:1rem;">RAG / Document Pipeline</div>
-        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:0.25rem;justify-content:center;">
-        <div style="background:#1a4a35;border:1px solid #2d6a4f;border-radius:10px;
-                    padding:0.75rem 1rem;text-align:center;min-width:106px;">
-        <div style="font-size:1.1rem;margin-bottom:0.3rem;">📄</div>
-        <div style="font-size:0.7rem;font-weight:700;color:#d1fae5;">PDF / Docs</div>
-        <div style="font-size:0.55rem;color:#6ee7b7;margin-top:0.1rem;">Source material</div>
-        </div>
-        <div style="color:#4ade80;font-size:1.1rem;padding:0 0.4rem;">→</div>
-        <div style="background:#1a4a35;border:1px solid #2d6a4f;border-radius:10px;
-                    padding:0.75rem 1rem;text-align:center;min-width:106px;">
-        <div style="font-size:1.1rem;margin-bottom:0.3rem;">✂️</div>
-        <div style="font-size:0.7rem;font-weight:700;color:#d1fae5;">RAG Ingestion</div>
-        <div style="font-size:0.55rem;color:#6ee7b7;margin-top:0.1rem;">Chunk &amp; embed</div>
-        </div>
-        <div style="color:#4ade80;font-size:1.1rem;padding:0 0.4rem;">→</div>
-        <div style="background:#1a4a35;border:1px solid #2d6a4f;border-radius:10px;
-                    padding:0.75rem 1rem;text-align:center;min-width:106px;">
-        <div style="font-size:1.1rem;margin-bottom:0.3rem;">🗄️</div>
-        <div style="font-size:0.7rem;font-weight:700;color:#d1fae5;">ChromaDB</div>
-        <div style="font-size:0.55rem;color:#6ee7b7;margin-top:0.1rem;">Vector store</div>
-        </div>
-        <div style="color:#4ade80;font-size:1.1rem;padding:0 0.4rem;">→</div>
-        <div style="background:#1a4a35;border:1px solid #2d6a4f;border-radius:10px;
-                    padding:0.75rem 1rem;text-align:center;min-width:106px;">
-        <div style="font-size:1.1rem;margin-bottom:0.3rem;">🔍</div>
-        <div style="font-size:0.7rem;font-weight:700;color:#d1fae5;">Retriever</div>
-        <div style="font-size:0.55rem;color:#6ee7b7;margin-top:0.1rem;">Semantic search</div>
-        </div>
-        <div style="color:#4ade80;font-size:1.1rem;padding:0 0.4rem;">→</div>
-        <div style="background:#1a4a35;border:1px solid #2d6a4f;border-radius:10px;
-                    padding:0.75rem 1rem;text-align:center;min-width:106px;">
-        <div style="font-size:1.1rem;margin-bottom:0.3rem;">🧪</div>
-        <div style="font-size:0.7rem;font-weight:700;color:#d1fae5;">RAG Eval</div>
-        <div style="font-size:0.55rem;color:#6ee7b7;margin-top:0.1rem;">Fidelity score</div>
-        </div>
-        </div>
-        </div>
-
-        </div>
-        </div>
+        <section id="tl-dimensions" style="background:#0A0B1A;padding:96px 24px;
+                                            font-family:'Inter',system-ui,sans-serif;">
+          <div style="max-width:1180px;margin:0 auto;">
+            <div style="text-align:center;margin-bottom:48px;display:flex;
+                        flex-direction:column;align-items:center;gap:12px;">
+              <span style="font-size:11px;font-weight:700;letter-spacing:0.18em;
+                           text-transform:uppercase;color:#6366F1;">TRUST DIMENSIONS</span>
+              <h2 style="font-size:44px;font-weight:800;line-height:1.1;letter-spacing:-0.025em;
+                          margin:0;max-width:720px;color:white;">
+                <span style="background:linear-gradient(135deg,#6366F1,#8B5CF6);
+                  -webkit-background-clip:text;background-clip:text;color:transparent;">6 Dimensions</span> of Trust
+              </h2>
+              <p style="font-size:17px;color:#94A3B8;max-width:620px;line-height:1.65;margin:0;">
+                Each independent, each scored 0–1, each surfaced in your final report.
+              </p>
+            </div>
+            <div class="tl-dims-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;">
+              <div style="background:#13153A;border:1px solid #1E1F4E;border-top:2px solid transparent;
+                          border-radius:14px;padding:26px 24px;transition:border-color 0.2s,transform 0.2s;">
+                <div style="width:48px;height:48px;border-radius:50%;background:rgba(99,102,241,0.12);
+                            color:#818CF8;display:flex;align-items:center;justify-content:center;
+                            font-size:22px;margin-bottom:16px;">🔍</div>
+                <h3 style="font-size:17px;font-weight:700;letter-spacing:-0.01em;margin-bottom:8px;color:white;">Truthfulness</h3>
+                <p style="color:#94A3B8;font-size:14px;line-height:1.55;margin:0;">Factual grounding measured against expected answers and retrieved context.</p>
+              </div>
+              <div style="background:#13153A;border:1px solid #1E1F4E;border-top:2px solid transparent;
+                          border-radius:14px;padding:26px 24px;">
+                <div style="width:48px;height:48px;border-radius:50%;background:rgba(99,102,241,0.12);
+                            color:#818CF8;display:flex;align-items:center;justify-content:center;
+                            font-size:22px;margin-bottom:16px;">🛡</div>
+                <h3 style="font-size:17px;font-weight:700;letter-spacing:-0.01em;margin-bottom:8px;color:white;">Safety</h3>
+                <p style="color:#94A3B8;font-size:14px;line-height:1.55;margin:0;">Jailbreak resistance, harmful content detection, and prompt-injection scoring.</p>
+              </div>
+              <div style="background:#13153A;border:1px solid #1E1F4E;border-top:2px solid transparent;
+                          border-radius:14px;padding:26px 24px;">
+                <div style="width:48px;height:48px;border-radius:50%;background:rgba(99,102,241,0.12);
+                            color:#818CF8;display:flex;align-items:center;justify-content:center;
+                            font-size:22px;margin-bottom:16px;">⚖</div>
+                <h3 style="font-size:17px;font-weight:700;letter-spacing:-0.01em;margin-bottom:8px;color:white;">Fairness</h3>
+                <p style="color:#94A3B8;font-size:14px;line-height:1.55;margin:0;">Demographic bias, group fairness, and toxicity across diverse prompts.</p>
+              </div>
+              <div style="background:#13153A;border:1px solid #1E1F4E;border-top:2px solid transparent;
+                          border-radius:14px;padding:26px 24px;">
+                <div style="width:48px;height:48px;border-radius:50%;background:rgba(99,102,241,0.12);
+                            color:#818CF8;display:flex;align-items:center;justify-content:center;
+                            font-size:22px;margin-bottom:16px;">🔒</div>
+                <h3 style="font-size:17px;font-weight:700;letter-spacing:-0.01em;margin-bottom:8px;color:white;">Privacy</h3>
+                <p style="color:#94A3B8;font-size:14px;line-height:1.55;margin:0;">PII leakage detection, data exfiltration risk, and consent boundary checks.</p>
+              </div>
+              <div style="background:#13153A;border:1px solid #1E1F4E;border-top:2px solid transparent;
+                          border-radius:14px;padding:26px 24px;">
+                <div style="width:48px;height:48px;border-radius:50%;background:rgba(99,102,241,0.12);
+                            color:#818CF8;display:flex;align-items:center;justify-content:center;
+                            font-size:22px;margin-bottom:16px;">💪</div>
+                <h3 style="font-size:17px;font-weight:700;letter-spacing:-0.01em;margin-bottom:8px;color:white;">Robustness</h3>
+                <p style="color:#94A3B8;font-size:14px;line-height:1.55;margin:0;">Behavior under adversarial inputs, paraphrasing, and edge-case stress tests.</p>
+              </div>
+              <div style="background:#13153A;border:1px solid #1E1F4E;border-top:2px solid transparent;
+                          border-radius:14px;padding:26px 24px;">
+                <div style="width:48px;height:48px;border-radius:50%;background:rgba(99,102,241,0.12);
+                            color:#818CF8;display:flex;align-items:center;justify-content:center;
+                            font-size:22px;margin-bottom:16px;">🧭</div>
+                <h3 style="font-size:17px;font-weight:700;letter-spacing:-0.01em;margin-bottom:8px;color:white;">Ethics</h3>
+                <p style="color:#94A3B8;font-size:14px;line-height:1.55;margin:0;">Alignment with use-case norms, refusal quality, and decision-rationale clarity.</p>
+              </div>
+            </div>
+          </div>
+        </section>
     """), unsafe_allow_html=True)
 
-    # ── STATS STRIP ───────────────────────────────────────────────────
-    st.markdown(_h(f"""
-        <div id="stats-strip" style="background:#1e1b4b;padding:3.5rem 3rem;border-top:1px solid rgba(165,180,252,0.1);">
-        <div class="grid-3col" style="max-width:700px;margin:0 auto;
-                    display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;text-align:center;">
-        <div>
-        <div style="font-size:3.5rem;font-weight:900;color:white;letter-spacing:-0.04em;line-height:1;">
-        {stats["prompts"]}</div>
-        <div style="color:#7DD3FC;font-size:0.9rem;margin-top:0.4rem;">Prompts evaluated</div>
-        </div>
-        <div>
-        <div style="font-size:3.5rem;font-weight:900;color:white;letter-spacing:-0.04em;line-height:1;">
-        {stats["models"]}</div>
-        <div style="color:#7DD3FC;font-size:0.9rem;margin-top:0.4rem;">Models tested</div>
-        </div>
-        <div>
-        <div style="font-size:3.5rem;font-weight:900;color:white;letter-spacing:-0.04em;line-height:1;">
-        {stats["avg_trust"]}</div>
-        <div style="color:#7DD3FC;font-size:0.9rem;margin-top:0.4rem;">Avg trust score</div>
-        </div>
-        </div>
-        </div>
+    # ── MODELS ────────────────────────────────────────────────────────
+    st.markdown(_h("""
+        <section id="tl-models" style="background:#0F1030;padding:96px 24px;
+                                        font-family:'Inter',system-ui,sans-serif;">
+          <div style="max-width:1180px;margin:0 auto;">
+            <div style="text-align:center;margin-bottom:48px;display:flex;
+                        flex-direction:column;align-items:center;gap:12px;">
+              <span style="font-size:11px;font-weight:700;letter-spacing:0.18em;
+                           text-transform:uppercase;color:#6366F1;">MODELS</span>
+              <h2 style="font-size:44px;font-weight:800;line-height:1.1;letter-spacing:-0.025em;
+                          margin:0;max-width:720px;color:white;">
+                12 Models. <span style="background:linear-gradient(135deg,#6366F1,#8B5CF6);
+                  -webkit-background-clip:text;background-clip:text;color:transparent;">One Platform.</span>
+              </h2>
+              <p style="font-size:17px;color:#94A3B8;max-width:620px;line-height:1.65;margin:0;">
+                Match exactly the model IDs in
+                <code style="font-family:monospace;font-size:0.85em;color:#818CF8;">providers.py</code>.
+                No vendored adapters, no surprises.
+              </p>
+            </div>
+            <div class="tl-models-row" style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;">
+              <div class="tl-model-card" style="background:#13153A;border:1px solid #1E1F4E;border-radius:12px;padding:18px;color:#94A3B8;">
+                <div style="font-size:15px;font-weight:700;color:white;margin-bottom:8px;">Groq</div>
+                <ul style="list-style:none;padding:0;margin:0;">
+                  <li style="font-family:monospace;font-size:12px;padding:3px 0;line-height:1.4;">llama3-8b-8192</li>
+                  <li style="font-family:monospace;font-size:12px;padding:3px 0;line-height:1.4;">mixtral-8x7b-32768</li>
+                </ul>
+              </div>
+              <div class="tl-model-card" style="background:#13153A;border:1px solid #1E1F4E;border-radius:12px;padding:18px;color:#94A3B8;">
+                <div style="font-size:15px;font-weight:700;color:white;margin-bottom:8px;">Claude</div>
+                <ul style="list-style:none;padding:0;margin:0;">
+                  <li style="font-family:monospace;font-size:12px;padding:3px 0;line-height:1.4;">claude-haiku-3</li>
+                  <li style="font-family:monospace;font-size:12px;padding:3px 0;line-height:1.4;">claude-sonnet-3-5</li>
+                </ul>
+              </div>
+              <div class="tl-model-card" style="background:#13153A;border:1px solid #1E1F4E;border-radius:12px;padding:18px;color:#94A3B8;">
+                <div style="font-size:15px;font-weight:700;color:white;margin-bottom:8px;">OpenAI</div>
+                <ul style="list-style:none;padding:0;margin:0;">
+                  <li style="font-family:monospace;font-size:12px;padding:3px 0;line-height:1.4;">gpt-4o</li>
+                  <li style="font-family:monospace;font-size:12px;padding:3px 0;line-height:1.4;">gpt-4o-mini</li>
+                </ul>
+              </div>
+              <div class="tl-model-card" style="background:#13153A;border:1px solid #1E1F4E;border-radius:12px;padding:18px;color:#94A3B8;">
+                <div style="font-size:15px;font-weight:700;color:white;margin-bottom:8px;">Gemini</div>
+                <ul style="list-style:none;padding:0;margin:0;">
+                  <li style="font-family:monospace;font-size:12px;padding:3px 0;line-height:1.4;">gemini-1.5-pro</li>
+                  <li style="font-family:monospace;font-size:12px;padding:3px 0;line-height:1.4;">gemini-1.5-flash</li>
+                </ul>
+              </div>
+              <div class="tl-model-card" style="background:#13153A;border:1px solid #1E1F4E;border-radius:12px;padding:18px;color:#94A3B8;">
+                <div style="font-size:15px;font-weight:700;color:white;margin-bottom:8px;">Mistral</div>
+                <ul style="list-style:none;padding:0;margin:0;">
+                  <li style="font-family:monospace;font-size:12px;padding:3px 0;line-height:1.4;">mistral-7b-instruct</li>
+                  <li style="font-family:monospace;font-size:12px;padding:3px 0;line-height:1.4;">mistral-large-latest</li>
+                </ul>
+              </div>
+              <div class="tl-model-card" style="background:#13153A;border:1px solid #1E1F4E;border-radius:12px;padding:18px;color:#94A3B8;">
+                <div style="font-size:15px;font-weight:700;color:white;margin-bottom:8px;">Phi</div>
+                <ul style="list-style:none;padding:0;margin:0;">
+                  <li style="font-family:monospace;font-size:12px;padding:3px 0;line-height:1.4;">phi3-mini</li>
+                  <li style="font-family:monospace;font-size:12px;padding:3px 0;line-height:1.4;">phi3-medium</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+    """), unsafe_allow_html=True)
+
+    # ── RAG CALLOUT ───────────────────────────────────────────────────
+    st.markdown(_h("""
+        <section id="tl-rag" style="background:linear-gradient(135deg,#13153A 0%,#1a1060 100%);
+                                     border-top:1px solid #1E1F4E;border-bottom:1px solid #1E1F4E;
+                                     padding:96px 24px;text-align:center;
+                                     font-family:'Inter',system-ui,sans-serif;">
+          <div style="max-width:1180px;margin:0 auto;">
+            <span style="font-size:11px;font-weight:700;letter-spacing:0.18em;
+                         text-transform:uppercase;color:#6366F1;">RAG PIPELINE</span>
+            <h2 style="font-size:44px;font-weight:800;line-height:1.1;letter-spacing:-0.025em;
+                        margin:14px auto 18px;max-width:720px;color:white;">
+              <span style="background:linear-gradient(135deg,#6366F1,#8B5CF6);
+                -webkit-background-clip:text;background-clip:text;color:transparent;">RAG Pipeline?</span>
+              We measure that too.
+            </h2>
+            <p style="font-size:17px;color:#94A3B8;max-width:620px;line-height:1.65;
+                      margin:0 auto;">
+              If your run went through RAG, four classical IR metrics surface alongside the trust score.
+            </p>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:24px 0 16px;">
+              <div style="background:#6366F1;color:white;padding:8px 18px;border-radius:999px;
+                          font-family:monospace;font-size:13px;font-weight:500;">Precision@K</div>
+              <div style="background:#6366F1;color:white;padding:8px 18px;border-radius:999px;
+                          font-family:monospace;font-size:13px;font-weight:500;">Recall@K</div>
+              <div style="background:#6366F1;color:white;padding:8px 18px;border-radius:999px;
+                          font-family:monospace;font-size:13px;font-weight:500;">MRR</div>
+              <div style="background:#6366F1;color:white;padding:8px 18px;border-radius:999px;
+                          font-family:monospace;font-size:13px;font-weight:500;">NDCG</div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
+                        gap:10px;margin:16px 0 28px;">
+              <div style="background:rgba(99,102,241,0.10);border:1px solid #6366F1;border-radius:10px;
+                          padding:10px 16px;font-size:13px;color:#818CF8;">40% Relevance</div>
+              <span style="color:#94A3B8;font-weight:600;">+</span>
+              <div style="background:rgba(99,102,241,0.10);border:1px solid #6366F1;border-radius:10px;
+                          padding:10px 16px;font-size:13px;color:#818CF8;">40% Completeness</div>
+              <span style="color:#94A3B8;font-weight:600;">+</span>
+              <div style="background:rgba(99,102,241,0.10);border:1px solid #6366F1;border-radius:10px;
+                          padding:10px 16px;font-size:13px;color:#818CF8;">20% Source Count</div>
+            </div>
+            <a href="#tl-signin" style="display:inline-flex;align-items:center;padding:14px 26px;
+                border-radius:12px;font-size:15px;font-weight:600;
+                background:linear-gradient(135deg,#6366F1,#8B5CF6);color:white;text-decoration:none;
+                box-shadow:0 4px 16px rgba(99,102,241,0.30);">Try RAG Testing &nbsp;→</a>
+          </div>
+        </section>
     """), unsafe_allow_html=True)
 
     # ── SIGN-IN SECTION HEADER ────────────────────────────────────────
     st.markdown(_h("""
-        <div id="signin-section"
-             style="padding:5rem 2rem 3rem;background:transparent;
-                    border-top:1px solid #f1f5f9;">
-        <div style="max-width:440px;margin:0 auto;text-align:center;">
-        <div style="background:#4f46e5;width:60px;height:60px;border-radius:16px;
-                    display:inline-flex;align-items:center;justify-content:center;
-                    font-size:1.75rem;color:white;margin-bottom:1.25rem;
-                    box-shadow:0 8px 24px rgba(79,70,229,0.3);">🛡</div>
-        <div style="font-size:2.5rem;font-weight:900;color:#111827;letter-spacing:-0.04em;
-                    margin-bottom:0.5rem;line-height:1.1;">Welcome back</div>
-        <div style="font-size:1.1rem;color:#6b7280;font-weight:400;">Sign in to your TrustLLM account</div>
-        </div>
+        <div id="tl-signin" style="background:#0A0B1A;padding:96px 24px 40px;text-align:center;
+                                    font-family:'Inter',system-ui,sans-serif;">
+          <div style="max-width:1180px;margin:0 auto;">
+            <span style="font-size:11px;font-weight:700;letter-spacing:0.18em;
+                         text-transform:uppercase;color:#6366F1;">GET STARTED</span>
+            <h2 style="font-size:44px;font-weight:800;line-height:1.1;letter-spacing:-0.025em;
+                        margin:14px auto 18px;max-width:720px;color:white;">
+              Start evaluating your models
+              <span style="background:linear-gradient(135deg,#6366F1,#8B5CF6);
+                -webkit-background-clip:text;background-clip:text;color:transparent;">today.</span>
+            </h2>
+            <p style="font-size:17px;color:#94A3B8;max-width:620px;line-height:1.65;
+                      margin:0 auto 0;">
+              Free to try. No credit card required.
+            </p>
+          </div>
         </div>
     """), unsafe_allow_html=True)
 
@@ -1132,27 +1082,55 @@ def _show_login() -> None:
 
         st.markdown(_h("""
             <div style="text-align:center;padding:1rem 0 3rem;">
-            <span style="color:#9ca3af;font-size:0.8rem;">
-            Demo — Username: <strong style="color:#374151;">TestUser</strong>
-            &nbsp;·&nbsp; Password: <strong style="color:#374151;">User123</strong>
+            <span style="color:#94A3B8;font-size:0.8rem;">
+            Demo — Username: <strong style="color:#cbd5e1;">TestUser</strong>
+            &nbsp;·&nbsp; Password: <strong style="color:#cbd5e1;">User123</strong>
             </span>
             </div>
         """), unsafe_allow_html=True)
 
     # ── FOOTER ────────────────────────────────────────────────────────
     st.markdown(_h("""
-        <style>
-        #trustllm-footer span { color: rgba(255,255,255,0.85) !important; }
-        #trustllm-footer a { color: #a5b4fc !important; text-decoration: none !important; }
-        </style>
-        <div id="trustllm-footer" style="background:#1e1b4b;padding:2rem 3rem;text-align:center;">
-        <span style="font-size:0.8rem;">
-        © 2025 TrustLLM · Powered by ChromaDB · Groq · Streamlit ·
-        Built by <a href="https://www.linkedin.com/in/monika-kushwaha-52443735/"
-        target="_blank">Monika Kushwaha</a>
-        </span>
-        </div>
+        <footer style="background:#0A0B1A;border-top:1px solid #1E1F4E;padding:36px 24px;
+                        text-align:center;color:#94A3B8;font-size:13px;
+                        font-family:'Inter',system-ui,sans-serif;">
+          <div style="display:inline-flex;flex-wrap:wrap;gap:24px;justify-content:center;margin-bottom:14px;">
+            <a href="#tl-how" style="color:#94A3B8;font-size:13px;text-decoration:none;">How it works</a>
+            <a href="#tl-dimensions" style="color:#94A3B8;font-size:13px;text-decoration:none;">Trust dimensions</a>
+            <a href="#tl-models" style="color:#94A3B8;font-size:13px;text-decoration:none;">Models</a>
+            <a href="#tl-signin" style="color:#94A3B8;font-size:13px;text-decoration:none;">Sign in</a>
+          </div>
+          <div>© 2025 TrustLLM · AI Model Evaluation Platform · Powered by ChromaDB · Groq · Streamlit ·
+            Built by <a href="https://www.linkedin.com/in/monika-kushwaha-52443735/" target="_blank"
+              rel="noopener" style="color:#818CF8;font-weight:500;text-decoration:none;">Monika Kushwaha</a>
+          </div>
+        </footer>
     """), unsafe_allow_html=True)
+
+    # ── STICKY NAV + FORM CARD JS ──────────────────────────────────────
+    _components.html("""
+        <script>
+        (function() {
+          // Sticky nav scroll border
+          var nav = window.parent.document.getElementById('tl-nav');
+          if (nav) {
+            window.parent.addEventListener('scroll', function() {
+              nav.style.borderBottomColor = window.parent.scrollY > 8 ? '#1E1F4E' : 'transparent';
+            }, {passive: true});
+          }
+          // Dark card wrapper for the middle (form) column
+          var cols = window.parent.document.querySelectorAll('[data-testid="stColumn"]');
+          if (cols.length >= 3) {
+            var mid = cols[Math.floor(cols.length / 2)];
+            mid.style.background = '#13153A';
+            mid.style.border = '1px solid #1E1F4E';
+            mid.style.borderRadius = '16px';
+            mid.style.padding = '32px';
+            mid.style.boxShadow = '0 0 60px rgba(99,102,241,0.10)';
+          }
+        })();
+        </script>
+    """, height=0)
 
 
 # -----------------------------------------------------------------------

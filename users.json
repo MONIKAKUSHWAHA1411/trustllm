@@ -5,6 +5,20 @@
       "password": "User123",
       "display_name": "Test User",
       "role": "viewer"
+    },
+    {
+      "username": "maddieemona",
+      "password": "lucy123",
+      "display_name": "monika",
+      "role": "viewer",
+      "email": "maddieemona@gmail.com"
+    },
+    {
+      "username": "monika",
+      "password": "lucy@123",
+      "display_name": "monika",
+      "role": "viewer",
+      "email": "maddieemona@gmail.com"
     }
   ]
 }
