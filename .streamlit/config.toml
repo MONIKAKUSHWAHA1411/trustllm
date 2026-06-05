@@ -1,9 +1,9 @@
 [theme]
 base="light"
 
-primaryColor="#E8290B"
-backgroundColor="#F9F8F6"
-secondaryBackgroundColor="#FFFFFF"
-textColor="#0E0E0E"
+primaryColor="#E8420A"
+backgroundColor="#FFFFFF"
+secondaryBackgroundColor="#F9FAFB"
+textColor="#0A0A0A"
 
 font="sans serif"
