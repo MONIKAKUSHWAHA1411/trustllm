@@ -15,45 +15,77 @@ export default function CTASection() {
   }
 
   return (
-    <section className="w-full py-24 px-4 sm:px-6 border-t border-[#E5E7EB]" style={{ backgroundColor: '#F9FAFB' }}>
+    <section
+      className="w-full py-24 px-4 sm:px-6"
+      style={{ backgroundColor: '#F9FAFB', borderTop: '1px solid #E5E7EB' }}
+    >
       <div ref={ref} className="reveal max-w-2xl mx-auto text-center">
-        <p className="text-xs font-semibold tracking-widest uppercase text-[#E8420A] mb-4">— GET STARTED</p>
-        <h2 className="text-3xl sm:text-4xl font-bold text-[#0A0A0A] tracking-tight mb-4">
-          Know before you ship.
+        <p
+          style={{
+            fontSize: '11px',
+            fontWeight: '600',
+            letterSpacing: '0.15em',
+            textTransform: 'uppercase',
+            color: '#E8420A',
+            marginBottom: '16px',
+          }}
+        >
+          — STAY UPDATED
+        </p>
+        <h2
+          style={{
+            fontSize: 'clamp(1.6rem, 3.5vw, 2.2rem)',
+            fontWeight: '800',
+            color: '#0A0A0A',
+            letterSpacing: '-0.02em',
+            marginBottom: '16px',
+            lineHeight: '1.2',
+          }}
+        >
+          Stay ahead of LLM evaluation.
         </h2>
-        <p className="text-[#6B7280] text-base mb-10 leading-relaxed">
-          Join teams using TrustLLM to benchmark LLMs before production. Get early access and evaluation tips.
+        <p style={{ color: '#6B7280', fontSize: '15px', marginBottom: '36px', lineHeight: '1.6' }}>
+          Updates on new models, eval techniques, and TrustLLM features.
         </p>
 
         {sent ? (
-          <p className="text-[#E8420A] font-semibold text-sm">
+          <p style={{ color: '#E8420A', fontWeight: '600', fontSize: '14px' }}>
             ✓ You're on the list — we'll be in touch soon.
           </p>
         ) : (
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+          >
             <input
               type="email"
               required
               value={email}
               onChange={e => setEmail(e.target.value)}
               placeholder="your@email.com"
-              className="flex-1 px-4 py-3 text-sm border border-[#E5E7EB] bg-white text-[#0A0A0A] placeholder-[#9CA3AF] outline-none rounded-md transition-all"
-              onFocus={e => e.currentTarget.style.borderColor = '#E8420A'}
-              onBlur={e => e.currentTarget.style.borderColor = '#E5E7EB'}
+              className="flex-1 px-4 py-3 text-sm bg-white outline-none rounded-md transition-all"
+              style={{
+                border: '1px solid #E5E7EB',
+                color: '#0A0A0A',
+              }}
+              onFocus={e => { e.currentTarget.style.borderColor = '#E8420A'; }}
+              onBlur={e => { e.currentTarget.style.borderColor = '#E5E7EB'; }}
             />
             <button
               type="submit"
               style={{ backgroundColor: '#E8420A' }}
               className="px-6 py-3 text-white text-sm font-semibold rounded-md transition-all whitespace-nowrap"
-              onMouseEnter={e => e.currentTarget.style.backgroundColor = '#C23308'}
-              onMouseLeave={e => e.currentTarget.style.backgroundColor = '#E8420A'}
+              onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#C23308'; }}
+              onMouseLeave={e => { e.currentTarget.style.backgroundColor = '#E8420A'; }}
             >
-              Get Early Access →
+              Subscribe →
             </button>
           </form>
         )}
 
-        <p className="text-xs text-[#9CA3AF] mt-4">No spam. Unsubscribe anytime.</p>
+        <p style={{ fontSize: '12px', color: '#9CA3AF', marginTop: '16px' }}>
+          No spam. Unsubscribe anytime.
+        </p>
       </div>
     </section>
   );

@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 
-const STORAGE_KEY = 'trustllm_banner_dismissed';
+const STORAGE_KEY = 'aaif-banner-dismissed';
 
 export default function AnnouncementBanner() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const dismissed = localStorage.getItem(STORAGE_KEY);
-    if (!dismissed) setVisible(true);
+    if (!localStorage.getItem(STORAGE_KEY)) setVisible(true);
   }, []);
 
   function dismiss() {
@@ -19,8 +18,11 @@ export default function AnnouncementBanner() {
   if (!visible) return null;
 
   return (
-    <div style={{ backgroundColor: '#E8420A' }} className="w-full text-white text-sm py-2 px-4 flex items-center justify-center gap-3 relative">
-      <span className="flex items-center gap-2 font-medium">
+    <div
+      style={{ backgroundColor: '#E8420A', fontSize: '13px' }}
+      className="w-full text-white py-2 px-4 flex items-center justify-center relative"
+    >
+      <span className="font-medium flex items-center gap-2">
         ✦ TrustLLM now supports RAG evaluation —{' '}
         <a
           href="/rag-testing"
@@ -32,7 +34,7 @@ export default function AnnouncementBanner() {
       <button
         onClick={dismiss}
         aria-label="Dismiss announcement"
-        className="absolute right-4 top-1/2 -translate-y-1/2 hover:opacity-70 transition-opacity"
+        className="absolute right-4 top-1/2 -translate-y-1/2 hover:opacity-70 transition-opacity text-white"
       >
         <X size={16} />
       </button>
