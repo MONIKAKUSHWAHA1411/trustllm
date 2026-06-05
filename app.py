@@ -517,7 +517,7 @@ def _show_login() -> None:
 
     # ── FOOTER ───────────────────────────────────────────────────────
     st.markdown(_h("""
-        <footer style="background:#F9FAFB;border-top:1px solid #E5E7EB;padding:32px 16px;
+        <div style="background:#F9FAFB;border-top:1px solid #E5E7EB;padding:32px 16px;
                 text-align:center;font-family:'Inter',sans-serif;">
           <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-bottom:12px;">
             <a href="#how-it-works" style="font-size:14px;color:#6B7280;text-decoration:none;">How it works</a>
@@ -531,7 +531,7 @@ def _show_login() -> None:
                rel="noopener noreferrer"
                style="color:#E8420A;text-decoration:none;">Monika Kushwaha</a>
           </p>
-        </footer>
+        </div>
     """), unsafe_allow_html=True)
 
     # ── SIGN-IN SECTION HEADER ────────────────────────────────────────
