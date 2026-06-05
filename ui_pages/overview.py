@@ -149,7 +149,19 @@ def render():
         unsafe_allow_html=True,
     )
 
-    with open(BASE_DIR / "reports" / "results.json") as f:
+    results_path = BASE_DIR / "reports" / "results.json"
+    if not results_path.exists():
+        st.markdown(
+            '<div class="verdict-section-label">— MONITOR · OVERVIEW</div>'
+            '<h1 style="font-family:\'Syne\',sans-serif;font-size:2rem;font-weight:800;'
+            'letter-spacing:-0.02em;color:#0E0E0E;margin:0 0 4px 0;">Trust Report.</h1>',
+            unsafe_allow_html=True,
+        )
+        st.markdown('<hr class="section-divider">', unsafe_allow_html=True)
+        st.info("No evaluation results yet. Run an evaluation first via **Run Evaluation** in the sidebar.")
+        return
+
+    with open(results_path) as f:
         data = json.load(f)
 
     df = pd.DataFrame(data)

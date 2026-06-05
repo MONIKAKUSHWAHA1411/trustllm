@@ -1333,11 +1333,11 @@ with header:
     with h1:
         st.markdown(_h("""
             <div style="display:flex;align-items:center;gap:0.5rem;padding-top:0.3rem;">
-            <div style="background:#4f46e5;width:24px;height:24px;border-radius:5px;
+            <div style="background:#E8290B;width:24px;height:24px;border-radius:0;
                         display:flex;align-items:center;justify-content:center;
-                        font-size:0.75rem;color:white;">🛡</div>
-            <span style="font-weight:700;color:#111827;font-size:0.95rem;
-                         letter-spacing:-0.01em;">TrustLLM</span>
+                        font-size:0.75rem;font-weight:800;color:white;font-family:'Syne',sans-serif;">T</div>
+            <span style="font-weight:800;color:#0E0E0E;font-size:0.95rem;
+                         font-family:'Syne',sans-serif;letter-spacing:0.02em;">TrustLLM</span>
             </div>
         """), unsafe_allow_html=True)
     with h2:
@@ -1351,19 +1351,7 @@ with header:
             label_visibility="collapsed",
         )
     with h4:
-        st.markdown(
-            '<button onclick="if(window._cmdOpen){window._cmdOpen();}else{'
-            'var o=document.getElementById(\'cmd-overlay\');'
-            'var inp=document.getElementById(\'cmd-input\');'
-            'o.classList.add(\'open\');inp.value=\'\';'
-            'inp.dispatchEvent(new Event(\'input\',{bubbles:true}));'
-            'setTimeout(function(){inp.focus();},60);}" '
-            'style="width:100%;padding:0.42rem 0.75rem;background:#18181b;color:#a1a1aa;'
-            'border:1px solid #27272a;border-radius:7px;font-size:0.82rem;font-weight:500;'
-            'cursor:pointer;font-family:inherit;transition:background 0.15s;">'
-            '⌘K&nbsp;&nbsp;Command palette</button>',
-            unsafe_allow_html=True,
-        )
+        pass  # command palette button removed
     with h5:
         with st.popover(f"👤 {user_name}", use_container_width=True):
             st.markdown(
@@ -1427,18 +1415,24 @@ if "_current_page" not in st.session_state:
 
 st.sidebar.markdown(
     f"""<div style="padding:1rem 0.75rem 0.5rem;">
-        <div style="display:flex;align-items:center;gap:0.5rem;">
-            <span style="font-size:1rem;">🛡</span>
-            <span style="font-size:0.95rem;font-weight:700;color:#fafafa;">TrustLLM</span>
-        </div>
-        <div style="font-size:0.72rem;color:#52525b;margin-top:0.2rem;">
-            {user_name}
+        <div style="display:flex;align-items:center;gap:0.6rem;">
+            <div style="background:#E8290B;width:28px;height:28px;flex-shrink:0;
+                        display:flex;align-items:center;justify-content:center;
+                        font-size:0.85rem;font-weight:800;color:white;
+                        font-family:'Syne',sans-serif;">T</div>
+            <div>
+                <div style="font-size:0.95rem;font-weight:800;color:white;
+                            font-family:'Syne',sans-serif;letter-spacing:0.02em;">TrustLLM</div>
+                <div style="font-size:0.68rem;color:rgba(255,255,255,0.3);
+                            font-family:'Syne',sans-serif;letter-spacing:0.12em;
+                            text-transform:uppercase;">{user_name}</div>
+            </div>
         </div>
     </div>""",
     unsafe_allow_html=True,
 )
 
-st.sidebar.markdown('<hr style="border:none;border-top:1px solid #18181b;margin:0 0 0.25rem;">', unsafe_allow_html=True)
+st.sidebar.markdown('<hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:0 0 0.25rem;">', unsafe_allow_html=True)
 
 page = st.session_state["_current_page"]
 
@@ -1447,14 +1441,11 @@ for section, items in _SECTIONS.items():
     for icon, label in items:
         is_active = (page == label)
         btn_label = f"{'●' if is_active else '○'}  {icon}  {label}"
-        btn_style = (
-            "background:#18181b !important;color:#818cf8 !important;font-weight:600 !important;"
-            if is_active else ""
-        )
         if is_active:
             st.sidebar.markdown(
-                f'<div style="{btn_style}padding:0.4rem 0.75rem;border-radius:6px;'
-                f'font-size:0.87rem;color:#818cf8;font-weight:600;margin-bottom:1px;">'
+                f'<div style="background:rgba(232,41,11,0.1);border-left:3px solid #E8290B;'
+                f'padding:0.4rem 0.75rem;font-size:0.87rem;color:white;font-weight:600;'
+                f'margin-bottom:1px;font-family:\'Inter\',sans-serif;">'
                 f'{icon}&nbsp;&nbsp;{label}</div>',
                 unsafe_allow_html=True,
             )
@@ -1464,7 +1455,7 @@ for section, items in _SECTIONS.items():
                 page = label
                 st.rerun()
 
-st.sidebar.markdown('<hr style="border:none;border-top:1px solid #18181b;margin:0.75rem 0 0.5rem;">', unsafe_allow_html=True)
+st.sidebar.markdown('<hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:0.75rem 0 0.5rem;">', unsafe_allow_html=True)
 
 # -----------------------------------------------------------------------
 # Get-your-own-key quick-links (TrustLLM Pro BYOK)
@@ -1476,8 +1467,8 @@ _link_html_parts = []
 for _pid, _meta in _PRO_PROVIDERS.items():
     _link_html_parts.append(
         f'<a href="{_meta["api_key_url"]}" target="_blank" rel="noopener" '
-        f'style="display:block;padding:0.25rem 0.75rem;font-size:0.8rem;color:#a1a1aa;'
-        f'text-decoration:none;border-radius:4px;">'
+        f'style="display:block;padding:0.25rem 0.75rem;font-size:0.8rem;color:rgba(255,255,255,0.4);'
+        f'text-decoration:none;">'
         f'↗ {_meta["display_name"]}</a>'
     )
 st.sidebar.markdown("".join(_link_html_parts), unsafe_allow_html=True)
@@ -1516,15 +1507,9 @@ with st.sidebar.expander("➕ Paste API key (Pro)", expanded=False):
             st.session_state["_sb_key_msg"] = f"❌ Error: {_e}"
         st.rerun()
 
-st.sidebar.markdown('<hr style="border:none;border-top:1px solid #18181b;margin:0.75rem 0 0.5rem;">', unsafe_allow_html=True)
+st.sidebar.markdown('<hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:0.75rem 0 0.5rem;">', unsafe_allow_html=True)
 
-st.sidebar.markdown(
-    '<div style="font-size:0.7rem;color:#3f3f46;padding:0 0.75rem 0.25rem;text-align:center;">'
-    'Press <kbd style="background:#18181b;border-radius:3px;padding:0.05rem 0.3rem;'
-    'font-size:0.65rem;color:#52525b;font-family:monospace;">⌘K</kbd> for command palette'
-    '</div>',
-    unsafe_allow_html=True,
-)
+pass  # command palette hint removed
 
 if st.sidebar.button("Sign out", use_container_width=True, key="sb_signout"):
     for k in list(st.session_state.keys()):
