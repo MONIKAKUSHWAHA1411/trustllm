@@ -177,17 +177,58 @@ section[data-testid="stSidebar"] .stButton > button {
   background-color: transparent !important;
   color: rgba(255,255,255,0.45) !important;
   border: 1px solid rgba(255,255,255,0.1) !important;
-  font-size: 0.78rem !important;
+  font-size: 0.82rem !important;
+  line-height: 1.5 !important;
+  min-height: 2.2rem !important;
+  padding: 0.45rem 0.75rem !important;
   box-shadow: none !important;
   text-transform: none !important;
   letter-spacing: 0.01em !important;
   font-weight: 400 !important;
+  border-radius: 0 !important;
 }
 
 section[data-testid="stSidebar"] .stButton > button:hover {
   background-color: rgba(255,255,255,0.06) !important;
   color: rgba(255,255,255,0.8) !important;
   box-shadow: none !important;
+}
+
+/* Sidebar expander (Paste API key) — dark theme */
+section[data-testid="stSidebar"] [data-testid="stExpander"] {
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  border-radius: 0 !important;
+}
+section[data-testid="stSidebar"] [data-testid="stExpander"] summary {
+  color: rgba(255,255,255,0.55) !important;
+}
+section[data-testid="stSidebar"] [data-testid="stExpander"] summary:hover {
+  color: rgba(255,255,255,0.85) !important;
+}
+section[data-testid="stSidebar"] [data-testid="stExpander"] [data-baseweb="select"],
+section[data-testid="stSidebar"] [data-testid="stExpander"] [data-baseweb="input"],
+section[data-testid="stSidebar"] [data-testid="stExpander"] [data-testid="stTextInputRootElement"],
+section[data-testid="stSidebar"] [data-testid="stExpander"] [data-baseweb="base-input"] {
+  background: rgba(255,255,255,0.06) !important;
+  border-color: rgba(255,255,255,0.15) !important;
+  color: white !important;
+}
+section[data-testid="stSidebar"] [data-testid="stExpander"] input,
+section[data-testid="stSidebar"] [data-testid="stExpander"] [data-testid="stTextInput"] input {
+  color: white !important;
+  background: transparent !important;
+}
+section[data-testid="stSidebar"] [data-testid="stExpander"] label {
+  color: rgba(255,255,255,0.5) !important;
+}
+section[data-testid="stSidebar"] [data-testid="stExpander"] .stButton > button {
+  background: #E8290B !important;
+  color: white !important;
+  border: none !important;
+  font-family: 'Syne', sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
 }
 
 /* Pagination buttons */

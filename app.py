@@ -1333,9 +1333,9 @@ with header:
     with h1:
         st.markdown(_h("""
             <div style="display:flex;align-items:center;gap:0.5rem;padding-top:0.3rem;">
-            <div style="background:#E8290B;width:24px;height:24px;border-radius:0;
+            <div style="background:#E8290B;width:26px;height:26px;border-radius:5px;
                         display:flex;align-items:center;justify-content:center;
-                        font-size:0.75rem;font-weight:800;color:white;font-family:'Syne',sans-serif;">T</div>
+                        font-size:0.85rem;color:white;">🛡</div>
             <span style="font-weight:800;color:#0E0E0E;font-size:0.95rem;
                          font-family:'Syne',sans-serif;letter-spacing:0.02em;">TrustLLM</span>
             </div>
@@ -1416,10 +1416,8 @@ if "_current_page" not in st.session_state:
 st.sidebar.markdown(
     f"""<div style="padding:1rem 0.75rem 0.5rem;">
         <div style="display:flex;align-items:center;gap:0.6rem;">
-            <div style="background:#E8290B;width:28px;height:28px;flex-shrink:0;
-                        display:flex;align-items:center;justify-content:center;
-                        font-size:0.85rem;font-weight:800;color:white;
-                        font-family:'Syne',sans-serif;">T</div>
+            <div style="background:#E8290B;width:30px;height:30px;flex-shrink:0;border-radius:6px;
+                        display:flex;align-items:center;justify-content:center;font-size:1rem;">🛡</div>
             <div>
                 <div style="font-size:0.95rem;font-weight:800;color:white;
                             font-family:'Syne',sans-serif;letter-spacing:0.02em;">TrustLLM</div>
