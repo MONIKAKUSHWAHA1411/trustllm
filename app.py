@@ -57,545 +57,322 @@ def _authenticate(username, password):
 
 
 # -----------------------------------------------
-# LOGIN PAGE  —  VERDICT style
+# LOGIN PAGE  —  VERDICT style (single-column)
 # -----------------------------------------------
 def _show_login():
-    st.markdown(_h("""
-        <style>
-        #MainMenu {visibility: hidden;}
-        footer {visibility: hidden;}
-        header {visibility: hidden;}
-        .stApp { background: #F9F8F6 !important; }
-        section.main .block-container {
-            padding: 0 !important;
-            max-width: 100% !important;
-        }
-        [data-testid="stForm"] {
-            background: white !important;
-            border: 1px solid #E4E2DC !important;
-            border-radius: 0 !important;
-            box-shadow: none !important;
-            padding: 2rem !important;
-        }
-        [data-testid="stForm"] label {
-            color: #0E0E0E !important;
-            font-size: 0.75rem !important;
-            font-weight: 700 !important;
-            letter-spacing: 0.08em !important;
-            text-transform: uppercase !important;
-            font-family: 'Syne', sans-serif !important;
-        }
-        [data-testid="stForm"] input {
-            background-color: #F9F8F6 !important;
-            border: 1px solid #E4E2DC !important;
-            border-radius: 0 !important;
-            color: #0E0E0E !important;
-        }
-        [data-testid="stForm"] input::placeholder { color: #888888 !important; }
-        [data-testid="stForm"] input:focus {
-            border-color: #E8290B !important;
-            box-shadow: none !important;
-        }
-        [data-testid="stForm"] .stButton > button {
-            background-color: #E8290B !important;
-            color: white !important;
-            font-weight: 700 !important;
-            font-size: 0.8rem !important;
-            border-radius: 0 !important;
-            border: none !important;
-            width: 100%;
-            font-family: 'Syne', sans-serif !important;
-            letter-spacing: 0.12em !important;
-            text-transform: uppercase !important;
-        }
-        [data-testid="stForm"] .stButton > button:hover {
-            background-color: #C42208 !important;
-        }
-        [data-testid="stForm"] [data-testid="InputInstructions"] {
-            display: none !important;
-        }
-        </style>
-        <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    """), unsafe_allow_html=True)
+    def _md(html_str):
+        import textwrap
+        h = textwrap.dedent(html_str).strip()
+        h = "\n".join(ln for ln in h.splitlines() if ln.strip())
+        st.markdown(h, unsafe_allow_html=True)
 
-    left_col, right_col = st.columns([13, 11])
+    # ── CSS + Fonts ──────────────────────────────────────────────────────
+    st.markdown("""<style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header {visibility: hidden;}
+[data-testid="stAppViewContainer"] { background: #0E0E0E !important; }
+[data-testid="stApp"] { background: #0E0E0E !important; }
+.block-container { padding-top: 0 !important; max-width: 100% !important; }
+[data-testid="stForm"] {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+}
+[data-testid="stForm"] input {
+    background: rgba(255,255,255,0.06) !important;
+    border: 1px solid rgba(255,255,255,0.15) !important;
+    border-radius: 0 !important;
+    color: white !important;
+    font-family: 'Inter', sans-serif !important;
+}
+[data-testid="stForm"] input:focus {
+    border-color: #E8290B !important;
+    box-shadow: none !important;
+}
+[data-testid="stForm"] label {
+    color: rgba(255,255,255,0.6) !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 0.8rem !important;
+}
+[data-testid="stForm"] .stButton > button {
+    background: #E8290B !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 0 !important;
+    font-family: 'Syne', sans-serif !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.08em !important;
+    font-size: 0.85rem !important;
+    padding: 0.65rem 1.5rem !important;
+    width: 100% !important;
+}
+[data-testid="stForm"] .stButton > button:hover {
+    background: #C42208 !important;
+}
+[data-testid="stForm"] [data-testid="InputInstructions"] {
+    display: none !important;
+}
+.stAlert { border-radius: 0 !important; }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">""", unsafe_allow_html=True)
 
-    # ── LEFT PANEL: Full landing page content (scrollable) ────────────
-    with left_col:
-        _lp = _h("""
-            <div style="background:#0E0E0E;height:100vh;overflow-y:auto;padding:3rem 3.5rem;
-                        font-family:'Syne',sans-serif;
-                        scrollbar-width:thin;scrollbar-color:#E8290B #1C1C1C;">
+    # ── HERO ──────────────────────────────────────────────────────────────
+    _md("""
+<div style="background:#0E0E0E;padding:4rem 2rem 3rem;font-family:'Syne',sans-serif;">
+  <div style="max-width:860px;margin:0 auto;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:3rem;">
+      <div style="background:#E8290B;width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:white;flex-shrink:0;">T</div>
+      <div>
+        <div style="color:white;font-size:1.1rem;font-weight:800;letter-spacing:0.03em;">TrustLLM</div>
+        <div style="color:rgba(255,255,255,0.25);font-size:8px;letter-spacing:0.18em;margin-top:2px;">EVAL PLATFORM</div>
+      </div>
+    </div>
+    <div style="font-size:10px;color:#E8290B;letter-spacing:0.2em;margin-bottom:1rem;font-weight:600;">— AI TRUST EVALUATION PLATFORM</div>
+    <h1 style="font-size:clamp(2rem,5vw,3.5rem);font-weight:800;color:white;line-height:1.05;letter-spacing:-0.03em;margin:0 0 1.5rem;">Your LLMs.<br><em style="color:#E8290B;font-style:normal;">Honestly</em><br>Evaluated.</h1>
+    <p style="color:rgba(255,255,255,0.55);font-size:1rem;line-height:1.7;max-width:560px;font-family:'Inter',sans-serif;margin-bottom:2.5rem;">Run rigorous trust benchmarks across safety, fairness, robustness, privacy, and truthfulness. Get verdicts, not vanity metrics.</p>
+    <div style="display:flex;gap:2rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.08);">
+      <div style="text-align:center;">
+        <div style="font-size:2rem;font-weight:800;color:#E8290B;">12+</div>
+        <div style="font-size:0.72rem;color:rgba(255,255,255,0.35);letter-spacing:0.12em;margin-top:4px;">MODELS TESTED</div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,0.08);"></div>
+      <div style="text-align:center;">
+        <div style="font-size:2rem;font-weight:800;color:#E8290B;">6</div>
+        <div style="font-size:0.72rem;color:rgba(255,255,255,0.35);letter-spacing:0.12em;margin-top:4px;">TRUST DIMENSIONS</div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,0.08);"></div>
+      <div style="text-align:center;">
+        <div style="font-size:2rem;font-weight:800;color:#E8290B;">500+</div>
+        <div style="font-size:0.72rem;color:rgba(255,255,255,0.35);letter-spacing:0.12em;margin-top:4px;">EVAL PROMPTS</div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,0.08);"></div>
+      <div style="text-align:center;">
+        <div style="font-size:2rem;font-weight:800;color:#E8290B;">RAG</div>
+        <div style="font-size:0.72rem;color:rgba(255,255,255,0.35);letter-spacing:0.12em;margin-top:4px;">PIPELINE BUILT-IN</div>
+      </div>
+    </div>
+  </div>
+</div>
+""")
 
-              <!-- ════ SECTION 1: HERO ════ -->
-              <div style="margin-bottom:0;">
-                <div style="display:flex;align-items:center;gap:12px;margin-bottom:3rem;">
-                  <div style="background:#E8290B;width:40px;height:40px;display:flex;align-items:center;
-                              justify-content:center;font-size:20px;font-weight:800;color:white;flex-shrink:0;">T</div>
-                  <div>
-                    <div style="color:white;font-size:1.1rem;font-weight:800;letter-spacing:0.03em;">TrustLLM</div>
-                    <div style="color:rgba(255,255,255,0.25);font-size:8px;letter-spacing:0.18em;margin-top:2px;">EVAL PLATFORM</div>
-                  </div>
-                </div>
+    # ── BYOK WOW FEATURE ─────────────────────────────────────────────────
+    _md("""
+<div style="background:#1C1C1C;padding:3rem 2rem;font-family:'Syne',sans-serif;border-top:3px solid #E8290B;">
+  <div style="max-width:860px;margin:0 auto;">
+    <div style="font-size:10px;color:#E8290B;letter-spacing:0.2em;margin-bottom:0.75rem;font-weight:600;">— BRING YOUR OWN KEY</div>
+    <h2 style="font-size:clamp(1.5rem,3vw,2.2rem);font-weight:800;color:white;letter-spacing:-0.02em;margin:0 0 1rem;line-height:1.1;">Your Keys. Any Model.<br><em style="color:#E8290B;font-style:normal;">Full Trust Report.</em></h2>
+    <p style="color:rgba(255,255,255,0.55);font-size:0.95rem;line-height:1.7;max-width:620px;font-family:'Inter',sans-serif;margin-bottom:2rem;">Why guess when you can verify? Connect your own OpenAI, Anthropic, Google, or Groq API keys and benchmark ChatGPT, Claude, Gemini, and Grok head-to-head — on your data, with your prompts, in real time.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:0.75rem;">
+      <div style="background:rgba(232,41,11,0.1);border:1px solid rgba(232,41,11,0.3);padding:0.5rem 1rem;font-size:0.8rem;font-weight:600;color:#E8290B;letter-spacing:0.05em;">ChatGPT · OpenAI</div>
+      <div style="background:rgba(232,41,11,0.1);border:1px solid rgba(232,41,11,0.3);padding:0.5rem 1rem;font-size:0.8rem;font-weight:600;color:#E8290B;letter-spacing:0.05em;">Claude · Anthropic</div>
+      <div style="background:rgba(232,41,11,0.1);border:1px solid rgba(232,41,11,0.3);padding:0.5rem 1rem;font-size:0.8rem;font-weight:600;color:#E8290B;letter-spacing:0.05em;">Gemini · Google</div>
+      <div style="background:rgba(232,41,11,0.1);border:1px solid rgba(232,41,11,0.3);padding:0.5rem 1rem;font-size:0.8rem;font-weight:600;color:#E8290B;letter-spacing:0.05em;">Grok · xAI</div>
+    </div>
+  </div>
+</div>
+""")
 
-                <div style="font-size:9px;color:#E8290B;letter-spacing:0.2em;margin-bottom:1.25rem;">
-                  — AI TRUST EVALUATION PLATFORM
-                </div>
+    # ── HOW IT WORKS ─────────────────────────────────────────────────────
+    _md("""
+<div style="background:#0E0E0E;padding:4rem 2rem;font-family:'Syne',sans-serif;">
+  <div style="max-width:860px;margin:0 auto;">
+    <div style="font-size:10px;color:#E8290B;letter-spacing:0.2em;margin-bottom:0.75rem;font-weight:600;">— HOW IT WORKS</div>
+    <h2 style="font-size:1.8rem;font-weight:800;color:white;letter-spacing:-0.02em;margin:0 0 2.5rem;">5 Steps to a Trust Score.</h2>
+    <div style="display:flex;flex-direction:column;gap:0;">
+      <div style="display:flex;gap:1.5rem;align-items:flex-start;padding:1.5rem 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+        <div style="background:#E8290B;min-width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:800;color:white;flex-shrink:0;">01</div>
+        <div>
+          <div style="font-size:1rem;font-weight:700;color:white;margin-bottom:0.35rem;">Connect Your Models</div>
+          <div style="font-size:0.85rem;color:rgba(255,255,255,0.45);line-height:1.65;font-family:'Inter',sans-serif;">Add your LLM endpoints or paste API keys for OpenAI, Anthropic, Google, Groq, or any OpenAI-compatible API.</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:1.5rem;align-items:flex-start;padding:1.5rem 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+        <div style="background:#E8290B;min-width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:800;color:white;flex-shrink:0;">02</div>
+        <div>
+          <div style="font-size:1rem;font-weight:700;color:white;margin-bottom:0.35rem;">Select Evaluation Dimensions</div>
+          <div style="font-size:0.85rem;color:rgba(255,255,255,0.45);line-height:1.65;font-family:'Inter',sans-serif;">Choose from 6 trust dimensions — Safety, Fairness, Robustness, Privacy, Machine Ethics, and Truthfulness — or run the full suite.</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:1.5rem;align-items:flex-start;padding:1.5rem 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+        <div style="background:#E8290B;min-width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:800;color:white;flex-shrink:0;">03</div>
+        <div>
+          <div style="font-size:1rem;font-weight:700;color:white;margin-bottom:0.35rem;">Run Adversarial Prompts</div>
+          <div style="font-size:0.85rem;color:rgba(255,255,255,0.45);line-height:1.65;font-family:'Inter',sans-serif;">500+ curated prompts probe your model's boundaries — jailbreaks, bias probes, hallucination traps, privacy leaks, and more.</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:1.5rem;align-items:flex-start;padding:1.5rem 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+        <div style="background:#E8290B;min-width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:800;color:white;flex-shrink:0;">04</div>
+        <div>
+          <div style="font-size:1rem;font-weight:700;color:white;margin-bottom:0.35rem;">Get Scored Verdicts</div>
+          <div style="font-size:0.85rem;color:rgba(255,255,255,0.45);line-height:1.65;font-family:'Inter',sans-serif;">Each response is scored by a judge LLM and rule-based classifiers. Results aggregate into per-dimension scores and an overall Trust Score.</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:1.5rem;align-items:flex-start;padding:1.5rem 0;">
+        <div style="background:#E8290B;min-width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:800;color:white;flex-shrink:0;">05</div>
+        <div>
+          <div style="font-size:1rem;font-weight:700;color:white;margin-bottom:0.35rem;">Compare and Decide</div>
+          <div style="font-size:0.85rem;color:rgba(255,255,255,0.45);line-height:1.65;font-family:'Inter',sans-serif;">Side-by-side leaderboard shows where each model excels and fails. Export reports, track regressions, and make evidence-based deployment decisions.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+""")
 
-                <div style="color:white;font-size:3.2rem;font-weight:800;line-height:1.05;
-                            letter-spacing:-0.02em;margin-bottom:1.5rem;">
-                  Your LLMs.<br>
-                  <em style="color:#E8290B;font-style:normal;">Honestly</em><br>
-                  Evaluated.
-                </div>
+    # ── TRUST DIMENSIONS ─────────────────────────────────────────────────
+    _md("""
+<div style="background:#1C1C1C;padding:4rem 2rem;font-family:'Syne',sans-serif;">
+  <div style="max-width:860px;margin:0 auto;">
+    <div style="font-size:10px;color:#E8290B;letter-spacing:0.2em;margin-bottom:0.75rem;font-weight:600;">— TRUST DIMENSIONS</div>
+    <h2 style="font-size:1.8rem;font-weight:800;color:white;letter-spacing:-0.02em;margin:0 0 2rem;">6 Dimensions. One Score.</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:rgba(255,255,255,0.06);">
+      <div style="background:#1C1C1C;padding:1.75rem 1.5rem;">
+        <div style="font-size:1.5rem;margin-bottom:0.75rem;">🛡️</div>
+        <div style="font-size:0.95rem;font-weight:700;color:white;margin-bottom:0.5rem;">Safety</div>
+        <div style="font-size:0.82rem;color:rgba(255,255,255,0.4);line-height:1.6;font-family:'Inter',sans-serif;">Jailbreak resistance, harmful output prevention, content policy adherence under adversarial conditions.</div>
+      </div>
+      <div style="background:#1C1C1C;padding:1.75rem 1.5rem;">
+        <div style="font-size:1.5rem;margin-bottom:0.75rem;">⚖️</div>
+        <div style="font-size:0.95rem;font-weight:700;color:white;margin-bottom:0.5rem;">Fairness</div>
+        <div style="font-size:0.82rem;color:rgba(255,255,255,0.4);line-height:1.6;font-family:'Inter',sans-serif;">Demographic bias detection across gender, race, religion, and protected attributes in model outputs.</div>
+      </div>
+      <div style="background:#1C1C1C;padding:1.75rem 1.5rem;">
+        <div style="font-size:1.5rem;margin-bottom:0.75rem;">💪</div>
+        <div style="font-size:0.95rem;font-weight:700;color:white;margin-bottom:0.5rem;">Robustness</div>
+        <div style="font-size:0.82rem;color:rgba(255,255,255,0.4);line-height:1.6;font-family:'Inter',sans-serif;">Consistency under paraphrasing, typos, and adversarial rephrasing. Does your model hold its ground?</div>
+      </div>
+      <div style="background:#1C1C1C;padding:1.75rem 1.5rem;">
+        <div style="font-size:1.5rem;margin-bottom:0.75rem;">🔒</div>
+        <div style="font-size:0.95rem;font-weight:700;color:white;margin-bottom:0.5rem;">Privacy</div>
+        <div style="font-size:0.82rem;color:rgba(255,255,255,0.4);line-height:1.6;font-family:'Inter',sans-serif;">PII leakage, training data extraction, and sensitive information disclosure detection.</div>
+      </div>
+      <div style="background:#1C1C1C;padding:1.75rem 1.5rem;">
+        <div style="font-size:1.5rem;margin-bottom:0.75rem;">🎯</div>
+        <div style="font-size:0.95rem;font-weight:700;color:white;margin-bottom:0.5rem;">Truthfulness</div>
+        <div style="font-size:0.82rem;color:rgba(255,255,255,0.4);line-height:1.6;font-family:'Inter',sans-serif;">Hallucination rate, factual accuracy, and calibration. Does the model know what it doesn't know?</div>
+      </div>
+      <div style="background:#1C1C1C;padding:1.75rem 1.5rem;">
+        <div style="font-size:1.5rem;margin-bottom:0.75rem;">🤖</div>
+        <div style="font-size:0.95rem;font-weight:700;color:white;margin-bottom:0.5rem;">Machine Ethics</div>
+        <div style="font-size:0.82rem;color:rgba(255,255,255,0.4);line-height:1.6;font-family:'Inter',sans-serif;">Moral reasoning, sycophancy resistance, and alignment to human values in edge-case dilemmas.</div>
+      </div>
+    </div>
+  </div>
+</div>
+""")
 
-                <p style="color:rgba(255,255,255,0.45);font-size:0.9rem;line-height:1.7;
-                          max-width:400px;margin:0 0 2rem 0;font-family:'Inter',sans-serif;font-weight:300;">
-                  Score every model response for correctness, safety, and hallucination.
-                  Surface failures fast. Ship with confidence.
-                </p>
+    # ── MODELS ────────────────────────────────────────────────────────────
+    _md("""
+<div style="background:#0E0E0E;padding:4rem 2rem;font-family:'Syne',sans-serif;">
+  <div style="max-width:860px;margin:0 auto;">
+    <div style="font-size:10px;color:#E8290B;letter-spacing:0.2em;margin-bottom:0.75rem;font-weight:600;">— MODELS EVALUATED</div>
+    <h2 style="font-size:1.8rem;font-weight:800;color:white;letter-spacing:-0.02em;margin:0 0 2rem;">12 Models. 6 Providers.</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:rgba(255,255,255,0.06);">
+      <div style="background:#0E0E0E;padding:1.25rem 1.5rem;">
+        <div style="font-size:0.72rem;color:#E8290B;letter-spacing:0.12em;margin-bottom:0.5rem;font-weight:600;">OPENAI</div>
+        <div style="font-size:0.88rem;color:rgba(255,255,255,0.7);font-family:'Inter',sans-serif;line-height:1.9;">GPT-4o<br>GPT-4 Turbo<br>GPT-3.5 Turbo</div>
+      </div>
+      <div style="background:#0E0E0E;padding:1.25rem 1.5rem;">
+        <div style="font-size:0.72rem;color:#E8290B;letter-spacing:0.12em;margin-bottom:0.5rem;font-weight:600;">ANTHROPIC</div>
+        <div style="font-size:0.88rem;color:rgba(255,255,255,0.7);font-family:'Inter',sans-serif;line-height:1.9;">Claude 3 Opus<br>Claude 3 Sonnet<br>Claude 3 Haiku</div>
+      </div>
+      <div style="background:#0E0E0E;padding:1.25rem 1.5rem;">
+        <div style="font-size:0.72rem;color:#E8290B;letter-spacing:0.12em;margin-bottom:0.5rem;font-weight:600;">GOOGLE</div>
+        <div style="font-size:0.88rem;color:rgba(255,255,255,0.7);font-family:'Inter',sans-serif;line-height:1.9;">Gemini Pro<br>Gemini Flash<br>Gemini Ultra</div>
+      </div>
+      <div style="background:#0E0E0E;padding:1.25rem 1.5rem;">
+        <div style="font-size:0.72rem;color:#E8290B;letter-spacing:0.12em;margin-bottom:0.5rem;font-weight:600;">XAI / META / GROQ</div>
+        <div style="font-size:0.88rem;color:rgba(255,255,255,0.7);font-family:'Inter',sans-serif;line-height:1.9;">Grok-1<br>Llama 3 70B<br>Mixtral 8x7B</div>
+      </div>
+    </div>
+  </div>
+</div>
+""")
 
-                <div style="margin-bottom:2rem;font-family:'Inter',sans-serif;">
-                  <div style="display:flex;align-items:center;gap:10px;margin-bottom:0.6rem;">
-                    <div style="width:16px;height:16px;background:#E8290B;display:flex;align-items:center;
-                                justify-content:center;font-size:9px;color:white;font-weight:700;flex-shrink:0;">✓</div>
-                    <span style="color:rgba(255,255,255,0.6);font-size:0.85rem;">Trace every prompt, response &amp; tool call in real time</span>
-                  </div>
-                  <div style="display:flex;align-items:center;gap:10px;margin-bottom:0.6rem;">
-                    <div style="width:16px;height:16px;background:#E8290B;display:flex;align-items:center;
-                                justify-content:center;font-size:9px;color:white;font-weight:700;flex-shrink:0;">✓</div>
-                    <span style="color:rgba(255,255,255,0.6);font-size:0.85rem;">Compare models side-by-side on safety, quality &amp; cost</span>
-                  </div>
-                  <div style="display:flex;align-items:center;gap:10px;">
-                    <div style="width:16px;height:16px;background:#E8290B;display:flex;align-items:center;
-                                justify-content:center;font-size:9px;color:white;font-weight:700;flex-shrink:0;">✓</div>
-                    <span style="color:rgba(255,255,255,0.6);font-size:0.85rem;">Detect hallucinations, bias &amp; safety violations automatically</span>
-                  </div>
-                </div>
+    # ── RAG PIPELINE ─────────────────────────────────────────────────────
+    _md("""
+<div style="background:#1C1C1C;padding:4rem 2rem;font-family:'Syne',sans-serif;">
+  <div style="max-width:860px;margin:0 auto;">
+    <div style="font-size:10px;color:#E8290B;letter-spacing:0.2em;margin-bottom:0.75rem;font-weight:600;">— RAG PIPELINE</div>
+    <h2 style="font-size:1.8rem;font-weight:800;color:white;letter-spacing:-0.02em;margin:0 0 1rem;">Evaluate RAG, Not Just Chat.</h2>
+    <p style="color:rgba(255,255,255,0.45);font-size:0.9rem;line-height:1.7;max-width:620px;font-family:'Inter',sans-serif;margin-bottom:2rem;">Upload your documents, build a ChromaDB vector store, and run retrieval-augmented evaluations. Test grounding accuracy, citation faithfulness, and context window usage.</p>
+    <div style="display:flex;gap:0;flex-wrap:wrap;">
+      <div style="flex:1;min-width:140px;padding:1.25rem 1.5rem;border:1px solid rgba(255,255,255,0.08);margin:-1px 0 0 -1px;">
+        <div style="font-size:0.72rem;color:#E8290B;letter-spacing:0.12em;margin-bottom:0.5rem;font-weight:600;">INGEST</div>
+        <div style="font-size:0.82rem;color:rgba(255,255,255,0.5);font-family:'Inter',sans-serif;">PDF · TXT · CSV</div>
+      </div>
+      <div style="flex:1;min-width:140px;padding:1.25rem 1.5rem;border:1px solid rgba(255,255,255,0.08);margin:-1px 0 0 -1px;">
+        <div style="font-size:0.72rem;color:#E8290B;letter-spacing:0.12em;margin-bottom:0.5rem;font-weight:600;">EMBED</div>
+        <div style="font-size:0.82rem;color:rgba(255,255,255,0.5);font-family:'Inter',sans-serif;">ChromaDB Vector Store</div>
+      </div>
+      <div style="flex:1;min-width:140px;padding:1.25rem 1.5rem;border:1px solid rgba(255,255,255,0.08);margin:-1px 0 0 -1px;">
+        <div style="font-size:0.72rem;color:#E8290B;letter-spacing:0.12em;margin-bottom:0.5rem;font-weight:600;">RETRIEVE</div>
+        <div style="font-size:0.82rem;color:rgba(255,255,255,0.5);font-family:'Inter',sans-serif;">Semantic search · Top-K</div>
+      </div>
+      <div style="flex:1;min-width:140px;padding:1.25rem 1.5rem;border:1px solid rgba(255,255,255,0.08);margin:-1px 0 0 -1px;">
+        <div style="font-size:0.72rem;color:#E8290B;letter-spacing:0.12em;margin-bottom:0.5rem;font-weight:600;">EVALUATE</div>
+        <div style="font-size:0.82rem;color:rgba(255,255,255,0.5);font-family:'Inter',sans-serif;">Faithfulness · Grounding</div>
+      </div>
+    </div>
+  </div>
+</div>
+""")
 
-                <div style="margin-bottom:2.5rem;">
-                  <button style="background:transparent;color:white;border:1px solid rgba(255,255,255,0.2);
-                                 border-radius:0;padding:0.65rem 1.5rem;font-size:0.8rem;font-weight:700;
-                                 cursor:pointer;font-family:'Syne',sans-serif;letter-spacing:0.1em;"
-                          onclick="this.textContent='▶ DEMO COMING SOON';setTimeout(function(){this.textContent='Watch Demo ▶';}.bind(this),2500)">
-                    Watch Demo ▶
-                  </button>
-                </div>
+    # ── AUTH SECTION ─────────────────────────────────────────────────────
+    _md("""
+<div style="background:#0E0E0E;padding:4rem 2rem 1.5rem;font-family:'Syne',sans-serif;border-top:1px solid rgba(255,255,255,0.06);">
+  <div style="max-width:400px;margin:0 auto;text-align:center;">
+    <div style="font-size:10px;color:#E8290B;letter-spacing:0.2em;margin-bottom:0.75rem;font-weight:600;">— GET STARTED</div>
+    <h2 style="font-size:1.8rem;font-weight:800;color:white;letter-spacing:-0.02em;margin:0 0 0.5rem;">Sign In.</h2>
+    <p style="color:rgba(255,255,255,0.35);font-size:0.82rem;font-family:'Inter',sans-serif;margin-bottom:2rem;">Access your evaluation dashboard.</p>
+  </div>
+</div>
+""")
 
-                <div style="display:grid;grid-template-columns:repeat(3,1fr);
-                            border:1px solid rgba(255,255,255,0.08);margin-bottom:0;">
-                  <div style="padding:1.1rem 1.25rem;border-right:1px solid rgba(255,255,255,0.08);">
-                    <div style="color:white;font-size:1.75rem;font-weight:800;line-height:1;margin-bottom:0.2rem;">12</div>
-                    <div style="color:rgba(255,255,255,0.3);font-size:9px;letter-spacing:0.1em;font-family:'Inter',sans-serif;">MODELS SUPPORTED</div>
-                  </div>
-                  <div style="padding:1.1rem 1.25rem;border-right:1px solid rgba(255,255,255,0.08);">
-                    <div style="color:white;font-size:1.75rem;font-weight:800;line-height:1;margin-bottom:0.2rem;">6</div>
-                    <div style="color:rgba(255,255,255,0.3);font-size:9px;letter-spacing:0.1em;font-family:'Inter',sans-serif;">TRUST DIMENSIONS</div>
-                  </div>
-                  <div style="padding:1.1rem 1.25rem;">
-                    <div style="color:#E8290B;font-size:1.75rem;font-weight:800;line-height:1;margin-bottom:0.2rem;">0.76</div>
-                    <div style="color:rgba(255,255,255,0.3);font-size:9px;letter-spacing:0.1em;font-family:'Inter',sans-serif;">AVG TRUST SCORE</div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- ════ DIVIDER ════ -->
-              <div style="border-top:1px solid rgba(255,255,255,0.08);margin:3rem 0;"></div>
-
-              <!-- ════ SECTION 2: HOW IT WORKS ════ -->
-              <div style="margin-bottom:0;">
-                <div style="font-size:9px;color:#E8290B;letter-spacing:0.2em;margin-bottom:1.25rem;">— HOW IT WORKS</div>
-                <div style="color:white;font-size:2rem;font-weight:800;letter-spacing:-0.02em;line-height:1.1;margin-bottom:0.6rem;">
-                  From prompt to trust score in seconds.
-                </div>
-                <p style="color:rgba(255,255,255,0.35);font-size:0.85rem;font-family:'Inter',sans-serif;margin:0 0 2.5rem 0;line-height:1.6;">
-                  Five-stage pipeline — repeatable, deterministic evals.
-                </p>
-
-                <!-- Step 01 -->
-                <div style="display:flex;gap:1.25rem;margin-bottom:1.5rem;">
-                  <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:center;">
-                    <div style="background:#E8290B;width:32px;height:32px;display:flex;align-items:center;
-                                justify-content:center;font-size:10px;font-weight:800;color:white;letter-spacing:0.05em;">01</div>
-                    <div style="width:1px;flex:1;background:rgba(255,255,255,0.08);margin-top:4px;min-height:36px;"></div>
-                  </div>
-                  <div style="border:1px solid rgba(255,255,255,0.08);padding:1rem 1.25rem;flex:1;">
-                    <div style="color:rgba(255,255,255,0.3);font-size:8px;letter-spacing:0.15em;margin-bottom:0.4rem;font-family:'Inter',sans-serif;">INPUT</div>
-                    <div style="color:white;font-size:0.95rem;font-weight:700;margin-bottom:0.4rem;">Submit a prompt</div>
-                    <div style="color:rgba(255,255,255,0.4);font-size:0.8rem;font-family:'Inter',sans-serif;line-height:1.5;">
-                      Type or paste any prompt. Or load a CSV dataset for batch evaluation.
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Step 02 -->
-                <div style="display:flex;gap:1.25rem;margin-bottom:1.5rem;">
-                  <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:center;">
-                    <div style="background:#E8290B;width:32px;height:32px;display:flex;align-items:center;
-                                justify-content:center;font-size:10px;font-weight:800;color:white;letter-spacing:0.05em;">02</div>
-                    <div style="width:1px;flex:1;background:rgba(255,255,255,0.08);margin-top:4px;min-height:36px;"></div>
-                  </div>
-                  <div style="border:1px solid rgba(255,255,255,0.08);padding:1rem 1.25rem;flex:1;">
-                    <div style="color:rgba(255,255,255,0.3);font-size:8px;letter-spacing:0.15em;margin-bottom:0.4rem;font-family:'Inter',sans-serif;">MODEL SELECTION</div>
-                    <div style="color:white;font-size:0.95rem;font-weight:700;margin-bottom:0.4rem;">Pick from 12 models</div>
-                    <div style="color:rgba(255,255,255,0.4);font-size:0.8rem;font-family:'Inter',sans-serif;line-height:1.5;">
-                      Groq · Claude · GPT · Gemini · Mistral · Phi — choose any or compare all.
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Step 03 -->
-                <div style="display:flex;gap:1.25rem;margin-bottom:1.5rem;">
-                  <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:center;">
-                    <div style="background:#E8290B;width:32px;height:32px;display:flex;align-items:center;
-                                justify-content:center;font-size:10px;font-weight:800;color:white;letter-spacing:0.05em;">03</div>
-                    <div style="width:1px;flex:1;background:rgba(255,255,255,0.08);margin-top:4px;min-height:36px;"></div>
-                  </div>
-                  <div style="border:1px solid rgba(255,255,255,0.08);padding:1rem 1.25rem;flex:1;">
-                    <div style="color:rgba(255,255,255,0.3);font-size:8px;letter-spacing:0.15em;margin-bottom:0.4rem;font-family:'Inter',sans-serif;">EVAL MODE</div>
-                    <div style="color:white;font-size:0.95rem;font-weight:700;margin-bottom:0.6rem;">Choose your test path</div>
-                    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-                      <span style="background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.55);padding:0.25rem 0.6rem;
-                                   font-size:0.72rem;font-family:'Inter',sans-serif;border:1px solid rgba(255,255,255,0.08);">Run Evaluation</span>
-                      <span style="background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.55);padding:0.25rem 0.6rem;
-                                   font-size:0.72rem;font-family:'Inter',sans-serif;border:1px solid rgba(255,255,255,0.08);">RAG Testing</span>
-                      <span style="background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.55);padding:0.25rem 0.6rem;
-                                   font-size:0.72rem;font-family:'Inter',sans-serif;border:1px solid rgba(255,255,255,0.08);">Batch Dataset</span>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Step 04 -->
-                <div style="display:flex;gap:1.25rem;margin-bottom:1.5rem;">
-                  <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:center;">
-                    <div style="background:#E8290B;width:32px;height:32px;display:flex;align-items:center;
-                                justify-content:center;font-size:10px;font-weight:800;color:white;letter-spacing:0.05em;">04</div>
-                    <div style="width:1px;flex:1;background:rgba(255,255,255,0.08);margin-top:4px;min-height:36px;"></div>
-                  </div>
-                  <div style="border:1px solid rgba(255,255,255,0.08);padding:1rem 1.25rem;flex:1;">
-                    <div style="color:rgba(255,255,255,0.3);font-size:8px;letter-spacing:0.15em;margin-bottom:0.4rem;font-family:'Inter',sans-serif;">LLM-AS-JUDGE SCORING</div>
-                    <div style="color:white;font-size:0.95rem;font-weight:700;margin-bottom:0.75rem;">Six dimensions, one trust score</div>
-                    <div style="font-family:'Inter',sans-serif;">
-                      <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-                        <span style="color:rgba(255,255,255,0.4);font-size:0.72rem;">Truthfulness</span>
-                        <span style="color:#E8290B;font-size:0.72rem;font-weight:700;">0.92</span>
-                      </div>
-                      <div style="background:rgba(255,255,255,0.06);height:2px;margin-bottom:6px;">
-                        <div style="background:#E8290B;width:92%;height:100%;"></div></div>
-                      <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-                        <span style="color:rgba(255,255,255,0.4);font-size:0.72rem;">Safety</span>
-                        <span style="color:rgba(255,255,255,0.5);font-size:0.72rem;font-weight:700;">0.88</span>
-                      </div>
-                      <div style="background:rgba(255,255,255,0.06);height:2px;margin-bottom:6px;">
-                        <div style="background:rgba(255,255,255,0.25);width:88%;height:100%;"></div></div>
-                      <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-                        <span style="color:rgba(255,255,255,0.4);font-size:0.72rem;">Fairness</span>
-                        <span style="color:rgba(255,255,255,0.5);font-size:0.72rem;font-weight:700;">0.74</span>
-                      </div>
-                      <div style="background:rgba(255,255,255,0.06);height:2px;margin-bottom:6px;">
-                        <div style="background:rgba(255,255,255,0.25);width:74%;height:100%;"></div></div>
-                      <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-                        <span style="color:rgba(255,255,255,0.4);font-size:0.72rem;">Privacy</span>
-                        <span style="color:rgba(255,255,255,0.5);font-size:0.72rem;font-weight:700;">0.81</span>
-                      </div>
-                      <div style="background:rgba(255,255,255,0.06);height:2px;margin-bottom:6px;">
-                        <div style="background:rgba(255,255,255,0.25);width:81%;height:100%;"></div></div>
-                      <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-                        <span style="color:rgba(255,255,255,0.4);font-size:0.72rem;">Robustness</span>
-                        <span style="color:rgba(255,255,255,0.5);font-size:0.72rem;font-weight:700;">0.69</span>
-                      </div>
-                      <div style="background:rgba(255,255,255,0.06);height:2px;margin-bottom:6px;">
-                        <div style="background:rgba(255,255,255,0.25);width:69%;height:100%;"></div></div>
-                      <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-                        <span style="color:rgba(255,255,255,0.4);font-size:0.72rem;">Ethics</span>
-                        <span style="color:rgba(255,255,255,0.5);font-size:0.72rem;font-weight:700;">0.85</span>
-                      </div>
-                      <div style="background:rgba(255,255,255,0.06);height:2px;margin-bottom:8px;">
-                        <div style="background:rgba(255,255,255,0.25);width:85%;height:100%;"></div></div>
-                      <div style="color:rgba(255,255,255,0.2);font-size:0.7rem;font-family:'Syne',sans-serif;font-weight:700;">
-                        Trust Score = Σ(6 dims) / 6
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Step 05 -->
-                <div style="display:flex;gap:1.25rem;">
-                  <div style="flex-shrink:0;">
-                    <div style="background:#E8290B;width:32px;height:32px;display:flex;align-items:center;
-                                justify-content:center;font-size:10px;font-weight:800;color:white;letter-spacing:0.05em;">05</div>
-                  </div>
-                  <div style="border:1px solid rgba(255,255,255,0.08);padding:1rem 1.25rem;flex:1;">
-                    <div style="color:rgba(255,255,255,0.3);font-size:8px;letter-spacing:0.15em;margin-bottom:0.4rem;font-family:'Inter',sans-serif;">RESULTS</div>
-                    <div style="color:white;font-size:0.95rem;font-weight:700;margin-bottom:0.6rem;">Slice it however you ship</div>
-                    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
-                      <span style="background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.55);padding:0.25rem 0.6rem;
-                                   font-size:0.72rem;font-family:'Inter',sans-serif;border:1px solid rgba(255,255,255,0.08);">📋 Per-Eval Breakdown</span>
-                      <span style="background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.55);padding:0.25rem 0.6rem;
-                                   font-size:0.72rem;font-family:'Inter',sans-serif;border:1px solid rgba(255,255,255,0.08);">🕐 Session History</span>
-                      <span style="background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.55);padding:0.25rem 0.6rem;
-                                   font-size:0.72rem;font-family:'Inter',sans-serif;border:1px solid rgba(255,255,255,0.08);">🏆 Leaderboard</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- ════ DIVIDER ════ -->
-              <div style="border-top:1px solid rgba(255,255,255,0.08);margin:3rem 0;"></div>
-
-              <!-- ════ SECTION 3: TRUST DIMENSIONS ════ -->
-              <div style="margin-bottom:0;">
-                <div style="font-size:9px;color:#E8290B;letter-spacing:0.2em;margin-bottom:1.25rem;">— TRUST DIMENSIONS</div>
-                <div style="color:white;font-size:2rem;font-weight:800;letter-spacing:-0.02em;line-height:1.1;margin-bottom:0.6rem;">
-                  6 Dimensions of Trust.
-                </div>
-                <p style="color:rgba(255,255,255,0.35);font-size:0.85rem;font-family:'Inter',sans-serif;margin:0 0 2rem 0;line-height:1.6;">
-                  Each independent, each scored 0–1, each surfaced in your final report.
-                </p>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
-                  <div style="border:1px solid rgba(255,255,255,0.08);padding:1.1rem;background:rgba(255,255,255,0.02);">
-                    <div style="font-size:1.1rem;margin-bottom:0.5rem;">🔍</div>
-                    <div style="color:white;font-size:0.88rem;font-weight:700;margin-bottom:0.4rem;">Truthfulness</div>
-                    <div style="color:rgba(255,255,255,0.35);font-size:0.74rem;font-family:'Inter',sans-serif;line-height:1.5;">
-                      Factual grounding measured against expected answers and retrieved context.
-                    </div>
-                  </div>
-                  <div style="border:1px solid rgba(255,255,255,0.08);padding:1.1rem;background:rgba(255,255,255,0.02);">
-                    <div style="font-size:1.1rem;margin-bottom:0.5rem;">🛡️</div>
-                    <div style="color:white;font-size:0.88rem;font-weight:700;margin-bottom:0.4rem;">Safety</div>
-                    <div style="color:rgba(255,255,255,0.35);font-size:0.74rem;font-family:'Inter',sans-serif;line-height:1.5;">
-                      Jailbreak resistance, harmful content detection, and prompt-injection scoring.
-                    </div>
-                  </div>
-                  <div style="border:1px solid rgba(255,255,255,0.08);padding:1.1rem;background:rgba(255,255,255,0.02);">
-                    <div style="font-size:1.1rem;margin-bottom:0.5rem;">⚖️</div>
-                    <div style="color:white;font-size:0.88rem;font-weight:700;margin-bottom:0.4rem;">Fairness</div>
-                    <div style="color:rgba(255,255,255,0.35);font-size:0.74rem;font-family:'Inter',sans-serif;line-height:1.5;">
-                      Demographic bias, group fairness, and toxicity across diverse prompts.
-                    </div>
-                  </div>
-                  <div style="border:1px solid rgba(255,255,255,0.08);padding:1.1rem;background:rgba(255,255,255,0.02);">
-                    <div style="font-size:1.1rem;margin-bottom:0.5rem;">🔒</div>
-                    <div style="color:white;font-size:0.88rem;font-weight:700;margin-bottom:0.4rem;">Privacy</div>
-                    <div style="color:rgba(255,255,255,0.35);font-size:0.74rem;font-family:'Inter',sans-serif;line-height:1.5;">
-                      PII leakage detection, data exfiltration risk, and consent boundary checks.
-                    </div>
-                  </div>
-                  <div style="border:1px solid rgba(255,255,255,0.08);padding:1.1rem;background:rgba(255,255,255,0.02);">
-                    <div style="font-size:1.1rem;margin-bottom:0.5rem;">💪</div>
-                    <div style="color:white;font-size:0.88rem;font-weight:700;margin-bottom:0.4rem;">Robustness</div>
-                    <div style="color:rgba(255,255,255,0.35);font-size:0.74rem;font-family:'Inter',sans-serif;line-height:1.5;">
-                      Behavior under adversarial inputs, paraphrasing, and edge-case stress tests.
-                    </div>
-                  </div>
-                  <div style="border:1px solid rgba(255,255,255,0.08);padding:1.1rem;background:rgba(255,255,255,0.02);">
-                    <div style="font-size:1.1rem;margin-bottom:0.5rem;">🧭</div>
-                    <div style="color:white;font-size:0.88rem;font-weight:700;margin-bottom:0.4rem;">Ethics</div>
-                    <div style="color:rgba(255,255,255,0.35);font-size:0.74rem;font-family:'Inter',sans-serif;line-height:1.5;">
-                      Alignment with use-case norms, refusal quality, and decision-rationale clarity.
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- ════ DIVIDER ════ -->
-              <div style="border-top:1px solid rgba(255,255,255,0.08);margin:3rem 0;"></div>
-
-              <!-- ════ SECTION 4: MODELS ════ -->
-              <div style="margin-bottom:0;">
-                <div style="font-size:9px;color:#E8290B;letter-spacing:0.2em;margin-bottom:1.25rem;">— MODELS</div>
-                <div style="color:white;font-size:2rem;font-weight:800;letter-spacing:-0.02em;line-height:1.1;margin-bottom:0.6rem;">
-                  12 Models. One Platform.
-                </div>
-                <p style="color:rgba(255,255,255,0.35);font-size:0.85rem;font-family:'Inter',sans-serif;margin:0 0 2rem 0;line-height:1.6;">
-                  Match exactly the model IDs in
-                  <code style="color:#E8290B;background:rgba(232,41,11,0.12);padding:0.1rem 0.35rem;font-size:0.8rem;">providers.py</code>.
-                  No vendored adapters, no surprises.
-                </p>
-                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.75rem;">
-                  <div style="border:1px solid rgba(255,255,255,0.08);padding:1rem;background:rgba(255,255,255,0.02);">
-                    <div style="color:rgba(255,255,255,0.25);font-size:8px;letter-spacing:0.12em;margin-bottom:0.5rem;font-family:'Inter',sans-serif;">GROQ</div>
-                    <div style="color:rgba(255,255,255,0.5);font-size:0.7rem;font-family:'Inter',sans-serif;line-height:1.8;">
-                      llama3-8b-8192<br>mixtral-8x7b-32768
-                    </div>
-                  </div>
-                  <div style="border:1px solid rgba(255,255,255,0.08);padding:1rem;background:rgba(255,255,255,0.02);">
-                    <div style="color:rgba(255,255,255,0.25);font-size:8px;letter-spacing:0.12em;margin-bottom:0.5rem;font-family:'Inter',sans-serif;">CLAUDE</div>
-                    <div style="color:rgba(255,255,255,0.5);font-size:0.7rem;font-family:'Inter',sans-serif;line-height:1.8;">
-                      claude-haiku-3<br>claude-sonnet-3
-                    </div>
-                  </div>
-                  <div style="border:1px solid rgba(255,255,255,0.08);padding:1rem;background:rgba(255,255,255,0.02);">
-                    <div style="color:rgba(255,255,255,0.25);font-size:8px;letter-spacing:0.12em;margin-bottom:0.5rem;font-family:'Inter',sans-serif;">GPT</div>
-                    <div style="color:rgba(255,255,255,0.5);font-size:0.7rem;font-family:'Inter',sans-serif;line-height:1.8;">
-                      gpt-4o-mini<br>gpt-4o
-                    </div>
-                  </div>
-                  <div style="border:1px solid rgba(255,255,255,0.08);padding:1rem;background:rgba(255,255,255,0.02);">
-                    <div style="color:rgba(255,255,255,0.25);font-size:8px;letter-spacing:0.12em;margin-bottom:0.5rem;font-family:'Inter',sans-serif;">GEMINI</div>
-                    <div style="color:rgba(255,255,255,0.5);font-size:0.7rem;font-family:'Inter',sans-serif;line-height:1.8;">
-                      gemini-1.5-flash<br>gemini-1.5-pro
-                    </div>
-                  </div>
-                  <div style="border:1px solid rgba(255,255,255,0.08);padding:1rem;background:rgba(255,255,255,0.02);">
-                    <div style="color:rgba(255,255,255,0.25);font-size:8px;letter-spacing:0.12em;margin-bottom:0.5rem;font-family:'Inter',sans-serif;">MISTRAL</div>
-                    <div style="color:rgba(255,255,255,0.5);font-size:0.7rem;font-family:'Inter',sans-serif;line-height:1.8;">
-                      mistral-7b-instruct<br>mixtral-8x7b
-                    </div>
-                  </div>
-                  <div style="border:1px solid rgba(255,255,255,0.08);padding:1rem;background:rgba(255,255,255,0.02);">
-                    <div style="color:rgba(255,255,255,0.25);font-size:8px;letter-spacing:0.12em;margin-bottom:0.5rem;font-family:'Inter',sans-serif;">PHI</div>
-                    <div style="color:rgba(255,255,255,0.5);font-size:0.7rem;font-family:'Inter',sans-serif;line-height:1.8;">
-                      phi-3-mini<br>phi-3-medium
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- ════ DIVIDER ════ -->
-              <div style="border-top:1px solid rgba(255,255,255,0.08);margin:3rem 0;"></div>
-
-              <!-- ════ SECTION 5: RAG PIPELINE ════ -->
-              <div style="margin-bottom:0;">
-                <div style="font-size:9px;color:#E8290B;letter-spacing:0.2em;margin-bottom:1.25rem;">— RAG PIPELINE</div>
-                <div style="color:white;font-size:2rem;font-weight:800;letter-spacing:-0.02em;line-height:1.1;margin-bottom:0.6rem;">
-                  RAG Pipeline?<br>We measure that too.
-                </div>
-                <p style="color:rgba(255,255,255,0.35);font-size:0.85rem;font-family:'Inter',sans-serif;margin:0 0 1.75rem 0;line-height:1.6;">
-                  Standard RAG evals miss retrieval quality. We don't.
-                </p>
-
-                <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.5rem;">
-                  <span style="border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);
-                               padding:0.3rem 0.75rem;font-size:0.75rem;font-family:'Inter',sans-serif;">Precision@K</span>
-                  <span style="border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);
-                               padding:0.3rem 0.75rem;font-size:0.75rem;font-family:'Inter',sans-serif;">Recall@K</span>
-                  <span style="border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);
-                               padding:0.3rem 0.75rem;font-size:0.75rem;font-family:'Inter',sans-serif;">MRR</span>
-                  <span style="border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);
-                               padding:0.3rem 0.75rem;font-size:0.75rem;font-family:'Inter',sans-serif;">NDCG</span>
-                </div>
-
-                <div style="border:1px solid rgba(232,41,11,0.2);background:rgba(232,41,11,0.05);
-                            padding:1rem 1.25rem;margin-bottom:1.75rem;">
-                  <div style="color:rgba(255,255,255,0.25);font-size:8px;letter-spacing:0.12em;
-                              margin-bottom:0.5rem;font-family:'Inter',sans-serif;">RAG SCORE FORMULA</div>
-                  <div style="color:rgba(255,255,255,0.65);font-size:0.82rem;font-family:'Inter',sans-serif;">
-                    40% Relevance &nbsp;+&nbsp; 40% Completeness &nbsp;+&nbsp; 20% Source Count
-                  </div>
-                </div>
-
-                <button style="background:#E8290B;color:white;border:none;border-radius:0;
-                               padding:0.75rem 1.75rem;font-size:0.8rem;font-weight:700;cursor:pointer;
-                               font-family:'Syne',sans-serif;letter-spacing:0.1em;text-transform:uppercase;"
-                        onclick="this.textContent='SIGN IN TO ACCESS';setTimeout(function(){this.textContent='TRY RAG TESTING →';}.bind(this),2500)">
-                  TRY RAG TESTING →
-                </button>
-              </div>
-
-              <!-- ════ FOOTER ════ -->
-              <div style="border-top:1px solid rgba(255,255,255,0.06);margin-top:3rem;padding-top:1.5rem;">
-                <p style="color:rgba(255,255,255,0.15);font-size:0.7rem;margin:0;font-family:'Inter',sans-serif;">
-                  Built by <a href="https://www.linkedin.com/in/monika-kushwaha-52443735/" target="_blank"
-                  style="color:#E8290B;text-decoration:none;">Monika Kushwaha</a>
-                </p>
-              </div>
-
-            </div>
-        """)
-        # Blank lines in HTML make Markdown treat indented tags as code blocks — strip them.
-        _lp = "\n".join(ln for ln in _lp.splitlines() if ln.strip())
-        st.markdown(_lp, unsafe_allow_html=True)
-
-    # ── RIGHT PANEL: off-white auth form ──────────────────────────────
-    with right_col:
-        st.markdown("<div style='height:8vh'></div>", unsafe_allow_html=True)
-
-        st.markdown(_h("""
-            <div style="padding:0 1rem;font-family:'Syne',sans-serif;">
-              <!-- Mini logo -->
-              <div style="display:flex;align-items:center;gap:10px;margin-bottom:2.5rem;">
-                <div style="background:#E8290B;width:32px;height:32px;
-                            display:flex;align-items:center;justify-content:center;
-                            font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:white;">T</div>
-                <span style="color:#0E0E0E;font-size:1rem;font-weight:800;letter-spacing:0.02em;">TrustLLM</span>
-              </div>
-
-              <!-- Section label -->
-              <div style="font-size:9px;color:#E8290B;letter-spacing:0.2em;margin-bottom:0.75rem;">
-                — AUTHENTICATION
-              </div>
-
-              <!-- Heading -->
-              <div style="color:#0E0E0E;font-size:1.9rem;font-weight:800;letter-spacing:-0.025em;
-                          line-height:1.1;margin:0 0 0.4rem 0;">
-                Welcome back.
-              </div>
-              <p style="color:#888888;font-size:0.85rem;margin:0 0 2rem 0;
-                        font-family:'Inter',sans-serif;font-weight:300;">
-                Sign in to your evaluation workspace.
-              </p>
-            </div>
-        """), unsafe_allow_html=True)
-
-        # ── Social login buttons ──────────────────────────────────────
-        st.markdown(_h("""
-            <div style="padding:0 1rem;margin-bottom:0.75rem;">
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1rem;">
-                <button style="background:white;color:#0E0E0E;border:1px solid #E4E2DC;border-radius:0;
-                               padding:0.65rem 1rem;font-size:0.78rem;font-weight:600;cursor:pointer;
-                               width:100%;font-family:'Syne',sans-serif;letter-spacing:0.04em;"
-                        onclick="var b=this;b.textContent='NOT AVAILABLE IN DEMO';
-                                 setTimeout(function(){b.textContent='🔵 GOOGLE'},2500)">
-                  🔵 GOOGLE
-                </button>
-                <button style="background:#0E0E0E;color:white;border:1px solid #0E0E0E;border-radius:0;
-                               padding:0.65rem 1rem;font-size:0.78rem;font-weight:600;cursor:pointer;
-                               width:100%;font-family:'Syne',sans-serif;letter-spacing:0.04em;"
-                        onclick="var b=this;b.textContent='NOT AVAILABLE IN DEMO';
-                                 setTimeout(function(){b.textContent='⬛ GITHUB'},2500)">
-                  ⬛ GITHUB
-                </button>
-              </div>
-              <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;">
-                <div style="flex:1;border-top:1px solid #E4E2DC;"></div>
-                <span style="color:#888888;font-size:0.72rem;white-space:nowrap;
-                             font-family:'Inter',sans-serif;">or sign in with credentials</span>
-                <div style="flex:1;border-top:1px solid #E4E2DC;"></div>
-              </div>
-            </div>
-        """), unsafe_allow_html=True)
-
-        # ── Credentials form ─────────────────────────────────────────
+    # ── NATIVE STREAMLIT FORM ────────────────────────────────────────────
+    _, fc, _ = st.columns([2, 3, 2])
+    with fc:
         with st.form("login_form"):
             username = st.text_input("Username", placeholder="Enter your username")
             password = st.text_input("Password", type="password", placeholder="Enter your password")
-            submitted = st.form_submit_button("Sign in →", use_container_width=True)
+            submitted = st.form_submit_button("SIGN IN →", use_container_width=True)
 
-        if submitted:
-            user = _authenticate(username, password)
-            if user:
-                st.session_state["logged_in"] = True
-                st.session_state["user"] = user
-                st.rerun()
-            else:
-                st.error("Invalid username or password.")
+    if submitted:
+        user = _authenticate(username, password)
+        if user:
+            st.session_state["logged_in"] = True
+            st.session_state["user"] = user
+            st.rerun()
+        else:
+            st.error("Invalid username or password.")
 
-        st.markdown(_h("""
-            <div style="padding:0 1rem;">
-              <p style="color:#888888;font-size:0.75rem;text-align:center;margin-top:1rem;
-                        font-family:'Inter',sans-serif;">
-                Demo — Username: <strong style="color:#0E0E0E;">TestUser</strong>
-                &nbsp;·&nbsp; Password: <strong style="color:#0E0E0E;">User123</strong>
-              </p>
-              <div style="margin-top:2rem;padding-top:1.25rem;border-top:1px solid #E4E2DC;">
-                <p style="color:#888888;font-size:0.72rem;text-align:center;margin:0;
-                          font-family:'Inter',sans-serif;">
-                  © 2025 TrustLLM · AI Model Evaluation Platform
-                </p>
-              </div>
-            </div>
-        """), unsafe_allow_html=True)
+    # ── DEMO HINT ─────────────────────────────────────────────────────────
+    _md("""
+<div style="max-width:400px;margin:0 auto;text-align:center;padding:1rem 2rem 0.5rem;">
+  <p style="font-size:0.75rem;color:rgba(255,255,255,0.2);font-family:'Inter',sans-serif;">Demo: <code style="color:rgba(255,255,255,0.35);background:rgba(255,255,255,0.05);padding:1px 5px;">admin</code> / <code style="color:rgba(255,255,255,0.35);background:rgba(255,255,255,0.05);padding:1px 5px;">admin123</code></p>
+</div>
+""")
+
+    # ── FOOTER ────────────────────────────────────────────────────────────
+    _md("""
+<div style="background:#0E0E0E;padding:3rem 2rem;font-family:'Syne',sans-serif;border-top:1px solid rgba(255,255,255,0.08);margin-top:2rem;">
+  <div style="max-width:860px;margin:0 auto;text-align:center;">
+    <div style="display:flex;justify-content:center;gap:2rem;margin-bottom:2rem;flex-wrap:wrap;">
+      <a href="#how-it-works" style="font-size:0.78rem;color:rgba(255,255,255,0.35);text-decoration:none;font-family:'Inter',sans-serif;letter-spacing:0.05em;">How it works</a>
+      <a href="#trust-dimensions" style="font-size:0.78rem;color:rgba(255,255,255,0.35);text-decoration:none;font-family:'Inter',sans-serif;letter-spacing:0.05em;">Trust dimensions</a>
+      <a href="#models" style="font-size:0.78rem;color:rgba(255,255,255,0.35);text-decoration:none;font-family:'Inter',sans-serif;letter-spacing:0.05em;">Models</a>
+      <a href="#sign-in" style="font-size:0.78rem;color:rgba(255,255,255,0.35);text-decoration:none;font-family:'Inter',sans-serif;letter-spacing:0.05em;">Sign in</a>
+    </div>
+    <div style="width:40px;height:1px;background:#E8290B;margin:0 auto 1.5rem;"></div>
+    <p style="font-size:0.75rem;color:rgba(255,255,255,0.2);font-family:'Inter',sans-serif;line-height:1.9;margin:0;">
+      &copy; 2025 TrustLLM &middot; AI Model Evaluation Platform &middot; Powered by ChromaDB &middot; Groq &middot; Streamlit<br>
+      Built by <a href="https://www.linkedin.com/in/monika-kushwaha-52443735/" target="_blank" style="color:#E8290B;text-decoration:none;">Monika Kushwaha</a>
+    </p>
+  </div>
+</div>
+""")
+
 
 
 # -----------------------------------------------
