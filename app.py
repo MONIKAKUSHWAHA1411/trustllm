@@ -350,7 +350,7 @@ header {visibility: hidden;}
     # ── DEMO HINT ─────────────────────────────────────────────────────────
     _md("""
 <div style="max-width:400px;margin:0 auto;text-align:center;padding:1rem 2rem 0.5rem;">
-  <p style="font-size:0.75rem;color:rgba(255,255,255,0.2);font-family:'Inter',sans-serif;">Demo: <code style="color:rgba(255,255,255,0.35);background:rgba(255,255,255,0.05);padding:1px 5px;">admin</code> / <code style="color:rgba(255,255,255,0.35);background:rgba(255,255,255,0.05);padding:1px 5px;">admin123</code></p>
+  <p style="font-size:0.75rem;color:rgba(255,255,255,0.2);font-family:'Inter',sans-serif;">Demo: <code style="color:rgba(255,255,255,0.35);background:rgba(255,255,255,0.05);padding:1px 5px;">TestUser</code> / <code style="color:rgba(255,255,255,0.35);background:rgba(255,255,255,0.05);padding:1px 5px;">User123</code></p>
 </div>
 """)
 
