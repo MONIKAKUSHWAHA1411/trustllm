@@ -1,12 +1,11 @@
-# Python
 __pycache__/
-*.py[cod]
+*.pyc
 *.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
 .env
-
-# Vector DB — schema is version-specific, never commit
-vector_db/
-data/
-
-# macOS
-.DS_Store
+.venv
+venv/

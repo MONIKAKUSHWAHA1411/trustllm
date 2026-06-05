@@ -1,10 +1,6 @@
 """
 ui_pages/failure_analysis.py — TrustLLM Failure Analysis
-==========================================================
-Shows all prompts where the RAG model failed (similarity below threshold),
-with Query / Expected / Model Answer / Failure Reason.
-
-Reads from reports/batch_eval_results.json produced by prompt_dataset.py.
+Shows all prompts where the model failed, with VERDICT-style UI.
 """
 
 import json
@@ -14,57 +10,9 @@ import pandas as pd
 import streamlit as st
 
 BASE_DIR    = Path(__file__).resolve().parents[1]
-PASS_THRESHOLD = 0.55   # must match prompt_dataset.py
+REPORT_PATH = BASE_DIR / "reports" / "batch_eval_results.json"
+PASS_THRESHOLD = 0.55
 
-
-def _user_dir() -> Path:
-    user_id = st.session_state.get("user", {}).get("id", "default")
-    safe_id = "".join(c if c.isalnum() or c in "-_" else "_" for c in user_id)
-    return BASE_DIR / "reports" / safe_id
-
-
-def _report_path() -> Path:
-    """Return the per-user batch eval report path (Prompt Dataset)."""
-    return _user_dir() / "batch_eval_results.json"
-
-
-def _run_eval_failures() -> list:
-    """
-    Load per-user results.json (Run Evaluation) and convert to the
-    batch-eval schema so both sources render uniformly.
-    Only returns rows where trust_score < 0.8 (the SLA threshold).
-    """
-    path = _user_dir() / "results.json"
-    if not path.exists():
-        return []
-    try:
-        with open(path) as f:
-            rows = json.load(f)
-    except Exception:
-        return []
-
-    converted = []
-    for r in rows:
-        trust = r.get("trust_score", 1.0)
-        if trust >= 0.8:
-            continue  # passed — skip
-        converted.append({
-            "prompt":          r.get("prompt", ""),
-            "expected_answer": r.get("expected_answer", ""),
-            "model_answer":    r.get("response", ""),
-            "similarity":      round(trust, 4),   # use trust_score as proxy
-            "passed":          False,
-            "latency_s":       0.0,
-            "sources":         [],
-            "_source":         "run_eval",
-            "model":           r.get("model", ""),
-        })
-    return converted
-
-
-# -----------------------------------------------------------------------
-# Failure reason / severity / explanation
-# -----------------------------------------------------------------------
 
 def _failure_reason(row: dict) -> str:
     sim = row.get("similarity")
@@ -85,114 +33,22 @@ def _failure_reason(row: dict) -> str:
     return "—"
 
 
-def _failure_severity(row: dict):
-    """
-    Return (emoji, label) severity for a failed row.
-    🔴 Critical  — hallucinated / completely wrong answer
-    🟡 Medium    — borderline or partially correct
-    🟢 Low       — safe fallback (no answer / retrieval miss)
-    """
+def _failure_severity(row: dict) -> tuple[str, str, str]:
+    """Return (chip_class, label, color) for a failed row."""
     sim = row.get("similarity")
     answer = row.get("model_answer", "").lower()
 
     if "not have enough information" in answer or "insufficient context" in answer:
-        return "🟢", "Low"
-    if sim is None or sim < 0.25:
-        return "🔴", "Critical"
-    if sim < 0.40:
-        return "🔴", "Critical"
-    return "🟡", "Medium"
+        return "chip-pass", "Low", "#16A34A"
+    if sim is None or sim < 0.40:
+        return "chip-fail", "Critical", "#E8290B"
+    return "chip-warn", "Medium", "#D97706"
 
 
-_SEVERITY_ORDER = {"🔴 Critical": 0, "🟡 Medium": 1, "🟢 Low": 2}
-
-
-# -----------------------------------------------------------------------
-# Source rendering — chunk text preview + per-file PDF download
-# -----------------------------------------------------------------------
-
-def _normalise_source(src):
-    """
-    Accept either the old stringified format (`"file.pdf – chunk 4, page 2"`)
-    or the new dict format with full chunk text. Always return a dict.
-    """
-    if isinstance(src, dict):
-        return {
-            "source":      src.get("source", "unknown"),
-            "page":        src.get("page", "?"),
-            "chunk_index": src.get("chunk_index", "?"),
-            "score":       src.get("score"),
-            "text":        src.get("text", ""),
-        }
-    # Legacy stringified format — extract source name only.
-    txt = str(src)
-    fname = txt.split("–")[0].strip() if "–" in txt else txt
-    return {"source": fname, "page": "?", "chunk_index": "?", "score": None, "text": ""}
-
-
-def _render_sources(sources, key_prefix: str = ""):
-    """
-    Per-source UI — renders as styled containers (NOT expanders) to avoid
-    Streamlit's nested-expander restriction when called inside a parent expander.
-    """
-    from rag.ingestion import get_source_pdf_path
-
-    seen_files = set()
-
-    for j, raw in enumerate(sources, 1):
-        s = _normalise_source(raw)
-        fname  = s["source"]
-        page   = s["page"]
-        chunk  = s["chunk_index"]
-        score  = s["score"]
-        text   = s["text"]
-
-        score_badge = ""
-        if isinstance(score, (int, float)):
-            score_badge = (
-                "🟢" if score > 0.7 else ("🟡" if score > 0.4 else "🔴")
-            ) + f" {score:.3f}"
-
-        # Styled source card (no expander — avoids nesting violation)
-        st.markdown(
-            f"<div style='background:#1e293b;border:1px solid #334155;"
-            f"border-radius:8px;padding:0.6rem 0.9rem;margin-bottom:0.5rem;'>"
-            f"<div style='font-size:0.82rem;color:#94a3b8;font-weight:600;'>"
-            f"📄 {fname} · Chunk {chunk} · Page {page}"
-            f"{(' · ' + score_badge) if score_badge else ''}</div>"
-            + (
-                f"<div style='margin-top:0.4rem;font-size:0.8rem;color:#e2e8f0;"
-                f"line-height:1.55;white-space:pre-wrap;max-height:120px;"
-                f"overflow-y:auto;'>{text}</div>"
-                if text else
-                "<div style='margin-top:0.3rem;font-size:0.78rem;color:#64748b;'>"
-                "Chunk text not stored — re-run evaluation to capture.</div>"
-            )
-            + "</div>",
-            unsafe_allow_html=True,
-        )
-
-        # Download button for the original PDF (one per filename)
-        if fname not in seen_files:
-            seen_files.add(fname)
-            pdf_path = get_source_pdf_path(fname)
-            if pdf_path.exists():
-                with open(pdf_path, "rb") as fh:
-                    st.download_button(
-                        label=f"⬇ Download {fname}",
-                        data=fh.read(),
-                        file_name=fname,
-                        mime="application/pdf",
-                        key=f"{key_prefix}_dl_{j}_{fname}",
-                        use_container_width=False,
-                    )
+_SEVERITY_ORDER = {"Critical": 0, "Medium": 1, "Low": 2}
 
 
 def _why_failed(row: dict) -> str:
-    """
-    Generate a concise one-line explanation of why the answer failed.
-    Rule-based: compares similarity, answer content, and expected answer.
-    """
     sim = row.get("similarity")
     answer = row.get("model_answer", "").lower()
     expected = row.get("expected_answer", "")
@@ -211,75 +67,139 @@ def _why_failed(row: dict) -> str:
             return "Answer shares no key terms with the expected response — likely off-topic or hallucinated."
         return f"Answer is semantically unrelated to expected (similarity {sim:.0%}) — likely incorrect facts."
     if sim < 0.40:
-        return f"Answer partially addresses the question (similarity {sim:.0%}) but is missing key information from the expected answer."
-    return f"Answer is close to expected (similarity {sim:.0%}) but fell just below the passing threshold — consider rephrasing the query or adjusting top-k."
+        return f"Answer partially addresses the question (similarity {sim:.0%}) but is missing key information."
+    return f"Answer is close to expected (similarity {sim:.0%}) but fell just below the passing threshold."
 
-
-# -----------------------------------------------------------------------
-# Render
-# -----------------------------------------------------------------------
 
 def render():
-    st.title("Failure Analysis")
+    st.markdown(
+        '<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800'
+        '&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">',
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        '<div class="verdict-section-label">— MONITOR · FAILURE ANALYSIS</div>'
+        '<h1 style="font-family:\'Syne\',sans-serif;font-size:2rem;font-weight:800;'
+        'letter-spacing:-0.02em;color:#0E0E0E;margin:0 0 4px 0;">Failure Analysis.</h1>',
+        unsafe_allow_html=True,
+    )
     st.caption(
-        "Cases where the model produced answers that diverged from expected. "
-        "Populated from **Run Evaluation** and **Prompt Dataset** results."
+        "Cases where the model diverged from expected. "
+        "Run a dataset evaluation via Prompt Dataset to populate this view."
     )
     st.markdown('<hr class="section-divider">', unsafe_allow_html=True)
 
-    # --- Load Prompt Dataset batch results ---
-    rp = _report_path()
-    current_uid = st.session_state.get("user", {}).get("id", "default")
-    if st.session_state.get("batch_results_owner") != current_uid:
-        st.session_state.pop("batch_results", None)
-        st.session_state.pop("batch_results_owner", None)
-    batch_results = st.session_state.get("batch_results")
-    if batch_results is None and rp.exists():
-        with open(rp) as f:
-            batch_results = json.load(f)
-        st.session_state["batch_results"] = batch_results
-        st.session_state["batch_results_owner"] = current_uid
-
-    batch_results = batch_results or []
-
-    # --- Merge with Run Evaluation failures ---
-    run_eval_failures = _run_eval_failures()
-    # Avoid duplicates: only add run_eval rows whose prompt isn't already in batch
-    batch_prompts = {r["prompt"] for r in batch_results}
-    extra = [r for r in run_eval_failures if r["prompt"] not in batch_prompts]
-    results = batch_results + extra
+    results = st.session_state.get("batch_results")
+    if results is None and REPORT_PATH.exists():
+        with open(REPORT_PATH) as f:
+            results = json.load(f)
+        st.session_state["batch_results"] = results
 
     if not results:
-        st.info(
-            "No evaluation results found. "
-            "Go to **Run Evaluation** or **Prompt Dataset** and run an evaluation first."
+        st.markdown(
+            '<div class="panel"><div class="panel-body" style="padding:2rem;">'
+            '<div style="color:#888888;font-size:0.875rem;font-family:Inter,sans-serif;">'
+            'No batch evaluation results found. Go to <strong>Prompt Dataset</strong> '
+            'and run an evaluation first.</div></div></div>',
+            unsafe_allow_html=True,
         )
         return
 
     failures = [r for r in results if not r["passed"]]
     passes   = [r for r in results if r["passed"]]
+    total    = len(results)
 
-    # --- Summary bar ---
-    total = len(results)
-    col1, col2, col3 = st.columns(3)
-    col1.metric("❌ Failures",   len(failures), f"{len(failures)/total:.0%} of dataset")
-    col2.metric("✅ Passed",     len(passes),   f"{len(passes)/total:.0%} of dataset")
-    col3.metric("📋 Total Prompts", total)
+    # ── Summary KPI grid ───────────────────────────────────────────────
+    fail_pct = len(failures) / total if total else 0
+    pass_pct = len(passes) / total if total else 0
+
+    fail_flag = "flag-warn" if fail_pct > 0.3 else "flag-neutral"
+    fail_accent = "#E8290B" if fail_pct > 0.3 else "#888888"
+
+    summary_html = f"""
+<div class="kpi-grid" style="margin-bottom:24px;">
+  <div class="kpi-cell">
+    <div class="kpi-flag {fail_flag}">Failures</div>
+    <div class="kpi-val">{len(failures)}</div>
+    <div class="kpi-name">Failed Prompts</div>
+    <div class="kpi-delta warn">{fail_pct:.0%} of dataset</div>
+    <div class="kpi-accent" style="background:{fail_accent}"></div>
+  </div>
+  <div class="kpi-cell">
+    <div class="kpi-flag flag-pass">Passed</div>
+    <div class="kpi-val">{len(passes)}</div>
+    <div class="kpi-name">Passed Prompts</div>
+    <div class="kpi-delta">{pass_pct:.0%} of dataset</div>
+    <div class="kpi-accent" style="background:#16A34A"></div>
+  </div>
+  <div class="kpi-cell">
+    <div class="kpi-flag flag-neutral">Volume</div>
+    <div class="kpi-val">{total}</div>
+    <div class="kpi-name">Total Prompts</div>
+    <div class="kpi-delta" style="color:#888888;">evaluated</div>
+    <div class="kpi-accent" style="background:#0E0E0E"></div>
+  </div>
+</div>
+"""
+    st.markdown(summary_html, unsafe_allow_html=True)
 
     if not failures:
-        st.success("🎉 No failures detected — all prompts passed!")
+        st.markdown(
+            '<div class="verdict-banner" style="background:#0E0E0E;">'
+            '<div><div class="verdict-label">Verdict</div>'
+            '<div class="verdict-text">All clear. <em>No failures detected.</em></div></div>'
+            '</div>',
+            unsafe_allow_html=True,
+        )
         return
 
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    # --- Pre-calculate failure reason counts for filter dropdown ---
-    reason_counts = {}
+    # ── Pre-calculate failure reason counts ────────────────────────────
+    reason_counts: dict[str, int] = {}
     for r in failures:
         reason = _failure_reason(r)
         reason_counts[reason] = reason_counts.get(reason, 0) + 1
 
-    # --- Sort and filter controls ---
-    st.subheader("Sort & Filter")
+    # ── Failure reason breakdown bar chart ─────────────────────────────
+    max_count = max(reason_counts.values()) if reason_counts else 1
+    bars_html = ""
+    for reason, count in sorted(reason_counts.items(), key=lambda x: -x[1]):
+        pct_w = round(count / max_count * 100, 1)
+        bars_html += f"""
+<div class="bar-row">
+  <div class="bar-meta">
+    <div class="bar-name">{reason}</div>
+    <div class="bar-pct" style="color:#E8290B">{count}</div>
+  </div>
+  <div class="bar-track">
+    <div class="bar-fill" data-width="{pct_w}%" style="width:0"></div>
+  </div>
+</div>
+"""
+
+    st.markdown(
+        f'<div class="panel" style="margin-bottom:24px;">'
+        f'<div class="panel-head"><div class="panel-title">Failure Reason Breakdown</div></div>'
+        f'<div class="panel-body"><div class="bar-list">{bars_html}</div></div>'
+        f'</div>',
+        unsafe_allow_html=True,
+    )
+
+    # Bar fill animation
+    st.markdown(
+        '<script>setTimeout(function(){'
+        'document.querySelectorAll("[data-width]").forEach(function(el){'
+        'el.style.transition="width 1.2s cubic-bezier(0.4,0,0.2,1)";'
+        'el.style.width=el.dataset.width;});},150);</script>',
+        unsafe_allow_html=True,
+    )
+
+    # ── Sort & filter controls ─────────────────────────────────────────
+    st.markdown(
+        '<div class="verdict-section-label" style="margin-bottom:8px;">— FILTER & SORT</div>',
+        unsafe_allow_html=True,
+    )
+
     sf1, sf2, sf3 = st.columns([2, 2, 1])
     with sf1:
         sort_by = st.selectbox(
@@ -289,11 +209,8 @@ def render():
         )
     with sf2:
         sort_order = st.radio(
-            "Order",
-            ["Descending", "Ascending"],
-            horizontal=True,
-            label_visibility="collapsed",
-            key="fa_order",
+            "Order", ["Descending", "Ascending"],
+            horizontal=True, label_visibility="collapsed", key="fa_order",
         )
     with sf3:
         reason_filter = st.selectbox(
@@ -302,58 +219,53 @@ def render():
             key="fa_reason_filter",
         )
 
-    sc1 = st.columns(1)
-    with sc1[0]:
-        search = st.text_input("Filter by keyword", placeholder="Search query text …",
-                               key="fa_search")
+    search = st.text_input("Filter by keyword", placeholder="Search query text …", key="fa_search")
 
-    # Apply filters
     filtered = failures
     if search.strip():
         filtered = [r for r in filtered if search.lower() in r["prompt"].lower()]
     if reason_filter != "All":
         filtered = [r for r in filtered if _failure_reason(r) == reason_filter]
 
-    # Apply sorting
     if sort_by == "Failure Severity":
         filtered = sorted(
             filtered,
-            key=lambda r: _SEVERITY_ORDER.get(
-                f"{_failure_severity(r)[0]} {_failure_severity(r)[1]}", 99
-            ),
+            key=lambda r: _SEVERITY_ORDER.get(_failure_severity(r)[1], 99),
             reverse=(sort_order == "Descending"),
         )
     elif sort_by == "Score (Similarity)":
         filtered = sorted(filtered, key=lambda r: r.get("similarity", 0),
-                         reverse=(sort_order == "Descending"))
+                          reverse=(sort_order == "Descending"))
     elif sort_by == "Latency":
         filtered = sorted(filtered, key=lambda r: r.get("latency_s", 0),
-                         reverse=(sort_order == "Descending"))
+                          reverse=(sort_order == "Descending"))
 
     st.caption(f"Showing {len(filtered)} of {len(failures)} failures")
+    st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
 
-    # --- Failure reason breakdown ---
-    st.subheader("Failure Reason Breakdown")
-    reason_df = pd.DataFrame(
-        [{"Failure Reason": k, "Count": v} for k, v in
-         sorted(reason_counts.items(), key=lambda x: -x[1])]
+    # ── Per-failure detail ─────────────────────────────────────────────
+    st.markdown(
+        '<div class="verdict-section-label" style="margin-bottom:8px;">— FAILURE DETAILS</div>',
+        unsafe_allow_html=True,
     )
-    st.dataframe(reason_df, use_container_width=True, hide_index=True)
-
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    # --- Per-failure detail ---
-    st.subheader("Failure Details")
 
     for i, row in enumerate(filtered, 1):
         sim = row.get("similarity")
         reason = _failure_reason(row)
+        chip_cls, sev_label, sev_color = _failure_severity(row)
         sim_str = f"{sim:.2%}" if sim is not None else "N/A"
 
         with st.expander(
-            f"❌ #{i} — {row['prompt'][:70]}{'…' if len(row['prompt']) > 70 else ''}",
+            f"#{i} — {row['prompt'][:70]}{'…' if len(row['prompt']) > 70 else ''}",
             expanded=(i <= 3),
         ):
+            # Severity chip in expander header
+            st.markdown(
+                f'<span class="status-chip {chip_cls}" style="margin-bottom:12px;">'
+                f'{sev_label}</span>',
+                unsafe_allow_html=True,
+            )
+
             q1, q2 = st.columns(2)
 
             with q1:
@@ -368,17 +280,18 @@ def render():
                 st.error(row["model_answer"][:500])
 
                 st.markdown("**Failure Reason**")
-                st.warning(f"⚠️ {reason}")
+                st.warning(f"{reason}")
 
             st.caption(
                 f"Similarity: `{sim_str}` &nbsp;·&nbsp; "
                 f"Latency: `{row.get('latency_s', 0):.2f}s`"
             )
 
-            # View Sources — chunks + downloadable PDFs
-            sources = row.get('sources', [])
+            sources = row.get("sources", [])
             if sources:
-                st.markdown("**Retrieved Sources**")
-                _render_sources(sources, key_prefix=f"fa_{i}")
+                if st.button(f"View Sources (#{i})", key=f"view_sources_{i}"):
+                    st.markdown("**Sources Used:**")
+                    for source in sources:
+                        st.markdown(f"- `{source}`")
             else:
                 st.caption("No sources available")

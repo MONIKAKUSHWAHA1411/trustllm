@@ -1,639 +1,833 @@
 /* ============================================================
-   TrustLLM  ·  Braintrust-Inspired Design System
+   TrustLLM  ·  VERDICT — Ink & Fire Design System
+   Concept 4: Off-white + Ink + Signal Red + Syne typography
    ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+
+/* ===== CSS Variables ===== */
+:root {
+  --white:    #FFFFFF;
+  --off:      #F9F8F6;
+  --off2:     #F2F0EC;
+  --ink:      #0E0E0E;
+  --ink2:     #1C1C1C;
+  --muted:    #888888;
+  --border:   #E4E2DC;
+  --red:      #E8290B;
+  --red-d:    #C42208;
+  --red-pale: #FEF2F0;
+  --green:    #16A34A;
+  --amber:    #D97706;
+  --serif:    'Syne', sans-serif;
+  --sans:     'Inter', sans-serif;
+}
+
+/* ===== Animation Keyframes ===== */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes verdictPulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.02); }
+}
+
+@keyframes chipBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+@keyframes barGrow {
+  from { width: 0; }
+}
 
 /* ===== Base ===== */
 html, body, .stApp {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-}
-
-.stApp {
-    background-color: #F8FAFC !important;
+  font-family: var(--sans) !important;
+  background: var(--off) !important;
+  color: var(--ink) !important;
 }
 
 section.main {
-    background-color: #F8FAFC;
-    color: #111827;
+  background: var(--off);
+  color: var(--ink);
 }
 
-/* Remove Streamlit's default side padding so full-width sections reach the edges */
-section.main .block-container {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    max-width: 100% !important;
-}
-
-/* ================================================================
-   GLOBAL TEXT — BLACK on white backgrounds (post-login pages)
-   These rules target every Streamlit element that renders text.
-   ================================================================ */
-
-/* Base: make all text in main section black */
-section.main { color: #111827 !important; }
-
-/* Paragraph / span / list / table text */
 section.main p,
 section.main span,
 section.main li,
 section.main td,
-section.main th { color: #111827 !important; }
+section.main th,
+section.main label {
+  color: var(--ink2);
+}
 
-/* Headings — st.title / st.header / st.subheader */
 section.main h1,
 section.main h2,
 section.main h3,
-section.main h4,
-section.main h5,
-section.main h6,
-h1, h2, h3, h4, h5, h6 { color: #111827 !important; }
-
-/* Streamlit heading wrapper (newer versions) */
-[data-testid="stHeadingWithActionElements"],
-[data-testid="stHeadingWithActionElements"] * { color: #111827 !important; }
-
-/* st.write / st.markdown output */
-[data-testid="stMarkdownContainer"],
-[data-testid="stMarkdownContainer"] p,
-[data-testid="stMarkdownContainer"] span,
-[data-testid="stMarkdownContainer"] li,
-[data-testid="stMarkdownContainer"] h1,
-[data-testid="stMarkdownContainer"] h2,
-[data-testid="stMarkdownContainer"] h3 { color: #111827 !important; }
-
-/* Widget labels (selectbox, slider, text_input, etc.) */
-[data-testid="stWidgetLabel"],
-[data-testid="stWidgetLabel"] *,
-[data-testid="stWidgetLabel"] p,
-[data-testid="stWidgetLabel"] label,
-section.main label,
-section.main label p,
-section.main label span { color: #111827 !important; }
-
-/* Selectbox / multiselect value text */
-[data-baseweb="select"] div,
-[data-baseweb="select"] span,
-[data-baseweb="select"] [data-testid="stMarkdownContainer"] p { color: #111827 !important; }
-
-/* Slider min/max/value text */
-[data-testid="stSlider"] p,
-[data-testid="stSlider"] span,
-[data-testid="stSlider"] [role="slider"] { color: #111827 !important; }
-
-/* Input / textarea text */
-input:not([type="range"]),
-textarea { color: #111827 !important; }
-
-/* Input placeholder — readable gray */
-input::placeholder, textarea::placeholder {
-    color: #6b7280 !important;
-    opacity: 1 !important;
+section.main h4 {
+  color: var(--ink);
+  font-family: var(--serif);
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
-/* st.caption / small text */
-[data-testid="stCaptionContainer"] p,
-small { color: #6b7280 !important; }
-
-/* st.info / st.success / st.warning / st.error boxes */
-[data-testid="stNotification"] p,
-[data-testid="stAlert"] p { color: #111827 !important; }
-
-/* stWrite / st.write text */
 section.main [data-testid="stMarkdownContainer"] p {
-    color: #374151 !important;
+  color: var(--ink2) !important;
 }
 
-/* Caption text */
 section.main [data-testid="stCaptionContainer"] p {
-    color: #6b7280 !important;
-}
-
-/* ===== Headings ===== */
-h1 {
-    font-weight: 700;
-    letter-spacing: -0.025em;
-}
-
-h2, h3 {
-    font-weight: 600;
+  color: var(--muted) !important;
+  font-size: 0.78rem !important;
 }
 
 /* ===== Sidebar ===== */
 section[data-testid="stSidebar"] {
-    background-color: #0f172a !important;
-    border-right: 1px solid #1e293b !important;
-}
-
-/* Remove excessive top padding so the user avatar/branding sits near the top */
-section[data-testid="stSidebar"] > div:first-child {
-    padding-top: 0.25rem !important;
-}
-section[data-testid="stSidebar"] [data-testid="stSidebarContent"] {
-    padding-top: 0 !important;
-}
-section[data-testid="stSidebar"] .block-container {
-    padding-top: 0.25rem !important;
+  background-color: var(--ink2) !important;
+  border-right: 1px solid rgba(255,255,255,0.06) !important;
 }
 
 section[data-testid="stSidebar"]:not([aria-expanded="false"]) {
-    width: 240px !important;
-    min-width: 240px !important;
+  width: 240px !important;
+  min-width: 240px !important;
 }
 
 section[data-testid="stSidebar"]:not([aria-expanded="false"]) > div {
-    width: 240px !important;
+  width: 240px !important;
 }
 
 section[data-testid="stSidebar"][aria-expanded="false"] {
-    width: auto !important;
-    min-width: auto !important;
+  width: auto !important;
+  min-width: auto !important;
 }
 
 section[data-testid="stSidebar"][aria-expanded="false"] > div {
-    width: auto !important;
+  width: auto !important;
 }
 
 section[data-testid="stSidebar"] * {
-    color: #e2e8f0 !important;
+  color: rgba(255,255,255,0.75) !important;
 }
 
 section[data-testid="stSidebar"] p,
 section[data-testid="stSidebar"] small {
-    color: #94a3b8 !important;
+  color: rgba(255,255,255,0.3) !important;
 }
 
 section[data-testid="stSidebar"] h2 {
-    color: #f1f5f9 !important;
-    font-size: 1rem !important;
+  color: white !important;
+  font-size: 1rem !important;
+  font-family: var(--serif) !important;
 }
 
 /* Sidebar radio nav items */
 section[data-testid="stSidebar"] .stRadio label {
-    color: #cbd5e1 !important;
-    font-size: 0.875rem !important;
-    padding: 0.35rem 0.5rem !important;
-    border-radius: 6px !important;
+  color: rgba(255,255,255,0.6) !important;
+  font-size: 0.875rem !important;
+  padding: 0.35rem 0.5rem !important;
+  border-radius: 0 !important;
 }
 
 /* ===== Primary Buttons ===== */
 .stButton > button {
-    background-color: #4f46e5 !important;
-    color: white !important;
-    border-radius: 6px !important;
-    border: none !important;
-    font-weight: 500 !important;
-    font-size: 0.875rem !important;
-    padding: 0.5rem 1.25rem !important;
-    transition: background-color 0.15s ease, box-shadow 0.15s ease !important;
-    letter-spacing: 0.01em;
+  background-color: var(--ink) !important;
+  color: white !important;
+  border-radius: 0 !important;
+  border: none !important;
+  font-weight: 700 !important;
+  font-size: 0.8rem !important;
+  font-family: var(--serif) !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  padding: 0.55rem 1.25rem !important;
+  transition: background-color 0.15s ease !important;
 }
 
 .stButton > button:hover {
-    background-color: #4338ca !important;
-    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3) !important;
-    border: none !important;
+  background-color: var(--red) !important;
+  box-shadow: none !important;
+  border: none !important;
 }
 
 .stButton > button:active {
-    background-color: #3730a3 !important;
+  background-color: var(--red-d) !important;
 }
 
 /* ===== Secondary / Back button wrapper ===== */
 .btn-secondary .stButton > button {
-    background-color: transparent !important;
-    color: #6b7280 !important;
-    border: 1px solid #e5e7eb !important;
-    box-shadow: none !important;
-    font-weight: 400 !important;
+  background-color: transparent !important;
+  color: var(--muted) !important;
+  border: 1px solid var(--border) !important;
+  font-weight: 500 !important;
+  text-transform: none !important;
+  letter-spacing: 0.01em !important;
 }
 
 .btn-secondary .stButton > button:hover {
-    background-color: #f9fafb !important;
-    color: #374151 !important;
-    border-color: #d1d5db !important;
-    box-shadow: none !important;
+  background-color: var(--off2) !important;
+  color: var(--ink) !important;
+  border-color: var(--ink) !important;
+  box-shadow: none !important;
 }
 
-/* ===== Social login buttons ===== */
-.btn-google .stButton > button {
-    background-color: white !important;
-    color: #374151 !important;
-    border: 1px solid #d1d5db !important;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
-    font-weight: 500 !important;
-}
-
-.btn-google .stButton > button:hover {
-    background-color: #f9fafb !important;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
-}
-
-.btn-github .stButton > button {
-    background-color: #24292e !important;
-    color: white !important;
-    border: 1px solid #1b1f23 !important;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2) !important;
-    font-weight: 500 !important;
-}
-
-.btn-github .stButton > button:hover {
-    background-color: #1a1e22 !important;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3) !important;
-}
-
-/* Sidebar sign-out button */
+/* ===== Sidebar sign-out button ===== */
 section[data-testid="stSidebar"] .stButton > button {
-    background-color: transparent !important;
-    color: #94a3b8 !important;
-    border: 1px solid #334155 !important;
-    font-size: 0.8rem !important;
-    box-shadow: none !important;
+  background-color: transparent !important;
+  color: rgba(255,255,255,0.45) !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  font-size: 0.78rem !important;
+  box-shadow: none !important;
+  text-transform: none !important;
+  letter-spacing: 0.01em !important;
+  font-weight: 400 !important;
 }
 
 section[data-testid="stSidebar"] .stButton > button:hover {
-    background-color: #1e293b !important;
-    color: #e2e8f0 !important;
-    box-shadow: none !important;
+  background-color: rgba(255,255,255,0.06) !important;
+  color: rgba(255,255,255,0.8) !important;
+  box-shadow: none !important;
 }
 
 /* Pagination buttons */
 .pagination-nav .stButton > button {
-    background-color: white !important;
-    color: #6b7280 !important;
-    border: 1px solid #e5e7eb !important;
-    font-size: 0.8rem !important;
-    box-shadow: none !important;
+  background-color: white !important;
+  color: var(--muted) !important;
+  border: 1px solid var(--border) !important;
+  font-size: 0.78rem !important;
+  box-shadow: none !important;
+  text-transform: none !important;
+  letter-spacing: 0.01em !important;
+  font-family: var(--sans) !important;
 }
 
 .pagination-nav .stButton > button:hover {
-    background-color: #f9fafb !important;
-    color: #374151 !important;
-    box-shadow: none !important;
+  background-color: var(--off2) !important;
+  color: var(--ink) !important;
+  border-color: var(--ink) !important;
+  box-shadow: none !important;
 }
 
 /* ===== Header action buttons ===== */
 .header-btn {
-    display: inline-block;
-    width: 100%;
-    text-align: center;
-    padding: 0.4rem 0.75rem;
-    background-color: white;
-    color: #374151 !important;
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
-    text-decoration: none !important;
-    font-size: 0.8rem;
-    font-weight: 500;
-    transition: all 0.15s ease;
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+  padding: 0.4rem 0.75rem;
+  background-color: white;
+  color: var(--ink2) !important;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  text-decoration: none !important;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: var(--sans);
+  letter-spacing: 0.04em;
+  transition: all 0.15s ease;
 }
 
 .header-btn:hover {
-    background-color: #f9fafb;
-    border-color: #d1d5db;
-    color: #111827 !important;
+  background-color: var(--ink);
+  color: white !important;
+  border-color: var(--ink);
 }
 
 /* ===== Dividers ===== */
 hr.header-divider {
-    margin: 0.25rem 0 1rem 0;
-    border: none;
-    border-top: 1px solid #e5e7eb;
+  margin: 0.25rem 0 1rem 0;
+  border: none;
+  border-top: 1px solid var(--border);
 }
 
 hr.section-divider {
-    margin: 0 0 1.5rem 0;
-    border: none;
-    border-top: 1px solid #e5e7eb;
+  margin: 0 0 1.5rem 0;
+  border: none;
+  border-top: 1px solid var(--border);
 }
 
-/* ===== KPI Metric Cards ===== */
+/* ===== Verdict Banner ===== */
+.verdict-banner {
+  background: var(--ink);
+  color: white;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+  border-radius: 0;
+  animation: fadeSlideUp 0.35s ease both;
+}
+
+.verdict-label {
+  font-family: var(--serif);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: rgba(255,255,255,0.35);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.verdict-text {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 800;
+  color: white;
+  line-height: 1.3;
+}
+
+.verdict-text em {
+  color: var(--red);
+  font-style: normal;
+}
+
+.verdict-score-wrap {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.verdict-score {
+  font-family: var(--serif);
+  font-size: 36px;
+  font-weight: 800;
+  color: white;
+  line-height: 1;
+  animation: verdictPulse 3s ease-in-out infinite;
+  display: inline-block;
+}
+
+.verdict-score span {
+  font-size: 16px;
+  color: rgba(255,255,255,0.4);
+}
+
+.verdict-score-sub {
+  font-size: 9px;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-top: 4px;
+  font-family: var(--serif);
+}
+
+/* ===== KPI Grid ===== */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin-bottom: 28px;
+  border: 1px solid var(--border);
+}
+
+.kpi-cell {
+  padding: 22px 20px 18px;
+  background: var(--white);
+  border-right: 1px solid var(--border);
+  position: relative;
+  animation: fadeSlideUp 0.4s ease both;
+}
+
+.kpi-cell:last-child {
+  border-right: none;
+}
+
+.kpi-cell:nth-child(1) { animation-delay: 0.05s; }
+.kpi-cell:nth-child(2) { animation-delay: 0.10s; }
+.kpi-cell:nth-child(3) { animation-delay: 0.15s; }
+.kpi-cell:nth-child(4) { animation-delay: 0.20s; }
+
+.kpi-flag {
+  display: inline-block;
+  padding: 2px 8px;
+  margin-bottom: 10px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  font-family: var(--serif);
+  text-transform: uppercase;
+}
+
+.flag-pass  { background: var(--red-pale); color: var(--red); }
+.flag-warn  { background: #FFFBEB; color: var(--amber); }
+.flag-neutral { background: var(--off2); color: var(--muted); }
+
+.kpi-val {
+  font-family: var(--serif);
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 4px;
+  color: var(--ink);
+}
+
+.kpi-name {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  text-transform: uppercase;
+  font-family: var(--sans);
+}
+
+.kpi-delta {
+  font-size: 11px;
+  color: var(--green);
+  margin-top: 6px;
+  font-family: var(--sans);
+}
+
+.kpi-delta.warn { color: var(--red); }
+.kpi-delta.amber { color: var(--amber); }
+
+.kpi-accent {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+}
+
+/* Legacy metric cards (for pages not yet converted) */
 .metric-card {
-    background: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 1.25rem 1rem;
-    text-align: center;
-    min-height: 160px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  padding: 1.25rem 1rem;
+  text-align: center;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.15s ease;
+  animation: fadeSlideUp 0.4s ease both;
 }
 
 .metric-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(79, 70, 229, 0.1);
-    border-color: #c7d2fe;
+  background: var(--off2);
 }
 
 .metric-icon {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.7;
 }
 
 .metric-value {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #111827;
-    line-height: 1.2;
+  font-size: 2rem;
+  font-weight: 800;
+  font-family: var(--serif);
+  color: var(--ink);
+  line-height: 1.2;
+  letter-spacing: -0.03em;
 }
 
 .metric-label {
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: #6b7280;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-top: 0.3rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 0.3rem;
+  font-family: var(--sans);
 }
 
 .metric-context {
-    font-size: 0.7rem;
-    color: #9ca3af;
-    margin-top: 0.2rem;
+  font-size: 0.68rem;
+  color: var(--muted);
+  margin-top: 0.2rem;
+  font-family: var(--sans);
 }
 
-/* ===== Legacy metric containers ===== */
+/* ===== Legacy metric containers (Streamlit native) ===== */
 [data-testid="metric-container"] {
-    background-color: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  background-color: white;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  padding: 15px;
 }
 
 [data-testid="stMetricValue"] {
-    color: #111827 !important;
+  color: var(--ink) !important;
+  font-family: var(--serif) !important;
+  font-weight: 800 !important;
 }
 
 [data-testid="stMetricLabel"] {
-    color: #6b7280 !important;
+  color: var(--muted) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  font-size: 0.68rem !important;
+}
+
+/* ===== Panel Cards ===== */
+.panel {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  animation: fadeSlideUp 0.45s ease both;
+  animation-delay: 0.25s;
+}
+
+.panel-head {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.panel-title {
+  font-family: var(--serif);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+
+.panel-tag {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 3px 8px;
+  letter-spacing: 0.12em;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: var(--serif);
+  text-transform: uppercase;
+}
+
+.panel-tag.chip-live {
+  border-color: var(--red);
+  color: var(--red);
+  animation: chipBlink 1.5s ease-in-out infinite;
+}
+
+.panel-body { padding: 18px 20px; }
+
+/* ===== Tables ===== */
+.verdict-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--sans);
+}
+
+.verdict-table th {
+  padding: 8px 14px;
+  text-align: left;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  border-bottom: 2px solid var(--ink);
+  font-family: var(--serif);
+  text-transform: uppercase;
+}
+
+.verdict-table td {
+  padding: 13px 14px;
+  font-size: 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink2);
+}
+
+.verdict-table tr:last-child td { border-bottom: none; }
+.verdict-table tr:hover td { background: var(--off); }
+
+.verdict-table tbody tr {
+  animation: fadeSlideUp 0.35s ease both;
+}
+
+.verdict-table tbody tr:nth-child(1) { animation-delay: 0.05s; }
+.verdict-table tbody tr:nth-child(2) { animation-delay: 0.10s; }
+.verdict-table tbody tr:nth-child(3) { animation-delay: 0.15s; }
+.verdict-table tbody tr:nth-child(4) { animation-delay: 0.20s; }
+.verdict-table tbody tr:nth-child(5) { animation-delay: 0.25s; }
+.verdict-table tbody tr:nth-child(6) { animation-delay: 0.30s; }
+.verdict-table tbody tr:nth-child(n+7) { animation-delay: 0.35s; }
+
+.rank-badge {
+  width: 24px;
+  height: 24px;
+  background: var(--ink);
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--serif);
+  font-size: 11px;
+  font-weight: 800;
+  border-radius: 0;
+}
+
+.rank-badge.red { background: var(--red); }
+
+.model-nm {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--ink);
+}
+
+.score-val {
+  font-family: var(--serif);
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.status-chip {
+  display: inline-block;
+  padding: 3px 10px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  font-family: var(--serif);
+  text-transform: uppercase;
+  border-radius: 0;
+}
+
+.chip-pass { background: var(--red-pale); color: var(--red); }
+.chip-warn { background: #FFFBEB; color: var(--amber); }
+.chip-fail { background: var(--off2); color: var(--muted); }
+
+/* ===== Bar List (Failure Analysis / Charts) ===== */
+.bar-list { display: flex; flex-direction: column; gap: 16px; }
+
+.bar-row { display: flex; flex-direction: column; gap: 5px; }
+
+.bar-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bar-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink2);
+  font-family: var(--sans);
+}
+
+.bar-pct {
+  font-family: var(--serif);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.bar-track {
+  height: 5px;
+  background: var(--off2);
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background: var(--red);
+  width: 0;
+  transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bar-fill.amber { background: var(--amber); }
+.bar-fill.muted { background: var(--muted); }
+.bar-fill.green { background: var(--green); }
+
+/* ===== Verdict section labels ===== */
+.verdict-section-label {
+  font-family: var(--serif);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--red);
+  text-transform: uppercase;
+  margin-bottom: 4px;
 }
 
 /* ===== Form inputs ===== */
 .stTextInput > div > div > input,
 .stTextAreaInput > div > div > textarea {
-    border-color: #e5e7eb !important;
-    border-radius: 6px !important;
-    color: #111827 !important;
-    background-color: white !important;
-    font-size: 0.875rem !important;
+  border-color: var(--border) !important;
+  border-radius: 0 !important;
+  color: var(--ink) !important;
+  background-color: white !important;
+  font-size: 0.875rem !important;
+  font-family: var(--sans) !important;
 }
 
 .stTextInput > div > div > input:focus {
-    border-color: #4f46e5 !important;
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12) !important;
+  border-color: var(--red) !important;
+  box-shadow: none !important;
 }
 
 /* ===== Login Form ===== */
 [data-testid="stForm"] {
-    background-color: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 14px;
-    padding: 2rem;
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
+  background-color: white;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  padding: 2rem;
+  box-shadow: none;
 }
 
 [data-testid="stForm"] label {
-    color: #374151 !important;
-    font-weight: 500 !important;
-    font-size: 0.875rem !important;
+  color: var(--ink) !important;
+  font-weight: 600 !important;
+  font-size: 0.8rem !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  font-family: var(--serif) !important;
 }
 
 [data-testid="stForm"] input {
-    background-color: #f9fafb !important;
-    border: 1px solid #e5e7eb !important;
-    color: #111827 !important;
-    border-radius: 6px !important;
+  background-color: var(--off) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 0 !important;
+  color: var(--ink) !important;
 }
 
 [data-testid="stForm"] input:focus {
-    border-color: #4f46e5 !important;
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12) !important;
+  border-color: var(--red) !important;
+  box-shadow: none !important;
 }
 
 [data-testid="stForm"] [data-testid="InputInstructions"] {
-    display: none !important;
+  display: none !important;
 }
 
 [data-testid="stForm"] .stButton > button {
-    background-color: #4f46e5 !important;
-    color: white !important;
-    font-weight: 600 !important;
-    font-size: 0.875rem !important;
+  background-color: var(--red) !important;
+  color: white !important;
+  font-weight: 700 !important;
+  font-size: 0.8rem !important;
+  border-radius: 0 !important;
+  font-family: var(--serif) !important;
+  letter-spacing: 0.1em !important;
 }
 
 [data-testid="stForm"] .stButton > button:hover {
-    background-color: #4338ca !important;
+  background-color: var(--red-d) !important;
 }
 
-/* ===== Checkboxes — ensure text is visible ===== */
+/* ===== Checkboxes ===== */
 div[data-testid="stCheckbox"] label {
-    color: #111827 !important;
-    font-size: 0.9rem !important;
-    font-weight: 500 !important;
+  color: var(--ink) !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
 }
 
 div[data-testid="stCheckbox"] label p {
-    color: #111827 !important;
-    font-size: 0.9rem !important;
+  color: var(--ink) !important;
+  font-size: 0.875rem !important;
 }
 
 div[data-testid="stCheckbox"] label span[data-testid="stMarkdownContainer"] p {
-    color: #111827 !important;
+  color: var(--ink) !important;
 }
 
 div[data-testid="stCheckbox"] span[class*="st-"] {
-    color: #111827 !important;
+  color: var(--ink) !important;
 }
 
 /* ===== Select boxes ===== */
 .stSelectbox [data-baseweb="select"] > div {
-    background-color: white;
-    border-color: #e5e7eb;
-    border-radius: 6px;
-    color: #374151;
+  background-color: white;
+  border-color: var(--border);
+  border-radius: 0;
+  color: var(--ink);
 }
 
 /* ===== DataFrames ===== */
 .stDataFrame {
-    border: 1px solid #e5e7eb !important;
-    border-radius: 10px !important;
-    overflow: hidden;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  border: 1px solid var(--border) !important;
+  border-radius: 0 !important;
+  overflow: hidden;
+  box-shadow: none !important;
 }
 
 /* ===== Tabs ===== */
 .stTabs [data-baseweb="tab-list"] {
-    border-bottom: 1px solid #e5e7eb;
-    gap: 0;
+  border-bottom: 1px solid var(--border);
+  gap: 0;
 }
 
 .stTabs [data-baseweb="tab"] {
-    color: #6b7280 !important;
-    font-weight: 500;
-    font-size: 0.875rem;
-    border-bottom: 2px solid transparent !important;
-    padding: 0.5rem 1rem !important;
-    background: transparent !important;
+  color: var(--muted) !important;
+  font-weight: 600;
+  font-size: 0.8rem;
+  font-family: var(--serif) !important;
+  border-bottom: 2px solid transparent !important;
+  border-radius: 0 !important;
+  padding: 0.5rem 1.2rem !important;
+  background: transparent !important;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .stTabs [aria-selected="true"] {
-    color: #4f46e5 !important;
-    border-bottom: 2px solid #4f46e5 !important;
+  color: var(--ink) !important;
+  border-bottom: 2px solid var(--red) !important;
 }
 
 /* ===== Expanders ===== */
 .stExpander {
-    border: 1px solid #e5e7eb !important;
-    border-radius: 8px !important;
-    background: white !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 0 !important;
+  background: white !important;
 }
 
 /* ===== Alert boxes ===== */
 .stAlert {
-    border-radius: 8px !important;
+  border-radius: 0 !important;
 }
 
 /* ===== Progress bars ===== */
 .stProgress > div > div {
-    background-color: #4f46e5 !important;
+  background-color: var(--red) !important;
+  border-radius: 0 !important;
+}
+
+.stProgress > div {
+  border-radius: 0 !important;
+  background: var(--off2) !important;
 }
 
 /* ===== Sidebar nav section labels ===== */
 .nav-section {
-    font-size: 0.65rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #475569 !important;
-    padding: 0.6rem 0 0.2rem 0;
-    margin: 0;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: rgba(255,255,255,0.25) !important;
+  padding: 0.8rem 0 0.25rem 0;
+  margin: 0;
+  font-family: var(--serif) !important;
 }
 
 /* ===== Onboarding step indicator ===== */
 .step-track {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2rem;
 }
 
 .step-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #e5e7eb;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 0;
+  background: var(--border);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .step-dot.done {
-    background: #4f46e5;
+  background: var(--red);
 }
 
 .step-dot.active {
-    width: 24px;
-    border-radius: 4px;
-    background: #4f46e5;
+  width: 24px;
+  border-radius: 0;
+  background: var(--red);
 }
 
-/* ================================================================
-   POST-LOGIN: COMPREHENSIVE BLACK TEXT — catches every Streamlit
-   element that can render invisible text on a white background.
-   ================================================================ */
-
-/* Radio buttons */
-[data-testid="stRadio"] label,
-[data-testid="stRadio"] label p,
-[data-testid="stRadio"] label span { color: #111827 !important; }
-
-/* Selectbox / multiselect labels */
-[data-testid="stSelectbox"] label,
-[data-testid="stSelectbox"] label p,
-[data-testid="stMultiSelect"] label,
-[data-testid="stMultiSelect"] label p { color: #111827 !important; }
-
-/* Selectbox dropdown options */
-[data-baseweb="menu"] li,
-[data-baseweb="menu"] [role="option"],
-[data-baseweb="option"],
-[data-baseweb="option"] * { color: #111827 !important; }
-
-/* Text / number / date / time input labels */
-[data-testid="stTextInput"] label,
-[data-testid="stTextInput"] label p,
-[data-testid="stNumberInput"] label,
-[data-testid="stNumberInput"] label p,
-[data-testid="stTextArea"] label,
-[data-testid="stTextArea"] label p,
-[data-testid="stDateInput"] label,
-[data-testid="stDateInput"] label p,
-[data-testid="stTimeInput"] label,
-[data-testid="stTimeInput"] label p,
-[data-testid="stFileUploader"] label,
-[data-testid="stFileUploader"] label p { color: #111827 !important; }
-
-/* Number input up/down arrow text */
-[data-testid="stNumberInput"] input { color: #111827 !important; }
-
-/* Slider label and value */
-[data-testid="stSlider"] label,
-[data-testid="stSlider"] label p,
-[data-testid="stSlider"] [data-testid="stTickBarMin"],
-[data-testid="stSlider"] [data-testid="stTickBarMax"] { color: #111827 !important; }
-
-/* st.write / st.text */
-[data-testid="stText"],
-[data-testid="stText"] p { color: #111827 !important; }
-
-/* Metric widget */
-[data-testid="stMetricValue"],
-[data-testid="stMetricLabel"],
-[data-testid="stMetricDelta"] { color: #111827 !important; }
-
-/* Expander header + body */
-[data-testid="stExpander"] summary,
-[data-testid="stExpander"] summary p,
-[data-testid="stExpander"] summary span,
-[data-testid="stExpander"] [data-testid="stMarkdownContainer"] p { color: #111827 !important; }
-
-/* Tab labels */
-[data-baseweb="tab"] [data-testid="stMarkdownContainer"] p { color: #6b7280 !important; }
-[aria-selected="true"][data-baseweb="tab"] [data-testid="stMarkdownContainer"] p { color: #4f46e5 !important; }
-
-/* Dataframe / table */
-[data-testid="stDataFrame"] * { color: #111827 !important; }
-.dvn-scroller .cell-grid-canvas { color: #111827 !important; }
-
-/* Column headers in dataframe */
-[data-testid="stDataFrame"] th,
-[data-testid="stDataFrame"] td { color: #111827 !important; }
-
-/* Alert / info / warning / error boxes */
-[data-testid="stAlert"],
-[data-testid="stAlert"] p,
-[data-testid="stAlert"] span,
-[data-testid="stNotification"],
-[data-testid="stNotification"] p { color: #111827 !important; }
-
-/* Button text for non-primary buttons */
-[data-testid="stBaseButton-secondary"],
-[data-testid="stBaseButton-secondary"] p { color: #374151 !important; }
-
-/* Code blocks */
-[data-testid="stCode"] code,
-.stCodeBlock code { color: #1e1b4b !important; }
-
-/* Input helper text */
-[data-testid="InputInstructions"] { color: #6b7280 !important; }
-
-/* Any remaining stMarkdownContainer text */
-.stMarkdown p,
-.stMarkdown span,
-.stMarkdown li,
-.stMarkdown h1,
-.stMarkdown h2,
-.stMarkdown h3,
-.stMarkdown h4 { color: #111827 !important; }
+/* ===== Misc ===== */
+.block-container {
+  padding-top: 1.5rem !important;
+}

@@ -259,7 +259,7 @@ def _try_demo_login() -> None:
 def _show_login() -> None:
     st.markdown(_h("""
         <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap');
         /* ── Hide Streamlit chrome ── */
         #MainMenu { visibility: hidden; }
         footer { visibility: hidden; }
@@ -268,7 +268,7 @@ def _show_login() -> None:
         header[data-testid="stHeader"] { visibility: hidden; }
         section[data-testid="stSidebar"] { display: none !important; }
         /* ── Dark background ── */
-        .stApp { background: #0A0B1A !important; }
+        .stApp { background: #0E0E0E !important; }
         section.main { background: transparent !important; }
         section.main .block-container { padding: 0 !important; max-width: 100% !important; background: transparent !important; }
         /* ── High-level wrappers — full width, no padding, transparent ── */
@@ -289,11 +289,11 @@ def _show_login() -> None:
         .stColumn, .element-container { background: transparent !important; }
         /* ── CSS variables ── */
         :root {
-            --bg-dark: #0A0B1A; --bg-section: #0F1030; --bg-card: #13153A;
-            --accent: #6366F1; --accent-light: #818CF8; --accent-dim: #4338CA;
-            --accent-glow: rgba(99,102,241,0.15);
-            --gradient: linear-gradient(135deg,#6366F1,#8B5CF6);
-            --tl-white: #ffffff; --muted: #94A3B8; --border: #1E1F4E;
+            --bg-dark: #0E0E0E; --bg-section: #1C1C1C; --bg-card: #1C1C1C;
+            --accent: #E8290B; --accent-light: #FF5533; --accent-dim: #C42208;
+            --accent-glow: rgba(232,41,11,0.12);
+            --gradient: #E8290B;
+            --tl-white: #ffffff; --muted: rgba(255,255,255,0.45); --border: rgba(255,255,255,0.1);
         }
         /* ── Headings: force Inter + white (override global style.css) ── */
         [data-testid="stMain"] h1,
@@ -335,7 +335,7 @@ def _show_login() -> None:
         }
         [data-testid="stTextInputRootElement"] {
             border: 1px solid var(--border) !important;
-            border-radius: 10px !important;
+            border-radius:0 !important;
         }
         /* .stApp prefix beats project style.css `.stTextInput > div > div > input` (0,1,3) */
         .stApp .stTextInput input, .stApp [data-testid="stTextInput"] input,
@@ -357,10 +357,10 @@ def _show_login() -> None:
         [data-testid="stColumn"] label { color: #cbd5e1 !important; font-size: 13px !important; font-weight: 500 !important; }
         /* ── Form submit button — gradient indigo (it's stFormSubmitButton, not stButton) ── */
         [data-testid="stFormSubmitButton"] button {
-            background: var(--gradient) !important; color: white !important;
+            background: #E8290B !important; color: white !important;
             -webkit-text-fill-color: white !important;
             font-weight: 600 !important; font-size: 14px !important;
-            padding: 14px !important; border-radius: 10px !important;
+            padding: 14px !important; border-radius:0 !important;
             border: none !important; min-height: 44px !important;
             box-shadow: 0 4px 16px rgba(99,102,241,0.30) !important;
         }
@@ -378,7 +378,7 @@ def _show_login() -> None:
             background: transparent !important;
             border: 1px solid var(--border) !important;
             color: var(--accent-light) !important;
-            border-radius: 10px !important; font-weight: 600 !important;
+            border-radius:0 !important; font-weight: 600 !important;
         }
         [data-testid="stColumn"] .stButton > button:hover {
             background: var(--accent-glow) !important;
@@ -386,7 +386,7 @@ def _show_login() -> None:
         /* ── Expander (forgot password) ── */
         [data-testid="stExpander"] {
             background: var(--bg-card) !important;
-            border: 1px solid var(--border) !important; border-radius: 10px !important;
+            border: 1px solid var(--border) !important; border-radius:0 !important;
         }
         [data-testid="stExpander"] summary p,
         [data-testid="stExpander"] summary span { color: #cbd5e1 !important; font-size: 0.875rem !important; }
@@ -416,17 +416,17 @@ def _show_login() -> None:
         [data-testid="stMarkdownContainer"] p { color: #cbd5e1 !important; }
         /* model-id <li> inherit the card's muted tone */
         [data-testid="stMain"] [data-testid="stMarkdownContainer"] li {
-            color: #94A3B8 !important; -webkit-text-fill-color: #94A3B8 !important;
+            color: rgba(255,255,255,0.45) !important; -webkit-text-fill-color: rgba(255,255,255,0.45) !important;
         }
-        /* eyebrows (#6366F1), chips/checkmarks (#818CF8), values (#94A3B8), labels (#cbd5e1) */
+        /* eyebrows (#E8290B), chips/checkmarks (#FF5533), values (rgba(255,255,255,0.45)), labels (#cbd5e1) */
         [data-testid="stMain"] [style*="color: rgb(99, 102, 241)"] {
-            color: #6366F1 !important; -webkit-text-fill-color: #6366F1 !important;
+            color: #E8290B !important; -webkit-text-fill-color: #E8290B !important;
         }
         [data-testid="stMain"] [style*="color: rgb(129, 140, 248)"] {
-            color: #818CF8 !important; -webkit-text-fill-color: #818CF8 !important;
+            color: #FF5533 !important; -webkit-text-fill-color: #FF5533 !important;
         }
         [data-testid="stMain"] [style*="color: rgb(148, 163, 184)"] {
-            color: #94A3B8 !important; -webkit-text-fill-color: #94A3B8 !important;
+            color: rgba(255,255,255,0.45) !important; -webkit-text-fill-color: rgba(255,255,255,0.45) !important;
         }
         [data-testid="stMain"] [style*="color: rgb(203, 213, 225)"] {
             color: #cbd5e1 !important; -webkit-text-fill-color: #cbd5e1 !important;
@@ -455,17 +455,17 @@ def _show_login() -> None:
                       display:flex;align-items:center;justify-content:space-between;gap:16px;">
             <a href="#" style="display:flex;align-items:center;gap:10px;color:white;text-decoration:none;
                                font-size:17px;font-weight:700;letter-spacing:-0.01em;">
-              <span style="width:32px;height:32px;border-radius:8px;background:#6366F1;
+              <span style="width:32px;height:32px;border-radius:0;background:#E8290B;
                            display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;">🛡</span>
               TrustLLM
             </a>
             <div style="display:flex;align-items:center;gap:10px;">
               <a href="#tl-signin" style="display:inline-flex;align-items:center;padding:10px 18px;
                   border-radius:10px;font-size:14px;font-weight:600;background:transparent;
-                  color:#818CF8;border:1px solid #6366F1;text-decoration:none;">Sign In</a>
+                  color:#FF5533;border:1px solid #E8290B;text-decoration:none;">Sign In</a>
               <a href="#tl-signin" style="display:inline-flex;align-items:center;padding:10px 18px;
                   border-radius:10px;font-size:14px;font-weight:600;
-                  background:linear-gradient(135deg,#6366F1,#8B5CF6);color:white;text-decoration:none;
+                  background:linear-gradient(135deg,#E8290B,#E8290B);color:white;text-decoration:none;
                   box-shadow:0 4px 16px rgba(99,102,241,0.30);">Get Started</a>
             </div>
           </div>
@@ -476,62 +476,62 @@ def _show_login() -> None:
     st.markdown(_h("""
         <section style="min-height:100vh;padding:72px 24px 96px;display:flex;align-items:center;
             justify-content:center;text-align:center;position:relative;overflow:hidden;
-            background:#0A0B1A;font-family:'Inter',system-ui,sans-serif;">
-          <div style="position:absolute;width:480px;height:480px;border-radius:50%;background:#6366F1;
+            background:#0E0E0E;font-family:'Inter',system-ui,sans-serif;">
+          <div style="position:absolute;width:480px;height:480px;border-radius:50%;background:#E8290B;
                       top:-120px;left:-100px;filter:blur(120px);opacity:0.1;pointer-events:none;z-index:0;"></div>
-          <div style="position:absolute;width:380px;height:380px;border-radius:50%;background:#8B5CF6;
+          <div style="position:absolute;width:380px;height:380px;border-radius:50%;background:#E8290B;
                       bottom:-100px;right:-80px;filter:blur(120px);opacity:0.12;pointer-events:none;z-index:0;"></div>
           <div style="position:absolute;inset:0;background:
-              radial-gradient(ellipse 800px 600px at 50% 40%,rgba(99,102,241,0.12),transparent 60%),
-              radial-gradient(ellipse 500px 400px at 15% 80%,rgba(139,92,246,0.08),transparent 60%);
+              radial-gradient(ellipse 800px 600px at 50% 40%,rgba(232,41,11,0.10),transparent 60%),
+              radial-gradient(ellipse 500px 400px at 15% 80%,rgba(232,41,11,0.06),transparent 60%);
               pointer-events:none;z-index:0;"></div>
           <div style="position:relative;z-index:1;max-width:880px;
                       display:flex;flex-direction:column;align-items:center;gap:26px;">
             <span style="display:inline-flex;align-items:center;gap:8px;padding:6px 14px;
-                border-radius:999px;background:rgba(99,102,241,0.15);border:1px solid #6366F1;
-                color:#818CF8;font-size:12px;font-weight:600;letter-spacing:0.06em;">
-              <span style="width:6px;height:6px;border-radius:50%;background:#6366F1;
+                border-radius:0;background:rgba(232,41,11,0.12);border:1px solid #E8290B;
+                color:#FF5533;font-size:12px;font-weight:600;letter-spacing:0.06em;">
+              <span style="width:6px;height:6px;border-radius:50%;background:#E8290B;
                            box-shadow:0 0 0 4px rgba(99,102,241,0.18);display:inline-block;"></span>
               LLM Evaluation Platform
             </span>
             <h1 style="font-size:clamp(40px,6.4vw,72px);font-weight:800;letter-spacing:-0.035em;
                         line-height:1.05;margin:0;color:white;">
               Evaluate LLMs you can<br>
-              <span style="background:linear-gradient(135deg,#6366F1,#8B5CF6);
+              <span style="background:linear-gradient(135deg,#E8290B,#E8290B);
                            -webkit-background-clip:text;background-clip:text;color:transparent;">
                 actually trust.
               </span>
             </h1>
-            <p style="font-size:18px;color:#94A3B8;max-width:560px;line-height:1.65;margin:0;">
+            <p style="font-size:18px;color:rgba(255,255,255,0.45);max-width:560px;line-height:1.65;margin:0;">
               Score every model response for correctness, safety, and hallucination.
               Surface failures fast. Ship with confidence.
             </p>
             <div class="tl-hero-ctas" style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:4px;">
               <a href="#tl-signin" style="display:inline-flex;align-items:center;padding:14px 26px;
                   border-radius:12px;font-size:15px;font-weight:600;
-                  background:linear-gradient(135deg,#6366F1,#8B5CF6);color:white;text-decoration:none;
+                  background:linear-gradient(135deg,#E8290B,#E8290B);color:white;text-decoration:none;
                   box-shadow:0 4px 16px rgba(99,102,241,0.30);">Start Evaluating &nbsp;→</a>
               <a href="#tl-how" style="display:inline-flex;align-items:center;padding:14px 26px;
                   border-radius:12px;font-size:15px;font-weight:600;background:transparent;
-                  color:#818CF8;border:1px solid #6366F1;text-decoration:none;">Watch Demo &nbsp;▶</a>
+                  color:#FF5533;border:1px solid #E8290B;text-decoration:none;">Watch Demo &nbsp;▶</a>
             </div>
             <div style="display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:16px;">
               <div style="display:inline-flex;align-items:center;gap:12px;font-size:14.5px;color:white;font-weight:500;">
-                <span style="width:22px;height:22px;border-radius:50%;background:rgba(99,102,241,0.15);
-                             border:1px solid #6366F1;display:inline-flex;align-items:center;justify-content:center;
-                             color:#818CF8;font-size:11px;font-weight:700;flex-shrink:0;">✓</span>
+                <span style="width:22px;height:22px;border-radius:50%;background:rgba(232,41,11,0.12);
+                             border:1px solid #E8290B;display:inline-flex;align-items:center;justify-content:center;
+                             color:#FF5533;font-size:11px;font-weight:700;flex-shrink:0;">✓</span>
                 Trace every prompt &amp; response in real time
               </div>
               <div style="display:inline-flex;align-items:center;gap:12px;font-size:14.5px;color:white;font-weight:500;">
-                <span style="width:22px;height:22px;border-radius:50%;background:rgba(99,102,241,0.15);
-                             border:1px solid #6366F1;display:inline-flex;align-items:center;justify-content:center;
-                             color:#818CF8;font-size:11px;font-weight:700;flex-shrink:0;">✓</span>
+                <span style="width:22px;height:22px;border-radius:50%;background:rgba(232,41,11,0.12);
+                             border:1px solid #E8290B;display:inline-flex;align-items:center;justify-content:center;
+                             color:#FF5533;font-size:11px;font-weight:700;flex-shrink:0;">✓</span>
                 Compare models side-by-side on safety &amp; quality
               </div>
               <div style="display:inline-flex;align-items:center;gap:12px;font-size:14.5px;color:white;font-weight:500;">
-                <span style="width:22px;height:22px;border-radius:50%;background:rgba(99,102,241,0.15);
-                             border:1px solid #6366F1;display:inline-flex;align-items:center;justify-content:center;
-                             color:#818CF8;font-size:11px;font-weight:700;flex-shrink:0;">✓</span>
+                <span style="width:22px;height:22px;border-radius:50%;background:rgba(232,41,11,0.12);
+                             border:1px solid #E8290B;display:inline-flex;align-items:center;justify-content:center;
+                             color:#FF5533;font-size:11px;font-weight:700;flex-shrink:0;">✓</span>
                 Detect hallucinations, bias &amp; safety violations automatically
               </div>
             </div>
@@ -541,29 +541,29 @@ def _show_login() -> None:
 
     # ── STATS BAR ─────────────────────────────────────────────────────
     st.markdown(_h("""
-        <section style="background:#13153A;border-top:1px solid #1E1F4E;border-bottom:1px solid #1E1F4E;
+        <section style="background:#1C1C1C;border-top:1px solid rgba(255,255,255,0.1);border-bottom:1px solid rgba(255,255,255,0.1);
                         padding:56px 24px;font-family:'Inter',system-ui,sans-serif;">
           <div class="tl-stats-grid" style="max-width:1100px;margin:0 auto;
                 display:grid;grid-template-columns:repeat(3,1fr);gap:0;align-items:center;">
             <div style="text-align:center;padding:16px 24px;">
-              <div style="font-size:48px;font-weight:700;color:#818CF8;line-height:1;
+              <div style="font-size:48px;font-weight:700;color:#FF5533;line-height:1;
                           letter-spacing:-0.02em;font-variant-numeric:tabular-nums;">12</div>
-              <div style="font-size:14px;color:#94A3B8;margin-top:10px;font-weight:500;">Models Supported</div>
+              <div style="font-size:14px;color:rgba(255,255,255,0.45);margin-top:10px;font-weight:500;">Models Supported</div>
             </div>
             <div style="text-align:center;padding:16px 24px;position:relative;">
-              <div style="position:absolute;left:0;top:18%;bottom:18%;width:1px;background:#1E1F4E;"></div>
-              <div style="font-size:48px;font-weight:700;color:#818CF8;line-height:1;
+              <div style="position:absolute;left:0;top:18%;bottom:18%;width:1px;background:rgba(255,255,255,0.1);"></div>
+              <div style="font-size:48px;font-weight:700;color:#FF5533;line-height:1;
                           letter-spacing:-0.02em;font-variant-numeric:tabular-nums;">6</div>
-              <div style="font-size:14px;color:#94A3B8;margin-top:10px;font-weight:500;">Trust Dimensions</div>
+              <div style="font-size:14px;color:rgba(255,255,255,0.45);margin-top:10px;font-weight:500;">Trust Dimensions</div>
             </div>
             <div style="text-align:center;padding:16px 24px;position:relative;">
-              <div style="position:absolute;left:0;top:18%;bottom:18%;width:1px;background:#1E1F4E;"></div>
+              <div style="position:absolute;left:0;top:18%;bottom:18%;width:1px;background:rgba(255,255,255,0.1);"></div>
               <div style="font-size:48px;font-weight:700;color:#475569;line-height:1;letter-spacing:0.04em;">--</div>
-              <div style="font-size:14px;color:#94A3B8;margin-top:10px;font-weight:500;">Avg Trust Score</div>
+              <div style="font-size:14px;color:rgba(255,255,255,0.45);margin-top:10px;font-weight:500;">Avg Trust Score</div>
             </div>
           </div>
           <p style="max-width:1100px;margin:24px auto 0;text-align:center;font-size:11px;
-                    color:#94A3B8;font-style:italic;line-height:1.5;">
+                    color:rgba(255,255,255,0.45);font-style:italic;line-height:1.5;">
             Run your first evaluation to see live stats. * Scores reflect current deployment session;
             data resets on redeploy (Streamlit Cloud ephemeral FS).
           </p>
@@ -572,84 +572,84 @@ def _show_login() -> None:
 
     # ── HOW IT WORKS ──────────────────────────────────────────────────
     st.markdown(_h("""
-        <section id="tl-how" style="background:#0F1030;padding:80px 24px;font-family:'Inter',system-ui,sans-serif;">
+        <section id="tl-how" style="background:#1C1C1C;padding:80px 24px;font-family:'Inter',system-ui,sans-serif;">
         <div style="max-width:780px;margin:0 auto;">
         <div style="text-align:center;margin-bottom:56px;">
-        <span style="font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#6366F1;">HOW IT WORKS</span>
+        <span style="font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#E8290B;">HOW IT WORKS</span>
         <h2 style="font-size:36px;font-weight:800;line-height:1.15;letter-spacing:-0.02em;margin:12px 0 0;color:white;">
-        From prompt to <span style="background:linear-gradient(135deg,#6366F1,#8B5CF6);-webkit-background-clip:text;background-clip:text;color:transparent;">trust score</span> in seconds
+        From prompt to <span style="background:linear-gradient(135deg,#E8290B,#E8290B);-webkit-background-clip:text;background-clip:text;color:transparent;">trust score</span> in seconds
         </h2>
-        <p style="font-size:16px;color:#94A3B8;line-height:1.65;margin:12px 0 0;">
+        <p style="font-size:16px;color:rgba(255,255,255,0.45);line-height:1.65;margin:12px 0 0;">
         Five-stage pipeline — repeatable, deterministic evals.
         </p>
         </div>
         <div style="position:relative;">
-        <div style="position:absolute;left:27px;top:28px;bottom:28px;width:0;border-left:2px dashed #4338CA;opacity:0.5;z-index:0;"></div>
+        <div style="position:absolute;left:27px;top:28px;bottom:28px;width:0;border-left:2px dashed #C42208;opacity:0.5;z-index:0;"></div>
         <div style="display:flex;flex-direction:column;gap:20px;position:relative;z-index:1;">
         <div style="display:flex;gap:18px;align-items:flex-start;">
-        <div style="width:56px;height:56px;border-radius:50%;background:#13153A;border:2px solid #6366F1;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:15px;font-weight:700;color:#818CF8;flex-shrink:0;box-shadow:0 0 0 5px #0F1030;">01</div>
-        <div style="flex:1;background:#13153A;border:1px solid #1E1F4E;border-left:3px solid #6366F1;border-radius:14px;padding:20px 22px;">
-        <div style="font-family:monospace;font-size:10px;color:#6366F1;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:6px;">01 · Input</div>
+        <div style="width:56px;height:56px;border-radius:50%;background:#1C1C1C;border:2px solid #E8290B;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:15px;font-weight:700;color:#FF5533;flex-shrink:0;box-shadow:0 0 0 5px #1C1C1C;">01</div>
+        <div style="flex:1;background:#1C1C1C;border:1px solid rgba(255,255,255,0.1);border-left:3px solid #E8290B;border-radius:14px;padding:20px 22px;">
+        <div style="font-family:monospace;font-size:10px;color:#E8290B;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:6px;">01 · Input</div>
         <h3 style="font-size:18px;font-weight:700;margin:0 0 8px;color:white;">Submit a prompt</h3>
-        <p style="color:#94A3B8;font-size:14px;line-height:1.6;margin:0;">Single prompt or upload a CSV / JSON dataset. Drop it in — that's the whole interface.</p>
+        <p style="color:rgba(255,255,255,0.45);font-size:14px;line-height:1.6;margin:0;">Single prompt or upload a CSV / JSON dataset. Drop it in — that's the whole interface.</p>
         </div>
         </div>
         <div style="display:flex;gap:18px;align-items:flex-start;">
-        <div style="width:56px;height:56px;border-radius:50%;background:#13153A;border:2px solid #6366F1;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:15px;font-weight:700;color:#818CF8;flex-shrink:0;box-shadow:0 0 0 5px #0F1030;">02</div>
-        <div style="flex:1;background:#13153A;border:1px solid #1E1F4E;border-left:3px solid #6366F1;border-radius:14px;padding:20px 22px;">
-        <div style="font-family:monospace;font-size:10px;color:#6366F1;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:6px;">02 · Model Selection</div>
+        <div style="width:56px;height:56px;border-radius:50%;background:#1C1C1C;border:2px solid #E8290B;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:15px;font-weight:700;color:#FF5533;flex-shrink:0;box-shadow:0 0 0 5px #1C1C1C;">02</div>
+        <div style="flex:1;background:#1C1C1C;border:1px solid rgba(255,255,255,0.1);border-left:3px solid #E8290B;border-radius:14px;padding:20px 22px;">
+        <div style="font-family:monospace;font-size:10px;color:#E8290B;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:6px;">02 · Model Selection</div>
         <h3 style="font-size:18px;font-weight:700;margin:0 0 8px;color:white;">Pick from 12 models</h3>
-        <p style="color:#94A3B8;font-size:14px;line-height:1.6;margin:0 0 12px;">Six providers, two models each — swap in your own endpoint via Ollama or hosted API.</p>
+        <p style="color:rgba(255,255,255,0.45);font-size:14px;line-height:1.6;margin:0 0 12px;">Six providers, two models each — swap in your own endpoint via Ollama or hosted API.</p>
         <div style="display:flex;flex-wrap:wrap;gap:6px;">
-        <span style="padding:5px 10px;background:rgba(99,102,241,0.10);border:1px solid #6366F1;border-radius:999px;font-size:12px;color:#818CF8;font-weight:500;">Groq</span>
-        <span style="padding:5px 10px;background:rgba(99,102,241,0.10);border:1px solid #6366F1;border-radius:999px;font-size:12px;color:#818CF8;font-weight:500;">Claude</span>
-        <span style="padding:5px 10px;background:rgba(99,102,241,0.10);border:1px solid #6366F1;border-radius:999px;font-size:12px;color:#818CF8;font-weight:500;">GPT</span>
-        <span style="padding:5px 10px;background:rgba(99,102,241,0.10);border:1px solid #6366F1;border-radius:999px;font-size:12px;color:#818CF8;font-weight:500;">Gemini</span>
-        <span style="padding:5px 10px;background:rgba(99,102,241,0.10);border:1px solid #6366F1;border-radius:999px;font-size:12px;color:#818CF8;font-weight:500;">Mistral</span>
-        <span style="padding:5px 10px;background:rgba(99,102,241,0.10);border:1px solid #6366F1;border-radius:999px;font-size:12px;color:#818CF8;font-weight:500;">Phi</span>
+        <span style="padding:5px 10px;background:rgba(99,102,241,0.10);border:1px solid #E8290B;border-radius:0;font-size:12px;color:#FF5533;font-weight:500;">Groq</span>
+        <span style="padding:5px 10px;background:rgba(99,102,241,0.10);border:1px solid #E8290B;border-radius:0;font-size:12px;color:#FF5533;font-weight:500;">Claude</span>
+        <span style="padding:5px 10px;background:rgba(99,102,241,0.10);border:1px solid #E8290B;border-radius:0;font-size:12px;color:#FF5533;font-weight:500;">GPT</span>
+        <span style="padding:5px 10px;background:rgba(99,102,241,0.10);border:1px solid #E8290B;border-radius:0;font-size:12px;color:#FF5533;font-weight:500;">Gemini</span>
+        <span style="padding:5px 10px;background:rgba(99,102,241,0.10);border:1px solid #E8290B;border-radius:0;font-size:12px;color:#FF5533;font-weight:500;">Mistral</span>
+        <span style="padding:5px 10px;background:rgba(99,102,241,0.10);border:1px solid #E8290B;border-radius:0;font-size:12px;color:#FF5533;font-weight:500;">Phi</span>
         </div>
         </div>
         </div>
         <div style="display:flex;gap:18px;align-items:flex-start;">
-        <div style="width:56px;height:56px;border-radius:50%;background:#13153A;border:2px solid #6366F1;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:15px;font-weight:700;color:#818CF8;flex-shrink:0;box-shadow:0 0 0 5px #0F1030;">03</div>
-        <div style="flex:1;background:#13153A;border:1px solid #1E1F4E;border-left:3px solid #6366F1;border-radius:14px;padding:20px 22px;">
-        <div style="font-family:monospace;font-size:10px;color:#6366F1;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:6px;">03 · Eval Mode</div>
+        <div style="width:56px;height:56px;border-radius:50%;background:#1C1C1C;border:2px solid #E8290B;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:15px;font-weight:700;color:#FF5533;flex-shrink:0;box-shadow:0 0 0 5px #1C1C1C;">03</div>
+        <div style="flex:1;background:#1C1C1C;border:1px solid rgba(255,255,255,0.1);border-left:3px solid #E8290B;border-radius:14px;padding:20px 22px;">
+        <div style="font-family:monospace;font-size:10px;color:#E8290B;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:6px;">03 · Eval Mode</div>
         <h3 style="font-size:18px;font-weight:700;margin:0 0 8px;color:white;">Choose your test path</h3>
-        <p style="color:#94A3B8;font-size:14px;line-height:1.6;margin:0 0 12px;">Pick the mode that matches your test — every mode shares the same downstream judge.</p>
+        <p style="color:rgba(255,255,255,0.45);font-size:14px;line-height:1.6;margin:0 0 12px;">Pick the mode that matches your test — every mode shares the same downstream judge.</p>
         <div style="display:flex;flex-wrap:wrap;gap:8px;">
-        <span style="padding:7px 13px;background:#6366F1;border-radius:8px;font-size:13px;color:white;font-weight:500;">Run Evaluation</span>
-        <span style="padding:7px 13px;background:transparent;border:1px solid #4338CA;border-radius:8px;font-size:13px;color:#94A3B8;font-weight:500;">RAG Testing</span>
-        <span style="padding:7px 13px;background:transparent;border:1px solid #4338CA;border-radius:8px;font-size:13px;color:#94A3B8;font-weight:500;">Batch Dataset</span>
+        <span style="padding:7px 13px;background:#E8290B;border-radius:0;font-size:13px;color:white;font-weight:500;">Run Evaluation</span>
+        <span style="padding:7px 13px;background:transparent;border:1px solid #C42208;border-radius:0;font-size:13px;color:rgba(255,255,255,0.45);font-weight:500;">RAG Testing</span>
+        <span style="padding:7px 13px;background:transparent;border:1px solid #C42208;border-radius:0;font-size:13px;color:rgba(255,255,255,0.45);font-weight:500;">Batch Dataset</span>
         </div>
         </div>
         </div>
         <div style="display:flex;gap:18px;align-items:flex-start;">
-        <div style="width:56px;height:56px;border-radius:50%;background:#13153A;border:2px solid #6366F1;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:15px;font-weight:700;color:#818CF8;flex-shrink:0;box-shadow:0 0 0 5px #0F1030;">04</div>
-        <div style="flex:1;background:#13153A;border:1px solid #1E1F4E;border-left:3px solid #6366F1;border-radius:14px;padding:20px 22px;">
-        <div style="font-family:monospace;font-size:10px;color:#6366F1;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:6px;">04 · LLM-as-Judge Scoring</div>
+        <div style="width:56px;height:56px;border-radius:50%;background:#1C1C1C;border:2px solid #E8290B;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:15px;font-weight:700;color:#FF5533;flex-shrink:0;box-shadow:0 0 0 5px #1C1C1C;">04</div>
+        <div style="flex:1;background:#1C1C1C;border:1px solid rgba(255,255,255,0.1);border-left:3px solid #E8290B;border-radius:14px;padding:20px 22px;">
+        <div style="font-family:monospace;font-size:10px;color:#E8290B;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:6px;">04 · LLM-as-Judge Scoring</div>
         <h3 style="font-size:18px;font-weight:700;margin:0 0 8px;color:white;">Six dimensions, one trust score</h3>
-        <p style="color:#94A3B8;font-size:14px;line-height:1.6;margin:0 0 12px;">Each dimension scored independently, then averaged into a 0–1 trust score.</p>
+        <p style="color:rgba(255,255,255,0.45);font-size:14px;line-height:1.6;margin:0 0 12px;">Each dimension scored independently, then averaged into a 0–1 trust score.</p>
         <div style="display:flex;flex-direction:column;gap:7px;">
-        <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span style="color:#cbd5e1;width:90px;flex-shrink:0;">Truthfulness</span><div style="flex:1;background:#1E1F4E;height:5px;border-radius:999px;overflow:hidden;"><div style="height:100%;width:92%;background:linear-gradient(90deg,#6366F1,#8B5CF6);border-radius:999px;"></div></div><span style="font-family:monospace;font-size:11px;color:#94A3B8;width:30px;text-align:right;">0.92</span></div>
-        <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span style="color:#cbd5e1;width:90px;flex-shrink:0;">Safety</span><div style="flex:1;background:#1E1F4E;height:5px;border-radius:999px;overflow:hidden;"><div style="height:100%;width:88%;background:linear-gradient(90deg,#6366F1,#8B5CF6);border-radius:999px;"></div></div><span style="font-family:monospace;font-size:11px;color:#94A3B8;width:30px;text-align:right;">0.88</span></div>
-        <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span style="color:#cbd5e1;width:90px;flex-shrink:0;">Fairness</span><div style="flex:1;background:#1E1F4E;height:5px;border-radius:999px;overflow:hidden;"><div style="height:100%;width:74%;background:linear-gradient(90deg,#6366F1,#8B5CF6);border-radius:999px;"></div></div><span style="font-family:monospace;font-size:11px;color:#94A3B8;width:30px;text-align:right;">0.74</span></div>
-        <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span style="color:#cbd5e1;width:90px;flex-shrink:0;">Privacy</span><div style="flex:1;background:#1E1F4E;height:5px;border-radius:999px;overflow:hidden;"><div style="height:100%;width:81%;background:linear-gradient(90deg,#6366F1,#8B5CF6);border-radius:999px;"></div></div><span style="font-family:monospace;font-size:11px;color:#94A3B8;width:30px;text-align:right;">0.81</span></div>
-        <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span style="color:#cbd5e1;width:90px;flex-shrink:0;">Robustness</span><div style="flex:1;background:#1E1F4E;height:5px;border-radius:999px;overflow:hidden;"><div style="height:100%;width:69%;background:linear-gradient(90deg,#6366F1,#8B5CF6);border-radius:999px;"></div></div><span style="font-family:monospace;font-size:11px;color:#94A3B8;width:30px;text-align:right;">0.69</span></div>
-        <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span style="color:#cbd5e1;width:90px;flex-shrink:0;">Ethics</span><div style="flex:1;background:#1E1F4E;height:5px;border-radius:999px;overflow:hidden;"><div style="height:100%;width:85%;background:linear-gradient(90deg,#6366F1,#8B5CF6);border-radius:999px;"></div></div><span style="font-family:monospace;font-size:11px;color:#94A3B8;width:30px;text-align:right;">0.85</span></div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span style="color:#cbd5e1;width:90px;flex-shrink:0;">Truthfulness</span><div style="flex:1;background:rgba(255,255,255,0.1);height:5px;border-radius:0;overflow:hidden;"><div style="height:100%;width:92%;background:linear-gradient(90deg,#E8290B,#E8290B);border-radius:0;"></div></div><span style="font-family:monospace;font-size:11px;color:rgba(255,255,255,0.45);width:30px;text-align:right;">0.92</span></div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span style="color:#cbd5e1;width:90px;flex-shrink:0;">Safety</span><div style="flex:1;background:rgba(255,255,255,0.1);height:5px;border-radius:0;overflow:hidden;"><div style="height:100%;width:88%;background:linear-gradient(90deg,#E8290B,#E8290B);border-radius:0;"></div></div><span style="font-family:monospace;font-size:11px;color:rgba(255,255,255,0.45);width:30px;text-align:right;">0.88</span></div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span style="color:#cbd5e1;width:90px;flex-shrink:0;">Fairness</span><div style="flex:1;background:rgba(255,255,255,0.1);height:5px;border-radius:0;overflow:hidden;"><div style="height:100%;width:74%;background:linear-gradient(90deg,#E8290B,#E8290B);border-radius:0;"></div></div><span style="font-family:monospace;font-size:11px;color:rgba(255,255,255,0.45);width:30px;text-align:right;">0.74</span></div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span style="color:#cbd5e1;width:90px;flex-shrink:0;">Privacy</span><div style="flex:1;background:rgba(255,255,255,0.1);height:5px;border-radius:0;overflow:hidden;"><div style="height:100%;width:81%;background:linear-gradient(90deg,#E8290B,#E8290B);border-radius:0;"></div></div><span style="font-family:monospace;font-size:11px;color:rgba(255,255,255,0.45);width:30px;text-align:right;">0.81</span></div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span style="color:#cbd5e1;width:90px;flex-shrink:0;">Robustness</span><div style="flex:1;background:rgba(255,255,255,0.1);height:5px;border-radius:0;overflow:hidden;"><div style="height:100%;width:69%;background:linear-gradient(90deg,#E8290B,#E8290B);border-radius:0;"></div></div><span style="font-family:monospace;font-size:11px;color:rgba(255,255,255,0.45);width:30px;text-align:right;">0.69</span></div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;"><span style="color:#cbd5e1;width:90px;flex-shrink:0;">Ethics</span><div style="flex:1;background:rgba(255,255,255,0.1);height:5px;border-radius:0;overflow:hidden;"><div style="height:100%;width:85%;background:linear-gradient(90deg,#E8290B,#E8290B);border-radius:0;"></div></div><span style="font-family:monospace;font-size:11px;color:rgba(255,255,255,0.45);width:30px;text-align:right;">0.85</span></div>
         </div>
-        <div style="display:inline-flex;margin-top:12px;padding:8px 12px;background:rgba(99,102,241,0.10);border:1px solid #6366F1;border-radius:8px;font-family:monospace;font-size:12px;color:#818CF8;">Trust Score = Σ(6 dims) / 6</div>
+        <div style="display:inline-flex;margin-top:12px;padding:8px 12px;background:rgba(99,102,241,0.10);border:1px solid #E8290B;border-radius:0;font-family:monospace;font-size:12px;color:#FF5533;">Trust Score = Σ(6 dims) / 6</div>
         </div>
         </div>
         <div style="display:flex;gap:18px;align-items:flex-start;">
-        <div style="width:56px;height:56px;border-radius:50%;background:#13153A;border:2px solid #6366F1;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:15px;font-weight:700;color:#818CF8;flex-shrink:0;box-shadow:0 0 0 5px #0F1030;">05</div>
-        <div style="flex:1;background:#13153A;border:1px solid #1E1F4E;border-left:3px solid #6366F1;border-radius:14px;padding:20px 22px;">
-        <div style="font-family:monospace;font-size:10px;color:#6366F1;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:6px;">05 · Results</div>
+        <div style="width:56px;height:56px;border-radius:50%;background:#1C1C1C;border:2px solid #E8290B;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:15px;font-weight:700;color:#FF5533;flex-shrink:0;box-shadow:0 0 0 5px #1C1C1C;">05</div>
+        <div style="flex:1;background:#1C1C1C;border:1px solid rgba(255,255,255,0.1);border-left:3px solid #E8290B;border-radius:14px;padding:20px 22px;">
+        <div style="font-family:monospace;font-size:10px;color:#E8290B;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:6px;">05 · Results</div>
         <h3 style="font-size:18px;font-weight:700;margin:0 0 8px;color:white;">Slice it however you ship</h3>
-        <p style="color:#94A3B8;font-size:14px;line-height:1.6;margin:0 0 12px;">Three views, all rendered from the same merged results file.</p>
+        <p style="color:rgba(255,255,255,0.45);font-size:14px;line-height:1.6;margin:0 0 12px;">Three views, all rendered from the same merged results file.</p>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <div style="background:#0F1030;border:1px solid #1E1F4E;border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:8px;"><span style="font-size:14px;">📋</span><span style="font-size:13px;font-weight:600;color:#818CF8;">Per-Eval Breakdown</span></div>
-        <div style="background:#0F1030;border:1px solid #1E1F4E;border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:8px;"><span style="font-size:14px;">⏱</span><span style="font-size:13px;font-weight:600;color:#818CF8;">Session History</span></div>
-        <div style="background:#0F1030;border:1px solid #1E1F4E;border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:8px;"><span style="font-size:14px;">🏆</span><span style="font-size:13px;font-weight:600;color:#818CF8;">Leaderboard</span></div>
+        <div style="background:#1C1C1C;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:8px;"><span style="font-size:14px;">📋</span><span style="font-size:13px;font-weight:600;color:#FF5533;">Per-Eval Breakdown</span></div>
+        <div style="background:#1C1C1C;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:8px;"><span style="font-size:14px;">⏱</span><span style="font-size:13px;font-weight:600;color:#FF5533;">Session History</span></div>
+        <div style="background:#1C1C1C;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:8px;"><span style="font-size:14px;">🏆</span><span style="font-size:13px;font-weight:600;color:#FF5533;">Leaderboard</span></div>
         </div>
         </div>
         </div>
@@ -661,70 +661,70 @@ def _show_login() -> None:
 
     # ── TRUST DIMENSIONS ──────────────────────────────────────────────
     st.markdown(_h("""
-        <section id="tl-dimensions" style="background:#0A0B1A;padding:96px 24px;
+        <section id="tl-dimensions" style="background:#0E0E0E;padding:96px 24px;
                                             font-family:'Inter',system-ui,sans-serif;">
           <div style="max-width:1180px;margin:0 auto;">
             <div style="text-align:center;margin-bottom:48px;display:flex;
                         flex-direction:column;align-items:center;gap:12px;">
               <span style="font-size:11px;font-weight:700;letter-spacing:0.18em;
-                           text-transform:uppercase;color:#6366F1;">TRUST DIMENSIONS</span>
+                           text-transform:uppercase;color:#E8290B;">TRUST DIMENSIONS</span>
               <h2 style="font-size:44px;font-weight:800;line-height:1.1;letter-spacing:-0.025em;
                           margin:0;max-width:720px;color:white;">
-                <span style="background:linear-gradient(135deg,#6366F1,#8B5CF6);
+                <span style="background:linear-gradient(135deg,#E8290B,#E8290B);
                   -webkit-background-clip:text;background-clip:text;color:transparent;">6 Dimensions</span> of Trust
               </h2>
-              <p style="font-size:17px;color:#94A3B8;max-width:620px;line-height:1.65;margin:0;">
+              <p style="font-size:17px;color:rgba(255,255,255,0.45);max-width:620px;line-height:1.65;margin:0;">
                 Each independent, each scored 0–1, each surfaced in your final report.
               </p>
             </div>
             <div class="tl-dims-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;">
-              <div style="background:#13153A;border:1px solid #1E1F4E;border-top:2px solid transparent;
+              <div style="background:#1C1C1C;border:1px solid rgba(255,255,255,0.1);border-top:2px solid transparent;
                           border-radius:14px;padding:26px 24px;transition:border-color 0.2s,transform 0.2s;">
-                <div style="width:48px;height:48px;border-radius:50%;background:rgba(99,102,241,0.12);
-                            color:#818CF8;display:flex;align-items:center;justify-content:center;
+                <div style="width:48px;height:48px;border-radius:50%;background:rgba(232,41,11,0.10);
+                            color:#FF5533;display:flex;align-items:center;justify-content:center;
                             font-size:22px;margin-bottom:16px;">🔍</div>
                 <h3 style="font-size:17px;font-weight:700;letter-spacing:-0.01em;margin-bottom:8px;color:white;">Truthfulness</h3>
-                <p style="color:#94A3B8;font-size:14px;line-height:1.55;margin:0;">Factual grounding measured against expected answers and retrieved context.</p>
+                <p style="color:rgba(255,255,255,0.45);font-size:14px;line-height:1.55;margin:0;">Factual grounding measured against expected answers and retrieved context.</p>
               </div>
-              <div style="background:#13153A;border:1px solid #1E1F4E;border-top:2px solid transparent;
+              <div style="background:#1C1C1C;border:1px solid rgba(255,255,255,0.1);border-top:2px solid transparent;
                           border-radius:14px;padding:26px 24px;">
-                <div style="width:48px;height:48px;border-radius:50%;background:rgba(99,102,241,0.12);
-                            color:#818CF8;display:flex;align-items:center;justify-content:center;
+                <div style="width:48px;height:48px;border-radius:50%;background:rgba(232,41,11,0.10);
+                            color:#FF5533;display:flex;align-items:center;justify-content:center;
                             font-size:22px;margin-bottom:16px;">🛡</div>
                 <h3 style="font-size:17px;font-weight:700;letter-spacing:-0.01em;margin-bottom:8px;color:white;">Safety</h3>
-                <p style="color:#94A3B8;font-size:14px;line-height:1.55;margin:0;">Jailbreak resistance, harmful content detection, and prompt-injection scoring.</p>
+                <p style="color:rgba(255,255,255,0.45);font-size:14px;line-height:1.55;margin:0;">Jailbreak resistance, harmful content detection, and prompt-injection scoring.</p>
               </div>
-              <div style="background:#13153A;border:1px solid #1E1F4E;border-top:2px solid transparent;
+              <div style="background:#1C1C1C;border:1px solid rgba(255,255,255,0.1);border-top:2px solid transparent;
                           border-radius:14px;padding:26px 24px;">
-                <div style="width:48px;height:48px;border-radius:50%;background:rgba(99,102,241,0.12);
-                            color:#818CF8;display:flex;align-items:center;justify-content:center;
+                <div style="width:48px;height:48px;border-radius:50%;background:rgba(232,41,11,0.10);
+                            color:#FF5533;display:flex;align-items:center;justify-content:center;
                             font-size:22px;margin-bottom:16px;">⚖</div>
                 <h3 style="font-size:17px;font-weight:700;letter-spacing:-0.01em;margin-bottom:8px;color:white;">Fairness</h3>
-                <p style="color:#94A3B8;font-size:14px;line-height:1.55;margin:0;">Demographic bias, group fairness, and toxicity across diverse prompts.</p>
+                <p style="color:rgba(255,255,255,0.45);font-size:14px;line-height:1.55;margin:0;">Demographic bias, group fairness, and toxicity across diverse prompts.</p>
               </div>
-              <div style="background:#13153A;border:1px solid #1E1F4E;border-top:2px solid transparent;
+              <div style="background:#1C1C1C;border:1px solid rgba(255,255,255,0.1);border-top:2px solid transparent;
                           border-radius:14px;padding:26px 24px;">
-                <div style="width:48px;height:48px;border-radius:50%;background:rgba(99,102,241,0.12);
-                            color:#818CF8;display:flex;align-items:center;justify-content:center;
+                <div style="width:48px;height:48px;border-radius:50%;background:rgba(232,41,11,0.10);
+                            color:#FF5533;display:flex;align-items:center;justify-content:center;
                             font-size:22px;margin-bottom:16px;">🔒</div>
                 <h3 style="font-size:17px;font-weight:700;letter-spacing:-0.01em;margin-bottom:8px;color:white;">Privacy</h3>
-                <p style="color:#94A3B8;font-size:14px;line-height:1.55;margin:0;">PII leakage detection, data exfiltration risk, and consent boundary checks.</p>
+                <p style="color:rgba(255,255,255,0.45);font-size:14px;line-height:1.55;margin:0;">PII leakage detection, data exfiltration risk, and consent boundary checks.</p>
               </div>
-              <div style="background:#13153A;border:1px solid #1E1F4E;border-top:2px solid transparent;
+              <div style="background:#1C1C1C;border:1px solid rgba(255,255,255,0.1);border-top:2px solid transparent;
                           border-radius:14px;padding:26px 24px;">
-                <div style="width:48px;height:48px;border-radius:50%;background:rgba(99,102,241,0.12);
-                            color:#818CF8;display:flex;align-items:center;justify-content:center;
+                <div style="width:48px;height:48px;border-radius:50%;background:rgba(232,41,11,0.10);
+                            color:#FF5533;display:flex;align-items:center;justify-content:center;
                             font-size:22px;margin-bottom:16px;">💪</div>
                 <h3 style="font-size:17px;font-weight:700;letter-spacing:-0.01em;margin-bottom:8px;color:white;">Robustness</h3>
-                <p style="color:#94A3B8;font-size:14px;line-height:1.55;margin:0;">Behavior under adversarial inputs, paraphrasing, and edge-case stress tests.</p>
+                <p style="color:rgba(255,255,255,0.45);font-size:14px;line-height:1.55;margin:0;">Behavior under adversarial inputs, paraphrasing, and edge-case stress tests.</p>
               </div>
-              <div style="background:#13153A;border:1px solid #1E1F4E;border-top:2px solid transparent;
+              <div style="background:#1C1C1C;border:1px solid rgba(255,255,255,0.1);border-top:2px solid transparent;
                           border-radius:14px;padding:26px 24px;">
-                <div style="width:48px;height:48px;border-radius:50%;background:rgba(99,102,241,0.12);
-                            color:#818CF8;display:flex;align-items:center;justify-content:center;
+                <div style="width:48px;height:48px;border-radius:50%;background:rgba(232,41,11,0.10);
+                            color:#FF5533;display:flex;align-items:center;justify-content:center;
                             font-size:22px;margin-bottom:16px;">🧭</div>
                 <h3 style="font-size:17px;font-weight:700;letter-spacing:-0.01em;margin-bottom:8px;color:white;">Ethics</h3>
-                <p style="color:#94A3B8;font-size:14px;line-height:1.55;margin:0;">Alignment with use-case norms, refusal quality, and decision-rationale clarity.</p>
+                <p style="color:rgba(255,255,255,0.45);font-size:14px;line-height:1.55;margin:0;">Alignment with use-case norms, refusal quality, and decision-rationale clarity.</p>
               </div>
             </div>
           </div>
@@ -733,61 +733,61 @@ def _show_login() -> None:
 
     # ── MODELS ────────────────────────────────────────────────────────
     st.markdown(_h("""
-        <section id="tl-models" style="background:#0F1030;padding:96px 24px;
+        <section id="tl-models" style="background:#1C1C1C;padding:96px 24px;
                                         font-family:'Inter',system-ui,sans-serif;">
           <div style="max-width:1180px;margin:0 auto;">
             <div style="text-align:center;margin-bottom:48px;display:flex;
                         flex-direction:column;align-items:center;gap:12px;">
               <span style="font-size:11px;font-weight:700;letter-spacing:0.18em;
-                           text-transform:uppercase;color:#6366F1;">MODELS</span>
+                           text-transform:uppercase;color:#E8290B;">MODELS</span>
               <h2 style="font-size:44px;font-weight:800;line-height:1.1;letter-spacing:-0.025em;
                           margin:0;max-width:720px;color:white;">
-                12 Models. <span style="background:linear-gradient(135deg,#6366F1,#8B5CF6);
+                12 Models. <span style="background:linear-gradient(135deg,#E8290B,#E8290B);
                   -webkit-background-clip:text;background-clip:text;color:transparent;">One Platform.</span>
               </h2>
-              <p style="font-size:17px;color:#94A3B8;max-width:620px;line-height:1.65;margin:0;">
+              <p style="font-size:17px;color:rgba(255,255,255,0.45);max-width:620px;line-height:1.65;margin:0;">
                 Match exactly the model IDs in
-                <code style="font-family:monospace;font-size:0.85em;color:#818CF8;">providers.py</code>.
+                <code style="font-family:monospace;font-size:0.85em;color:#FF5533;">providers.py</code>.
                 No vendored adapters, no surprises.
               </p>
             </div>
             <div class="tl-models-row" style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;">
-              <div class="tl-model-card" style="background:#13153A;border:1px solid #1E1F4E;border-radius:12px;padding:18px;color:#94A3B8;">
+              <div class="tl-model-card" style="background:#1C1C1C;border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px;color:rgba(255,255,255,0.45);">
                 <div style="font-size:15px;font-weight:700;color:white;margin-bottom:8px;">Groq</div>
                 <ul style="list-style:none;padding:0;margin:0;">
                   <li style="font-family:monospace;font-size:12px;padding:3px 0;line-height:1.4;">llama3-8b-8192</li>
                   <li style="font-family:monospace;font-size:12px;padding:3px 0;line-height:1.4;">mixtral-8x7b-32768</li>
                 </ul>
               </div>
-              <div class="tl-model-card" style="background:#13153A;border:1px solid #1E1F4E;border-radius:12px;padding:18px;color:#94A3B8;">
+              <div class="tl-model-card" style="background:#1C1C1C;border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px;color:rgba(255,255,255,0.45);">
                 <div style="font-size:15px;font-weight:700;color:white;margin-bottom:8px;">Claude</div>
                 <ul style="list-style:none;padding:0;margin:0;">
                   <li style="font-family:monospace;font-size:12px;padding:3px 0;line-height:1.4;">claude-haiku-3</li>
                   <li style="font-family:monospace;font-size:12px;padding:3px 0;line-height:1.4;">claude-sonnet-3-5</li>
                 </ul>
               </div>
-              <div class="tl-model-card" style="background:#13153A;border:1px solid #1E1F4E;border-radius:12px;padding:18px;color:#94A3B8;">
+              <div class="tl-model-card" style="background:#1C1C1C;border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px;color:rgba(255,255,255,0.45);">
                 <div style="font-size:15px;font-weight:700;color:white;margin-bottom:8px;">OpenAI</div>
                 <ul style="list-style:none;padding:0;margin:0;">
                   <li style="font-family:monospace;font-size:12px;padding:3px 0;line-height:1.4;">gpt-4o</li>
                   <li style="font-family:monospace;font-size:12px;padding:3px 0;line-height:1.4;">gpt-4o-mini</li>
                 </ul>
               </div>
-              <div class="tl-model-card" style="background:#13153A;border:1px solid #1E1F4E;border-radius:12px;padding:18px;color:#94A3B8;">
+              <div class="tl-model-card" style="background:#1C1C1C;border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px;color:rgba(255,255,255,0.45);">
                 <div style="font-size:15px;font-weight:700;color:white;margin-bottom:8px;">Gemini</div>
                 <ul style="list-style:none;padding:0;margin:0;">
                   <li style="font-family:monospace;font-size:12px;padding:3px 0;line-height:1.4;">gemini-1.5-pro</li>
                   <li style="font-family:monospace;font-size:12px;padding:3px 0;line-height:1.4;">gemini-1.5-flash</li>
                 </ul>
               </div>
-              <div class="tl-model-card" style="background:#13153A;border:1px solid #1E1F4E;border-radius:12px;padding:18px;color:#94A3B8;">
+              <div class="tl-model-card" style="background:#1C1C1C;border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px;color:rgba(255,255,255,0.45);">
                 <div style="font-size:15px;font-weight:700;color:white;margin-bottom:8px;">Mistral</div>
                 <ul style="list-style:none;padding:0;margin:0;">
                   <li style="font-family:monospace;font-size:12px;padding:3px 0;line-height:1.4;">mistral-7b-instruct</li>
                   <li style="font-family:monospace;font-size:12px;padding:3px 0;line-height:1.4;">mistral-large-latest</li>
                 </ul>
               </div>
-              <div class="tl-model-card" style="background:#13153A;border:1px solid #1E1F4E;border-radius:12px;padding:18px;color:#94A3B8;">
+              <div class="tl-model-card" style="background:#1C1C1C;border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px;color:rgba(255,255,255,0.45);">
                 <div style="font-size:15px;font-weight:700;color:white;margin-bottom:8px;">Phi</div>
                 <ul style="list-style:none;padding:0;margin:0;">
                   <li style="font-family:monospace;font-size:12px;padding:3px 0;line-height:1.4;">phi3-mini</li>
@@ -801,47 +801,47 @@ def _show_login() -> None:
 
     # ── RAG CALLOUT ───────────────────────────────────────────────────
     st.markdown(_h("""
-        <section id="tl-rag" style="background:linear-gradient(135deg,#13153A 0%,#1a1060 100%);
-                                     border-top:1px solid #1E1F4E;border-bottom:1px solid #1E1F4E;
+        <section id="tl-rag" style="background:linear-gradient(135deg,#1C1C1C 0%,#1a1060 100%);
+                                     border-top:1px solid rgba(255,255,255,0.1);border-bottom:1px solid rgba(255,255,255,0.1);
                                      padding:96px 24px;text-align:center;
                                      font-family:'Inter',system-ui,sans-serif;">
           <div style="max-width:1180px;margin:0 auto;">
             <span style="font-size:11px;font-weight:700;letter-spacing:0.18em;
-                         text-transform:uppercase;color:#6366F1;">RAG PIPELINE</span>
+                         text-transform:uppercase;color:#E8290B;">RAG PIPELINE</span>
             <h2 style="font-size:44px;font-weight:800;line-height:1.1;letter-spacing:-0.025em;
                         margin:14px auto 18px;max-width:720px;color:white;">
-              <span style="background:linear-gradient(135deg,#6366F1,#8B5CF6);
+              <span style="background:linear-gradient(135deg,#E8290B,#E8290B);
                 -webkit-background-clip:text;background-clip:text;color:transparent;">RAG Pipeline?</span>
               We measure that too.
             </h2>
-            <p style="font-size:17px;color:#94A3B8;max-width:620px;line-height:1.65;
+            <p style="font-size:17px;color:rgba(255,255,255,0.45);max-width:620px;line-height:1.65;
                       margin:0 auto;">
               If your run went through RAG, four classical IR metrics surface alongside the trust score.
             </p>
             <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:24px 0 16px;">
-              <div style="background:#6366F1;color:white;padding:8px 18px;border-radius:999px;
+              <div style="background:#E8290B;color:white;padding:8px 18px;border-radius:0;
                           font-family:monospace;font-size:13px;font-weight:500;">Precision@K</div>
-              <div style="background:#6366F1;color:white;padding:8px 18px;border-radius:999px;
+              <div style="background:#E8290B;color:white;padding:8px 18px;border-radius:0;
                           font-family:monospace;font-size:13px;font-weight:500;">Recall@K</div>
-              <div style="background:#6366F1;color:white;padding:8px 18px;border-radius:999px;
+              <div style="background:#E8290B;color:white;padding:8px 18px;border-radius:0;
                           font-family:monospace;font-size:13px;font-weight:500;">MRR</div>
-              <div style="background:#6366F1;color:white;padding:8px 18px;border-radius:999px;
+              <div style="background:#E8290B;color:white;padding:8px 18px;border-radius:0;
                           font-family:monospace;font-size:13px;font-weight:500;">NDCG</div>
             </div>
             <div style="display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
                         gap:10px;margin:16px 0 28px;">
-              <div style="background:rgba(99,102,241,0.10);border:1px solid #6366F1;border-radius:10px;
-                          padding:10px 16px;font-size:13px;color:#818CF8;">40% Relevance</div>
-              <span style="color:#94A3B8;font-weight:600;">+</span>
-              <div style="background:rgba(99,102,241,0.10);border:1px solid #6366F1;border-radius:10px;
-                          padding:10px 16px;font-size:13px;color:#818CF8;">40% Completeness</div>
-              <span style="color:#94A3B8;font-weight:600;">+</span>
-              <div style="background:rgba(99,102,241,0.10);border:1px solid #6366F1;border-radius:10px;
-                          padding:10px 16px;font-size:13px;color:#818CF8;">20% Source Count</div>
+              <div style="background:rgba(99,102,241,0.10);border:1px solid #E8290B;border-radius:10px;
+                          padding:10px 16px;font-size:13px;color:#FF5533;">40% Relevance</div>
+              <span style="color:rgba(255,255,255,0.45);font-weight:600;">+</span>
+              <div style="background:rgba(99,102,241,0.10);border:1px solid #E8290B;border-radius:10px;
+                          padding:10px 16px;font-size:13px;color:#FF5533;">40% Completeness</div>
+              <span style="color:rgba(255,255,255,0.45);font-weight:600;">+</span>
+              <div style="background:rgba(99,102,241,0.10);border:1px solid #E8290B;border-radius:10px;
+                          padding:10px 16px;font-size:13px;color:#FF5533;">20% Source Count</div>
             </div>
             <a href="#tl-signin" style="display:inline-flex;align-items:center;padding:14px 26px;
                 border-radius:12px;font-size:15px;font-weight:600;
-                background:linear-gradient(135deg,#6366F1,#8B5CF6);color:white;text-decoration:none;
+                background:linear-gradient(135deg,#E8290B,#E8290B);color:white;text-decoration:none;
                 box-shadow:0 4px 16px rgba(99,102,241,0.30);">Try RAG Testing &nbsp;→</a>
           </div>
         </section>
@@ -849,18 +849,18 @@ def _show_login() -> None:
 
     # ── SIGN-IN SECTION HEADER ────────────────────────────────────────
     st.markdown(_h("""
-        <div id="tl-signin" style="background:#0A0B1A;padding:96px 24px 40px;text-align:center;
+        <div id="tl-signin" style="background:#0E0E0E;padding:96px 24px 40px;text-align:center;
                                     font-family:'Inter',system-ui,sans-serif;">
           <div style="max-width:1180px;margin:0 auto;">
             <span style="font-size:11px;font-weight:700;letter-spacing:0.18em;
-                         text-transform:uppercase;color:#6366F1;">GET STARTED</span>
+                         text-transform:uppercase;color:#E8290B;">GET STARTED</span>
             <h2 style="font-size:44px;font-weight:800;line-height:1.1;letter-spacing:-0.025em;
                         margin:14px auto 18px;max-width:720px;color:white;">
               Start evaluating your models
-              <span style="background:linear-gradient(135deg,#6366F1,#8B5CF6);
+              <span style="background:linear-gradient(135deg,#E8290B,#E8290B);
                 -webkit-background-clip:text;background-clip:text;color:transparent;">today.</span>
             </h2>
-            <p style="font-size:17px;color:#94A3B8;max-width:620px;line-height:1.65;
+            <p style="font-size:17px;color:rgba(255,255,255,0.45);max-width:620px;line-height:1.65;
                       margin:0 auto 0;">
               Free to try. No credit card required.
             </p>
@@ -956,12 +956,12 @@ def _show_login() -> None:
         else:
             st.markdown(_h("""
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1rem;">
-                <button style="background:white;color:#374151;border:1px solid #d1d5db;border-radius:8px;
+                <button style="background:white;color:#374151;border:1px solid #d1d5db;border-radius:0;
                                padding:0.7rem 0.5rem;font-size:0.875rem;font-weight:500;
                                font-family:inherit;opacity:0.45;cursor:not-allowed;">
                 🌐 Continue with Google
                 </button>
-                <button style="background:#24292e;color:white;border:1px solid #24292e;border-radius:8px;
+                <button style="background:#24292e;color:white;border:1px solid #24292e;border-radius:0;
                                padding:0.7rem 0.5rem;font-size:0.875rem;font-weight:500;
                                font-family:inherit;opacity:0.45;cursor:not-allowed;">
                 ⬛ Continue with GitHub
@@ -977,7 +977,7 @@ def _show_login() -> None:
         st.markdown(_h("""
             <div style="display:flex;align-items:center;gap:0.75rem;margin:0 0 1rem 0;">
             <div style="flex:1;border-top:1px solid #2D2F5E;"></div>
-            <span style="color:#94A3B8;font-size:0.8rem;font-weight:500;white-space:nowrap;-webkit-text-fill-color:#94A3B8;">or continue with email</span>
+            <span style="color:rgba(255,255,255,0.45);font-size:0.8rem;font-weight:500;white-space:nowrap;-webkit-text-fill-color:rgba(255,255,255,0.45);">or continue with email</span>
             <div style="flex:1;border-top:1px solid #2D2F5E;"></div>
             </div>
         """), unsafe_allow_html=True)
@@ -1081,7 +1081,7 @@ def _show_login() -> None:
 
         st.markdown(_h("""
             <div style="text-align:center;padding:1rem 0 3rem;">
-            <span style="color:#94A3B8;font-size:0.8rem;">
+            <span style="color:rgba(255,255,255,0.45);font-size:0.8rem;">
             Demo — Username: <strong style="color:#cbd5e1;">TestUser</strong>
             &nbsp;·&nbsp; Password: <strong style="color:#cbd5e1;">User123</strong>
             </span>
@@ -1090,18 +1090,18 @@ def _show_login() -> None:
 
     # ── FOOTER ────────────────────────────────────────────────────────
     st.markdown(_h("""
-        <footer style="background:#0A0B1A;border-top:1px solid #1E1F4E;padding:36px 24px;
-                        text-align:center;color:#94A3B8;font-size:13px;
+        <footer style="background:#0E0E0E;border-top:1px solid rgba(255,255,255,0.1);padding:36px 24px;
+                        text-align:center;color:rgba(255,255,255,0.45);font-size:13px;
                         font-family:'Inter',system-ui,sans-serif;">
           <div style="display:inline-flex;flex-wrap:wrap;gap:24px;justify-content:center;margin-bottom:14px;">
-            <a href="#tl-how" style="color:#94A3B8;font-size:13px;text-decoration:none;">How it works</a>
-            <a href="#tl-dimensions" style="color:#94A3B8;font-size:13px;text-decoration:none;">Trust dimensions</a>
-            <a href="#tl-models" style="color:#94A3B8;font-size:13px;text-decoration:none;">Models</a>
-            <a href="#tl-signin" style="color:#94A3B8;font-size:13px;text-decoration:none;">Sign in</a>
+            <a href="#tl-how" style="color:rgba(255,255,255,0.45);font-size:13px;text-decoration:none;">How it works</a>
+            <a href="#tl-dimensions" style="color:rgba(255,255,255,0.45);font-size:13px;text-decoration:none;">Trust dimensions</a>
+            <a href="#tl-models" style="color:rgba(255,255,255,0.45);font-size:13px;text-decoration:none;">Models</a>
+            <a href="#tl-signin" style="color:rgba(255,255,255,0.45);font-size:13px;text-decoration:none;">Sign in</a>
           </div>
           <div>© 2025 TrustLLM · AI Model Evaluation Platform · Powered by ChromaDB · Groq · Streamlit ·
             Built by <a href="https://www.linkedin.com/in/monika-kushwaha-52443735/" target="_blank"
-              rel="noopener" style="color:#818CF8;font-weight:500;text-decoration:none;">Monika Kushwaha</a>
+              rel="noopener" style="color:#FF5533;font-weight:500;text-decoration:none;">Monika Kushwaha</a>
           </div>
         </footer>
     """), unsafe_allow_html=True)
@@ -1114,15 +1114,15 @@ def _show_login() -> None:
           var nav = window.parent.document.getElementById('tl-nav');
           if (nav) {
             window.parent.addEventListener('scroll', function() {
-              nav.style.borderBottomColor = window.parent.scrollY > 8 ? '#1E1F4E' : 'transparent';
+              nav.style.borderBottomColor = window.parent.scrollY > 8 ? 'rgba(255,255,255,0.1)' : 'transparent';
             }, {passive: true});
           }
           // Dark card wrapper for the middle (form) column
           var cols = window.parent.document.querySelectorAll('[data-testid="stColumn"]');
           if (cols.length >= 3) {
             var mid = cols[Math.floor(cols.length / 2)];
-            mid.style.background = '#13153A';
-            mid.style.border = '1px solid #1E1F4E';
+            mid.style.background = '#1C1C1C';
+            mid.style.border = '1px solid rgba(255,255,255,0.1)';
             mid.style.borderRadius = '16px';
             mid.style.padding = '32px';
             mid.style.boxShadow = '0 0 60px rgba(99,102,241,0.10)';
