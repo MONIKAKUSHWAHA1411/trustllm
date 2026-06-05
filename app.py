@@ -122,7 +122,7 @@ def _show_login():
 
     # ── LEFT PANEL: Full landing page content (scrollable) ────────────
     with left_col:
-        st.markdown(_h("""
+        _lp = _h("""
             <div style="background:#0E0E0E;height:100vh;overflow-y:auto;padding:3rem 3.5rem;
                         font-family:'Syne',sans-serif;
                         scrollbar-width:thin;scrollbar-color:#E8290B #1C1C1C;">
@@ -502,7 +502,10 @@ def _show_login():
               </div>
 
             </div>
-        """), unsafe_allow_html=True)
+        """)
+        # Blank lines in HTML make Markdown treat indented tags as code blocks — strip them.
+        _lp = "\n".join(ln for ln in _lp.splitlines() if ln.strip())
+        st.markdown(_lp, unsafe_allow_html=True)
 
     # ── RIGHT PANEL: off-white auth form ──────────────────────────────
     with right_col:
