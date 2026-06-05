@@ -475,10 +475,10 @@ def _show_login() -> None:
               Everything you need to trust your LLM.
             </h2>
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:#E5E7EB;">
-              <div class="feat-card"><div style="color:#E8420A;font-size:1.3rem;margin-bottom:0.75rem;">⚡</div><div style="font-weight:600;color:#0A0A0A;margin-bottom:0.4rem;">Single Prompt Eval</div><p style="font-size:0.83rem;color:#6B7280;line-height:1.6;margin:0 0 1rem;">Test any prompt against a model instantly. See trust scores across all six dimensions in real time.</p><a href="#sign-in" style="color:#E8420A;font-size:0.83rem;font-weight:600;text-decoration:none;">Explore →</a></div>
-              <div class="feat-card"><div style="color:#E8420A;font-size:1.3rem;margin-bottom:0.75rem;">📊</div><div style="font-weight:600;color:#0A0A0A;margin-bottom:0.4rem;">Batch Evaluation</div><p style="font-size:0.83rem;color:#6B7280;line-height:1.6;margin:0 0 1rem;">Run your full prompt dataset through multiple models at once. Compare side-by-side at scale.</p><a href="#sign-in" style="color:#E8420A;font-size:0.83rem;font-weight:600;text-decoration:none;">Explore →</a></div>
-              <div class="feat-card"><div style="color:#E8420A;font-size:1.3rem;margin-bottom:0.75rem;">📚</div><div style="font-weight:600;color:#0A0A0A;margin-bottom:0.4rem;">RAG Testing</div><p style="font-size:0.83rem;color:#6B7280;line-height:1.6;margin:0 0 1rem;">Upload documents, build a ChromaDB vector store, and evaluate retrieval faithfulness and grounding accuracy.</p><a href="#sign-in" style="color:#E8420A;font-size:0.83rem;font-weight:600;text-decoration:none;">Explore →</a></div>
-              <div class="feat-card"><div style="color:#E8420A;font-size:1.3rem;margin-bottom:0.75rem;">🤖</div><div style="font-weight:600;color:#0A0A0A;margin-bottom:0.4rem;">Agent Performance</div><p style="font-size:0.83rem;color:#6B7280;line-height:1.6;margin:0 0 1rem;">Benchmark autonomous agents on tool-call accuracy, hallucination rate, and semantic correctness.</p><a href="#sign-in" style="color:#E8420A;font-size:0.83rem;font-weight:600;text-decoration:none;">Explore →</a></div>
+              <div class="feat-card"><div style="font-weight:600;color:#0A0A0A;margin-bottom:0.4rem;">Single Prompt Eval</div><p style="font-size:0.83rem;color:#6B7280;line-height:1.6;margin:0 0 1rem;">Test any prompt against a model instantly. See trust scores across all six dimensions in real time.</p><a href="#sign-in" style="color:#E8420A;font-size:0.83rem;font-weight:600;text-decoration:none;">Explore →</a></div>
+              <div class="feat-card"><div style="font-weight:600;color:#0A0A0A;margin-bottom:0.4rem;">Batch Evaluation</div><p style="font-size:0.83rem;color:#6B7280;line-height:1.6;margin:0 0 1rem;">Run your full prompt dataset through multiple models at once. Compare side-by-side at scale.</p><a href="#sign-in" style="color:#E8420A;font-size:0.83rem;font-weight:600;text-decoration:none;">Explore →</a></div>
+              <div class="feat-card"><div style="font-weight:600;color:#0A0A0A;margin-bottom:0.4rem;">RAG Testing</div><p style="font-size:0.83rem;color:#6B7280;line-height:1.6;margin:0 0 1rem;">Upload documents, build a ChromaDB vector store, and evaluate retrieval faithfulness and grounding accuracy.</p><a href="#sign-in" style="color:#E8420A;font-size:0.83rem;font-weight:600;text-decoration:none;">Explore →</a></div>
+              <div class="feat-card"><div style="font-weight:600;color:#0A0A0A;margin-bottom:0.4rem;">Agent Performance</div><p style="font-size:0.83rem;color:#6B7280;line-height:1.6;margin:0 0 1rem;">Benchmark autonomous agents on tool-call accuracy, hallucination rate, and semantic correctness.</p><a href="#sign-in" style="color:#E8420A;font-size:0.83rem;font-weight:600;text-decoration:none;">Explore →</a></div>
             </div>
           </div>
         </section>
@@ -515,18 +515,23 @@ def _show_login() -> None:
         </section>
     """), unsafe_allow_html=True)
 
-    # ── TRUSTED BY ────────────────────────────────────────────────────
+    # ── FOOTER ───────────────────────────────────────────────────────
     st.markdown(_h("""
-        <section style="background:#FFFFFF;padding:2.5rem 2rem;border-top:1px solid #E5E7EB;font-family:'Inter',sans-serif;text-align:center;">
-          <p style="font-size:0.68rem;color:#9CA3AF;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;margin-bottom:1.25rem;">Trusted by teams building with</p>
-          <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:0.75rem;">
-            <span style="font-size:0.82rem;font-weight:600;color:#9CA3AF;padding:0.45rem 1.1rem;border:1px solid #E5E7EB;">AWS</span>
-            <span style="font-size:0.82rem;font-weight:600;color:#9CA3AF;padding:0.45rem 1.1rem;border:1px solid #E5E7EB;">Google</span>
-            <span style="font-size:0.82rem;font-weight:600;color:#9CA3AF;padding:0.45rem 1.1rem;border:1px solid #E5E7EB;">Anthropic</span>
-            <span style="font-size:0.82rem;font-weight:600;color:#9CA3AF;padding:0.45rem 1.1rem;border:1px solid #E5E7EB;">OpenAI</span>
-            <span style="font-size:0.82rem;font-weight:600;color:#9CA3AF;padding:0.45rem 1.1rem;border:1px solid #E5E7EB;">Microsoft</span>
+        <footer style="background:#F9FAFB;border-top:1px solid #E5E7EB;padding:32px 16px;
+                text-align:center;font-family:'Inter',sans-serif;">
+          <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-bottom:12px;">
+            <a href="#how-it-works" style="font-size:14px;color:#6B7280;text-decoration:none;">How it works</a>
+            <a href="#features"     style="font-size:14px;color:#6B7280;text-decoration:none;">Trust dimensions</a>
+            <a href="#models"       style="font-size:14px;color:#6B7280;text-decoration:none;">Models</a>
+            <a href="#sign-in"      style="font-size:14px;color:#6B7280;text-decoration:none;">Sign in</a>
           </div>
-        </section>
+          <p style="font-size:13px;color:#6B7280;line-height:1.6;margin:0;">
+            © 2025 TrustLLM · AI Model Evaluation Platform · Powered by ChromaDB · Groq · Streamlit · Built by
+            <a href="https://www.linkedin.com/in/monika-kushwaha-52443735" target="_blank"
+               rel="noopener noreferrer"
+               style="color:#E8420A;text-decoration:none;">Monika Kushwaha</a>
+          </p>
+        </footer>
     """), unsafe_allow_html=True)
 
     # ── SIGN-IN SECTION HEADER ────────────────────────────────────────
