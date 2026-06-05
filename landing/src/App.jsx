@@ -4,7 +4,6 @@ import Hero              from './components/Hero';
 import HowItWorks        from './components/HowItWorks';
 import ModelsSection     from './components/ModelsSection';
 import FeatureCards      from './components/FeatureCards';
-import TrustedBy         from './components/TrustedBy';
 import CTASection        from './components/CTASection';
 import Footer            from './components/Footer';
 
@@ -18,7 +17,6 @@ export default function App() {
         <HowItWorks />
         <ModelsSection />
         <FeatureCards />
-        <TrustedBy />
         <CTASection />
       </main>
       <Footer />

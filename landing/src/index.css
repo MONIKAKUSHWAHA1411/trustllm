@@ -46,8 +46,15 @@
   box-sizing: border-box;
 }
 
+html {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
 body {
   margin: 0;
+  overflow-x: hidden;
+  max-width: 100vw;
   background: var(--bg);
   font-family: 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -86,5 +93,39 @@ code, kbd, samp {
 @media (max-width: 768px) {
   #root {
     border-inline: none;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Pipeline step rows: stack vertically on mobile */
+  .step-row {
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+  .step-spine {
+    flex-direction: row !important;
+    width: 100% !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: auto !important;
+    padding-bottom: 12px !important;
+  }
+  .step-connector {
+    display: none !important;
+  }
+  .step-card {
+    padding-bottom: 24px !important;
+    width: 100% !important;
+  }
+
+  /* Provider model grid: 2 columns on mobile, 1 on very small */
+  .providers-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .providers-grid {
+    grid-template-columns: 1fr !important;
   }
 }

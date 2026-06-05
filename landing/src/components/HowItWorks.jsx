@@ -93,7 +93,7 @@ function ProvidersContent() {
         ))}
       </div>
       {/* 3-column model grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
+      <div className="providers-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
         {PROVIDERS.map(p => (
           <div
             key={p.name}
@@ -235,11 +235,12 @@ function StepRow({ step, isLast, delay }) {
   return (
     <div
       ref={ref}
-      className="reveal"
+      className="reveal step-row"
       style={{ display: 'flex', gap: '0', alignItems: 'stretch', transitionDelay: `${delay}s` }}
     >
       {/* Timeline spine */}
       <div
+        className="step-spine"
         style={{
           display: 'flex',
           flexDirection: 'column',
@@ -272,6 +273,7 @@ function StepRow({ step, isLast, delay }) {
         {/* Dashed connector to next step */}
         {!isLast && (
           <div
+            className="step-connector"
             style={{
               flex: 1,
               width: '2px',
@@ -285,7 +287,7 @@ function StepRow({ step, isLast, delay }) {
       </div>
 
       {/* Card */}
-      <div style={{ flex: 1, paddingBottom: isLast ? 0 : '28px' }}>
+      <div className="step-card" style={{ flex: 1, paddingBottom: isLast ? 0 : '28px', minWidth: 0 }}>
         <div
           style={{
             backgroundColor: '#FFFFFF',
