@@ -294,15 +294,15 @@ def _show_login() -> None:
         [data-testid="stFormSubmitButton"] button:hover,[data-testid="stForm"] .stButton>button:hover{background:#C23308!important;}
         [data-testid="stForm"] [data-testid="InputInstructions"]{display:none!important;}
         /* ── Pure-CSS rotating word ── */
-        @keyframes wordCycle{
-            0%,100%{opacity:0;transform:translateY(8px);}
+        @keyframes wordFade{
+            0%,100%{opacity:0;transform:translateY(10px);}
             4%,13%{opacity:1;transform:translateY(0);}
-            17%{opacity:0;transform:translateY(-8px);}
-            17.1%,99%{opacity:0;transform:translateY(8px);}
+            17%{opacity:0;transform:translateY(-10px);}
+            17.1%,99%{opacity:0;transform:translateY(10px);}
         }
-        .word-wrap{position:relative;display:inline-block;min-width:300px;height:1.15em;vertical-align:bottom;}
-        .word-wrap span{position:absolute;left:0;width:100%;opacity:0;
-            color:#E8420A;font-weight:800;animation:wordCycle 12s ease-in-out infinite;}
+        .word-wrap{position:relative;display:inline-block;min-width:13ch;height:1.15em;vertical-align:middle;}
+        .word-wrap span{position:absolute;left:0;width:100%;opacity:0;white-space:nowrap;
+            color:#E8420A;font-weight:800;animation:wordFade 12s ease-in-out infinite;}
         .word-wrap span:nth-child(1){animation-delay:0s;}
         .word-wrap span:nth-child(2){animation-delay:2s;}
         .word-wrap span:nth-child(3){animation-delay:4s;}
@@ -344,7 +344,7 @@ def _show_login() -> None:
                          color:white;font-weight:800;font-size:0.8rem;">T</span>
             <span style="font-weight:700;color:#0A0A0A;font-size:0.95rem;letter-spacing:-0.01em;">TrustLLM</span>
           </a>
-          <div style="display:flex;align-items:center;gap:2rem;">
+          <div style="display:flex;align-items:center;gap:2rem;margin-left:2rem;">
             <a href="#features" style="color:#6B7280;font-size:0.85rem;font-weight:500;text-decoration:none;white-space:nowrap;">Features</a>
             <a href="#how-it-works" style="color:#6B7280;font-size:0.85rem;font-weight:500;text-decoration:none;white-space:nowrap;">How It Works</a>
             <a href="#sign-in" style="background:#E8420A;color:white;font-size:0.82rem;font-weight:600;
@@ -355,7 +355,7 @@ def _show_login() -> None:
 
     # ── HERO ─────────────────────────────────────────────────────────
     st.markdown(_h("""
-        <section style="background:#FFFFFF;padding:5rem 2rem 4rem;font-family:'Inter',sans-serif;text-align:center;">
+        <section style="background:#FFFFFF;padding:2.5rem 2rem 4rem;font-family:'Inter',sans-serif;text-align:center;">
           <div style="max-width:800px;margin:0 auto;">
             <div style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.3rem 0.85rem;
                  border:1px solid #E5E7EB;border-radius:999px;font-size:0.72rem;color:#6B7280;
@@ -363,24 +363,29 @@ def _show_login() -> None:
               <span style="width:6px;height:6px;border-radius:50%;background:#E8420A;display:inline-block;"></span>
               AI Trust Evaluation Platform
             </div>
-            <h1 style="font-family:'Inter',sans-serif!important;font-size:clamp(2rem,5vw,3.5rem);
+            <h1 style="font-family:'Inter',sans-serif!important;font-size:clamp(37px,5vw,61px);
                  font-weight:800;color:#0A0A0A!important;-webkit-text-fill-color:#0A0A0A!important;
-                 line-height:1.05;letter-spacing:-0.03em;margin:0 0 1.5rem;">
+                 line-height:1.05;letter-spacing:-0.03em;margin:0 0 0.75rem;">
               Your LLMs.<br>
-              <span style="color:#E8420A;">Honestly</span> Evaluated.<br>
-              <span style="font-size:0.6em;font-weight:700;color:#6B7280;">
-                Evaluate
-                <span class="word-wrap">
-                  <span>Truthfulness</span>
-                  <span>Safety</span>
-                  <span>Fairness</span>
-                  <span>Robustness</span>
-                  <span>Privacy</span>
-                  <span>Ethics</span>
-                </span>
-                in every response.
-              </span>
+              <span style="color:#E8420A;">Honestly</span> Evaluated.
             </h1>
+          </div>
+          <!-- Animated sentence — full section width so long line fits -->
+          <div style="font-size:clamp(37px,4vw,52px);font-weight:800;color:#0A0A0A;
+               line-height:1.1;letter-spacing:-0.03em;padding:0 2rem;margin:0 auto 1.5rem;
+               text-align:center;max-width:1200px;overflow:hidden;">
+            Evaluate
+            <span class="word-wrap">
+              <span>Truthfulness</span>
+              <span>Safety</span>
+              <span>Fairness</span>
+              <span>Robustness</span>
+              <span>Privacy</span>
+              <span>Ethics</span>
+            </span>
+            in every response.
+          </div>
+          <div style="max-width:800px;margin:0 auto;">
             <p style="font-size:1rem;color:#6B7280;max-width:560px;margin:0 auto 2.5rem;line-height:1.7;">
               Run rigorous trust benchmarks across safety, fairness, robustness, privacy, and truthfulness.
               Get verdicts, not vanity metrics.
@@ -526,10 +531,10 @@ def _show_login() -> None:
             <a href="#sign-in"      style="font-size:14px;color:#6B7280;text-decoration:none;">Sign in</a>
           </div>
           <p style="font-size:13px;color:#6B7280;line-height:1.6;margin:0;">
-            © 2025 TrustLLM · AI Model Evaluation Platform · Powered by ChromaDB · Groq · Streamlit · Built by
-            <a href="https://www.linkedin.com/in/monika-kushwaha-52443735" target="_blank"
+            © 2025 TrustLLM · AI Model Evaluation Platform · Powered by ChromaDB · Groq · Streamlit ·
+            <span style="white-space:nowrap;">Built by <a href="https://www.linkedin.com/in/monika-kushwaha-52443735" target="_blank"
                rel="noopener noreferrer"
-               style="color:#E8420A;text-decoration:none;">Monika Kushwaha</a>
+               style="color:#E8420A;text-decoration:none;">Monika Kushwaha</a></span>
           </p>
         </div>
     """), unsafe_allow_html=True)

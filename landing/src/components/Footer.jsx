@@ -49,17 +49,20 @@ export default function Footer() {
           margin: 0,
         }}
       >
-        © 2025 TrustLLM · AI Model Evaluation Platform · Powered by ChromaDB · Groq · Streamlit · Built by{' '}
-        <a
-          href="https://www.linkedin.com/in/monika-kushwaha-52443735"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ color: '#E8420A', textDecoration: 'none' }}
-          onMouseEnter={e => { e.currentTarget.style.textDecoration = 'underline'; }}
-          onMouseLeave={e => { e.currentTarget.style.textDecoration = 'none'; }}
-        >
-          Monika Kushwaha
-        </a>
+        © 2025 TrustLLM · AI Model Evaluation Platform · Powered by ChromaDB · Groq · Streamlit ·{' '}
+        <span style={{ whiteSpace: 'nowrap' }}>
+          Built by{' '}
+          <a
+            href="https://www.linkedin.com/in/monika-kushwaha-52443735"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: '#E8420A', textDecoration: 'none' }}
+            onMouseEnter={e => { e.currentTarget.style.textDecoration = 'underline'; }}
+            onMouseLeave={e => { e.currentTarget.style.textDecoration = 'none'; }}
+          >
+            Monika Kushwaha
+          </a>
+        </span>
       </p>
     </footer>
   );

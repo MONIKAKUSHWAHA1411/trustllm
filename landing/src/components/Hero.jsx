@@ -16,7 +16,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="w-full bg-white pt-20 pb-24 px-4 sm:px-6">
+    <section className="w-full bg-white pt-10 pb-24 px-4 sm:px-6">
       <div className="max-w-4xl mx-auto text-center">
 
         {/* Badge pill */}
@@ -33,8 +33,8 @@ export default function Hero() {
 
         {/* Headline */}
         <h1
-          className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight tracking-tight mb-6"
-          style={{ color: '#0A0A0A' }}
+          className="font-bold leading-tight tracking-tight mb-6"
+          style={{ color: '#0A0A0A', fontSize: 'clamp(41px, 5vw, 65px)' }}
         >
           Evaluate{' '}
           <span
@@ -43,13 +43,12 @@ export default function Hero() {
               color: '#E8420A',
               fontWeight: 700,
               display: 'inline-block',
-              animation: `wordFadeSlide ${INTERVAL_MS}ms ease-in-out forwards`,
+              animation: `wordFade ${INTERVAL_MS}ms ease-in-out forwards`,
             }}
           >
             {ROTATING_WORDS[index]}
           </span>
-          <br className="hidden sm:block" />
-          {' '}in every LLM response.
+          {' '}in every response.
         </h1>
 
         {/* Subheading */}
