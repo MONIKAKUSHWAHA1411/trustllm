@@ -514,25 +514,6 @@ def _show_login() -> None:
         </section>
     """), unsafe_allow_html=True)
 
-    # ── FOOTER ───────────────────────────────────────────────────────
-    st.markdown(_h("""
-        <div style="background:#F9FAFB;border-top:1px solid #E5E7EB;padding:32px 16px;
-                text-align:center;font-family:'Inter',sans-serif;">
-          <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-bottom:12px;">
-            <a href="#how-it-works" style="font-size:14px;color:#6B7280;text-decoration:none;">How it works</a>
-            <a href="#features"     style="font-size:14px;color:#6B7280;text-decoration:none;">Trust dimensions</a>
-            <a href="#models"       style="font-size:14px;color:#6B7280;text-decoration:none;">Models</a>
-            <a href="#sign-in"      style="font-size:14px;color:#6B7280;text-decoration:none;">Sign in</a>
-          </div>
-          <p style="font-size:13px;color:#6B7280;line-height:1.6;margin:0;">
-            © 2025 TrustLLM · AI Model Evaluation Platform · Powered by ChromaDB · Groq · Streamlit ·
-            <span style="white-space:nowrap;">Built by <a href="https://www.linkedin.com/in/monika-kushwaha-52443735" target="_blank"
-               rel="noopener noreferrer"
-               style="color:#E8420A;text-decoration:none;">Monika Kushwaha</a></span>
-          </p>
-        </div>
-    """), unsafe_allow_html=True)
-
     # ── SIGN-IN SECTION HEADER ────────────────────────────────────────
     st.markdown(_h("""
         <section id="sign-in" style="background:#F9FAFB;border-top:1px solid #E5E7EB;
