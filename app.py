@@ -244,18 +244,6 @@ def _preview_bars(stats: dict) -> str:
 # -----------------------------------------------------------------------
 # Login page — Braintrust hero + Vercel-style form
 # -----------------------------------------------------------------------
-def _try_demo_login() -> None:
-    """Sign in as the demo user — no credentials shown to the user."""
-    demo = _authenticate_local("TestUser", "User123")
-    if demo:
-        normalised = _normalise_local_user(demo)
-        upsert_user(normalised)
-        st.session_state["logged_in"] = True
-        st.session_state["user"] = normalised
-        st.session_state["just_logged_in"] = True  # trigger entry animation
-        st.rerun()
-
-
 def _show_login() -> None:
     # ── CSS ──────────────────────────────────────────────────────────
     st.markdown(_h("""
@@ -290,8 +278,14 @@ def _show_login() -> None:
         [data-testid="stTextInput"] label{color:#374151!important;font-size:0.85rem!important;font-weight:500!important;}
         [data-testid="stFormSubmitButton"] button,[data-testid="stForm"] .stButton>button{
             background:#E8420A!important;color:white!important;border:none!important;
-            border-radius:8px!important;font-weight:600!important;font-size:0.9rem!important;}
+            border-radius:8px!important;font-weight:600!important;font-size:0.9rem!important;
+            min-height:52px!important;padding:0!important;display:flex!important;
+            align-items:center!important;justify-content:center!important;}
         [data-testid="stFormSubmitButton"] button:hover,[data-testid="stForm"] .stButton>button:hover{background:#C23308!important;}
+        [data-testid="stBaseButton-secondary"]{width:100%!important;}
+        [data-testid="stBaseButton-secondary"] button{
+            min-height:52px!important;padding:0!important;display:flex!important;
+            align-items:center!important;justify-content:center!important;width:100%!important;}
         [data-testid="stForm"] [data-testid="InputInstructions"]{display:none!important;}
         /* ── Pure-CSS rotating word ── */
         @keyframes wordFade{
@@ -693,42 +687,36 @@ def _show_login() -> None:
                     else:
                         st.error("Invalid username or password.")
 
-            if not _google_configured():
-                if st.button("⚡ Try demo — no sign-up needed", use_container_width=True, key="try_demo"):
-                    _try_demo_login()
+            if st.button("CREATE ACCOUNT →", key="to_create", use_container_width=True):
+                st.session_state.login_mode = "create"
+                st.rerun()
 
-            c1, c2 = st.columns([1, 1])
-            with c1:
-                if st.button("Create account →", key="to_create", use_container_width=True):
-                    st.session_state.login_mode = "create"
-                    st.rerun()
-            with c2:
-                with st.expander("Forgot password?"):
-                    fp_user = st.text_input("Username", key="fp_username")
-                    fp_new  = st.text_input("New password", type="password", key="fp_new")
-                    fp_conf = st.text_input("Confirm", type="password", key="fp_conf")
-                    if st.button("Reset", key="fp_submit", use_container_width=True):
-                        if not fp_user or not fp_new:
-                            st.error("Fill in all fields.")
-                        elif fp_new != fp_conf:
-                            st.error("Passwords don't match.")
-                        elif len(fp_new) < 6:
-                            st.error("Min 6 characters.")
+            with st.expander("Forgot password?"):
+                fp_user = st.text_input("Username", key="fp_username")
+                fp_new  = st.text_input("New password", type="password", key="fp_new")
+                fp_conf = st.text_input("Confirm", type="password", key="fp_conf")
+                if st.button("Reset", key="fp_submit", use_container_width=True):
+                    if not fp_user or not fp_new:
+                        st.error("Fill in all fields.")
+                    elif fp_new != fp_conf:
+                        st.error("Passwords don't match.")
+                    elif len(fp_new) < 6:
+                        st.error("Min 6 characters.")
+                    else:
+                        with open(USERS_PATH) as _uf:
+                            _udata = json.load(_uf)
+                        matched = False
+                        for _u in _udata["users"]:
+                            if _u["username"] == fp_user:
+                                _u["password"] = fp_new
+                                matched = True
+                                break
+                        if matched:
+                            with open(USERS_PATH, "w") as _uf:
+                                json.dump(_udata, _uf, indent=2)
+                            st.success("Password updated.")
                         else:
-                            with open(USERS_PATH) as _uf:
-                                _udata = json.load(_uf)
-                            matched = False
-                            for _u in _udata["users"]:
-                                if _u["username"] == fp_user:
-                                    _u["password"] = fp_new
-                                    matched = True
-                                    break
-                            if matched:
-                                with open(USERS_PATH, "w") as _uf:
-                                    json.dump(_udata, _uf, indent=2)
-                                st.success("Password updated.")
-                            else:
-                                st.error("Username not found.")
+                            st.error("Username not found.")
 
         else:  # create account
             with st.form("create_account_form"):
@@ -767,31 +755,24 @@ def _show_login() -> None:
                 st.session_state.login_mode = "signin"
                 st.rerun()
 
-        st.markdown(_h("""
-            <div style="text-align:center;padding:1rem 0 3rem;">
-            <span style="color:rgba(255,255,255,0.45);font-size:0.8rem;">
-            Demo — Username: <strong style="color:#cbd5e1;">TestUser</strong>
-            &nbsp;·&nbsp; Password: <strong style="color:#cbd5e1;">User123</strong>
-            </span>
-            </div>
-        """), unsafe_allow_html=True)
-
     # ── FOOTER ────────────────────────────────────────────────────────
     st.markdown(_h("""
-        <footer style="background:#0E0E0E;border-top:1px solid rgba(255,255,255,0.1);padding:36px 24px;
-                        text-align:center;color:rgba(255,255,255,0.45);font-size:13px;
-                        font-family:'Inter',system-ui,sans-serif;">
-          <div style="display:inline-flex;flex-wrap:wrap;gap:24px;justify-content:center;margin-bottom:14px;">
-            <a href="#tl-how" style="color:rgba(255,255,255,0.45);font-size:13px;text-decoration:none;">How it works</a>
-            <a href="#tl-dimensions" style="color:rgba(255,255,255,0.45);font-size:13px;text-decoration:none;">Trust dimensions</a>
-            <a href="#tl-models" style="color:rgba(255,255,255,0.45);font-size:13px;text-decoration:none;">Models</a>
-            <a href="#tl-signin" style="color:rgba(255,255,255,0.45);font-size:13px;text-decoration:none;">Sign in</a>
+        <div style="background:#F9FAFB;border-top:1px solid #E5E7EB;padding:32px 16px;
+                    text-align:center;font-family:'Inter',system-ui,sans-serif;box-sizing:border-box;width:100%;">
+          <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-bottom:12px;">
+            <a href="#features" style="font-size:14px;color:#6B7280;text-decoration:none;">How it works</a>
+            <a href="#how-it-works" style="font-size:14px;color:#6B7280;text-decoration:none;">Trust dimensions</a>
+            <a href="#models" style="font-size:14px;color:#6B7280;text-decoration:none;">Models</a>
+            <a href="#sign-in" style="font-size:14px;color:#6B7280;text-decoration:none;">Sign in</a>
           </div>
-          <div>© 2025 TrustLLM · AI Model Evaluation Platform · Powered by ChromaDB · Groq · Streamlit ·
-            Built by <a href="https://www.linkedin.com/in/monika-kushwaha-52443735/" target="_blank"
-              rel="noopener" style="color:#FF5533;font-weight:500;text-decoration:none;">Monika Kushwaha</a>
-          </div>
-        </footer>
+          <p style="font-size:13px;color:#6B7280;line-height:1.6;margin:0;">
+            © 2025 TrustLLM · AI Model Evaluation Platform · Powered by ChromaDB · Groq · Streamlit ·
+            <span style="white-space:nowrap;">Built by
+              <a href="https://www.linkedin.com/in/monika-kushwaha-52443735" target="_blank"
+                 rel="noopener noreferrer" style="color:#E8420A;text-decoration:none;">Monika Kushwaha</a>
+            </span>
+          </p>
+        </div>
     """), unsafe_allow_html=True)
 
     # ── STICKY NAV + FORM CARD JS ──────────────────────────────────────
