@@ -62,6 +62,36 @@ PROVIDERS: Dict[str, dict] = {
             ("Phi-3.5 mini", "microsoft/Phi-3.5-mini-instruct"),
         ],
     },
+    "together": {
+        "display_name": "Together AI",
+        "api_key_url": "https://api.together.xyz/settings/api-keys",
+        "key_prefix_hint": "together-...",
+        "models": [
+            ("Qwen 2.5 72B", "Qwen/Qwen2.5-72B-Instruct-Turbo"),
+            ("Llama 3.3 70B", "meta-llama/Llama-3.3-70B-Instruct-Turbo"),
+            ("DeepSeek R1", "deepseek-ai/DeepSeek-R1"),
+            ("Mistral 7B", "mistralai/Mistral-7B-Instruct-v0.3"),
+        ],
+    },
+    "fireworks": {
+        "display_name": "Fireworks AI",
+        "api_key_url": "https://fireworks.ai/account/api-keys",
+        "key_prefix_hint": "fw_...",
+        "models": [
+            ("Llama 3.1 70B", "accounts/fireworks/models/llama-v3p1-70b-instruct"),
+            ("Qwen 2.5 72B", "accounts/fireworks/models/qwen2p5-72b-instruct"),
+            ("Mixtral 8x7B", "accounts/fireworks/models/mixtral-8x7b-instruct"),
+        ],
+    },
+    "cerebras": {
+        "display_name": "Cerebras",
+        "api_key_url": "https://cloud.cerebras.ai/platform/",
+        "key_prefix_hint": "csk-...",
+        "models": [
+            ("Llama 3.3 70B", "llama-3.3-70b"),
+            ("Llama 3.1 8B", "llama-3.1-8b"),
+        ],
+    },
 }
 
 
@@ -118,6 +148,15 @@ def generate_response(provider: str, model_id: str, prompt: str, api_key: str,
             return _generate_mistral(model_id, prompt, api_key, max_tokens, temperature)
         if provider == "phi":
             return _generate_phi(model_id, prompt, api_key, max_tokens, temperature)
+        if provider == "together":
+            return _generate_openai_compat(model_id, prompt, api_key, max_tokens, temperature,
+                                           base_url="https://api.together.xyz/v1")
+        if provider == "fireworks":
+            return _generate_openai_compat(model_id, prompt, api_key, max_tokens, temperature,
+                                           base_url="https://api.fireworks.ai/inference/v1")
+        if provider == "cerebras":
+            return _generate_openai_compat(model_id, prompt, api_key, max_tokens, temperature,
+                                           base_url="https://api.cerebras.ai/v1")
     except ImportError as e:
         raise RuntimeError(f"SDK for {provider} not installed: {e}")
     except Exception as e:
@@ -189,3 +228,16 @@ def _generate_phi(model_id, prompt, api_key, max_tokens, temperature):
         temperature=temperature,
         return_full_text=False,
     ).strip()
+
+
+def _generate_openai_compat(model_id, prompt, api_key, max_tokens, temperature, base_url: str):
+    """Generic handler for Together AI, Fireworks, Cerebras — all OpenAI-compatible."""
+    import openai
+    client = openai.OpenAI(api_key=api_key, base_url=base_url)
+    resp = client.chat.completions.create(
+        model=model_id,
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=max_tokens,
+        temperature=temperature,
+    )
+    return resp.choices[0].message.content.strip()
