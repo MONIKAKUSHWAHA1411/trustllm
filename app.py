@@ -11,6 +11,7 @@ from ui_pages.agent_performance import render as agent_performance
 from ui_pages.rag_page import render as rag_testing
 from ui_pages.prompt_dataset import render as prompt_dataset
 from ui_pages.failure_analysis import render as failure_analysis
+from ui_pages.methodology import render as methodology
 
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -705,6 +706,9 @@ _nav_item("Prompt Explorer", "🔍")
 _nav_item("Prompt Dataset", "📂")
 _nav_item("RAG Testing", "🧪")
 
+st.sidebar.markdown('<p class="nav-section">LEARN</p>', unsafe_allow_html=True)
+_nav_item("Methodology", "📖")
+
 st.sidebar.divider()
 
 if st.sidebar.button("Sign out", use_container_width=True):
@@ -739,3 +743,5 @@ elif page == "Prompt Dataset":
     prompt_dataset()
 elif page == "RAG Testing":
     rag_testing()
+elif page == "Methodology":
+    methodology()
