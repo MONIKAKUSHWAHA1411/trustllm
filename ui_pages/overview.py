@@ -55,49 +55,102 @@ def render():
 
     # ---- Chart: Trust Score by Model ---- #
     st.subheader("Trust Score by Model")
-    st.caption(f"Average trust score per model · {models_tested} models evaluated")
+    st.caption(f"Average trust score per model · {models_tested} models evaluated · sorted highest first")
 
     chart_data = (
         df.groupby("model")["trust_score"]
         .mean()
         .reset_index()
         .rename(columns={"trust_score": "avg_trust_score"})
+        .sort_values("avg_trust_score", ascending=False)
     )
 
-    color_scale = alt.Scale(
-        domain=[0, 0.5, 0.7, 1.0],
-        range=["#ef4444", "#f59e0b", "#22c55e", "#16a34a"],
-    )
+    # Distinct per-model colors (vendor-aware, fallback palette for unknowns)
+    _MODEL_PALETTE = {
+        'phi': '#22c55e', 'phi3': '#22c55e', 'phi3:mini': '#22c55e',
+        'gpt': '#0ea5e9', 'gpt-4o': '#0ea5e9', 'gpt-4o-mini': '#38bdf8',
+        'claude': '#f97316', 'claude-3': '#f97316', 'claude-3-5-sonnet': '#f97316',
+        'gemini-pro': '#6366f1', 'gemini': '#6366f1', 'gemini-1-5-pro': '#6366f1',
+        'mistral': '#f59e0b', 'mistral:instruct': '#f59e0b', 'mistral-large': '#f59e0b',
+        'llama': '#8b5cf6', 'llama3': '#8b5cf6', 'llama-3-1-70b': '#8b5cf6',
+    }
+    _FALLBACK = [
+        '#0ea5e9', '#f97316', '#6366f1', '#22c55e', '#f59e0b',
+        '#8b5cf6', '#ec4899', '#14b8a6', '#ef4444', '#84cc16',
+    ]
 
-    chart = (
+    models_list = chart_data['model'].tolist()
+    fi = 0
+    colors_list = []
+    for m in models_list:
+        if m in _MODEL_PALETTE:
+            colors_list.append(_MODEL_PALETTE[m])
+        else:
+            colors_list.append(_FALLBACK[fi % len(_FALLBACK)])
+            fi += 1
+
+    bars = (
         alt.Chart(chart_data)
-        .mark_bar(cornerRadiusTopLeft=6, cornerRadiusTopRight=6)
+        .mark_bar(cornerRadiusTopRight=6, cornerRadiusBottomRight=6)
         .encode(
-            x=alt.X("model:N", title="Model", axis=alt.Axis(labelAngle=0)),
             y=alt.Y(
+                "model:N",
+                title=None,
+                sort=alt.EncodingSortField("avg_trust_score", order="descending"),
+                axis=alt.Axis(
+                    labelFontSize=13,
+                    labelFontWeight=600,
+                    labelColor="#374151",
+                    tickSize=0,
+                    domain=False,
+                    labelLimit=160,
+                ),
+            ),
+            x=alt.X(
                 "avg_trust_score:Q",
-                title="Average Trust Score",
+                title="Trust Score (0 – 1)",
                 scale=alt.Scale(domain=[0, 1]),
+                axis=alt.Axis(
+                    format=".1f",
+                    labelFontSize=11,
+                    labelColor="#9ca3af",
+                    gridColor="#f3f4f6",
+                    tickSize=0,
+                    domain=False,
+                ),
             ),
             color=alt.Color(
-                "avg_trust_score:Q",
-                title="Score",
-                scale=color_scale,
+                "model:N",
+                scale=alt.Scale(domain=models_list, range=colors_list),
                 legend=None,
             ),
             tooltip=[
                 alt.Tooltip("model:N", title="Model"),
-                alt.Tooltip("avg_trust_score:Q", title="Avg Score", format=".3f"),
+                alt.Tooltip("avg_trust_score:Q", title="Trust Score", format=".3f"),
             ],
         )
-        .properties(height=420)
+        .properties(height=alt.Step(46))
     )
 
-    text = chart.mark_text(dy=-10, fontSize=13, fontWeight="bold", color="#e5e7eb").encode(
-        text=alt.Text("avg_trust_score:Q", format=".2f")
+    labels = bars.mark_text(
+        align="left", dx=6, fontSize=13, fontWeight="bold", color="#374151",
+    ).encode(
+        text=alt.Text("avg_trust_score:Q", format=".2f"),
+        color=alt.value("#374151"),
     )
 
-    st.altair_chart(chart + text, use_container_width=True)
+    st.altair_chart(
+        (bars + labels)
+        .configure_view(strokeWidth=0, fill="#ffffff")
+        .configure(background="#ffffff")
+        .configure_axis(
+            labelColor="#374151",
+            titleColor="#6b7280",
+            gridColor="#f0f0f0",
+            gridOpacity=1,
+        ),
+        use_container_width=True,
+    )
 
     # ---- Recent Evaluations (paginated) ---- #
     st.subheader("Recent Evaluations")
