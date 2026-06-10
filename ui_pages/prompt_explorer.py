@@ -11,6 +11,7 @@ from pathlib import Path
 
 import pandas as pd
 import streamlit as st
+from ui_pages.model_utils import aa_model_url
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 PAGE_SIZE = 8
@@ -233,6 +234,17 @@ def _render_browse(df: pd.DataFrame):
                 fact_color = "22c55e" if row.get("factual_correct") else "ef4444"
                 fact_mark  = "✓" if row.get("factual_correct") else "✗"
 
+                _aa_url = aa_model_url(row.get("model", ""))
+                _cap_html = (
+                    '<div style="background:#1e293b;border:1px solid #334155;border-radius:8px;padding:0.65rem 0.85rem;margin-bottom:0.85rem;">'
+                    '<div style="font-size:0.68rem;font-weight:700;letter-spacing:0.06em;color:#94a3b8;text-transform:uppercase;margin-bottom:0.45rem;">'
+                    'Capability Benchmarks &nbsp;<span style="font-weight:400;color:#475569;">via Artificial Analysis</span></div>'
+                    '<div style="display:flex;gap:0.5rem;flex-wrap:wrap;">'
+                    f'<a href="{_aa_url}" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem;font-weight:600;padding:0.2rem 0.65rem;border-radius:5px;background:#0f172a;color:#60a5fa;border:1px solid #1e40af;text-decoration:none;">&#129504; Intelligence &#8599;</a>'
+                    f'<a href="{_aa_url}" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem;font-weight:600;padding:0.2rem 0.65rem;border-radius:5px;background:#0f172a;color:#34d399;border:1px solid #065f46;text-decoration:none;">&#9889; Speed &#8599;</a>'
+                    f'<a href="{_aa_url}" target="_blank" rel="noopener noreferrer" style="font-size:0.75rem;font-weight:600;padding:0.2rem 0.65rem;border-radius:5px;background:#0f172a;color:#a78bfa;border:1px solid #4c1d95;text-decoration:none;">&#128176; Cost &#8599;</a>'
+                    '</div></div>'
+                )
                 html = "".join([
                     '<div class="trace-panel">',
                     '<div class="trace-panel-header">',
@@ -242,6 +254,7 @@ def _render_browse(df: pd.DataFrame):
                     '<div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.85rem;">',
                     _trust_badge_html(score), hallu_badge, safe_badge,
                     '</div>',
+                    _cap_html,
                     '<div class="trace-block"><div class="trace-block-label">Prompt</div>',
                     str(row["prompt"]), '</div>',
                     '<div class="trace-block"><div class="trace-block-label">Response</div>',

@@ -963,6 +963,7 @@ from ui_pages.failure_analysis  import render as failure_analysis
 from ui_pages.profile           import render as profile_page
 from ui_pages.api_keys          import render as api_keys_page
 from ui_pages.query_history     import render as query_history_page
+from ui_pages.methodology       import render as methodology
 
 # -----------------------------------------------------------------------
 # Projects
@@ -1053,6 +1054,9 @@ _SECTIONS = {
     "ACCOUNT": [
         ("👤", "Profile"),
         ("🔑", "API Keys"),
+    ],
+    "LEARN": [
+        ("📖", "Methodology"),
     ],
 }
 
@@ -1183,6 +1187,7 @@ _routes = {
     "Query History":     query_history_page,
     "Profile":           profile_page,
     "API Keys":          api_keys_page,
+    "Methodology":       methodology,
 }
 
 _routes.get(page, overview)()

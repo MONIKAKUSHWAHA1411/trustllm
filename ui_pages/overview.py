@@ -101,22 +101,29 @@ def _kpi_cell(
 """
 
 
+_MODEL_PALETTE = {
+    "phi": "#22c55e", "phi3": "#22c55e", "phi-3": "#22c55e",
+    "gpt": "#0ea5e9", "gpt-4o": "#0ea5e9", "gpt4o": "#0ea5e9",
+    "gpt-4o-mini": "#38bdf8", "gpt-4-turbo": "#0ea5e9", "gpt4": "#0ea5e9",
+    "claude": "#f97316", "claude-3": "#f97316", "claude-3-5-sonnet": "#f97316",
+    "claude-3-opus": "#ea580c", "claude-3-haiku": "#fb923c",
+    "gemini-pro": "#6366f1", "gemini": "#6366f1", "gemini-1-5-pro": "#6366f1",
+    "gemini-1-5-flash": "#818cf8",
+    "mistral": "#f59e0b", "mistral:instruct": "#f59e0b", "mistral-large": "#f59e0b",
+    "llama": "#8b5cf6", "llama3": "#8b5cf6", "llama-3": "#8b5cf6", "llama-3-1-70b": "#8b5cf6",
+}
+_PALETTE_FALLBACK = ["#0ea5e9", "#f97316", "#6366f1", "#22c55e", "#f59e0b", "#8b5cf6", "#ec4899", "#14b8a6", "#ef4444", "#84cc16"]
+
+
 def _trust_bar_chart(chart_data: pd.DataFrame) -> str:
     """Render an animated HTML bar chart for trust scores by model."""
     max_score = chart_data["avg_trust_score"].max() if len(chart_data) else 1.0
     rows = ""
-    for _, row in chart_data.sort_values("avg_trust_score", ascending=False).iterrows():
+    for fi, (_, row) in enumerate(chart_data.sort_values("avg_trust_score", ascending=False).iterrows()):
         score = row["avg_trust_score"]
         pct_w = round((score / 1.0) * 100, 1)
-        if score >= 0.8:
-            bar_color = "#16A34A"
-            score_color = "#16A34A"
-        elif score >= 0.65:
-            bar_color = "#E8290B"
-            score_color = "#E8290B"
-        else:
-            bar_color = "#D97706"
-            score_color = "#D97706"
+        bar_color = _MODEL_PALETTE.get(row["model"].lower().strip(), _PALETTE_FALLBACK[fi % len(_PALETTE_FALLBACK)])
+        score_color = bar_color
         rows += f"""
 <div class="bar-row">
   <div class="bar-meta">
