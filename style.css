@@ -463,3 +463,12 @@ div[data-testid="stCheckbox"] span[class*="st-"] {
     border-radius: 4px;
     background: #4f46e5;
 }
+
+/* ===== Global reduced-motion safety net ===== */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
+}

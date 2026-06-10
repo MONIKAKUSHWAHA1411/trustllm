@@ -105,116 +105,133 @@ def _show_login():
         [data-testid="stForm"] .stButton > button:hover {
             background-color: #4338ca !important;
         }
+        @keyframes tllm-drift{0%,100%{transform:translate(0,0) rotate(0deg) scale(1);}33%{transform:translate(6%,-4%) rotate(8deg) scale(1.1);}66%{transform:translate(-5%,5%) rotate(-6deg) scale(1.05);}}
+        @keyframes tllm-pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(74,222,128,.4);}50%{opacity:.4;box-shadow:0 0 0 6px rgba(74,222,128,0);}}
+        @keyframes tllm-flash{0%,12%{opacity:1;background:rgba(255,255,255,.05);}18%,100%{opacity:.32;background:transparent;}}
+        @keyframes tllm-fillup{0%{width:0;}14%,100%{width:var(--tw);}}
+        @keyframes tllm-si{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:none;}}
+        .tllm-s1{opacity:0;animation:tllm-si .6s .00s cubic-bezier(.2,.7,.2,1) forwards;}
+        .tllm-s2{opacity:0;animation:tllm-si .6s .08s cubic-bezier(.2,.7,.2,1) forwards;}
+        .tllm-s3{opacity:0;animation:tllm-si .6s .16s cubic-bezier(.2,.7,.2,1) forwards;}
+        .tllm-s4{opacity:0;animation:tllm-si .6s .24s cubic-bezier(.2,.7,.2,1) forwards;}
+        .tllm-s5{opacity:0;animation:tllm-si .6s .32s cubic-bezier(.2,.7,.2,1) forwards;}
+        .tllm-s6{opacity:0;animation:tllm-si .6s .40s cubic-bezier(.2,.7,.2,1) forwards;}
+        .tllm-s7{opacity:0;animation:tllm-si .6s .48s cubic-bezier(.2,.7,.2,1) forwards;}
+        .tllm-s8{opacity:0;animation:tllm-si .6s .56s cubic-bezier(.2,.7,.2,1) forwards;}
+        @media(prefers-reduced-motion:reduce){
+          .tllm-mesh,.tllm-erow,.tllm-fill,.tllm-ld{animation:none!important;}
+          .tllm-s1,.tllm-s2,.tllm-s3,.tllm-s4,.tllm-s5,.tllm-s6,.tllm-s7,.tllm-s8{opacity:1!important;animation:none!important;}
+          .tllm-fill{width:var(--tw)!important;}
+        }
         </style>
     """), unsafe_allow_html=True)
 
     left_col, right_col = st.columns([13, 11])
 
-    # ── LEFT PANEL: product showcase ─────────────────────────────────
+    # ── LEFT PANEL: animated product showcase ──────────────────────────────
     with left_col:
         st.markdown(_h("""
-            <div style="background:linear-gradient(160deg,#0f172a 0%,#1e1b4b 55%,#0f172a 100%);
-                        min-height:100vh;padding:3rem 3.5rem;
-                        display:flex;flex-direction:column;justify-content:space-between;">
-            <div>
-            <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:2.5rem;">
+            <div style="position:relative;background:#0f172a;min-height:100vh;padding:3rem 3.5rem;
+                        display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;">
+            <div class="tllm-mesh" style="position:absolute;inset:-30%;z-index:0;filter:blur(70px);
+                 opacity:.55;pointer-events:none;
+                 background:radial-gradient(40% 40% at 25% 30%,#6366f1 0%,transparent 60%),
+                            radial-gradient(45% 45% at 75% 35%,#a855f7 0%,transparent 60%),
+                            radial-gradient(40% 40% at 55% 75%,#2dd4bf 0%,transparent 60%);
+                 animation:tllm-drift 20s ease-in-out infinite;"></div>
+            <div style="position:absolute;inset:0;z-index:1;opacity:.05;pointer-events:none;
+                 background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;);"></div>
+            <div style="position:relative;z-index:2;">
+            <div class="tllm-s1" style="display:flex;align-items:center;gap:.6rem;margin-bottom:2.5rem;">
             <div style="background:#4f46e5;width:36px;height:36px;border-radius:8px;
                         display:flex;align-items:center;justify-content:center;font-size:1.1rem;">🛡</div>
-            <span style="color:white;font-size:1.2rem;font-weight:700;letter-spacing:-0.02em;">TrustLLM</span>
+            <span style="color:white;font-size:1.2rem;font-weight:700;letter-spacing:-.02em;">TrustLLM</span>
             </div>
-            <div style="display:inline-flex;align-items:center;
-                        background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.35);
-                        color:#a5b4fc;font-size:0.72rem;font-weight:600;
-                        padding:0.25rem 0.75rem;border-radius:20px;width:fit-content;margin-bottom:1.5rem;">
+            <div class="tllm-s2" style="display:inline-flex;align-items:center;
+                        background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.35);
+                        color:#a5b4fc;font-size:.72rem;font-weight:600;
+                        padding:.25rem .75rem;border-radius:20px;width:fit-content;margin-bottom:1.5rem;">
             ✦ LLM Evaluation Platform
             </div>
-            <div style="color:white;font-size:2.5rem;font-weight:800;line-height:1.15;
-                        letter-spacing:-0.03em;margin:0 0 1rem 0;">
-            Evaluate LLMs you can<br><span style="color:#818cf8;">actually trust.</span>
+            <div class="tllm-s3" style="color:white;font-size:2.5rem;font-weight:800;line-height:1.15;
+                        letter-spacing:-.03em;margin:0 0 1rem 0;">
+            Evaluate LLMs you can<br><span style="color:#ffd43b;">actually</span> trust.
             </div>
-            <p style="color:#94a3b8;font-size:0.95rem;line-height:1.7;max-width:420px;margin:0 0 2rem 0;">
+            <p class="tllm-s4" style="color:#94a3b8;font-size:.95rem;line-height:1.7;max-width:420px;margin:0 0 2rem 0;">
             Score every model response for correctness, safety, and hallucination.
             Surface failures fast. Ship with confidence.
             </p>
-            <div style="margin-bottom:2rem;">
-            <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem;">
-            <div style="width:20px;height:20px;background:rgba(99,102,241,0.2);border-radius:50%;
-                        display:flex;align-items:center;justify-content:center;color:#a5b4fc;font-size:0.65rem;">✓</div>
-            <span style="color:#cbd5e1;font-size:0.875rem;">Trace every prompt, response &amp; tool call in real time</span>
+            <div class="tllm-s5" style="margin-bottom:2rem;">
+            <div style="display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.5rem;">
+            <div style="width:20px;height:20px;background:rgba(99,102,241,.2);border-radius:50%;
+                        display:flex;align-items:center;justify-content:center;color:#a5b4fc;font-size:.65rem;flex-shrink:0;margin-top:1px;">✓</div>
+            <span style="color:#cbd5e1;font-size:.875rem;">Trace every prompt, response &amp; tool call in real time</span>
             </div>
-            <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.5rem;">
-            <div style="width:20px;height:20px;background:rgba(99,102,241,0.2);border-radius:50%;
-                        display:flex;align-items:center;justify-content:center;color:#a5b4fc;font-size:0.65rem;">✓</div>
-            <span style="color:#cbd5e1;font-size:0.875rem;">Compare models side-by-side on safety, quality &amp; cost</span>
+            <div style="display:flex;align-items:flex-start;gap:.6rem;margin-bottom:.5rem;">
+            <div style="width:20px;height:20px;background:rgba(99,102,241,.2);border-radius:50%;
+                        display:flex;align-items:center;justify-content:center;color:#a5b4fc;font-size:.65rem;flex-shrink:0;margin-top:1px;">✓</div>
+            <span style="color:#cbd5e1;font-size:.875rem;">Compare models side-by-side on safety, quality &amp; cost</span>
             </div>
-            <div style="display:flex;align-items:center;gap:0.6rem;">
-            <div style="width:20px;height:20px;background:rgba(99,102,241,0.2);border-radius:50%;
-                        display:flex;align-items:center;justify-content:center;color:#a5b4fc;font-size:0.65rem;">✓</div>
-            <span style="color:#cbd5e1;font-size:0.875rem;">Detect hallucinations, bias &amp; safety violations automatically</span>
-            </div>
-            </div>
-            </div>
-            <div>
-            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:1.5rem;">
-            <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
-                        border-radius:10px;padding:1rem;">
-            <div style="color:white;font-size:1.75rem;font-weight:700;line-height:1;margin-bottom:0.2rem;">161</div>
-            <div style="color:#64748b;font-size:0.72rem;">Prompts evaluated</div>
-            </div>
-            <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
-                        border-radius:10px;padding:1rem;">
-            <div style="color:white;font-size:1.75rem;font-weight:700;line-height:1;margin-bottom:0.2rem;">6</div>
-            <div style="color:#64748b;font-size:0.72rem;">Models tested</div>
-            </div>
-            <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
-                        border-radius:10px;padding:1rem;">
-            <div style="color:white;font-size:1.75rem;font-weight:700;line-height:1;margin-bottom:0.2rem;">0.76</div>
-            <div style="color:#64748b;font-size:0.72rem;">Avg trust score</div>
-            </div>
-            </div>
-            <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
-                        border-radius:10px;padding:1.25rem;">
-            <div style="color:#475569;font-size:0.65rem;font-weight:700;text-transform:uppercase;
-                        letter-spacing:0.07em;margin-bottom:0.85rem;">Trust Score by Model</div>
-            <div style="margin-bottom:0.6rem;">
-            <div style="display:flex;justify-content:space-between;margin-bottom:0.2rem;">
-            <span style="color:#cbd5e1;font-size:0.78rem;">phi3</span>
-            <span style="color:#a5b4fc;font-size:0.78rem;font-weight:600;">0.87</span>
-            </div>
-            <div style="background:rgba(255,255,255,0.08);border-radius:3px;height:5px;">
-            <div style="background:linear-gradient(90deg,#4f46e5,#818cf8);width:87%;height:100%;border-radius:3px;"></div>
-            </div>
-            </div>
-            <div style="margin-bottom:0.6rem;">
-            <div style="display:flex;justify-content:space-between;margin-bottom:0.2rem;">
-            <span style="color:#cbd5e1;font-size:0.78rem;">gpt</span>
-            <span style="color:#a5b4fc;font-size:0.78rem;font-weight:600;">0.76</span>
-            </div>
-            <div style="background:rgba(255,255,255,0.08);border-radius:3px;height:5px;">
-            <div style="background:linear-gradient(90deg,#4f46e5,#818cf8);width:76%;height:100%;border-radius:3px;"></div>
-            </div>
-            </div>
-            <div style="margin-bottom:0.6rem;">
-            <div style="display:flex;justify-content:space-between;margin-bottom:0.2rem;">
-            <span style="color:#cbd5e1;font-size:0.78rem;">gemini-pro</span>
-            <span style="color:#a5b4fc;font-size:0.78rem;font-weight:600;">0.75</span>
-            </div>
-            <div style="background:rgba(255,255,255,0.08);border-radius:3px;height:5px;">
-            <div style="background:linear-gradient(90deg,#4f46e5,#818cf8);width:75%;height:100%;border-radius:3px;"></div>
-            </div>
-            </div>
-            <div>
-            <div style="display:flex;justify-content:space-between;margin-bottom:0.2rem;">
-            <span style="color:#cbd5e1;font-size:0.78rem;">claude</span>
-            <span style="color:#a5b4fc;font-size:0.78rem;font-weight:600;">0.75</span>
-            </div>
-            <div style="background:rgba(255,255,255,0.08);border-radius:3px;height:5px;">
-            <div style="background:linear-gradient(90deg,#4f46e5,#818cf8);width:75%;height:100%;border-radius:3px;"></div>
+            <div style="display:flex;align-items:flex-start;gap:.6rem;">
+            <div style="width:20px;height:20px;background:rgba(99,102,241,.2);border-radius:50%;
+                        display:flex;align-items:center;justify-content:center;color:#a5b4fc;font-size:.65rem;flex-shrink:0;margin-top:1px;">✓</div>
+            <span style="color:#cbd5e1;font-size:.875rem;">Detect hallucinations, bias &amp; safety violations automatically</span>
             </div>
             </div>
             </div>
-            <div style="margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid rgba(255,255,255,0.06);">
-            <p style="color:#334155;font-size:0.72rem;margin:0;">
+            <div style="position:relative;z-index:2;">
+            <div class="tllm-s6" style="background:linear-gradient(160deg,#16161f,#101017);
+                        border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:16px;margin-bottom:.75rem;">
+            <div style="display:flex;align-items:center;justify-content:space-between;
+                        font-size:12px;color:#9a9aab;margin-bottom:12px;">
+            <span style="font-family:monospace;font-size:11px;">evaluation_run · gpt-4o</span>
+            <span style="display:flex;align-items:center;gap:6px;color:#4ade80;">
+            <span class="tllm-ld" style="width:7px;height:7px;border-radius:50%;background:#4ade80;
+                  display:inline-block;animation:tllm-pulse 1.4s ease-in-out infinite;"></span>scoring
+            </span>
+            </div>
+            <div class="tllm-erow" style="display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid rgba(255,255,255,.06);font-size:12.5px;opacity:.35;animation:tllm-flash 6s 0s linear infinite;">
+            <span style="flex:1;font-weight:500;color:#f4f4f7;">Truthfulness</span>
+            <span style="width:80px;height:5px;border-radius:99px;background:rgba(255,255,255,.1);display:inline-block;overflow:hidden;"><span class="tllm-fill" style="--tw:91%;display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#6366f1,#2dd4bf);width:0;animation:tllm-fillup 6s 0s ease-out infinite;"></span></span>
+            <span style="width:30px;text-align:right;color:#f4f4f7;font-size:11px;font-weight:600;">91</span>
+            </div>
+            <div class="tllm-erow" style="display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid rgba(255,255,255,.06);font-size:12.5px;opacity:.35;animation:tllm-flash 6s 1.2s linear infinite;">
+            <span style="flex:1;font-weight:500;color:#f4f4f7;">Safety</span>
+            <span style="width:80px;height:5px;border-radius:99px;background:rgba(255,255,255,.1);display:inline-block;overflow:hidden;"><span class="tllm-fill" style="--tw:88%;display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#6366f1,#2dd4bf);width:0;animation:tllm-fillup 6s 1.2s ease-out infinite;"></span></span>
+            <span style="width:30px;text-align:right;color:#f4f4f7;font-size:11px;font-weight:600;">88</span>
+            </div>
+            <div class="tllm-erow" style="display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid rgba(255,255,255,.06);font-size:12.5px;opacity:.35;animation:tllm-flash 6s 2.4s linear infinite;">
+            <span style="flex:1;font-weight:500;color:#f4f4f7;">Fairness</span>
+            <span style="width:80px;height:5px;border-radius:99px;background:rgba(255,255,255,.1);display:inline-block;overflow:hidden;"><span class="tllm-fill" style="--tw:83%;display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#6366f1,#2dd4bf);width:0;animation:tllm-fillup 6s 2.4s ease-out infinite;"></span></span>
+            <span style="width:30px;text-align:right;color:#f4f4f7;font-size:11px;font-weight:600;">83</span>
+            </div>
+            <div class="tllm-erow" style="display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid rgba(255,255,255,.06);font-size:12.5px;opacity:.35;animation:tllm-flash 6s 3.6s linear infinite;">
+            <span style="flex:1;font-weight:500;color:#f4f4f7;">Privacy</span>
+            <span style="width:80px;height:5px;border-radius:99px;background:rgba(255,255,255,.1);display:inline-block;overflow:hidden;"><span class="tllm-fill" style="--tw:95%;display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#6366f1,#2dd4bf);width:0;animation:tllm-fillup 6s 3.6s ease-out infinite;"></span></span>
+            <span style="width:30px;text-align:right;color:#f4f4f7;font-size:11px;font-weight:600;">95</span>
+            </div>
+            <div class="tllm-erow" style="display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid rgba(255,255,255,.06);font-size:12.5px;opacity:.35;animation:tllm-flash 6s 4.8s linear infinite;">
+            <span style="flex:1;font-weight:500;color:#f4f4f7;">Robustness</span>
+            <span style="width:80px;height:5px;border-radius:99px;background:rgba(255,255,255,.1);display:inline-block;overflow:hidden;"><span class="tllm-fill" style="--tw:79%;display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#6366f1,#2dd4bf);width:0;animation:tllm-fillup 6s 4.8s ease-out infinite;"></span></span>
+            <span style="width:30px;text-align:right;color:#f4f4f7;font-size:11px;font-weight:600;">79</span>
+            </div>
+            </div>
+            <div class="tllm-s7" style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1.5rem;">
+            <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:1rem;">
+            <div style="color:white;font-size:1.75rem;font-weight:700;line-height:1;margin-bottom:.2rem;">161</div>
+            <div style="color:#64748b;font-size:.72rem;">Prompts evaluated</div>
+            </div>
+            <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:1rem;">
+            <div style="color:white;font-size:1.75rem;font-weight:700;line-height:1;margin-bottom:.2rem;">6</div>
+            <div style="color:#64748b;font-size:.72rem;">Models tested</div>
+            </div>
+            <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:1rem;">
+            <div style="color:white;font-size:1.75rem;font-weight:700;line-height:1;margin-bottom:.2rem;">0.76</div>
+            <div style="color:#64748b;font-size:.72rem;">Avg trust score</div>
+            </div>
+            </div>
+            <div class="tllm-s8" style="margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid rgba(255,255,255,.06);">
+            <p style="color:#334155;font-size:.72rem;margin:0;">
             Built by <a href="https://www.linkedin.com/in/monika-kushwaha-52443735/" target="_blank"
             style="color:#6366f1;text-decoration:none;">Monika Kushwaha</a>
             </p>
