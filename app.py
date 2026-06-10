@@ -319,7 +319,7 @@ def _show_login() -> None:
         <div id="tl-banner" style="background:#E8420A;color:white;padding:0.55rem 1rem;
              text-align:center;font-family:'Inter',sans-serif;font-size:0.82rem;font-weight:500;
              display:flex;align-items:center;justify-content:center;gap:0.5rem;position:relative;">
-          ✦ TrustLLM now supports RAG evaluation —
+          ✦ TrustLLM now supports 21 models across 9 providers, including open-source —
           <a href="#sign-in" style="color:white;font-weight:700;text-decoration:underline;margin-left:3px;">Try it →</a>
           <button onclick="this.parentElement.style.display='none';try{localStorage.setItem('tl_banner','1')}catch(e){}"
             style="position:absolute;right:1rem;top:50%;transform:translateY(-50%);
@@ -416,14 +416,14 @@ def _show_login() -> None:
               Your Keys. Any Model.<br><span style="color:#E8420A;">Full Trust Report.</span>
             </h2>
             <p style="color:#6B7280;font-size:0.92rem;line-height:1.7;max-width:600px;margin:0 0 1.75rem;">
-              Connect your own OpenAI, Anthropic, Google, or Groq API keys and benchmark
-              ChatGPT, Claude, Gemini, and Grok head-to-head — on your data, your prompts, in real time.
+              Connect your own API keys for OpenAI, Anthropic, Google, Together AI, Fireworks, or Cerebras and benchmark
+              ChatGPT, Claude, Gemini, and 18 open-source models head-to-head — on your data, your prompts, in real time.
             </p>
             <div style="display:flex;flex-wrap:wrap;gap:0.75rem;">
               <span style="background:white;border:1px solid #E8420A;color:#E8420A;padding:0.45rem 1rem;font-size:0.8rem;font-weight:600;border-radius:6px;">ChatGPT · OpenAI</span>
               <span style="background:white;border:1px solid #E8420A;color:#E8420A;padding:0.45rem 1rem;font-size:0.8rem;font-weight:600;border-radius:6px;">Claude · Anthropic</span>
               <span style="background:white;border:1px solid #E8420A;color:#E8420A;padding:0.45rem 1rem;font-size:0.8rem;font-weight:600;border-radius:6px;">Gemini · Google</span>
-              <span style="background:white;border:1px solid #E8420A;color:#E8420A;padding:0.45rem 1rem;font-size:0.8rem;font-weight:600;border-radius:6px;">Grok · xAI</span>
+              <span style="background:white;border:1px solid #E8420A;color:#E8420A;padding:0.45rem 1rem;font-size:0.8rem;font-weight:600;border-radius:6px;">Open Source · Free Tier</span>
             </div>
           </div>
         </section>
@@ -441,7 +441,7 @@ def _show_login() -> None:
             <div style="display:flex;flex-direction:column;">
               <div style="display:flex;gap:1.25rem;padding:1.5rem 0;border-bottom:1px solid rgba(0,0,0,0.08);align-items:flex-start;">
                 <div style="background:#E8420A;min-width:36px;height:36px;border-radius:4px;display:flex;align-items:center;justify-content:center;color:white;font-size:0.75rem;font-weight:700;flex-shrink:0;">01</div>
-                <div><div style="font-weight:600;color:#0A0A0A;margin-bottom:0.3rem;">Connect Your Models</div><div style="font-size:0.84rem;color:#6B7280;line-height:1.65;">Add your LLM endpoint or paste API keys for OpenAI, Anthropic, Google, Groq, or any OpenAI-compatible API.</div></div>
+                <div><div style="font-weight:600;color:#0A0A0A;margin-bottom:0.3rem;">Connect Your Models</div><div style="font-size:0.84rem;color:#6B7280;line-height:1.65;">Add your LLM endpoint or paste API keys for OpenAI, Anthropic, Google, Together AI, Fireworks, Cerebras, or any OpenAI-compatible API.</div></div>
               </div>
               <div style="display:flex;gap:1.25rem;padding:1.5rem 0;border-bottom:1px solid rgba(0,0,0,0.08);align-items:flex-start;">
                 <div style="background:#E8420A;min-width:36px;height:36px;border-radius:4px;display:flex;align-items:center;justify-content:center;color:white;font-size:0.75rem;font-weight:700;flex-shrink:0;">02</div>
@@ -457,7 +457,7 @@ def _show_login() -> None:
               </div>
               <div style="display:flex;gap:1.25rem;padding:1.5rem 0;align-items:flex-start;">
                 <div style="background:#E8420A;min-width:36px;height:36px;border-radius:4px;display:flex;align-items:center;justify-content:center;color:white;font-size:0.75rem;font-weight:700;flex-shrink:0;">05</div>
-                <div><div style="font-weight:600;color:#0A0A0A;margin-bottom:0.3rem;">Compare and Decide</div><div style="font-size:0.84rem;color:#6B7280;line-height:1.65;">Side-by-side leaderboard shows where each model excels and fails. Export reports and track regressions over time.</div></div>
+                <div><div style="font-weight:600;color:#0A0A0A;margin-bottom:0.3rem;">Compare and Decide</div><div style="font-size:0.84rem;color:#6B7280;line-height:1.65;">Color-coded leaderboard shows where each model excels and fails. Export reports and track regressions over time.</div></div>
               </div>
             </div>
           </div>
@@ -490,24 +490,24 @@ def _show_login() -> None:
             <p style="font-size:0.7rem;font-weight:700;letter-spacing:0.15em;color:#E8420A;margin-bottom:0.75rem;text-transform:uppercase;">— MODELS EVALUATED</p>
             <h2 style="font-size:clamp(1.5rem,3vw,2rem);font-weight:800;color:#0A0A0A!important;
                 -webkit-text-fill-color:#0A0A0A!important;letter-spacing:-0.02em;margin:0 0 2rem;">
-              12 Models. 6 Providers.
+              21 Models. 9 Providers.
             </h2>
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:#E5E7EB;">
               <div style="background:#F9FAFB;padding:1.25rem 1.5rem;">
                 <div style="font-size:0.68rem;color:#E8420A;letter-spacing:0.12em;margin-bottom:0.5rem;font-weight:700;text-transform:uppercase;">OpenAI</div>
-                <div style="font-size:0.85rem;color:#374151;line-height:2;">GPT-4o<br>GPT-4 Turbo<br>GPT-3.5 Turbo</div>
+                <div style="font-size:0.85rem;color:#374151;line-height:2;">GPT-4o<br>GPT-4o mini<br>GPT-4 Turbo</div>
               </div>
               <div style="background:#F9FAFB;padding:1.25rem 1.5rem;">
                 <div style="font-size:0.68rem;color:#E8420A;letter-spacing:0.12em;margin-bottom:0.5rem;font-weight:700;text-transform:uppercase;">Anthropic</div>
-                <div style="font-size:0.85rem;color:#374151;line-height:2;">Claude 3 Opus<br>Claude 3 Sonnet<br>Claude 3 Haiku</div>
+                <div style="font-size:0.85rem;color:#374151;line-height:2;">Claude 3.5 Sonnet<br>Claude 3.5 Haiku<br>Claude 3 Opus</div>
               </div>
               <div style="background:#F9FAFB;padding:1.25rem 1.5rem;">
                 <div style="font-size:0.68rem;color:#E8420A;letter-spacing:0.12em;margin-bottom:0.5rem;font-weight:700;text-transform:uppercase;">Google</div>
-                <div style="font-size:0.85rem;color:#374151;line-height:2;">Gemini Pro<br>Gemini Flash<br>Gemini Ultra</div>
+                <div style="font-size:0.85rem;color:#374151;line-height:2;">Gemini 2.0 Flash<br>Gemini 2.0 Flash Lite<br>Gemini 1.5 Pro</div>
               </div>
               <div style="background:#F9FAFB;padding:1.25rem 1.5rem;">
-                <div style="font-size:0.68rem;color:#E8420A;letter-spacing:0.12em;margin-bottom:0.5rem;font-weight:700;text-transform:uppercase;">xAI · Meta · Groq</div>
-                <div style="font-size:0.85rem;color:#374151;line-height:2;">Grok-1<br>Llama 3 70B<br>Mixtral 8x7B</div>
+                <div style="font-size:0.68rem;color:#E8420A;letter-spacing:0.12em;margin-bottom:0.5rem;font-weight:700;text-transform:uppercase;">Together · Fireworks · Cerebras</div>
+                <div style="font-size:0.85rem;color:#374151;line-height:2;">Qwen 2.5 72B<br>Llama 3.3 70B<br>DeepSeek R1</div>
               </div>
             </div>
           </div>
