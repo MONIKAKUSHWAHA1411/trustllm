@@ -645,18 +645,6 @@ footer{background:#F9FAFB;border-top:1px solid var(--bdr);padding:2rem 1rem;text
   </div>
 </section>
 
-<footer class="e d2">
-  <div class="flinks">
-    <a href="#features">Features</a>
-    <a href="#how-it-works">How It Works</a>
-    <a href="#models">Models</a>
-    <a href="#sign-in">Sign In</a>
-  </div>
-  <div class="fcopy">
-    © 2025 TrustLLM · AI Model Evaluation Platform · Powered by ChromaDB · Groq · Streamlit ·
-    Built by <a href="https://www.linkedin.com/in/monika-kushwaha-52443735" target="_blank" rel="noopener noreferrer">Monika Kushwaha</a>
-  </div>
-</footer>
 
 <script>
 (function(){
@@ -1493,7 +1481,7 @@ function goTo(n){
   // re-run count-ups on slide 1
   if(cur===0){
     document.querySelectorAll('.cnt').forEach(function(el){
-      el.textContent=el.dataset.to+(el.dataset.sfx||'')';
+      el.textContent=el.dataset.to+(el.dataset.sfx||'');
     });
     setTimeout(function(){document.querySelectorAll('.cnt').forEach(countUp);},R?0:300);
   }
@@ -1501,10 +1489,17 @@ function goTo(n){
 function next(){goTo(cur+1);}
 function prev(){goTo(cur-1);}
 function done(){
-  try{window.parent.postMessage({type:'tl-tour-done'},'*');}catch(e){}
-  // Also try setting session via query param
-  var url=window.parent.location;
-  try{window.parent.location.href=window.parent.location.href.split('?')[0]+'?tour=done';}catch(e){}
+  // Click the native Streamlit "Start using TrustLLM" button to set session state
+  try{
+    var btns=window.parent.document.querySelectorAll('[data-testid="stButton"] button');
+    for(var i=0;i<btns.length;i++){
+      if(btns[i].innerText.indexOf('TrustLLM')>=0||btns[i].innerText.indexOf('Start')>=0){
+        btns[i].click();return;
+      }
+    }
+    // Fallback: click any visible button in the parent
+    if(btns.length>0)btns[0].click();
+  }catch(e){}
 }
 
 // Count-up
