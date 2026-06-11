@@ -350,6 +350,8 @@ h1{font-size:clamp(32px,4.5vw,54px);font-weight:800;color:#0A0A0A;line-height:1.
 .dim{display:inline;position:relative}
 .dim::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform .28s ease}
 .dim:hover::after{transform:scaleX(1)}
+.hl w{cursor:default;background-image:linear-gradient(var(--red-p),var(--red-p));background-repeat:no-repeat;background-position:0 88%;background-size:0% 90%;border-radius:3px;transition:background-size .28s cubic-bezier(.2,.7,.2,1),color .28s;padding:0 2px;color:#0A0A0A}
+.hl w:hover{background-size:100% 90%;color:var(--red)}
 .ctas{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2rem}
 .btn-p{background:var(--red);color:#fff;font-weight:600;font-size:.9rem;padding:.7rem 1.75rem;border-radius:8px;text-decoration:none;display:inline-block;transition:background .2s}
 .btn-p:hover{background:var(--red-d)}
@@ -368,6 +370,12 @@ h1{font-size:clamp(32px,4.5vw,54px);font-weight:800;color:#0A0A0A;line-height:1.
 .sval{width:28px;text-align:right;font-size:.78rem;font-weight:600;color:#0A0A0A;flex-shrink:0}
 .sample-note{display:inline-flex;align-items:center;gap:.35rem;margin-top:.85rem;font-size:.68rem;color:var(--gray)}
 .green-dot{width:6px;height:6px;border-radius:50%;background:#10B981;display:inline-block;flex-shrink:0}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#10B981;display:inline-block;flex-shrink:0;animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 0 0 #4ade8066}50%{opacity:.5;box-shadow:0 0 0 6px #4ade8000}}
+@keyframes rowflash{0%,12%{opacity:1;background:rgba(232,41,11,.06)}18%,100%{opacity:.38;background:transparent}}
+.srow.live{animation:rowflash 6s linear infinite}
+.srow:nth-child(2){animation-delay:0s}.srow:nth-child(3){animation-delay:1.2s}
+.srow:nth-child(4){animation-delay:2.4s}.srow:nth-child(5){animation-delay:3.6s}.srow:nth-child(6){animation-delay:4.8s}
 
 /* Stats */
 .stats{background:#F9FAFB;border-top:1px solid var(--bdr);padding:3rem 2rem}
@@ -494,7 +502,7 @@ footer{background:#F9FAFB;border-top:1px solid var(--bdr);padding:2rem 1rem;text
         </span>
         in every response.
       </div>
-      <p class="sub">Run rigorous trust benchmarks across <span class="dim">safety</span>, <span class="dim">fairness</span>, <span class="dim">robustness</span>, <span class="dim">privacy</span>, and <span class="dim">truthfulness</span>. Get verdicts, not vanity metrics.</p>
+      <p class="sub hl">Run rigorous trust benchmarks across <w>safety</w>, <w>fairness</w>, <w>robustness</w>, <w>privacy</w>, and <w>truthfulness</w>. Get verdicts, not vanity metrics.</p>
       <div class="ctas">
         <a href="#sign-in" class="btn-p mag">Start Evaluating →</a>
         <a href="#how-it-works" class="btn-s mag">See how it works</a>
@@ -508,13 +516,13 @@ footer{background:#F9FAFB;border-top:1px solid var(--bdr);padding:2rem 1rem;text
     </div>
     <div class="eR d1">
       <div class="score-panel">
-        <span class="run-tag">evaluation_run · gpt-4o</span>
-        <div class="srow"><span class="slabel">Truthfulness</span><div class="sbar"><div class="sfill" data-w="91"></div></div><span class="sval">91</span></div>
-        <div class="srow"><span class="slabel">Safety</span><div class="sbar"><div class="sfill" data-w="88"></div></div><span class="sval">88</span></div>
-        <div class="srow"><span class="slabel">Fairness</span><div class="sbar"><div class="sfill" data-w="83"></div></div><span class="sval">83</span></div>
-        <div class="srow"><span class="slabel">Privacy</span><div class="sbar"><div class="sfill" data-w="95"></div></div><span class="sval">95</span></div>
-        <div class="srow"><span class="slabel">Robustness</span><div class="sbar"><div class="sfill" data-w="79"></div></div><span class="sval">79</span></div>
-        <div class="srow"><span class="slabel">Ethics</span><div class="sbar"><div class="sfill" data-w="87"></div></div><span class="sval">87</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem"><span class="run-tag" style="margin-bottom:0">evaluation_run · gpt-4o</span><span style="display:flex;align-items:center;gap:6px;font-size:.72rem;color:#10B981"><span class="live-dot"></span>scoring</span></div>
+        <div class="srow live"><span class="slabel">Truthfulness</span><div class="sbar"><div class="sfill" data-w="91"></div></div><span class="sval">91</span></div>
+        <div class="srow live"><span class="slabel">Safety</span><div class="sbar"><div class="sfill" data-w="88"></div></div><span class="sval">88</span></div>
+        <div class="srow live"><span class="slabel">Fairness</span><div class="sbar"><div class="sfill" data-w="83"></div></div><span class="sval">83</span></div>
+        <div class="srow live"><span class="slabel">Privacy</span><div class="sbar"><div class="sfill" data-w="95"></div></div><span class="sval">95</span></div>
+        <div class="srow live"><span class="slabel">Robustness</span><div class="sbar"><div class="sfill" data-w="79"></div></div><span class="sval">79</span></div>
+        <div class="srow live"><span class="slabel">Ethics</span><div class="sbar"><div class="sfill" data-w="87"></div></div><span class="sval">87</span></div>
         <div class="sample-note"><span class="green-dot"></span>Illustrative sample data — sign in to run real evaluations</div>
       </div>
     </div>
@@ -729,18 +737,44 @@ function wireMag(el){
 }
 if(!R)document.querySelectorAll('.mag').forEach(wireMag);
 
-// 3D tilt
-function wireTilt(el){
-  if(el._t)return;el._t=true;
-  el.addEventListener('mousemove',function(ev){
-    var r=el.getBoundingClientRect();
-    var x=((ev.clientY-r.top)/r.height-.5)*14,y=-((ev.clientX-r.left)/r.width-.5)*14;
-    el.style.transform='perspective(600px) rotateX('+x+'deg) rotateY('+y+'deg) translateY(-4px)';
-    el.style.boxShadow='0 8px 24px rgba(232,41,11,.12)';
+// macOS dock proximity magnification + 3D tilt
+(function(){
+  if(R)return;
+  var dock=document.querySelector('.dock');
+  if(dock){
+    var dcards=[].slice.call(dock.querySelectorAll('.ditem'));
+    var MAX=1.38,RANGE=170,LIFT=20;
+    dock.addEventListener('mousemove',function(ev){
+      dcards.forEach(function(c){
+        var r=c.getBoundingClientRect();
+        var cx=r.left+r.width/2;
+        var d=Math.abs(ev.clientX-cx);
+        var f=Math.max(0,1-d/RANGE);
+        c.style.transform='translateY('+(- LIFT*f)+'px) scale('+(1+(MAX-1)*f)+')';
+        c.style.zIndex=Math.round(f*10);
+        c.style.borderColor=f>.5?'var(--red)':'';
+        // per-card tilt
+        var px=(ev.clientX-r.left)/r.width-.5;
+        var py=(ev.clientY-r.top)/r.height-.5;
+        c.style.transform+=' rotateY('+(px*14)+'deg) rotateX('+(-py*14)+'deg)';
+      });
+    });
+    dock.addEventListener('mouseleave',function(){
+      dcards.forEach(function(c){c.style.transform='';c.style.zIndex='';c.style.borderColor='';});
+    });
+  }
+  // 3D tilt on feature cards (no proximity)
+  document.querySelectorAll('.fc').forEach(function(el){
+    if(el._t)return;el._t=true;
+    el.addEventListener('mousemove',function(ev){
+      var r=el.getBoundingClientRect();
+      var x=((ev.clientY-r.top)/r.height-.5)*12,y=-((ev.clientX-r.left)/r.width-.5)*12;
+      el.style.transform='perspective(600px) rotateX('+x+'deg) rotateY('+y+'deg) translateY(-4px)';
+      el.style.boxShadow='0 8px 24px rgba(232,41,11,.12)';
+    });
+    el.addEventListener('mouseleave',function(){el.style.transform='';el.style.boxShadow='';});
   });
-  el.addEventListener('mouseleave',function(){el.style.transform='';el.style.boxShadow='';});
-}
-if(!R)document.querySelectorAll('.ditem,.fc').forEach(wireTilt);
+})();
 
 // Tab switcher with sliding pill
 var bar=document.getElementById('tab-bar'),pill=document.getElementById('tab-pill');
@@ -1171,10 +1205,396 @@ def _inject_command_palette() -> None:
 
 
 # -----------------------------------------------------------------------
+
+# -----------------------------------------------------------------------
+# Feature tour — shown once after first login
+# -----------------------------------------------------------------------
+_TOUR_HTML = """<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{font-family:'Inter',system-ui,sans-serif;background:#fff;color:#0A0A0A;overflow:hidden;height:100%}
+:root{--red:#E8290B;--red-d:#C42208;--red-p:#FEF2F0;--ink:#0A0A0A;--gray:#6B7280;--bdr:#E5E7EB;--off:#F9F8F6}
+
+/* Slide track */
+.track{display:flex;height:100vh;transition:transform .55s cubic-bezier(.4,0,.2,1)}
+.slide{min-width:100vw;height:100vh;overflow-y:auto;padding:3rem 2rem 5rem;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
+
+/* Header */
+.tour-hdr{width:100%;max-width:860px;display:flex;align-items:center;justify-content:space-between;margin-bottom:2.5rem;flex-shrink:0}
+.tour-logo{display:flex;align-items:center;gap:.5rem;font-weight:700;font-size:.95rem;color:#0A0A0A}
+.tour-logo .mk{background:var(--red);width:24px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:.75rem}
+.skip-btn{background:none;border:none;cursor:pointer;font-size:.82rem;color:var(--gray);font-family:'Inter',sans-serif;padding:.35rem .75rem;border-radius:6px;transition:color .2s,background .2s}
+.skip-btn:hover{color:#0A0A0A;background:#F3F4F6}
+
+/* Dots */
+.dots{display:flex;gap:.5rem;justify-content:center;margin-bottom:2rem;flex-shrink:0}
+.dot{width:8px;height:8px;border-radius:50%;background:#E5E7EB;transition:all .3s cubic-bezier(.4,0,.2,1)}
+.dot.on{background:var(--red);width:24px;border-radius:4px}
+
+/* Content area */
+.slide-body{width:100%;max-width:860px;flex:1}
+.eyebrow{font-size:.7rem;font-weight:700;letter-spacing:.15em;color:var(--red);text-transform:uppercase;margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}
+.eyebrow .ldot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:lpulse 1.4s ease-in-out infinite}
+@keyframes lpulse{0%,100%{box-shadow:0 0 0 0 rgba(232,41,11,.5)}50%{box-shadow:0 0 0 6px rgba(232,41,11,0)}}
+h2.tour-h{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;letter-spacing:-.02em;line-height:1.08;margin:0 0 1rem;color:#0A0A0A}
+.tour-lead{font-size:1.02rem;color:var(--gray);line-height:1.7;max-width:52ch;margin:0 0 2.5rem}
+.hl w{cursor:default;background-image:linear-gradient(var(--red-p),var(--red-p));background-repeat:no-repeat;background-position:0 88%;background-size:0% 90%;border-radius:3px;transition:background-size .28s cubic-bezier(.2,.7,.2,1),color .28s;padding:0 2px}
+.hl w:hover{background-size:100% 90%;color:var(--red)}
+
+/* Slide 1 — stat tiles */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--bdr);border:1px solid var(--bdr);border-radius:12px;overflow:hidden;margin-top:1rem}
+@media(max-width:560px){.stat-row{grid-template-columns:repeat(2,1fr)}}
+.stile{background:#fff;padding:1.5rem 1.25rem;text-align:center}
+.stile .sn{font-family:'Space Grotesk',sans-serif;font-size:2.2rem;font-weight:700;color:#0A0A0A;letter-spacing:-.03em;line-height:1}
+.stile .sl{font-size:.75rem;color:var(--gray);margin-top:.35rem;font-weight:500}
+
+/* Slide 2 — scoring panel replica */
+.score-demo{background:var(--off);border:1px solid var(--bdr);border-radius:14px;padding:1.5rem}
+.run-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
+.run-tag{font-family:ui-monospace,monospace;font-size:.72rem;color:var(--gray);padding:.35rem .75rem;background:#F3F4F6;border-radius:4px}
+.live-ind{display:flex;align-items:center;gap:6px;font-size:.72rem;color:#10B981}
+.livepulse{width:7px;height:7px;border-radius:50%;background:#10B981;animation:lpulse 1.4s ease-in-out infinite}
+.drow{display:flex;align-items:center;gap:.75rem;padding:.6rem 0;border-top:1px solid rgba(0,0,0,.06);font-size:.82rem}
+.drow:first-child{border-top:none}
+@keyframes dflash{0%,12%{opacity:1;background:rgba(232,41,11,.06)}18%,100%{opacity:.38;background:transparent}}
+.drow.anim{animation:dflash 6s linear infinite;border-radius:6px;margin:0 -.5rem;padding:.6rem .5rem}
+.drow:nth-child(2){animation-delay:0s}.drow:nth-child(3){animation-delay:1.2s}.drow:nth-child(4){animation-delay:2.4s}.drow:nth-child(5){animation-delay:3.6s}.drow:nth-child(6){animation-delay:4.8s}.drow:nth-child(7){animation-delay:6s}
+.dlabel{width:88px;color:#374151;font-weight:500;flex-shrink:0}
+.dbar{flex:1;height:6px;background:#E5E7EB;border-radius:3px;overflow:hidden}
+.dfill{height:100%;border-radius:3px;background:var(--red);width:0;transition:width 1.2s cubic-bezier(.2,.7,.3,1)}
+.dval{width:28px;text-align:right;font-weight:600;color:#0A0A0A;flex-shrink:0}
+
+/* Slide 3 — dimension dock */
+.tour-dock{display:flex;flex-wrap:wrap;gap:.75rem;align-items:flex-end;perspective:900px;margin-top:1rem}
+.tdc{background:#fff;border:1.5px solid var(--bdr);border-radius:12px;padding:.9rem 1.1rem;cursor:default;text-align:center;transition:transform .18s ease,box-shadow .18s,border-color .18s;transform-style:preserve-3d;min-width:110px}
+.tdico{font-size:1.35rem;margin-bottom:.3rem}
+.tdname{font-family:'Space Grotesk',sans-serif;font-size:.82rem;font-weight:600;color:#0A0A0A}
+.tddesc{font-size:.67rem;color:var(--gray);margin-top:.15rem}
+
+/* Slide 4 — leaderboard mini */
+.mini-lb{border:1px solid var(--bdr);border-radius:12px;overflow:hidden}
+.lb-head{display:grid;grid-template-columns:32px 1fr 80px 80px 80px;gap:1rem;padding:.65rem 1rem;background:var(--off);font-size:.72rem;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.08em}
+@media(max-width:500px){.lb-head{grid-template-columns:32px 1fr 80px}.lb-head .hd,.lb-head .hp{display:none}}
+.lb-row{display:grid;grid-template-columns:32px 1fr 80px 80px 80px;gap:1rem;padding:.75rem 1rem;border-top:1px solid var(--bdr);font-size:.83rem;align-items:center;transition:background .2s}
+.lb-row:hover{background:var(--off)}
+@media(max-width:500px){.lb-row{grid-template-columns:32px 1fr 80px}.lb-row .hd,.lb-row .hp{display:none}}
+.rank{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:.85rem}
+.rank.r1{color:var(--red)}
+.mname{font-weight:600;color:#0A0A0A}
+.mprov{font-size:.72rem;color:var(--gray)}
+.trust{font-family:'Space Grotesk',sans-serif;font-weight:700;color:#0A0A0A;font-size:.92rem}
+.badge{display:inline-block;padding:.2rem .6rem;border-radius:99px;font-size:.68rem;font-weight:600}
+.badge.good{background:rgba(16,185,129,.12);color:#047857}
+.badge.med{background:rgba(245,158,11,.12);color:#92400E}
+
+/* Slide 5 — welcome to dashboard */
+.ready-card{background:var(--red);border-radius:16px;padding:2.5rem;color:#fff;text-align:center;max-width:480px;margin:0 auto}
+.ready-card h3{font-family:'Space Grotesk',sans-serif;font-size:1.8rem;font-weight:700;letter-spacing:-.02em;margin-bottom:.75rem}
+.ready-card p{font-size:.9rem;opacity:.88;line-height:1.65;margin-bottom:1.75rem}
+.ready-card .quick-links{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center}
+.ready-card .qlink{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);color:#fff;padding:.45rem 1rem;border-radius:6px;font-size:.8rem;font-weight:500;text-decoration:none;backdrop-filter:blur(4px);transition:background .2s}
+.ready-card .qlink:hover{background:rgba(255,255,255,.28)}
+
+/* Nav buttons */
+.tour-nav{position:fixed;bottom:0;left:0;right:0;padding:1.25rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-top:1px solid var(--bdr);z-index:50}
+.nav-back{background:none;border:1.5px solid var(--bdr);color:#374151;padding:.6rem 1.5rem;border-radius:8px;font-size:.88rem;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;transition:border-color .2s,color .2s}
+.nav-back:hover{border-color:#0A0A0A;color:#0A0A0A}
+.nav-next{background:var(--red);color:#fff;border:none;padding:.6rem 1.75rem;border-radius:8px;font-size:.88rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background .2s}
+.nav-next:hover{background:var(--red-d)}
+.nav-done{background:#0A0A0A;color:#fff;border:none;padding:.6rem 1.75rem;border-radius:8px;font-size:.88rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:opacity .2s}
+.nav-done:hover{opacity:.85}
+
+/* Entrance */
+@keyframes slIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.sl-enter{animation:slIn .5s cubic-bezier(.2,.7,.3,1) both}
+.sl-d1{animation-delay:.08s}.sl-d2{animation-delay:.16s}.sl-d3{animation-delay:.24s}.sl-d4{animation-delay:.32s}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<div class="track" id="track">
+
+  <!-- SLIDE 1: Welcome -->
+  <div class="slide">
+    <div class="tour-hdr">
+      <div class="tour-logo"><span class="mk">T</span>TrustLLM</div>
+      <button class="skip-btn" onclick="done()">Skip tour</button>
+    </div>
+    <div class="dots" id="dots"></div>
+    <div class="slide-body">
+      <p class="eyebrow sl-enter"><span class="ldot"></span>Step 1 of 5</p>
+      <h2 class="tour-h sl-enter sl-d1">You're in.<br>Here's what TrustLLM does.</h2>
+      <p class="tour-lead sl-enter sl-d2 hl"><w>TrustLLM</w> runs <w>adversarial</w> <w>benchmarks</w> against your LLMs and scores every response across <w>six</w> <w>trust</w> <w>dimensions</w> — so you catch hallucinations, bias, and safety failures before your users do.</p>
+      <div class="stat-row sl-enter sl-d3">
+        <div class="stile"><div class="sn cnt" data-to="6">6</div><div class="sl">Trust dimensions</div></div>
+        <div class="stile"><div class="sn cnt" data-to="21">21</div><div class="sl">Models</div></div>
+        <div class="stile"><div class="sn cnt" data-to="9">9</div><div class="sl">Providers</div></div>
+        <div class="stile"><div class="sn cnt" data-to="500" data-sfx="+">500+</div><div class="sl">Eval prompts</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: Scoring panel -->
+  <div class="slide">
+    <div class="tour-hdr">
+      <div class="tour-logo"><span class="mk">T</span>TrustLLM</div>
+      <button class="skip-btn" onclick="done()">Skip tour</button>
+    </div>
+    <div class="dots" id="dots2"></div>
+    <div class="slide-body">
+      <p class="eyebrow sl-enter"><span class="ldot"></span>Step 2 of 5</p>
+      <h2 class="tour-h sl-enter sl-d1">Every response, scored live.</h2>
+      <p class="tour-lead sl-enter sl-d2">As your LLM responds, the judge pipeline scores it across all six dimensions in real time. No hand-labelling. No guessing.</p>
+      <div class="score-demo sl-enter sl-d3">
+        <div class="run-row">
+          <span class="run-tag">evaluation_run · gpt-4o</span>
+          <span class="live-ind"><span class="livepulse"></span>scoring live</span>
+        </div>
+        <div class="drow anim"><span class="dlabel">Truthfulness</span><div class="dbar"><div class="dfill" data-w="91"></div></div><span class="dval">91</span></div>
+        <div class="drow anim"><span class="dlabel">Safety</span><div class="dbar"><div class="dfill" data-w="88"></div></div><span class="dval">88</span></div>
+        <div class="drow anim"><span class="dlabel">Fairness</span><div class="dbar"><div class="dfill" data-w="83"></div></div><span class="dval">83</span></div>
+        <div class="drow anim"><span class="dlabel">Privacy</span><div class="dbar"><div class="dfill" data-w="95"></div></div><span class="dval">95</span></div>
+        <div class="drow anim"><span class="dlabel">Robustness</span><div class="dbar"><div class="dfill" data-w="79"></div></div><span class="dval">79</span></div>
+        <div class="drow anim"><span class="dlabel">Ethics</span><div class="dbar"><div class="dfill" data-w="87"></div></div><span class="dval">87</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: Dimension dock -->
+  <div class="slide">
+    <div class="tour-hdr">
+      <div class="tour-logo"><span class="mk">T</span>TrustLLM</div>
+      <button class="skip-btn" onclick="done()">Skip tour</button>
+    </div>
+    <div class="dots" id="dots3"></div>
+    <div class="slide-body">
+      <p class="eyebrow sl-enter"><span class="ldot"></span>Step 3 of 5</p>
+      <h2 class="tour-h sl-enter sl-d1">Six trust dimensions, independently scored.</h2>
+      <p class="tour-lead sl-enter sl-d2">Each dimension targets a different failure mode. You can run the full suite or focus on the ones that matter most to your use case.</p>
+      <div class="tour-dock sl-enter sl-d3" id="tdock">
+        <div class="tdc"><div class="tdico">🎯</div><div class="tdname">Truthfulness</div><div class="tddesc">factual accuracy &amp; grounding</div></div>
+        <div class="tdc"><div class="tdico">🛡️</div><div class="tdname">Safety</div><div class="tddesc">harmful content &amp; jailbreak</div></div>
+        <div class="tdc"><div class="tdico">⚖️</div><div class="tdname">Fairness</div><div class="tddesc">demographic bias &amp; toxicity</div></div>
+        <div class="tdc"><div class="tdico">🔒</div><div class="tdname">Privacy</div><div class="tddesc">PII leakage &amp; data handling</div></div>
+        <div class="tdc"><div class="tdico">🧪</div><div class="tdname">Robustness</div><div class="tddesc">adversarial &amp; prompt injection</div></div>
+        <div class="tdc"><div class="tdico">🧭</div><div class="tdname">Ethics</div><div class="tddesc">responsible AI principles</div></div>
+      </div>
+      <p style="font-size:.72rem;color:var(--gray);margin-top:.75rem">↗ Hover across the row — macOS-dock magnification + 3D tilt</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: Leaderboard -->
+  <div class="slide">
+    <div class="tour-hdr">
+      <div class="tour-logo"><span class="mk">T</span>TrustLLM</div>
+      <button class="skip-btn" onclick="done()">Skip tour</button>
+    </div>
+    <div class="dots" id="dots4"></div>
+    <div class="slide-body">
+      <p class="eyebrow sl-enter"><span class="ldot"></span>Step 4 of 5</p>
+      <h2 class="tour-h sl-enter sl-d1">Compare models head-to-head.</h2>
+      <p class="tour-lead sl-enter sl-d2">The leaderboard aggregates all runs into a ranked Trust Score. See exactly where each model excels and where it fails.</p>
+      <div class="mini-lb sl-enter sl-d3">
+        <div class="lb-head"><span>#</span><span>Model</span><span>Trust Score</span><span class="hd">Halluc.</span><span class="hp">Safety</span></div>
+        <div class="lb-row"><span class="rank r1">1</span><div><div class="mname">Llama 3.3 70B</div><div class="mprov">Groq</div></div><span class="trust">87.4</span><span class="badge good hd">Low</span><span class="badge good hp">Pass</span></div>
+        <div class="lb-row"><span class="rank">2</span><div><div class="mname">GPT-4o</div><div class="mprov">OpenAI</div></div><span class="trust">84.1</span><span class="badge good hd">Low</span><span class="badge med hp">Review</span></div>
+        <div class="lb-row"><span class="rank">3</span><div><div class="mname">Claude 3.5 Sonnet</div><div class="mprov">Anthropic</div></div><span class="trust">82.9</span><span class="badge med hd">Med</span><span class="badge good hp">Pass</span></div>
+        <div class="lb-row"><span class="rank">4</span><div><div class="mname">Gemini 2.0 Flash</div><div class="mprov">Google</div></div><span class="trust">79.3</span><span class="badge med hd">Med</span><span class="badge med hp">Review</span></div>
+      </div>
+      <p style="font-size:.72rem;color:var(--gray);margin-top:.65rem">Sample data — run evaluations to populate your own leaderboard</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: Ready -->
+  <div class="slide" style="justify-content:center">
+    <div class="tour-hdr">
+      <div class="tour-logo"><span class="mk">T</span>TrustLLM</div>
+      <button class="skip-btn" onclick="done()">Skip</button>
+    </div>
+    <div class="slide-body" style="display:flex;align-items:center;justify-content:center">
+      <div class="ready-card sl-enter">
+        <div style="font-size:2.5rem;margin-bottom:1rem">🛡️</div>
+        <h3>Your dashboard is ready.</h3>
+        <p>Run your first evaluation, explore the leaderboard, or test your RAG pipeline — everything you need to trust your LLMs is here.</p>
+        <div class="quick-links">
+          <a class="qlink" href="?page=Run+Evaluation">▶ Run Evaluation</a>
+          <a class="qlink" href="?page=Leaderboard">🏆 Leaderboard</a>
+          <a class="qlink" href="?page=Overview">📊 Overview</a>
+          <a class="qlink" href="?page=RAG+Testing">📚 RAG Testing</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Nav bar -->
+<div class="tour-nav" id="tnav">
+  <button class="nav-back" id="btnBack" onclick="prev()" style="visibility:hidden">← Back</button>
+  <button class="nav-next" id="btnNext" onclick="next()">Next →</button>
+</div>
+
+<script>
+var R=matchMedia('(prefers-reduced-motion:reduce)').matches;
+var cur=0,total=5;
+var track=document.getElementById('track');
+var btnBack=document.getElementById('btnBack');
+var btnNext=document.getElementById('btnNext');
+
+// Build dots in each slide header
+['dots','dots2','dots3','dots4'].forEach(function(id,si){
+  var el=document.getElementById(id);
+  if(!el)return;
+  for(var i=0;i<total;i++){
+    var d=document.createElement('div');
+    d.className='dot'+(i===si+0?' on':'');
+    el.appendChild(d);
+  }
+});
+// Rebuild dots dynamically
+function updateDots(){
+  document.querySelectorAll('.dots').forEach(function(el){
+    [].slice.call(el.children).forEach(function(d,i){
+      d.className='dot'+(i===cur?' on':'');
+    });
+  });
+}
+
+function goTo(n){
+  n=Math.max(0,Math.min(n,total-1));
+  cur=n;
+  track.style.transform='translateX(-'+(cur*100)+'vw)';
+  btnBack.style.visibility=cur===0?'hidden':'visible';
+  if(cur===total-1){
+    btnNext.style.display='none';
+    document.getElementById('tnav').insertAdjacentHTML('beforeend','<button class="nav-done" onclick="done()">Start using TrustLLM →</button>');
+  } else {
+    btnNext.style.display='';
+    var doneBtn=document.querySelector('.nav-done');
+    if(doneBtn)doneBtn.remove();
+  }
+  updateDots();
+  // re-trigger bar fills on slide 2
+  if(cur===1){
+    setTimeout(function(){
+      document.querySelectorAll('.dfill').forEach(function(el){
+        el.style.width=(el.dataset.w||0)+'%';
+      });
+    },R?0:400);
+  }
+  // re-run count-ups on slide 1
+  if(cur===0){
+    document.querySelectorAll('.cnt').forEach(function(el){
+      el.textContent=el.dataset.to+(el.dataset.sfx||'')';
+    });
+    setTimeout(function(){document.querySelectorAll('.cnt').forEach(countUp);},R?0:300);
+  }
+}
+function next(){goTo(cur+1);}
+function prev(){goTo(cur-1);}
+function done(){
+  try{window.parent.postMessage({type:'tl-tour-done'},'*');}catch(e){}
+  // Also try setting session via query param
+  var url=window.parent.location;
+  try{window.parent.location.href=window.parent.location.href.split('?')[0]+'?tour=done';}catch(e){}
+}
+
+// Count-up
+function countUp(el){
+  if(R){el.textContent=el.dataset.to+(el.dataset.sfx||'');return;}
+  var to=+el.dataset.to,sfx=el.dataset.sfx||'',s=null,dur=900;
+  requestAnimationFrame(function f(t){
+    if(!s)s=t;var p=Math.min((t-s)/dur,1),e=1-Math.pow(1-p,3);
+    el.textContent=Math.round(e*to)+sfx;if(p<1)requestAnimationFrame(f);
+  });
+}
+setTimeout(function(){document.querySelectorAll('.cnt').forEach(countUp);},R?0:500);
+
+// Score bar fill (slide 2)
+setTimeout(function(){
+  document.querySelectorAll('.dfill').forEach(function(el){
+    el.style.width=(el.dataset.w||0)+'%';
+  });
+},R?0:800);
+
+// macOS dock on slide 3
+(function(){
+  if(R)return;
+  var dock=document.getElementById('tdock');
+  if(!dock)return;
+  var cards=[].slice.call(dock.querySelectorAll('.tdc'));
+  var MAX=1.35,RANGE=160,LIFT=18;
+  dock.addEventListener('mousemove',function(ev){
+    cards.forEach(function(c){
+      var r=c.getBoundingClientRect();
+      var cx=r.left+r.width/2;
+      var d=Math.abs(ev.clientX-cx);
+      var f=Math.max(0,1-d/RANGE);
+      var px=(ev.clientX-r.left)/r.width-.5;
+      var py=(ev.clientY-r.top)/r.height-.5;
+      c.style.transform='translateY(-'+(LIFT*f)+'px) scale('+(1+(MAX-1)*f)+') perspective(600px) rotateY('+(px*14)+'deg) rotateX('+((-py)*14)+'deg)';
+      c.style.zIndex=Math.round(f*10);
+      c.style.borderColor=f>.4?'#E8290B':'';
+    });
+  });
+  dock.addEventListener('mouseleave',function(){
+    cards.forEach(function(c){c.style.transform='';c.style.zIndex='';c.style.borderColor='';});
+  });
+})();
+
+// Keyboard nav
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowRight'||e.key==='Enter')next();
+  else if(e.key==='ArrowLeft')prev();
+  else if(e.key==='Escape')done();
+});
+
+// Listen for tour-done from parent (if any)
+try{
+  window.parent.addEventListener('message',function(e){
+    if(e.data&&e.data.type==='tl-tour-complete')done();
+  });
+}catch(ex){}
+
+// Init
+updateDots();
+</script>
+</body>
+</html>"""
+
+
+def _show_tour() -> None:
+    import streamlit.components.v1 as _components
+    _components.html(_TOUR_HTML, height=700, scrolling=False)
+    st.markdown("""
+        <style>
+        section.main .block-container{padding:0!important;max-width:100%!important;}
+        [data-testid="stMain"],[data-testid="stMainBlockContainer"],[data-testid="stAppViewBlockContainer"]{
+            width:100%!important;max-width:100%!important;padding:0!important;}
+        </style>
+    """, unsafe_allow_html=True)
+    if st.button("Start using TrustLLM →", use_container_width=True, type="primary", key="tour_finish"):
+        st.session_state["tour_done"] = True
+        st.rerun()
+
+
 # Auth gate
 # -----------------------------------------------------------------------
 if not st.session_state.get("logged_in"):
     _show_login()
+    st.stop()
+
+# Show feature tour once after first login
+if not st.session_state.get("tour_done"):
+    _show_tour()
     st.stop()
 
 _current_user = st.session_state["user"]
