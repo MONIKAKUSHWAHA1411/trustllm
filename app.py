@@ -185,7 +185,7 @@ def _show_login():
                         border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:16px;margin-bottom:.75rem;">
             <div style="display:flex;align-items:center;justify-content:space-between;
                         font-size:12px;color:#9a9aab;margin-bottom:12px;">
-            <span style="font-family:monospace;font-size:11px;">evaluation_run · gpt-4o</span>
+            <span style="font-family:monospace;font-size:11px;">sample_run · llama-3.3-70b</span>
             <span style="display:flex;align-items:center;gap:6px;color:#4ade80;">
             <span class="tllm-ld" style="width:7px;height:7px;border-radius:50%;background:#4ade80;
                   display:inline-block;animation:tllm-pulse 1.4s ease-in-out infinite;"></span>scoring

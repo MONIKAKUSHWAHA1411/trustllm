@@ -171,7 +171,7 @@ _DEMO_HTML = """<!DOCTYPE html>
     </div>
     <!-- looping product panel -->
     <div class="panel reveal">
-      <div class="bar"><span>evaluation_run · gpt-4o</span><span class="live"><i></i>scoring</span></div>
+      <div class="bar"><span>sample_run · llama-3.3-70b</span><span class="live"><i></i>scoring</span></div>
       <div class="erow"><span class="nm">Truthfulness</span><span class="track"><span class="fill" style="--w:91%"></span></span><span class="pct">91</span></div>
       <div class="erow"><span class="nm">Safety</span><span class="track"><span class="fill" style="--w:88%"></span></span><span class="pct">88</span></div>
       <div class="erow"><span class="nm">Fairness</span><span class="track"><span class="fill" style="--w:83%"></span></span><span class="pct">83</span></div>
@@ -186,9 +186,9 @@ _DEMO_HTML = """<!DOCTYPE html>
   <div class="wrap">
     <div class="grid stagger">
       <div class="stat"><div class="n" data-count="6">0</div><div class="l">trust dimensions scored</div></div>
-      <div class="stat"><div class="n" data-count="12">0</div><div class="l">models, bring your own key</div></div>
-      <div class="stat"><div class="n" data-count="6">0</div><div class="l">providers supported</div></div>
-      <div class="stat"><div class="n" data-count="100" data-suffix="%">0</div><div class="l">LLM-as-Judge coverage</div></div>
+      <div class="stat"><div class="n" data-count="21">0</div><div class="l">models, bring your own key</div></div>
+      <div class="stat"><div class="n" data-count="9">0</div><div class="l">providers supported</div></div>
+      <div class="stat"><div class="n" data-count="5">0</div><div class="l">eval categories</div></div>
     </div>
   </div>
 </section>
@@ -215,12 +215,12 @@ _DEMO_HTML = """<!DOCTYPE html>
     <h2 class="reveal">Six trust dimensions</h2>
     <p class="hint reveal">↓ Move your cursor across the row — macOS-dock magnification + 3D tilt on hover.</p>
     <div class="dock reveal" id="dock">
-      <div class="card"><div class="card-inner"><div class="ico" style="background:#6366f122">🎯</div><div><div class="name">Truthfulness</div><div class="score">score <b>91</b>/100</div></div></div></div>
-      <div class="card"><div class="card-inner"><div class="ico" style="background:#4ade8022">🛡️</div><div><div class="name">Safety</div><div class="score">score <b>88</b>/100</div></div></div></div>
-      <div class="card"><div class="card-inner"><div class="ico" style="background:#f59e0b22">⚖️</div><div><div class="name">Fairness</div><div class="score">score <b>83</b>/100</div></div></div></div>
-      <div class="card"><div class="card-inner"><div class="ico" style="background:#2dd4bf22">🔒</div><div><div class="name">Privacy</div><div class="score">score <b>95</b>/100</div></div></div></div>
-      <div class="card"><div class="card-inner"><div class="ico" style="background:#a855f722">🧪</div><div><div class="name">Robustness</div><div class="score">score <b>79</b>/100</div></div></div></div>
-      <div class="card"><div class="card-inner"><div class="ico" style="background:#ec489922">🧭</div><div><div class="name">Ethics</div><div class="score">score <b>87</b>/100</div></div></div></div>
+      <div class="card"><div class="card-inner"><div class="ico" style="background:#6366f122">🎯</div><div><div class="name">Truthfulness</div><div class="score">factual accuracy &amp; grounding</div></div></div></div>
+      <div class="card"><div class="card-inner"><div class="ico" style="background:#4ade8022">🛡️</div><div><div class="name">Safety</div><div class="score">harmful content &amp; jailbreak resistance</div></div></div></div>
+      <div class="card"><div class="card-inner"><div class="ico" style="background:#f59e0b22">⚖️</div><div><div class="name">Fairness</div><div class="score">demographic bias &amp; toxicity</div></div></div></div>
+      <div class="card"><div class="card-inner"><div class="ico" style="background:#2dd4bf22">🔒</div><div><div class="name">Privacy</div><div class="score">PII leakage &amp; data handling</div></div></div></div>
+      <div class="card"><div class="card-inner"><div class="ico" style="background:#a855f722">🧪</div><div><div class="name">Robustness</div><div class="score">adversarial &amp; prompt injection</div></div></div></div>
+      <div class="card"><div class="card-inner"><div class="ico" style="background:#ec489922">🧭</div><div><div class="name">Ethics</div><div class="score">responsible AI principles</div></div></div></div>
     </div>
   </div>
 </section>
@@ -256,12 +256,14 @@ _DEMO_HTML = """<!DOCTYPE html>
       <button data-tab="1">Anthropic</button>
       <button data-tab="2">Google</button>
       <button data-tab="3">Mistral</button>
+      <button data-tab="4">Groq · free</button>
     </div>
     <div class="tab-body" id="tabBody">
-      <div class="row show"><span class="chip">gpt-4o</span><span class="chip">gpt-4o-mini</span><span>Scored on all six dimensions with rationales.</span></div>
-      <div class="row"><span class="chip">claude-opus</span><span class="chip">claude-sonnet</span><span>Same scoring pipeline, side-by-side comparable.</span></div>
-      <div class="row"><span class="chip">gemini-pro</span><span class="chip">gemini-flash</span><span>Swap models without touching your eval set.</span></div>
-      <div class="row"><span class="chip">mistral-large</span><span>One key, the full trust report.</span></div>
+      <div class="row show"><span class="chip">GPT-4o</span><span class="chip">GPT-4o mini</span><span>Scored on all six dimensions with rationales.</span></div>
+      <div class="row"><span class="chip">Claude 3.5 Sonnet</span><span class="chip">Claude 3.5 Haiku</span><span>Same scoring pipeline, side-by-side comparable.</span></div>
+      <div class="row"><span class="chip">Gemini 2.0 Flash</span><span class="chip">Gemini 2.0 Flash Lite</span><span>Swap models without touching your eval set.</span></div>
+      <div class="row"><span class="chip">Mistral Large</span><span class="chip">Mistral Small</span><span>One key, the full trust report.</span></div>
+      <div class="row"><span class="chip">Llama 3.3 70B</span><span class="chip">Llama 3.1 8B</span><span>No key needed — free Groq tier, ready to run.</span></div>
     </div>
   </div>
 </section>
