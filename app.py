@@ -310,6 +310,23 @@ def _show_login() -> None:
         .feat-card{background:#FFFFFF;border:1px solid #E5E7EB;padding:1.5rem 1.25rem;transition:all .25s ease;}
         .feat-card:hover{border-color:#E8420A;box-shadow:0 8px 24px rgba(232,66,10,0.12);transform:translateY(-3px);}
         .stAlert{border-radius:8px!important;}
+        /* === TrustLLM Motion Layer (orange, reduced-motion safe) === */
+        #tl-prog{position:fixed;top:0;left:0;width:0;height:3px;background:#E8420A;z-index:9999;pointer-events:none;}
+        .tl-reveal{opacity:0;transform:translateY(18px);
+          transition:opacity .6s cubic-bezier(.2,.7,.3,1),transform .6s cubic-bezier(.2,.7,.3,1);}
+        .tl-reveal.in{opacity:1;transform:none;}
+        .tl-d1{transition-delay:.07s!important;}.tl-d2{transition-delay:.14s!important;}
+        .tl-d3{transition-delay:.21s!important;}.tl-d4{transition-delay:.28s!important;}
+        .tl-dim{display:inline;position:relative;}
+        .tl-dim::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:2px;
+          background:#E8420A;transform:scaleX(0);transform-origin:left;transition:transform .28s ease;}
+        .tl-dim:hover::after{transform:scaleX(1);}
+        .tl-step-line{position:absolute;left:18px;top:36px;width:2px;background:#E8420A;
+          height:0;transition:height 1s cubic-bezier(.2,.7,.3,1);pointer-events:none;}
+        @media(prefers-reduced-motion:reduce){
+          .tl-reveal{opacity:1!important;transform:none!important;transition:none!important;}
+          .tl-step-line{height:calc(100% - 72px)!important;transition:none!important;}
+        }
         </style>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     """), unsafe_allow_html=True)
@@ -342,7 +359,7 @@ def _show_login() -> None:
             <a href="#features" style="color:#6B7280;font-size:0.85rem;font-weight:500;text-decoration:none;white-space:nowrap;">Features</a>
             <a href="#how-it-works" style="color:#6B7280;font-size:0.85rem;font-weight:500;text-decoration:none;white-space:nowrap;">How It Works</a>
             <a href="#sign-in" style="background:#E8420A;color:white;font-size:0.82rem;font-weight:600;
-               text-decoration:none;padding:0.45rem 1rem;border-radius:6px;white-space:nowrap;flex-shrink:0;">Join Now →</a>
+               text-decoration:none;padding:0.45rem 1rem;border-radius:6px;white-space:nowrap;flex-shrink:0;" class="tl-magnetic">Join Now →</a>
           </div>
         </div>
     """), unsafe_allow_html=True)
@@ -380,16 +397,16 @@ def _show_login() -> None:
             in every response.
           </div>
           <div style="max-width:800px;margin:0 auto;">
-            <p style="font-size:1rem;color:#6B7280;max-width:560px;margin:0 auto 2.5rem;line-height:1.7;">
-              Run rigorous trust benchmarks across safety, fairness, robustness, privacy, and truthfulness.
+            <p class="tl-reveal" style="font-size:1rem;color:#6B7280;max-width:560px;margin:0 auto 2.5rem;line-height:1.7;">
+              Run rigorous trust benchmarks across <span class="tl-dim">safety</span>, <span class="tl-dim">fairness</span>, <span class="tl-dim">robustness</span>, <span class="tl-dim">privacy</span>, and <span class="tl-dim">truthfulness</span>.
               Get verdicts, not vanity metrics.
             </p>
             <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:3rem;">
-              <a href="#sign-in" style="background:#E8420A;color:white;font-weight:600;font-size:0.9rem;
+              <a href="#sign-in" class="tl-magnetic" style="background:#E8420A;color:white;font-weight:600;font-size:0.9rem;
                  padding:0.7rem 1.75rem;border-radius:8px;text-decoration:none;display:inline-block;">
                 Start Evaluating →
               </a>
-              <a href="#how-it-works" style="background:white;color:#0A0A0A;font-weight:500;font-size:0.9rem;
+              <a href="#how-it-works" class="tl-magnetic" style="background:white;color:#0A0A0A;font-weight:500;font-size:0.9rem;
                  padding:0.7rem 1.75rem;border-radius:8px;text-decoration:none;display:inline-block;
                  border:1px solid #E5E7EB;">
                 See how it works
@@ -400,7 +417,7 @@ def _show_login() -> None:
               <span style="font-size:0.78rem;color:#9CA3AF;">✓ No GPU required</span>
               <span style="font-size:0.78rem;color:#9CA3AF;">✓ RAG-ready</span>
               <span style="font-size:0.78rem;color:#9CA3AF;">✓ Local inference</span>
-              <span style="font-size:0.78rem;color:#9CA3AF;">✓ 500+ eval prompts</span>
+              <span style="font-size:0.78rem;color:#9CA3AF;">✓ <span class="tl-count" data-to="500" data-suffix="+">500</span> eval prompts</span>
             </div>
           </div>
         </section>
@@ -408,7 +425,7 @@ def _show_login() -> None:
 
     # ── BYOK SECTION ─────────────────────────────────────────────────
     st.markdown(_h("""
-        <section style="background:#FFF1EE;padding:3rem 2rem;border-top:3px solid #E8420A;font-family:'Inter',sans-serif;">
+        <section class="tl-reveal" style="background:#FFF1EE;padding:3rem 2rem;border-top:3px solid #E8420A;font-family:'Inter',sans-serif;">
           <div style="max-width:800px;margin:0 auto;">
             <p style="font-size:0.7rem;font-weight:700;letter-spacing:0.15em;color:#E8420A;margin-bottom:0.75rem;text-transform:uppercase;">— BRING YOUR OWN KEY</p>
             <h2 style="font-size:clamp(1.5rem,3vw,2.2rem);font-weight:800;color:#0A0A0A!important;
@@ -438,24 +455,24 @@ def _show_login() -> None:
                 -webkit-text-fill-color:#0A0A0A!important;letter-spacing:-0.02em;margin:0 0 2.5rem;">
               5 Steps to a Trust Score.
             </h2>
-            <div style="display:flex;flex-direction:column;">
-              <div style="display:flex;gap:1.25rem;padding:1.5rem 0;border-bottom:1px solid rgba(0,0,0,0.08);align-items:flex-start;">
+            <div id="tl-steps-col" style="display:flex;flex-direction:column;position:relative;">
+              <div class="tl-reveal tl-step-row" style="display:flex;gap:1.25rem;padding:1.5rem 0;border-bottom:1px solid rgba(0,0,0,0.08);align-items:flex-start;">
                 <div style="background:#E8420A;min-width:36px;height:36px;border-radius:4px;display:flex;align-items:center;justify-content:center;color:white;font-size:0.75rem;font-weight:700;flex-shrink:0;">01</div>
                 <div><div style="font-weight:600;color:#0A0A0A;margin-bottom:0.3rem;">Connect Your Models</div><div style="font-size:0.84rem;color:#6B7280;line-height:1.65;">Add your LLM endpoint or paste API keys for OpenAI, Anthropic, Google, Together AI, Fireworks, Cerebras, or any OpenAI-compatible API.</div></div>
               </div>
-              <div style="display:flex;gap:1.25rem;padding:1.5rem 0;border-bottom:1px solid rgba(0,0,0,0.08);align-items:flex-start;">
+              <div class="tl-reveal tl-step-row" style="display:flex;gap:1.25rem;padding:1.5rem 0;border-bottom:1px solid rgba(0,0,0,0.08);align-items:flex-start;">
                 <div style="background:#E8420A;min-width:36px;height:36px;border-radius:4px;display:flex;align-items:center;justify-content:center;color:white;font-size:0.75rem;font-weight:700;flex-shrink:0;">02</div>
                 <div><div style="font-weight:600;color:#0A0A0A;margin-bottom:0.3rem;">Select Evaluation Dimensions</div><div style="font-size:0.84rem;color:#6B7280;line-height:1.65;">Choose from Safety, Fairness, Robustness, Privacy, Truthfulness, and Machine Ethics — or run the full suite.</div></div>
               </div>
-              <div style="display:flex;gap:1.25rem;padding:1.5rem 0;border-bottom:1px solid rgba(0,0,0,0.08);align-items:flex-start;">
+              <div class="tl-reveal tl-step-row" style="display:flex;gap:1.25rem;padding:1.5rem 0;border-bottom:1px solid rgba(0,0,0,0.08);align-items:flex-start;">
                 <div style="background:#E8420A;min-width:36px;height:36px;border-radius:4px;display:flex;align-items:center;justify-content:center;color:white;font-size:0.75rem;font-weight:700;flex-shrink:0;">03</div>
                 <div><div style="font-weight:600;color:#0A0A0A;margin-bottom:0.3rem;">Run Adversarial Prompts</div><div style="font-size:0.84rem;color:#6B7280;line-height:1.65;">500+ curated prompts probe jailbreaks, bias probes, hallucination traps, privacy leaks, and more.</div></div>
               </div>
-              <div style="display:flex;gap:1.25rem;padding:1.5rem 0;border-bottom:1px solid rgba(0,0,0,0.08);align-items:flex-start;">
+              <div class="tl-reveal tl-step-row" style="display:flex;gap:1.25rem;padding:1.5rem 0;border-bottom:1px solid rgba(0,0,0,0.08);align-items:flex-start;">
                 <div style="background:#E8420A;min-width:36px;height:36px;border-radius:4px;display:flex;align-items:center;justify-content:center;color:white;font-size:0.75rem;font-weight:700;flex-shrink:0;">04</div>
                 <div><div style="font-weight:600;color:#0A0A0A;margin-bottom:0.3rem;">Get Scored Verdicts</div><div style="font-size:0.84rem;color:#6B7280;line-height:1.65;">Each response is scored by a judge LLM and rule-based classifiers. Results aggregate into per-dimension scores and a Trust Score.</div></div>
               </div>
-              <div style="display:flex;gap:1.25rem;padding:1.5rem 0;align-items:flex-start;">
+              <div class="tl-reveal tl-step-row" style="display:flex;gap:1.25rem;padding:1.5rem 0;align-items:flex-start;">
                 <div style="background:#E8420A;min-width:36px;height:36px;border-radius:4px;display:flex;align-items:center;justify-content:center;color:white;font-size:0.75rem;font-weight:700;flex-shrink:0;">05</div>
                 <div><div style="font-weight:600;color:#0A0A0A;margin-bottom:0.3rem;">Compare and Decide</div><div style="font-size:0.84rem;color:#6B7280;line-height:1.65;">Color-coded leaderboard shows where each model excels and fails. Export reports and track regressions over time.</div></div>
               </div>
@@ -474,10 +491,10 @@ def _show_login() -> None:
               Everything you need to trust your LLM.
             </h2>
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:#E5E7EB;">
-              <div class="feat-card"><div style="font-weight:600;color:#0A0A0A;margin-bottom:0.4rem;">Single Prompt Eval</div><p style="font-size:0.83rem;color:#6B7280;line-height:1.6;margin:0 0 1rem;">Test any prompt against a model instantly. See trust scores across all six dimensions in real time.</p><a href="#sign-in" style="color:#E8420A;font-size:0.83rem;font-weight:600;text-decoration:none;">Explore →</a></div>
-              <div class="feat-card"><div style="font-weight:600;color:#0A0A0A;margin-bottom:0.4rem;">Batch Evaluation</div><p style="font-size:0.83rem;color:#6B7280;line-height:1.6;margin:0 0 1rem;">Run your full prompt dataset through multiple models at once. Compare side-by-side at scale.</p><a href="#sign-in" style="color:#E8420A;font-size:0.83rem;font-weight:600;text-decoration:none;">Explore →</a></div>
-              <div class="feat-card"><div style="font-weight:600;color:#0A0A0A;margin-bottom:0.4rem;">RAG Testing</div><p style="font-size:0.83rem;color:#6B7280;line-height:1.6;margin:0 0 1rem;">Upload documents, build a ChromaDB vector store, and evaluate retrieval faithfulness and grounding accuracy.</p><a href="#sign-in" style="color:#E8420A;font-size:0.83rem;font-weight:600;text-decoration:none;">Explore →</a></div>
-              <div class="feat-card"><div style="font-weight:600;color:#0A0A0A;margin-bottom:0.4rem;">Agent Performance</div><p style="font-size:0.83rem;color:#6B7280;line-height:1.6;margin:0 0 1rem;">Benchmark autonomous agents on tool-call accuracy, hallucination rate, and semantic correctness.</p><a href="#sign-in" style="color:#E8420A;font-size:0.83rem;font-weight:600;text-decoration:none;">Explore →</a></div>
+              <div class="feat-card tl-reveal tl-fc tl-d1"><div style="font-weight:600;color:#0A0A0A;margin-bottom:0.4rem;">Single Prompt Eval</div><p style="font-size:0.83rem;color:#6B7280;line-height:1.6;margin:0 0 1rem;">Test any prompt against a model instantly. See trust scores across all six dimensions in real time.</p><a href="#sign-in" style="color:#E8420A;font-size:0.83rem;font-weight:600;text-decoration:none;">Explore →</a></div>
+              <div class="feat-card tl-reveal tl-fc tl-d2"><div style="font-weight:600;color:#0A0A0A;margin-bottom:0.4rem;">Batch Evaluation</div><p style="font-size:0.83rem;color:#6B7280;line-height:1.6;margin:0 0 1rem;">Run your full prompt dataset through multiple models at once. Compare side-by-side at scale.</p><a href="#sign-in" style="color:#E8420A;font-size:0.83rem;font-weight:600;text-decoration:none;">Explore →</a></div>
+              <div class="feat-card tl-reveal tl-fc tl-d3"><div style="font-weight:600;color:#0A0A0A;margin-bottom:0.4rem;">RAG Testing</div><p style="font-size:0.83rem;color:#6B7280;line-height:1.6;margin:0 0 1rem;">Upload documents, build a ChromaDB vector store, and evaluate retrieval faithfulness and grounding accuracy.</p><a href="#sign-in" style="color:#E8420A;font-size:0.83rem;font-weight:600;text-decoration:none;">Explore →</a></div>
+              <div class="feat-card tl-reveal tl-fc tl-d4"><div style="font-weight:600;color:#0A0A0A;margin-bottom:0.4rem;">Agent Performance</div><p style="font-size:0.83rem;color:#6B7280;line-height:1.6;margin:0 0 1rem;">Benchmark autonomous agents on tool-call accuracy, hallucination rate, and semantic correctness.</p><a href="#sign-in" style="color:#E8420A;font-size:0.83rem;font-weight:600;text-decoration:none;">Explore →</a></div>
             </div>
           </div>
         </section>
@@ -490,22 +507,22 @@ def _show_login() -> None:
             <p style="font-size:0.7rem;font-weight:700;letter-spacing:0.15em;color:#E8420A;margin-bottom:0.75rem;text-transform:uppercase;">— MODELS EVALUATED</p>
             <h2 style="font-size:clamp(1.5rem,3vw,2rem);font-weight:800;color:#0A0A0A!important;
                 -webkit-text-fill-color:#0A0A0A!important;letter-spacing:-0.02em;margin:0 0 2rem;">
-              21 Models. 9 Providers.
+              <span class="tl-count" data-to="21">21</span> Models. <span class="tl-count" data-to="9">9</span> Providers.
             </h2>
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:#E5E7EB;">
-              <div style="background:#F9FAFB;padding:1.25rem 1.5rem;">
+              <div class="tl-reveal" style="background:#F9FAFB;padding:1.25rem 1.5rem;">
                 <div style="font-size:0.68rem;color:#E8420A;letter-spacing:0.12em;margin-bottom:0.5rem;font-weight:700;text-transform:uppercase;">OpenAI</div>
                 <div style="font-size:0.85rem;color:#374151;line-height:2;">GPT-4o<br>GPT-4o mini<br>GPT-4 Turbo</div>
               </div>
-              <div style="background:#F9FAFB;padding:1.25rem 1.5rem;">
+              <div class="tl-reveal" style="background:#F9FAFB;padding:1.25rem 1.5rem;">
                 <div style="font-size:0.68rem;color:#E8420A;letter-spacing:0.12em;margin-bottom:0.5rem;font-weight:700;text-transform:uppercase;">Anthropic</div>
                 <div style="font-size:0.85rem;color:#374151;line-height:2;">Claude 3.5 Sonnet<br>Claude 3.5 Haiku<br>Claude 3 Opus</div>
               </div>
-              <div style="background:#F9FAFB;padding:1.25rem 1.5rem;">
+              <div class="tl-reveal" style="background:#F9FAFB;padding:1.25rem 1.5rem;">
                 <div style="font-size:0.68rem;color:#E8420A;letter-spacing:0.12em;margin-bottom:0.5rem;font-weight:700;text-transform:uppercase;">Google</div>
                 <div style="font-size:0.85rem;color:#374151;line-height:2;">Gemini 2.0 Flash<br>Gemini 2.0 Flash Lite<br>Gemini 1.5 Pro</div>
               </div>
-              <div style="background:#F9FAFB;padding:1.25rem 1.5rem;">
+              <div class="tl-reveal" style="background:#F9FAFB;padding:1.25rem 1.5rem;">
                 <div style="font-size:0.68rem;color:#E8420A;letter-spacing:0.12em;margin-bottom:0.5rem;font-weight:700;text-transform:uppercase;">Together · Fireworks · Cerebras</div>
                 <div style="font-size:0.85rem;color:#374151;line-height:2;">Qwen 2.5 72B<br>Llama 3.3 70B<br>DeepSeek R1</div>
               </div>
@@ -780,6 +797,112 @@ def _show_login() -> None:
         })();
         </script>
     """, height=0)
+
+    # -- MOTION LAYER JS --------------------------------------------------
+    _components.html("""
+        <script>
+        (function(){
+          var w = window.parent, d = w.document;
+          var reduce = w.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+          /* progress bar */
+          function initProg() {
+            if (!d.getElementById('tl-prog')) {
+              var p = d.createElement('div'); p.id = 'tl-prog';
+              d.body.appendChild(p);
+            }
+          }
+          initProg();
+          w.addEventListener('scroll', function(){
+            var h = d.documentElement, el = d.getElementById('tl-prog');
+            if (el) el.style.width = Math.min(h.scrollTop/(h.scrollHeight-h.clientHeight),1)*100 + '%';
+          }, {passive:true});
+
+          /* count-up */
+          function countUp(el) {
+            if (reduce){ el.textContent = el.dataset.to + (el.dataset.suffix||''); return; }
+            var target = +el.dataset.to, suf = el.dataset.suffix||'', s = null, dur = 1100;
+            (function step(t){ if (!s) s=t; var p=Math.min((t-s)/dur,1),e=1-Math.pow(1-p,3);
+              el.textContent = Math.round(e*target)+suf; if(p<1) requestAnimationFrame(step); })(0);
+            requestAnimationFrame(function(t){ (function step(t){ if (!s) s=t;
+              var p=Math.min((t-s)/dur,1),e=1-Math.pow(1-p,3);
+              el.textContent=Math.round(e*target)+suf; if(p<1) requestAnimationFrame(step); })(t); });
+          }
+
+          /* intersection observer */
+          var io = new IntersectionObserver(function(es){
+            es.forEach(function(e){
+              if (!e.isIntersecting) return;
+              e.target.classList.add('in');
+              if (e.target.dataset && e.target.dataset.to !== undefined) countUp(e.target);
+              io.unobserve(e.target);
+            });
+          }, {threshold:0.12});
+
+          /* step connector */
+          var sio = new IntersectionObserver(function(es){
+            es.forEach(function(e){
+              if (!e.isIntersecting) return;
+              var sc = e.target;
+              var line = sc.querySelector('.tl-step-line');
+              if (!line){
+                line = d.createElement('div'); line.className = 'tl-step-line';
+                sc.insertBefore(line, sc.firstChild);
+              }
+              var h = sc.offsetHeight - 72;
+              if (!reduce) { setTimeout(function(){ line.style.height = h + 'px'; }, 80); }
+              else { line.style.height = h + 'px'; }
+              sio.unobserve(sc);
+            });
+          }, {threshold:0.25});
+
+          /* magnetic */
+          function wireMag(btn) {
+            if (btn._tlm) return; btn._tlm = true;
+            btn.style.display = 'inline-block';
+            btn.addEventListener('mousemove', function(ev){
+              var r=btn.getBoundingClientRect();
+              btn.style.transform='translate('+(ev.clientX-r.left-r.width/2)*0.22+'px,'+(ev.clientY-r.top-r.height/2)*0.22+'px)';
+              btn.style.transition='transform .08s ease';
+            });
+            btn.addEventListener('mouseleave', function(){
+              btn.style.transform='translate(0,0)';
+              btn.style.transition='transform .45s cubic-bezier(.2,.8,.3,1)';
+            });
+          }
+
+          /* card tilt */
+          function wireTilt(card) {
+            if (card._tlt) return; card._tlt = true;
+            card.addEventListener('mousemove', function(ev){
+              var r=card.getBoundingClientRect();
+              var x=(ev.clientX-r.left)/r.width-.5, y=(ev.clientY-r.top)/r.height-.5;
+              card.style.transform='perspective(600px) rotateY('+(x*7)+'deg) rotateX('+(-y*7)+'deg) translateY(-4px)';
+              card.style.transition='transform .1s ease,box-shadow .1s ease';
+              card.style.boxShadow='0 12px 28px rgba(232,66,10,0.14)';
+              card.style.borderColor='#E8420A';
+            });
+            card.addEventListener('mouseleave', function(){
+              card.style.transform='';
+              card.style.transition='transform .4s ease,box-shadow .4s ease,border-color .4s ease';
+              card.style.boxShadow=''; card.style.borderColor='';
+            });
+          }
+
+          function wire() {
+            d.querySelectorAll('.tl-reveal,.tl-count').forEach(function(el){ io.observe(el); });
+            var sc = d.getElementById('tl-steps-col');
+            if (sc) sio.observe(sc);
+            if (!reduce) {
+              d.querySelectorAll('.tl-magnetic').forEach(wireMag);
+              d.querySelectorAll('.tl-fc').forEach(wireTilt);
+            }
+          }
+
+          wire(); setTimeout(wire, 800); setTimeout(wire, 2000);
+        })();
+        </script>
+    """, height=0, scrolling=False)
 
 
 # -----------------------------------------------------------------------
