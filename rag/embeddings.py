@@ -76,6 +76,22 @@ def get_embedding_function(model_key: str = DEFAULT_EMBEDDING):
     return _embedding_fns[model_key]
 
 
+def embedding_available(model_key: str) -> bool:
+    """
+    Whether ``model_key`` can actually be loaded in this environment.
+
+    ``minilm`` (ONNX) is always available. ``bge`` needs ``sentence-transformers``
+    (torch), which is intentionally absent from the lean cloud deploy — callers
+    use this to skip BGE gracefully instead of crashing.
+    """
+    if model_key == "minilm":
+        return True
+    if model_key == "bge":
+        import importlib.util
+        return importlib.util.find_spec("sentence_transformers") is not None
+    return False
+
+
 def embed_texts(texts: List[str], model_key: str = DEFAULT_EMBEDDING) -> List[List[float]]:
     """
     Embed a list of strings and return a list of float vectors.

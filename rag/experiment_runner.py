@@ -25,7 +25,7 @@ from .ingestion import (
     collection_signature,
     ensure_indexed,
 )
-from .embeddings import DEFAULT_EMBEDDING
+from .embeddings import DEFAULT_EMBEDDING, embedding_available
 from .rag_pipeline import DEFAULT_MODEL, DEFAULT_PROMPT_VARIANT, run_rag_query
 from .retriever import TOP_K
 from .evaluator import evaluate_rag
@@ -117,47 +117,92 @@ def run_experiment(
     -------
     dict with keys: question, source, configs, rows, ragas
     """
-    configs = build_configs(matrix)
+    all_configs = build_configs(matrix)
 
-    # --- 1. Build each unique collection once ---
+    # --- 0. Drop configs whose embedding can't load here (e.g. BGE without
+    #        sentence-transformers) so one unavailable model never crashes the
+    #        whole sweep — it's reported as skipped instead. ---
+    configs: List[dict] = []
+    skipped: List[dict] = []
+    for cfg in all_configs:
+        if embedding_available(cfg["embedding_model"]):
+            configs.append(cfg)
+        else:
+            skipped.append({
+                "label": config_label(cfg),
+                "reason": (
+                    f"'{cfg['embedding_model']}' embedding unavailable here "
+                    "(needs sentence-transformers / torch — runs locally)"
+                ),
+            })
+
+    if not configs:
+        return {
+            "question": question,
+            "source": source_pdf,
+            "configs": [],
+            "rows": [],
+            "skipped": skipped,
+            "ragas": {"status": "skipped", "reason": "no runnable configs"},
+        }
+
+    # --- 1. Build each unique collection once (skip a signature on failure) ---
+    failed_sigs = set()
     sigs = index_signatures(configs)
     for i, (emb, cs, co) in enumerate(sigs):
         if progress:
             progress(i, len(sigs), f"indexing {emb} cs{cs}/co{co}")
-        ensure_indexed(source_pdf, embedding_model=emb, chunk_size=cs, chunk_overlap=co)
+        try:
+            ensure_indexed(source_pdf, embedding_model=emb, chunk_size=cs, chunk_overlap=co)
+        except Exception as exc:
+            failed_sigs.add((emb, cs, co))
+            skipped.append({
+                "label": f"{emb} · cs{cs}/co{co}",
+                "reason": f"indexing failed: {type(exc).__name__}: {exc}",
+            })
 
-    # --- 2. Run every config + fast embedding metrics ---
+    # --- 2. Run every runnable config + fast embedding metrics ---
     rows: List[dict] = []
-    total = len(configs)
-    for idx, cfg in enumerate(configs):
+    runnable = [
+        c for c in configs
+        if (c["embedding_model"], c["chunk_size"], c["chunk_overlap"]) not in failed_sigs
+    ]
+    total = len(runnable)
+    for idx, cfg in enumerate(runnable):
         if progress:
             progress(idx, total, config_label(cfg))
-        result = run_rag_query(
-            question,
-            model=cfg["gen_model"],
-            top_k=cfg["top_k"],
-            collection_name=cfg["collection_name"],
-            embedding_model=cfg["embedding_model"],
-            prompt_variant=cfg["prompt_variant"],
-        )
-        fast = evaluate_rag(question, result.get("answer", ""), result.get("sources", []))
-        rows.append(
-            {
-                "config_id": idx,
+        try:
+            result = run_rag_query(
+                question,
+                model=cfg["gen_model"],
+                top_k=cfg["top_k"],
+                collection_name=cfg["collection_name"],
+                embedding_model=cfg["embedding_model"],
+                prompt_variant=cfg["prompt_variant"],
+            )
+            fast = evaluate_rag(question, result.get("answer", ""), result.get("sources", []))
+            rows.append(
+                {
+                    "config_id": idx,
+                    "label": config_label(cfg),
+                    "collection_name": cfg["collection_name"],
+                    **{k: cfg[k] for k in _DIMENSIONS},
+                    "answer": result.get("answer", ""),
+                    "contexts": result.get("contexts", []),
+                    "sources": result.get("sources", []),
+                    "latency": result.get("latency", {}),
+                    **fast,  # context_relevance, faithfulness, hallucination_risk, recall_at_k, precision
+                }
+            )
+        except Exception as exc:
+            skipped.append({
                 "label": config_label(cfg),
-                "collection_name": cfg["collection_name"],
-                **{k: cfg[k] for k in _DIMENSIONS},
-                "answer": result.get("answer", ""),
-                "contexts": result.get("contexts", []),
-                "sources": result.get("sources", []),
-                "latency": result.get("latency", {}),
-                **fast,  # context_relevance, faithfulness, hallucination_risk, recall_at_k, precision
-            }
-        )
+                "reason": f"run failed: {type(exc).__name__}: {exc}",
+            })
 
     # --- 3. Optional RAGAS scoring ---
     ragas_summary = {"status": "skipped", "reason": "score_ragas=False"}
-    if score_ragas:
+    if score_ragas and rows:
         ragas_summary = _attach_ragas(rows, question, reference_answer)
 
     if progress:
@@ -168,6 +213,7 @@ def run_experiment(
         "source": source_pdf,
         "configs": configs,
         "rows": rows,
+        "skipped": skipped,
         "ragas": ragas_summary,
     }
 

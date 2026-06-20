@@ -30,10 +30,16 @@ huggingface_hub>=0.26.0
 # Pro: encrypt user API keys at rest
 cryptography>=43.0.0
 
+# RAG Debugger — RAGAS scoring (torch-free). faithfulness + context_precision/
+# recall use the Groq judge, no local embedding model, so this runs on Streamlit
+# Community Cloud. answer_relevancy + BGE need torch → requirements-dev.txt;
+# the app skips them gracefully when absent.
+ragas>=0.2.0,<1.0
+langchain-groq>=0.2.0
+
 # ── Dev / full-power extras live in requirements-dev.txt ──────────────────
-# Heavy or optional deps (pytest, deepeval, ragas, sentence-transformers/torch)
-# are kept OUT of this file so the Streamlit Community Cloud deploy stays within
-# its ~1 GB memory limit. The app degrades gracefully without them (RAG Debugger
-# runs on fast embedding metrics; RAGAS/BGE show a "run locally" note).
+# Kept OUT of this file so the Streamlit Community Cloud deploy stays torch-free:
+# the BGE embedding option, RAGAS answer_relevancy, DeepEval, and the test suite.
+# The app degrades gracefully without them.
 # For the full local experience + test suite:
 #     pip install -r requirements.txt -r requirements-dev.txt

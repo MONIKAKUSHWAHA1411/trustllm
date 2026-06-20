@@ -1,8 +1,9 @@
 # Dev / full-power extras for TrustLLM — install ON TOP of requirements.txt:
 #     pip install -r requirements.txt -r requirements-dev.txt
 #
-# Kept separate from requirements.txt so the Streamlit Community Cloud deploy
-# stays within its ~1 GB memory limit (these pull torch and other heavy wheels).
+# Kept separate so the Streamlit Community Cloud deploy stays torch-free.
+# (RAGAS faithfulness + context metrics already ship in requirements.txt; these
+# add the torch-dependent extras + the test suite.)
 # Every feature that uses these degrades gracefully when they are absent.
 
 # Offline test suite + CI quality gate
@@ -11,9 +12,6 @@ pytest>=8.0.0
 # Industry-standard GenAI metrics (evaluation_engine/deepeval_runner.py)
 deepeval>=1.0.0
 
-# RAG Debugger — RAGAS scoring + BGE embeddings
-# (rag/experiment_runner.py, evaluation_engine/ragas_runner.py)
-ragas>=0.1.0
-langchain-groq>=0.2.0
+# RAG Debugger — BGE embedding option + RAGAS answer_relevancy (need torch)
 langchain-huggingface>=0.1.0
 sentence-transformers>=2.2.0   # pulls torch — only needed when the BGE option is selected

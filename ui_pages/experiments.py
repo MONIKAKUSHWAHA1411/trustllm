@@ -22,7 +22,7 @@ import streamlit as st
 BASE_DIR = Path(__file__).resolve().parents[1]
 
 from rag.ingestion import UPLOADED_PDF_DIR
-from rag.embeddings import AVAILABLE_EMBEDDINGS
+from rag.embeddings import AVAILABLE_EMBEDDINGS, embedding_available
 from rag.rag_pipeline import AVAILABLE_MODELS, PROMPT_VARIANTS
 from rag.experiment_runner import (
     run_experiment,
@@ -96,9 +96,17 @@ def _results_table(rows: list) -> pd.DataFrame:
 
 def _render_results(result: dict):
     rows = result.get("rows", [])
+    skipped = result.get("skipped") or []
     if not rows:
-        st.warning("No results to show.")
+        st.warning("No runnable configs in this sweep.")
+        for s in skipped:
+            st.caption(f"• {s.get('label', '?')} — {s.get('reason', '')}")
         return
+
+    if skipped:
+        with st.expander(f"⚠️ {len(skipped)} config(s) skipped (not runnable here)", expanded=False):
+            for s in skipped:
+                st.caption(f"• {s.get('label', '?')} — {s.get('reason', '')}")
 
     ragas = result.get("ragas", {})
     if ragas.get("status") == "ok":
@@ -248,7 +256,15 @@ def render():
         f"**{len(configs)} configs** · **{n_builds} collection build(s)** "
         f"(unique embedding × chunk × overlap)"
     )
-    if "bge" in (embeddings or []):
+    unavailable = [e for e in (embeddings or []) if not embedding_available(e)]
+    if unavailable:
+        names = ", ".join(AVAILABLE_EMBEDDINGS.get(e, {}).get("label", e) for e in unavailable)
+        st.warning(
+            f"⚠️ {names} isn't available on this deployment (needs `sentence-transformers`). "
+            "Those configs will be **skipped** here — install `requirements-dev.txt` locally "
+            "for the full embedding comparison. The sweep still runs the others."
+        )
+    elif "bge" in (embeddings or []):
         st.caption("⚠️ BGE loads `sentence-transformers` (torch) on first use — the initial build is slower.")
     if len(configs) > 16:
         st.warning(f"{len(configs)} configs is a lot of LLM calls — consider narrowing the matrix.")

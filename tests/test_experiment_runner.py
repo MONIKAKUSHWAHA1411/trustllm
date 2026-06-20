@@ -222,3 +222,40 @@ def test_run_experiment_ragas_skip_is_graceful(monkeypatch):
     result = er.run_experiment("q?", "fake.pdf", {"top_k": [3]}, score_ragas=True)
     assert len(result["rows"]) == 1
     assert result["ragas"]["status"] in ("skipped", "error", "ok")
+
+
+def test_run_experiment_skips_unavailable_embedding(monkeypatch):
+    """A selected-but-unavailable embedding (e.g. BGE without sentence-transformers)
+    is skipped, not fatal — runnable configs still produce rows."""
+    import rag.experiment_runner as er
+
+    # Force bge unavailable, minilm available (deterministic regardless of env).
+    monkeypatch.setattr(er, "embedding_available", lambda key: key == "minilm")
+    monkeypatch.setattr(er, "ensure_indexed", lambda *a, **k: {"reused": True})
+    monkeypatch.setattr(
+        er, "run_rag_query",
+        lambda *a, **k: {"answer": "a", "sources": [], "contexts": [], "latency": {}},
+    )
+    monkeypatch.setattr(
+        er, "evaluate_rag",
+        lambda *a, **k: {"faithfulness": 0.5, "context_relevance": 0.5,
+                         "hallucination_risk": 0.5, "recall_at_k": 0.0, "precision": 0.0},
+    )
+
+    matrix = {"embedding_model": ["minilm", "bge"], "chunk_size": [500], "top_k": [3]}
+    result = er.run_experiment("q?", "fake.pdf", matrix, score_ragas=False)
+
+    assert len(result["rows"]) == 1                  # only minilm ran
+    assert result["rows"][0]["embedding_model"] == "minilm"
+    assert len(result["skipped"]) == 1               # bge skipped, not crashed
+    assert "bge" in result["skipped"][0]["reason"]
+
+
+def test_run_experiment_all_skipped_is_not_fatal(monkeypatch):
+    """If every config is unavailable, return empty rows + skipped (no crash)."""
+    import rag.experiment_runner as er
+    monkeypatch.setattr(er, "embedding_available", lambda key: False)
+    result = er.run_experiment("q?", "fake.pdf", {"embedding_model": ["bge"]}, score_ragas=True)
+    assert result["rows"] == []
+    assert len(result["skipped"]) >= 1
+    assert result["ragas"]["status"] == "skipped"
