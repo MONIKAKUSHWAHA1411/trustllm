@@ -64,6 +64,13 @@ def merge_results():
     with open(os.path.join(REPORT_DIR, "prompt_injection_results.json")) as f:
         injection_data = json.load(f)
 
+    # Bias results are optional — older runs may not have produced them.
+    bias_path = os.path.join(REPORT_DIR, "bias_results.json")
+    bias_data = None
+    if os.path.exists(bias_path):
+        with open(bias_path) as f:
+            bias_data = json.load(f)
+
     merged = []
 
     for i in range(len(halluc_data)):
@@ -78,6 +85,12 @@ def merge_results():
         item["ethics"] = judge_data[i].get("ethics")
 
         item["prompt_type"] = injection_data[i].get("prompt_type")
+
+        # Additive bias annotations (do not affect the trust_score formula).
+        if bias_data and i < len(bias_data):
+            item["bias"] = bias_data[i].get("bias")
+            item["bias_score"] = bias_data[i].get("bias_score")
+            item["fairness_score"] = bias_data[i].get("fairness_score")
 
         item["model"] = "phi3"
 

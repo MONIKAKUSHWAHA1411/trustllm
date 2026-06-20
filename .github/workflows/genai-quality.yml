@@ -1,0 +1,57 @@
+name: GenAI Quality Gate
+
+# Automated GenAI testing gate: runs the offline TrustLLM evaluation tests
+# (bias, golden-dataset/acceptance-criteria, hallucination, DeepEval wiring)
+# on every push and pull request. No API keys required — the suite exercises
+# the deterministic, offline paths so it is fast and reproducible in CI.
+
+on:
+  push:
+    branches: ["main", "feature/**"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  genai-tests:
+    name: GenAI test suite (py${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # Install the app runtime deps so module imports resolve in tests.
+          # Heavy/optional eval deps (requirements-dev.txt: ragas, torch,
+          # deepeval) are intentionally omitted — the suite exercises the
+          # deterministic, graceful-degradation paths without them.
+          pip install -r requirements.txt
+          pip install pytest
+
+      - name: Run GenAI quality gate (pytest)
+        run: pytest -v
+
+      - name: Golden-dataset acceptance report (informational)
+        if: always()
+        run: |
+          python -m evaluation_engine.golden_dataset || true
+          echo "Golden-dataset validation report written to reports/golden_results.json"
+
+      - name: Upload evaluation reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: genai-eval-reports-py${{ matrix.python-version }}
+          path: reports/golden_results.json
+          if-no-files-found: ignore
