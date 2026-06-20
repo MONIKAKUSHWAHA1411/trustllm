@@ -29,3 +29,11 @@ huggingface_hub>=0.26.0
 
 # Pro: encrypt user API keys at rest
 cryptography>=43.0.0
+
+# ── Dev / full-power extras live in requirements-dev.txt ──────────────────
+# Heavy or optional deps (pytest, deepeval, ragas, sentence-transformers/torch)
+# are kept OUT of this file so the Streamlit Community Cloud deploy stays within
+# its ~1 GB memory limit. The app degrades gracefully without them (RAG Debugger
+# runs on fast embedding metrics; RAGAS/BGE show a "run locally" note).
+# For the full local experience + test suite:
+#     pip install -r requirements.txt -r requirements-dev.txt

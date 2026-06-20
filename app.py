@@ -1043,6 +1043,7 @@ _CMD_PAGES = [
     ("Leaderboard",       "🏆", "Monitor"),
     ("Run Evaluation",    "▶",  "Evaluate"),
     ("RAG Testing",       "📚", "Evaluate"),
+    ("RAG Debugger",      "🧪", "Evaluate"),
     ("Prompt Explorer",   "🔎", "Data"),
     ("Prompt Dataset",    "📂", "Data"),
     ("Query History",     "🕘", "Data"),
@@ -1603,6 +1604,7 @@ from ui_pages.prompt_explorer   import render as prompt_explorer
 from ui_pages.leaderboard       import render as leaderboard
 from ui_pages.run_eval          import render as run_eval
 from ui_pages.rag_page          import render as rag_testing
+from ui_pages.experiments       import render as rag_debugger
 from ui_pages.prompt_dataset    import render as prompt_dataset
 from ui_pages.failure_analysis  import render as failure_analysis
 from ui_pages.profile           import render as profile_page
@@ -1690,6 +1692,7 @@ _SECTIONS = {
     "EVALUATE": [
         ("▶",  "Run Evaluation"),
         ("📚", "RAG Testing"),
+        ("🧪", "RAG Debugger"),
     ],
     "DATA": [
         ("🔎", "Prompt Explorer"),
@@ -1827,6 +1830,7 @@ _routes = {
     "Leaderboard":       leaderboard,
     "Run Evaluation":    run_eval,
     "RAG Testing":       rag_testing,
+    "RAG Debugger":      rag_debugger,
     "Prompt Dataset":    prompt_dataset,
     "Failure Analysis":  failure_analysis,
     "Query History":     query_history_page,

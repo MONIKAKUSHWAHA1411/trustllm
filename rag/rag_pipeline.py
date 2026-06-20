@@ -17,6 +17,8 @@ import os
 import time
 
 from .retriever import retrieve_documents, TOP_K
+from .ingestion import DEFAULT_COLLECTION
+from .embeddings import DEFAULT_EMBEDDING
 
 # Groq model IDs — free tier (production models, mixtral decommissioned 2025)
 AVAILABLE_MODELS = [
@@ -50,7 +52,18 @@ def _get_groq_client():
     return Groq(api_key=api_key)
 
 
-PROMPT_TEMPLATE = """\
+# Prompt variants — the RAG Debugger compares these side by side. Each must
+# contain the {context} and {question} placeholders.
+PROMPT_VARIANTS = {
+    "basic": """\
+Answer the question using the context below.
+
+Context:
+{context}
+
+Question: {question}
+Answer:""",
+    "grounded": """\
 You are a helpful assistant. Answer the question below using ONLY the
 context provided. If the context does not contain enough information,
 say "I don't have enough information in the provided documents."
@@ -61,42 +74,75 @@ say "I don't have enough information in the provided documents."
 
 Question: {question}
 
-Answer:"""
+Answer:""",
+    "cot": """\
+You are a careful assistant. Use ONLY the context below to answer.
+First, think step by step about which parts of the context are relevant.
+Then give a final answer on a new line that begins with "Answer:".
+If the context lacks the information, say so in the final answer.
+
+--- CONTEXT ---
+{context}
+--- END CONTEXT ---
+
+Question: {question}
+
+Reasoning:""",
+}
+DEFAULT_PROMPT_VARIANT = "grounded"
+
+# Backwards-compatible alias for callers/tests importing the single template.
+PROMPT_TEMPLATE = PROMPT_VARIANTS[DEFAULT_PROMPT_VARIANT]
 
 
 def run_rag_query(
     query: str,
     model: str = DEFAULT_MODEL,
     top_k: int = TOP_K,
+    collection_name: str = DEFAULT_COLLECTION,
+    embedding_model: str = DEFAULT_EMBEDDING,
+    prompt_variant: str = DEFAULT_PROMPT_VARIANT,
 ) -> dict:
     """
     Run a full RAG query: retrieve relevant chunks then generate an answer.
 
     Parameters
     ----------
-    query   : user question
-    model   : Groq model name
-    top_k   : number of context chunks to retrieve
+    query           : user question
+    model           : Groq model name
+    top_k           : number of context chunks to retrieve
+    collection_name : ChromaDB collection to search
+    embedding_model : embedding registry key the collection was indexed with
+    prompt_variant  : key into PROMPT_VARIANTS (basic / grounded / cot)
 
     Returns
     -------
     dict
-        answer  - str, LLM-generated answer
-        sources - list of source dicts from the retriever
-        model   - str, model used
+        answer   - str, LLM-generated answer
+        sources  - list of source dicts from the retriever
+        contexts - list[str], the retrieved chunk texts (for RAGAS scoring)
+        model    - str, model used
     """
     t_start = time.perf_counter()
 
     # --- 1. Retrieve ---
     t_ret = time.perf_counter()
-    source_docs = retrieve_documents(query, top_k=top_k)
+    source_docs = retrieve_documents(
+        query,
+        top_k=top_k,
+        collection_name=collection_name,
+        embedding_model=embedding_model,
+    )
     retrieval_time = round(time.perf_counter() - t_ret, 3)
 
     if not source_docs:
         return {
             "answer": "No documents found in the knowledge base. Please upload documents first.",
             "sources": [],
+            "contexts": [],
             "model": model,
+            "embedding_model": embedding_model,
+            "prompt_variant": prompt_variant,
             "latency": {"retrieval_time": retrieval_time, "generation_time": 0,
                         "total_time": retrieval_time, "estimated_tokens": 0,
                         "context_chunks": 0},
@@ -111,7 +157,8 @@ def run_rag_query(
             f"[{i}] (Source: {src}, Page: {page})\n{doc['text']}"
         )
     context = "\n\n".join(context_blocks)
-    prompt = PROMPT_TEMPLATE.format(context=context, question=query)
+    template = PROMPT_VARIANTS.get(prompt_variant, PROMPT_VARIANTS[DEFAULT_PROMPT_VARIANT])
+    prompt = template.format(context=context, question=query)
 
     # --- 3. Generate via Groq ---
     t_gen = time.perf_counter()
@@ -145,7 +192,10 @@ def run_rag_query(
     return {
         "answer": answer,
         "sources": source_docs,
+        "contexts": [doc["text"] for doc in source_docs],
         "model": model,
+        "embedding_model": embedding_model,
+        "prompt_variant": prompt_variant,
         "latency": {
             "retrieval_time": retrieval_time,
             "generation_time": generation_time,

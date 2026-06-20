@@ -10,15 +10,21 @@ from typing import List
 
 import chromadb
 
-from .embeddings import get_embedding_function
+from .embeddings import get_embedding_function, DEFAULT_EMBEDDING
 from .ingestion import DEFAULT_COLLECTION, VECTOR_DB_PATH
 
 TOP_K = 3
 
 
-def load_vector_store(collection_name: str = DEFAULT_COLLECTION):
+def load_vector_store(
+    collection_name: str = DEFAULT_COLLECTION,
+    embedding_model: str = DEFAULT_EMBEDDING,
+):
     """
     Return the ChromaDB collection object.
+
+    ``embedding_model`` must match the model the collection was indexed with,
+    otherwise queries embed into a different space and return garbage.
 
     Raises RuntimeError if the vector store has not been initialised yet
     (no documents ingested) or if the DB schema is incompatible.
@@ -41,11 +47,14 @@ def load_vector_store(collection_name: str = DEFAULT_COLLECTION):
         )
     return client.get_collection(
         name=collection_name,
-        embedding_function=get_embedding_function(),
+        embedding_function=get_embedding_function(embedding_model),
     )
 
 
-def get_retriever(collection_name: str = DEFAULT_COLLECTION):
+def get_retriever(
+    collection_name: str = DEFAULT_COLLECTION,
+    embedding_model: str = DEFAULT_EMBEDDING,
+):
     """
     Return a callable retriever.
 
@@ -53,7 +62,12 @@ def get_retriever(collection_name: str = DEFAULT_COLLECTION):
     results from ``retrieve_documents``.
     """
     def retriever(query: str, top_k: int = TOP_K):
-        return retrieve_documents(query, top_k=top_k, collection_name=collection_name)
+        return retrieve_documents(
+            query,
+            top_k=top_k,
+            collection_name=collection_name,
+            embedding_model=embedding_model,
+        )
 
     return retriever
 
@@ -62,6 +76,7 @@ def retrieve_documents(
     query: str,
     top_k: int = TOP_K,
     collection_name: str = DEFAULT_COLLECTION,
+    embedding_model: str = DEFAULT_EMBEDDING,
 ) -> List[dict]:
     """
     Query the vector store and return the top-k most relevant chunks.
@@ -71,6 +86,7 @@ def retrieve_documents(
     query           : natural-language query string
     top_k           : number of chunks to return
     collection_name : ChromaDB collection to search
+    embedding_model : embedding registry key the collection was indexed with
 
     Returns
     -------
@@ -80,7 +96,7 @@ def retrieve_documents(
         metadata   – dict   (source, page, chunk_index)
         chunk_id   – str
     """
-    collection = load_vector_store(collection_name)
+    collection = load_vector_store(collection_name, embedding_model=embedding_model)
 
     results = collection.query(
         query_texts=[query],
