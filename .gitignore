@@ -10,3 +10,9 @@ build/
 .venv
 venv/
 data/*.db
+
+# Vector store — schema is version-specific, never commit
+vector_db/
+
+# Streamlit secrets — never commit real keys (keep secrets.toml.example only)
+.streamlit/secrets.toml
