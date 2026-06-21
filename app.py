@@ -1392,7 +1392,6 @@ h2.tour-h{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.8rem,4vw,2.8r
         <div class="tdc"><div class="tdico">🧪</div><div class="tdname">Robustness</div><div class="tddesc">adversarial &amp; prompt injection</div></div>
         <div class="tdc"><div class="tdico">🧭</div><div class="tdname">Ethics</div><div class="tddesc">responsible AI principles</div></div>
       </div>
-      <p style="font-size:.72rem;color:var(--gray);margin-top:.75rem">↗ Hover across the row — macOS-dock magnification + 3D tilt</p>
     </div>
   </div>
 
@@ -1773,20 +1772,10 @@ for section, items in _SECTIONS.items():
 st.sidebar.markdown('<hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:0.75rem 0 0.5rem;">', unsafe_allow_html=True)
 
 # -----------------------------------------------------------------------
-# Get-your-own-key quick-links (TrustLLM Pro BYOK)
+# Quick API-key paste (TrustLLM Pro BYOK)
+# Per-provider "get your key" links now live on the Bring Your Own Key page.
 # -----------------------------------------------------------------------
 from llm_runner.providers import PROVIDERS as _PRO_PROVIDERS  # noqa: E402
-
-st.sidebar.markdown('<div class="sb-section">GET API KEYS</div>', unsafe_allow_html=True)
-_link_html_parts = []
-for _pid, _meta in _PRO_PROVIDERS.items():
-    _link_html_parts.append(
-        f'<a href="{_meta["api_key_url"]}" target="_blank" rel="noopener" '
-        f'style="display:block;padding:0.25rem 0.75rem;font-size:0.8rem;color:rgba(255,255,255,0.4);'
-        f'text-decoration:none;">'
-        f'↗ {_meta["display_name"]}</a>'
-    )
-st.sidebar.markdown("".join(_link_html_parts), unsafe_allow_html=True)
 
 # Quick inline API key paste — lets users activate Pro without going to the Settings page
 with st.sidebar.expander("➕ Paste API key (Pro)", expanded=False):
