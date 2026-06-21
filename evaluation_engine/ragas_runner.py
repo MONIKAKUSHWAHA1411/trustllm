@@ -143,6 +143,9 @@ def score_samples(
         return {"status": "skipped", "reason": "no samples", "results": []}
 
     # --- import guard (optional dependency) ---
+    # Catch *any* error, not just ImportError: a datasets/pyarrow version clash
+    # raises AttributeError on import, and that must degrade to "skipped" rather
+    # than crash the whole sweep.
     try:
         from ragas import evaluate
         from ragas.metrics import (
@@ -151,11 +154,20 @@ def score_samples(
             context_precision,
             context_recall,
         )
-        import datasets  # noqa: F401  (ensures HF datasets is present)
+        import datasets  # noqa: F401  (ensures HF datasets is importable)
     except ImportError:
         return {
             "status": "skipped",
             "reason": "RAGAS not installed — run `pip install ragas datasets`",
+            "results": [],
+        }
+    except Exception as exc:
+        return {
+            "status": "skipped",
+            "reason": (
+                f"RAGAS unavailable ({type(exc).__name__}: {exc}) — try "
+                "`pip install -U ragas datasets 'pyarrow>=15'`"
+            ),
             "results": [],
         }
 

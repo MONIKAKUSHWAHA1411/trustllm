@@ -272,7 +272,15 @@ def _attach_ragas(rows: List[dict], question: str, reference_answer: Optional[st
         }
         for row in rows
     ]
-    summary = score_samples(samples)
+    try:
+        summary = score_samples(samples)
+    except Exception as exc:
+        # RAGAS must never crash the sweep — fast metrics still stand.
+        return {
+            "status": "error",
+            "reason": f"ragas scoring failed: {type(exc).__name__}: {exc}",
+            "results": [],
+        }
     if summary.get("status") == "ok":
         for row, scored in zip(rows, summary.get("results", [])):
             for k, v in (scored or {}).items():

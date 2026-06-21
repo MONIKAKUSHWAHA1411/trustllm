@@ -36,6 +36,10 @@ cryptography>=43.0.0
 # the app skips them gracefully when absent.
 ragas>=0.2.0,<1.0
 langchain-groq>=0.2.0
+# ragas pulls HuggingFace `datasets`; pin both so the resolver can't pair an old
+# datasets (calls pyarrow.PyExtensionType) with a newer pyarrow that removed it.
+datasets>=2.20.0
+pyarrow>=15.0.0
 
 # ── Dev / full-power extras live in requirements-dev.txt ──────────────────
 # Kept OUT of this file so the Streamlit Community Cloud deploy stays torch-free:

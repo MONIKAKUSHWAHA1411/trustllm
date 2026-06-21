@@ -259,3 +259,30 @@ def test_run_experiment_all_skipped_is_not_fatal(monkeypatch):
     assert result["rows"] == []
     assert len(result["skipped"]) >= 1
     assert result["ragas"]["status"] == "skipped"
+
+
+def test_run_experiment_ragas_exception_is_not_fatal(monkeypatch):
+    """A RAGAS dependency/scoring failure (e.g. datasets/pyarrow clash) must not
+    crash the sweep — fast-metric rows still stand, RAGAS reports 'error'."""
+    import rag.experiment_runner as er
+    import evaluation_engine.ragas_runner as rr
+
+    monkeypatch.setattr(er, "embedding_available", lambda key: True)
+    monkeypatch.setattr(er, "ensure_indexed", lambda *a, **k: {"reused": True})
+    monkeypatch.setattr(
+        er, "run_rag_query",
+        lambda *a, **k: {"answer": "a", "sources": [], "contexts": [], "latency": {}},
+    )
+    monkeypatch.setattr(
+        er, "evaluate_rag",
+        lambda *a, **k: {"faithfulness": 0.5, "context_relevance": 0.5,
+                         "hallucination_risk": 0.5, "recall_at_k": 0.0, "precision": 0.0},
+    )
+
+    def _boom(*a, **k):
+        raise AttributeError("module 'pyarrow' has no attribute 'PyExtensionType'")
+    monkeypatch.setattr(rr, "score_samples", _boom)
+
+    result = er.run_experiment("q?", "fake.pdf", {"top_k": [3]}, score_ragas=True)
+    assert len(result["rows"]) == 1                 # fast metrics survived
+    assert result["ragas"]["status"] == "error"     # captured, not raised
