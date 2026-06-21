@@ -650,33 +650,11 @@ footer{background:#F9FAFB;border-top:1px solid var(--bdr);padding:2rem 1rem;text
 (function(){
 var R=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
 
-// Auto-resize iframe height in parent
-function resize(){
-  try{
-    // Measure the body's layout height — NOT documentElement.scrollHeight,
-    // which is floored by the iframe's own viewport height and so can only
-    // ever grow the frame (that caused a runaway ~9000px blank gap).
-    var h=document.body.offsetHeight;
-    if(h<100)return;  // ignore transient/pre-layout readings (avoid collapsing)
-    var fs=window.parent.document.querySelectorAll('iframe');
-    for(var i=0;i<fs.length;i++){
-      try{if(fs[i].contentWindow===window){
-        // Clear any stale min-height first — a previously-set tall min-height
-        // would floor the element and ignore a smaller height (the bug).
-        fs[i].style.minHeight='0px';
-        fs[i].style.height=h+'px';
-        break;
-      }}catch(e){}
-    }
-  }catch(e){}
-}
-resize();
-// Re-measure for a few seconds so the frame converges to the final content
-// height once fonts/width have settled (a single early read can be too tall).
-var _t=0,_iv=setInterval(function(){resize();if(++_t>24)clearInterval(_iv);},250);
-window.addEventListener('load',resize);
-window.addEventListener('resize',resize);
-new ResizeObserver(function(){resize();}).observe(document.body);
+// NOTE: no JS iframe auto-resize here on purpose. components.html reserves a
+// FIXED height (the `height=` arg below) that Streamlit's React re-asserts and
+// won't let JS shrink. A JS resize could only grow the iframe past that slot →
+// it overflows and overlaps the sign-in form. So the landing is sized by the
+// fixed `height=` arg instead, chosen to fit the content snugly.
 
 // Scroll progress bar (listens to parent page scroll)
 try{
@@ -802,7 +780,7 @@ try{if(localStorage.getItem('tl_b')==='1'){var b=document.getElementById('banner
 })();
 </script>
 </body>
-</html>""", height=3700, scrolling=False)
+</html>""", height=3900, scrolling=False)
 
     # ── SIGN-IN SECTION HEADER ────────────────────────────────────────
     st.markdown(_h("""
