@@ -429,7 +429,7 @@ h1{font-size:clamp(32px,4.5vw,54px);font-weight:800;color:#0A0A0A;line-height:1.
 .snum{background:var(--red);min-width:36px;height:36px;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.75rem;font-weight:700;flex-shrink:0}
 .stitle{font-weight:600;color:#0A0A0A;margin-bottom:.3rem}
 .sbody{font-size:.84rem;color:var(--gray);line-height:1.65}
-.step-line{position:absolute;left:18px;top:36px;width:2px;background:var(--red);height:0;transition:height 1s cubic-bezier(.2,.7,.3,1);pointer-events:none}
+.step-line{position:absolute;left:18px;top:36px;width:2px;background:var(--red);height:0;max-height:calc(100% - 72px);transition:height 1s cubic-bezier(.2,.7,.3,1);pointer-events:none}
 
 /* Features */
 .feat-sec{background:#fff;padding:4rem 2rem;border-top:1px solid var(--bdr)}
@@ -653,14 +653,29 @@ var R=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
 // Auto-resize iframe height in parent
 function resize(){
   try{
-    var h=document.documentElement.scrollHeight;
+    // Measure the body's layout height — NOT documentElement.scrollHeight,
+    // which is floored by the iframe's own viewport height and so can only
+    // ever grow the frame (that caused a runaway ~9000px blank gap).
+    var h=document.body.offsetHeight;
+    if(h<100)return;  // ignore transient/pre-layout readings (avoid collapsing)
     var fs=window.parent.document.querySelectorAll('iframe');
     for(var i=0;i<fs.length;i++){
-      try{if(fs[i].contentWindow===window){fs[i].style.height=h+'px';fs[i].style.minHeight=h+'px';break;}}catch(e){}
+      try{if(fs[i].contentWindow===window){
+        // Clear any stale min-height first — a previously-set tall min-height
+        // would floor the element and ignore a smaller height (the bug).
+        fs[i].style.minHeight='0px';
+        fs[i].style.height=h+'px';
+        break;
+      }}catch(e){}
     }
   }catch(e){}
 }
-resize();setTimeout(resize,200);setTimeout(resize,600);setTimeout(resize,1500);
+resize();
+// Re-measure for a few seconds so the frame converges to the final content
+// height once fonts/width have settled (a single early read can be too tall).
+var _t=0,_iv=setInterval(function(){resize();if(++_t>24)clearInterval(_iv);},250);
+window.addEventListener('load',resize);
+window.addEventListener('resize',resize);
 new ResizeObserver(function(){resize();}).observe(document.body);
 
 // Scroll progress bar (listens to parent page scroll)
@@ -787,7 +802,7 @@ try{if(localStorage.getItem('tl_b')==='1'){var b=document.getElementById('banner
 })();
 </script>
 </body>
-</html>""", height=5800, scrolling=False)
+</html>""", height=3700, scrolling=False)
 
     # ── SIGN-IN SECTION HEADER ────────────────────────────────────────
     st.markdown(_h("""
