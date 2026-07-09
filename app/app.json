@@ -1,0 +1,56 @@
+{
+  "expo": {
+    "name": "Sarathi",
+    "slug": "sarathi",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "sarathi",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#0B1524",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0B1524"
+    },
+    "ios": {
+      "bundleIdentifier": "com.monikakushwaha.sarathi",
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSSpeechRecognitionUsageDescription": "Sarathi transcribes your voice so it can brief you and set reminders.",
+        "NSMicrophoneUsageDescription": "Sarathi listens when you tap the orb so you can speak your request.",
+        "NSCalendarsFullAccessUsageDescription": "Sarathi adds your reminders to your calendar so you never miss them.",
+        "NSCalendarsUsageDescription": "Sarathi adds your reminders to your calendar so you never miss them."
+      }
+    },
+    "android": {
+      "package": "com.monikakushwaha.sarathi",
+      "adaptiveIcon": {
+        "backgroundColor": "#0B1524",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.READ_CALENDAR",
+        "android.permission.WRITE_CALENDAR"
+      ],
+      "predictiveBackGestureEnabled": false
+    },
+    "plugins": [
+      "expo-dev-client",
+      "expo-speech-recognition",
+      [
+        "expo-calendar",
+        {
+          "calendarPermission": "Sarathi adds your reminders to your calendar so you never miss them."
+        }
+      ],
+      "expo-font"
+    ],
+    "extra": {
+      "apiUrl": "https://REPLACE-AFTER-DEPLOY.vercel.app"
+    }
+  }
+}
