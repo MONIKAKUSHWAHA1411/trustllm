@@ -510,8 +510,8 @@ footer{background:#F9FAFB;border-top:1px solid var(--bdr);padding:2rem 1rem;text
       <div class="hero-chips e d3">
         <span>✓ No GPU required</span>
         <span>✓ RAG-ready</span>
-        <span>✓ Local inference</span>
-        <span>✓ <span class="cnt" data-to="500" data-sfx="+">500+</span> eval prompts</span>
+        <span>✓ Bring your own key</span>
+        <span>✓ <span class="cnt" data-to="200" data-sfx="+">200+</span> eval prompts</span>
       </div>
     </div>
     <div class="eR d1">
@@ -534,7 +534,7 @@ footer{background:#F9FAFB;border-top:1px solid var(--bdr);padding:2rem 1rem;text
     <div class="stat e d1"><div class="stat-n cnt" data-to="6">6</div><div class="stat-l">Trust Dimensions</div></div>
     <div class="stat e d2"><div class="stat-n cnt" data-to="21">21</div><div class="stat-l">Models Evaluated</div></div>
     <div class="stat e d3"><div class="stat-n cnt" data-to="9">9</div><div class="stat-l">Providers</div></div>
-    <div class="stat e d4"><div class="stat-n cnt" data-to="500" data-sfx="+">500+</div><div class="stat-l">Eval Prompts</div></div>
+    <div class="stat e d4"><div class="stat-n cnt" data-to="200" data-sfx="+">200+</div><div class="stat-l">Eval Prompts</div></div>
   </div>
 </section>
 
@@ -573,7 +573,7 @@ footer{background:#F9FAFB;border-top:1px solid var(--bdr);padding:2rem 1rem;text
   <div class="byok-in e">
     <p class="eyebrow">— BRING YOUR OWN KEY</p>
     <h2>Your Keys. Any Model.<br><span style="color:var(--red)">Full Trust Report.</span></h2>
-    <p>Connect your own API keys for OpenAI, Anthropic, Google, Together AI, Fireworks, or Cerebras and benchmark ChatGPT, Claude, Gemini, and 18 open-source models head-to-head — on your data, your prompts, in real time.</p>
+    <p>Connect your own API keys for OpenAI, Anthropic, Google, Together AI, Fireworks, or Cerebras and benchmark ChatGPT, Claude, Gemini, and open-weight models like Llama, Qwen, and DeepSeek head-to-head — on your data, your prompts, in real time.</p>
     <div class="bchips">
       <span class="bchip">ChatGPT · OpenAI</span>
       <span class="bchip">Claude · Anthropic</span>
@@ -591,7 +591,7 @@ footer{background:#F9FAFB;border-top:1px solid var(--bdr);padding:2rem 1rem;text
       <div class="step-line" id="step-line"></div>
       <div class="step"><div class="snum">01</div><div><div class="stitle">Connect Your Models</div><div class="sbody">Add your LLM endpoint or paste API keys for OpenAI, Anthropic, Google, Together AI, Fireworks, Cerebras, or any OpenAI-compatible API.</div></div></div>
       <div class="step"><div class="snum">02</div><div><div class="stitle">Select Evaluation Dimensions</div><div class="sbody">Choose from Safety, Fairness, Robustness, Privacy, Truthfulness, and Machine Ethics — or run the full suite.</div></div></div>
-      <div class="step"><div class="snum">03</div><div><div class="stitle">Run Adversarial Prompts</div><div class="sbody">500+ curated prompts probe jailbreaks, bias probes, hallucination traps, privacy leaks, and more.</div></div></div>
+      <div class="step"><div class="snum">03</div><div><div class="stitle">Run Adversarial Prompts</div><div class="sbody">200+ curated prompts probe jailbreaks, bias probes, hallucination traps, privacy leaks, and more.</div></div></div>
       <div class="step"><div class="snum">04</div><div><div class="stitle">Get Scored Verdicts</div><div class="sbody">Each response is scored by a judge LLM and rule-based classifiers. Results aggregate into per-dimension scores and a Trust Score.</div></div></div>
       <div class="step"><div class="snum">05</div><div><div class="stitle">Compare and Decide</div><div class="sbody">Color-coded leaderboard shows where each model excels and fails. Export reports and track regressions over time.</div></div></div>
     </div>
@@ -1320,7 +1320,7 @@ h2.tour-h{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.8rem,4vw,2.8r
         <div class="stile"><div class="sn cnt" data-to="6">6</div><div class="sl">Trust dimensions</div></div>
         <div class="stile"><div class="sn cnt" data-to="21">21</div><div class="sl">Models</div></div>
         <div class="stile"><div class="sn cnt" data-to="9">9</div><div class="sl">Providers</div></div>
-        <div class="stile"><div class="sn cnt" data-to="500" data-sfx="+">500+</div><div class="sl">Eval prompts</div></div>
+        <div class="stile"><div class="sn cnt" data-to="200" data-sfx="+">200+</div><div class="sl">Eval prompts</div></div>
       </div>
     </div>
   </div>
