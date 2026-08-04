@@ -1,0 +1,40 @@
+[project]
+name = "golden-dataset-bfsi"
+version = "0.1.0"
+description = "Golden dataset builder and layered document-fraud detection for Indian BFSI lending"
+requires-python = ">=3.11"
+dependencies = [
+    "pikepdf>=9.0",       # MPL-2.0 - PDF object graph, xref, incremental saves
+    "pdfplumber>=0.11",   # MIT    - word-level bounding boxes for geometry checks
+    "pypdfium2>=4.30",    # Apache/BSD - rendering. Chosen over PyMuPDF (AGPL)
+    "pillow>=10.0",       # MIT-CMU
+    "numpy>=1.26",        # BSD-3
+    "reportlab>=4.0",     # BSD-3 - CI fixture generation only
+    "rapidfuzz>=3.9",     # MIT    - L3 entity matching
+    "typer>=0.12",        # MIT    - CLI
+]
+
+[project.optional-dependencies]
+ml = [
+    "lightgbm>=4.5",      # MIT
+    "shap>=0.46",         # MIT
+    "scikit-learn>=1.5",  # BSD-3
+]
+dev = ["pytest>=8.0", "ruff>=0.6", "mypy>=1.11"]
+
+[project.scripts]
+gds = "golden_dataset.cli:app"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

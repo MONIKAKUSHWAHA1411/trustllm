@@ -1,3 +1,0 @@
-# The golden_bfsi package and its invariant checks are standard-library only.
-# The single dependency is the test runner.
-pytest>=7.0
