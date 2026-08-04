@@ -1,0 +1,187 @@
+{
+  "dataset": "golden-dataset-bfsi",
+  "schema_version": "0.1.0",
+  "grid_version": "0.1.0",
+  "level": "L0",
+  "generated_at": "2026-08-04T08:14:33Z",
+  "item_count": 16,
+  "corpus_digest": "sha256:b9cf15a570ee20ad3c6690a24461118a87771798af2b4c9f6cd41f9304eca697",
+  "entries": [
+    {
+      "id": "L0-BNK-0001",
+      "level": "L0",
+      "cell": {
+        "domain": "banking",
+        "task": "factual_qa",
+        "risk_tier": "T1",
+        "language": "en"
+      },
+      "hash": "sha256:39178794016bda993de8070f4bba5560608ec5354d5d87280cb4e94d82551885"
+    },
+    {
+      "id": "L0-BNK-0002",
+      "level": "L0",
+      "cell": {
+        "domain": "banking",
+        "task": "classification",
+        "risk_tier": "T2",
+        "language": "en"
+      },
+      "hash": "sha256:4936d151e2c0673e4b6c84150bea60e81c1246a553c8faab58848f0c81b0be2b"
+    },
+    {
+      "id": "L0-BNK-0003",
+      "level": "L0",
+      "cell": {
+        "domain": "banking",
+        "task": "refusal",
+        "risk_tier": "T3",
+        "language": "en"
+      },
+      "hash": "sha256:d33275208b967eb2f437f975009ec62bb683e952eb292aded8bd35ddd8982b73"
+    },
+    {
+      "id": "L0-BNK-0004",
+      "level": "L0",
+      "cell": {
+        "domain": "banking",
+        "task": "factual_qa",
+        "risk_tier": "T0",
+        "language": "en"
+      },
+      "hash": "sha256:ffac34377f4eaf09bcd2dec0940d7d471df757e6815725c23d4a3b884ce0ef49"
+    },
+    {
+      "id": "L0-CRD-0001",
+      "level": "L0",
+      "cell": {
+        "domain": "cards",
+        "task": "extraction",
+        "risk_tier": "T2",
+        "language": "en"
+      },
+      "hash": "sha256:bc29819fa6d9dde0033f5ff4c5f2ba9bbd5dd27236f2fab80a8c0e8e0f49960e"
+    },
+    {
+      "id": "L0-CRD-0002",
+      "level": "L0",
+      "cell": {
+        "domain": "cards",
+        "task": "refusal",
+        "risk_tier": "T3",
+        "language": "en"
+      },
+      "hash": "sha256:9b0b0125b0eb8f327b332d443f0b7e3bf490d1f0a70311c0f65a7137e438d9c5"
+    },
+    {
+      "id": "L0-INS-0001",
+      "level": "L0",
+      "cell": {
+        "domain": "insurance",
+        "task": "summarization",
+        "risk_tier": "T1",
+        "language": "en"
+      },
+      "hash": "sha256:ea531f225b69c5f235fdce85c2f5527705a2043414a7e3543420a49f6b9268c7"
+    },
+    {
+      "id": "L0-INS-0002",
+      "level": "L0",
+      "cell": {
+        "domain": "insurance",
+        "task": "classification",
+        "risk_tier": "T2",
+        "language": "en"
+      },
+      "hash": "sha256:5b4cb7adb28846345e35d0aa36fd57342370ad77b3841324b4df7159a52e1152"
+    },
+    {
+      "id": "L0-LND-0001",
+      "level": "L0",
+      "cell": {
+        "domain": "lending",
+        "task": "factual_qa",
+        "risk_tier": "T1",
+        "language": "en"
+      },
+      "hash": "sha256:824d0cb8bae64243eee84049962ee54c0bac5e731f86dc6f303b47dc714311e2"
+    },
+    {
+      "id": "L0-LND-0002",
+      "level": "L0",
+      "cell": {
+        "domain": "lending",
+        "task": "calculation",
+        "risk_tier": "T2",
+        "language": "en"
+      },
+      "hash": "sha256:de9ef29555f398a0c6a3ddc129d56055a9c24f729bfc13bf76c573fa6654384d"
+    },
+    {
+      "id": "L0-PAY-0001",
+      "level": "L0",
+      "cell": {
+        "domain": "payments",
+        "task": "factual_qa",
+        "risk_tier": "T1",
+        "language": "en"
+      },
+      "hash": "sha256:5704aa46944840bf88c3b7535ca3a0e21d38965d218ff52577eefd0641f1f6d5"
+    },
+    {
+      "id": "L0-PAY-0002",
+      "level": "L0",
+      "cell": {
+        "domain": "payments",
+        "task": "calculation",
+        "risk_tier": "T2",
+        "language": "en"
+      },
+      "hash": "sha256:992df92e312fea54d49e71d36dace7c5e69d78539222624e391d59bafebcc629"
+    },
+    {
+      "id": "L0-PAY-0003",
+      "level": "L0",
+      "cell": {
+        "domain": "payments",
+        "task": "refusal",
+        "risk_tier": "T3",
+        "language": "en"
+      },
+      "hash": "sha256:37525a4ab3bb842248cbb7f0e3c4da9874d9c5c86def15a963abd7f50067cb50"
+    },
+    {
+      "id": "L0-PAY-0004",
+      "level": "L0",
+      "cell": {
+        "domain": "payments",
+        "task": "factual_qa",
+        "risk_tier": "T1",
+        "language": "hi"
+      },
+      "hash": "sha256:a7fa0bd20a43e094b4ae5b72deddf9a35d21070540ebe071a88ed24eb7d536d9"
+    },
+    {
+      "id": "L0-WLT-0001",
+      "level": "L0",
+      "cell": {
+        "domain": "wealth",
+        "task": "factual_qa",
+        "risk_tier": "T1",
+        "language": "en"
+      },
+      "hash": "sha256:31c04eb07c0b91ac04d773eb9bf8bbb22aadd3aafc4e59b4b76e8c64920545de"
+    },
+    {
+      "id": "L0-WLT-0002",
+      "level": "L0",
+      "cell": {
+        "domain": "wealth",
+        "task": "refusal",
+        "risk_tier": "T3",
+        "language": "en"
+      },
+      "hash": "sha256:e7581bc38155a6d42d5840112427455bb33bb4a2bd3fe66c04e964ca0047b106"
+    }
+  ]
+}

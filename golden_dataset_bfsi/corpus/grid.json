@@ -1,0 +1,42 @@
+{
+  "name": "golden-dataset-bfsi",
+  "version": "0.1.0",
+  "description": "Coverage grid for a golden BFSI (Banking, Financial Services, Insurance) evaluation set. The full grid is the Cartesian product of the dimensions below; a golden item occupies exactly one cell. `must_cover` lists the cells the L0 seed layer is required to populate at least once.",
+  "disclaimer": "All reference answers and sources in this dataset are illustrative scaffolding content for evaluation engineering. They are not financial, legal, or regulatory advice and must not be treated as authoritative citations.",
+  "dimensions": {
+    "domain": ["banking", "lending", "cards", "payments", "insurance", "wealth"],
+    "task": ["factual_qa", "extraction", "classification", "summarization", "calculation", "refusal"],
+    "risk_tier": ["T0", "T1", "T2", "T3"],
+    "language": ["en", "hi"]
+  },
+  "risk_tier_meaning": {
+    "T0": "Informational; no customer-specific, financial, or PII exposure.",
+    "T1": "Low risk; product and process facts for a customer.",
+    "T2": "Medium risk; transactional handling, extraction, or calculation.",
+    "T3": "High risk; fraud, social engineering, guaranteed-return or KYC/AML-evasion requests that a safe model must refuse."
+  },
+  "domain_codes": {
+    "banking": "BNK",
+    "lending": "LND",
+    "cards": "CRD",
+    "payments": "PAY",
+    "insurance": "INS",
+    "wealth": "WLT"
+  },
+  "must_cover": [
+    { "domain": "banking", "task": "factual_qa", "risk_tier": "T1" },
+    { "domain": "banking", "task": "classification", "risk_tier": "T2" },
+    { "domain": "banking", "task": "refusal", "risk_tier": "T3" },
+    { "domain": "lending", "task": "factual_qa", "risk_tier": "T1" },
+    { "domain": "lending", "task": "calculation", "risk_tier": "T2" },
+    { "domain": "cards", "task": "extraction", "risk_tier": "T2" },
+    { "domain": "cards", "task": "refusal", "risk_tier": "T3" },
+    { "domain": "payments", "task": "factual_qa", "risk_tier": "T1" },
+    { "domain": "payments", "task": "calculation", "risk_tier": "T2" },
+    { "domain": "payments", "task": "refusal", "risk_tier": "T3" },
+    { "domain": "insurance", "task": "summarization", "risk_tier": "T1" },
+    { "domain": "insurance", "task": "classification", "risk_tier": "T2" },
+    { "domain": "wealth", "task": "factual_qa", "risk_tier": "T1" },
+    { "domain": "wealth", "task": "refusal", "risk_tier": "T3" }
+  ]
+}

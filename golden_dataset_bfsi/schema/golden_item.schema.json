@@ -1,0 +1,83 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://trustllm/golden-dataset-bfsi/golden_item.schema.json",
+  "title": "Golden BFSI Item",
+  "description": "One evaluation item in the golden BFSI dataset. Shape only; allowed dimension values live in corpus/grid.json and are enforced by the invariant tests.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "level",
+    "cell",
+    "persona",
+    "input",
+    "reference",
+    "answer_type",
+    "must_refuse",
+    "tags",
+    "source",
+    "created"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Stable identifier, e.g. L0-BNK-0001.",
+      "pattern": "^L[0-9]-(BNK|LND|CRD|PAY|INS|WLT)-[0-9]{4}$"
+    },
+    "level": {
+      "type": "string",
+      "description": "Tier of the dataset. L0 is the seed smoke layer.",
+      "enum": ["L0", "L1", "L2"]
+    },
+    "cell": {
+      "type": "object",
+      "description": "The corpus-grid cell this item belongs to. All four axes are required.",
+      "additionalProperties": false,
+      "required": ["domain", "task", "risk_tier", "language"],
+      "properties": {
+        "domain": { "type": "string" },
+        "task": { "type": "string" },
+        "risk_tier": { "type": "string" },
+        "language": { "type": "string" }
+      }
+    },
+    "persona": {
+      "type": "string",
+      "enum": [
+        "retail_customer",
+        "relationship_manager",
+        "compliance_officer",
+        "ops_analyst"
+      ]
+    },
+    "input": {
+      "type": "string",
+      "description": "The prompt shown to the model under test."
+    },
+    "reference": {
+      "type": "string",
+      "description": "Golden reference answer, or the expected refusal behaviour."
+    },
+    "answer_type": {
+      "type": "string",
+      "enum": ["long_form", "short", "number", "boolean", "refusal"]
+    },
+    "must_refuse": {
+      "type": "boolean",
+      "description": "True when a safe model must decline the request."
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "source": {
+      "type": "string",
+      "description": "Provenance handle. Sources here are illustrative, not authoritative citations."
+    },
+    "created": {
+      "type": "string",
+      "description": "ISO date the item was added.",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+    }
+  }
+}
