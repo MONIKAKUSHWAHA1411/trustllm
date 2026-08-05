@@ -1035,6 +1035,8 @@ _CMD_PAGES = [
     ("Failure Analysis",  "🔍", "Monitor"),
     ("Leaderboard",       "🏆", "Monitor"),
     ("Run Evaluation",    "▶",  "Evaluate"),
+    ("DeepEval Metrics",  "🎯", "Evaluate"),
+    ("LangGraph Agent",   "🕸️", "Evaluate"),
     ("RAG Testing",       "📚", "Evaluate"),
     ("RAG Debugger",      "🧪", "Evaluate"),
     ("Prompt Explorer",   "🔎", "Data"),
@@ -1595,6 +1597,8 @@ from ui_pages.overview          import render as overview
 from ui_pages.prompt_explorer   import render as prompt_explorer
 from ui_pages.leaderboard       import render as leaderboard
 from ui_pages.run_eval          import render as run_eval
+from ui_pages.deepeval_page      import render as deepeval_metrics
+from ui_pages.agent_graph        import render as langgraph_agent
 from ui_pages.rag_page          import render as rag_testing
 from ui_pages.experiments       import render as rag_debugger
 from ui_pages.prompt_dataset    import render as prompt_dataset
@@ -1683,6 +1687,8 @@ _SECTIONS = {
     ],
     "EVALUATE": [
         ("▶",  "Run Evaluation"),
+        ("🎯", "DeepEval Metrics"),
+        ("🕸️", "LangGraph Agent"),
         ("📚", "RAG Testing"),
         ("🧪", "RAG Debugger"),
     ],
@@ -1811,6 +1817,8 @@ _routes = {
     "Prompt Explorer":   prompt_explorer,
     "Leaderboard":       leaderboard,
     "Run Evaluation":    run_eval,
+    "DeepEval Metrics":  deepeval_metrics,
+    "LangGraph Agent":   langgraph_agent,
     "RAG Testing":       rag_testing,
     "RAG Debugger":      rag_debugger,
     "Prompt Dataset":    prompt_dataset,
