@@ -1,0 +1,40 @@
+# Downloaded seed data is never committed. Sanctions lists are redistributed
+# from their canonical sources only; see DATA_SOURCES.md.
+data/seeds/*
+!data/seeds/.gitkeep
+
+# Generated corpora are reproducible from a config + seed. The released
+# snapshot is committed explicitly by path; everything else stays out.
+data/generated/*
+!data/generated/.gitkeep
+!data/generated/snapshot-v0.1.0/
+
+# Evaluation outputs
+reports/raw/
+reports/*.parquet
+reports/*.csv
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+venv/
+.venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Model caches
+.cache/
+*.pt
+*.safetensors
+
+# IDE / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store

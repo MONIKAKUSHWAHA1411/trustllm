@@ -1,0 +1,78 @@
+# Honorifics, community suffixes, and relational qualifiers.
+#
+# These tokens are the main source of *spurious* string difference between two
+# records for one person, and of *spurious* string similarity between records
+# for two different people. A screening system that treats "Md" as a name token
+# rather than an honorific will match every Muslim man in the database to every
+# other; one that strips "Singh" as a suffix will merge unrelated Punjabi
+# records. Both failure modes are represented in the corpus.
+
+version: "0.1.0"
+
+honorifics:
+  # position: pre = precedes the name, post = follows it
+  # origins: which origin categories the honorific plausibly co-occurs with;
+  #          "*" means unrestricted.
+  - { form: Shri,     position: pre,  origins: ["*"],              tier: 1 }
+  - { form: Sri,      position: pre,  origins: ["*"],              tier: 1 }
+  - { form: Smt,      position: pre,  origins: ["*"],  gender: f,  tier: 1 }
+  - { form: Kum,      position: pre,  origins: ["*"],  gender: f,  tier: 3 }
+  - { form: Dr,       position: pre,  origins: ["*"],              tier: 1 }
+  - { form: Prof,     position: pre,  origins: ["*"],              tier: 3 }
+  - { form: Er,       position: pre,  origins: ["*"],              tier: 4 }
+  - { form: Adv,      position: pre,  origins: ["*"],              tier: 4 }
+  - { form: Md,       position: pre,  origins: [arabic_persian],   tier: 1 }
+  - { form: Mohd,     position: pre,  origins: [arabic_persian],   tier: 1 }
+  - { form: Haji,     position: pre,  origins: [arabic_persian],   tier: 2 }
+  - { form: Hafiz,    position: pre,  origins: [arabic_persian],   tier: 3 }
+  - { form: Maulana,  position: pre,  origins: [arabic_persian],   tier: 3 }
+  - { form: Syed,     position: pre,  origins: [arabic_persian],   tier: 2 }
+  - { form: Sardar,   position: pre,  origins: [punjabi],          tier: 2 }
+  - { form: Sardarni, position: pre,  origins: [punjabi], gender: f, tier: 4 }
+  - { form: Pandit,   position: pre,  origins: [hindi_belt, marathi], tier: 3 }
+  - { form: Thiru,    position: pre,  origins: [tamil],            tier: 3 }
+
+# Community suffixes. Present in some records for a person and absent in
+# others -- this is the single most common structural variation in Indian
+# administrative data.
+community_suffixes:
+  - { form: Singh, origins: [punjabi, hindi_belt],              tier: 1 }
+  - { form: Kaur,  origins: [punjabi],            gender: f,    tier: 1 }
+  - { form: Devi,  origins: [hindi_belt, odia],   gender: f,    tier: 1 }
+  - { form: Das,   origins: [bengali, odia, hindi_belt],        tier: 2 }
+  - { form: Bhai,  origins: [gujarati],           gender: m,    tier: 2 }
+  - { form: Ben,   origins: [gujarati],           gender: f,    tier: 2 }
+  - { form: Lal,   origins: [hindi_belt],         gender: m,    tier: 2 }
+  - { form: Chand, origins: [hindi_belt],         gender: m,    tier: 3 }
+  - { form: Nath,  origins: [hindi_belt, bengali],              tier: 3 }
+  - { form: Ram,   origins: [hindi_belt],         gender: m,    tier: 2 }
+  # Listed origin-by-origin rather than as "*": Kumar is a Hindu naming
+  # element, and "Ali Ibrahim Kumar" is not a name that occurs.
+  - { form: Kumar, origins: [hindi_belt, bengali, telugu, tamil, kannada,
+                             malayalam, odia, marathi, gujarati, punjabi],
+      gender: m, tier: 1 }
+  - { form: Rao,   origins: [telugu, kannada, marathi],         tier: 2 }
+  - { form: Amma,  origins: [malayalam, kannada], gender: f,    tier: 3 }
+  - { form: Bai,   origins: [marathi, hindi_belt], gender: f,   tier: 3 }
+
+# Relational qualifiers. Appear inline in South Asian identity documents and
+# are routinely carried into screening records verbatim.
+qualifiers:
+  - { form: "S/o",   expansion: "son of",      tier: 1 }
+  - { form: "W/o",   expansion: "wife of",     tier: 1 }
+  - { form: "D/o",   expansion: "daughter of", tier: 2 }
+  - { form: "C/o",   expansion: "care of",     tier: 3 }
+  - { form: "@",     expansion: "alias",       tier: 2 }
+  - { form: "alias", expansion: "alias",       tier: 3 }
+  - { form: "Jr",    expansion: "junior",      tier: 4 }
+  - { form: "Sr",    expansion: "senior",      tier: 4 }
+
+# Village and house name prefixes. In Kerala, coastal Karnataka and Andhra the
+# house name is part of the legal name but is abbreviated or omitted freely.
+house_name_prefixes:
+  malayalam: [Kizhakke, Padinjare, Thekke, Vadakke, Puthen, Kunnath, Valiya,
+              Cheruvath, Mangalath, Illath, Parambil, Vettath]
+  telugu:    [Kondapalli, Nandyala, Vemulapalli, Chintalapati, Gollapudi,
+              Tadepalli, Peddinti, Yerraguntla]
+  kannada:   [Bellur, Devanahalli, Hosakote, Kanakapura, Melukote, Srirangapatna]
+  tamil:     [Alangudi, Kumbakonam, Mayiladuthurai, Sirkazhi, Thiruvarur]
