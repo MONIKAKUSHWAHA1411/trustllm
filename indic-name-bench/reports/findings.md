@@ -28,10 +28,13 @@ capacity is fixed, so the operational question is never "what is the F1" but
 | token_sort_levenshtein | 0.247 | **0.183** | 0.856 | 73.1 | trivial |
 | char_embedding_svd | 0.229 | 0.000 | **0.896** | 24.4 | cheap |
 
-**The aggregate is a weak signal and should not be the citation.** On the mixed
-corpus the Indic encoder leads Soundex by 0.2 points — noise. The corpus
-averages seven transformation families with very different profiles, and the
-average hides all of it. The per-family table below is the result worth quoting.
+**The aggregate is a weak signal and should not be the citation.** The
+0.2-point lead of `indic_phonetic_dravidian` over Soundex is *statistically*
+real across 15 seeds (+0.0017 [+0.0005, +0.0028]) but operationally meaningless.
+Plain `indic_phonetic` is genuinely **worse** than Soundex on the mixed set
+(−0.018, 0/15 seeds favouring it). The corpus averages seven families with very
+different profiles and the mean hides all of it — the per-family table below is
+the result worth quoting. Every comparison here is tested in §11.
 
 **A separate finding hides in the R@0.1% column.** Every unmodified phonetic
 method scores exactly zero at a 0.1% budget. Not because the phonology fails —
@@ -88,9 +91,16 @@ available to anyone running screening today for the cost of a token list.
 ### 2.3 The Indic encoder wins on transliteration, and only there
 
 On `transliteration` the voicing-merged encoder reaches **0.869** against
-Soundex 0.783 (+8.6 points) and Jaro-Winkler 0.488 (+38 points). Merging voicing
-adds 8 points over the strict variant, consistent with Dravidian scripts not
-marking voicing on stops.
+Soundex 0.783 and Jaro-Winkler 0.488. Across 15 corpus seeds that lead is
+**+0.092 [+0.085, +0.093], 15/15 seeds** — solid (§11).
+
+**The strict-mode encoder does not beat Soundex here, and an earlier version of
+this report said it did.** At 0.789 vs 0.783 the gap is +0.004 with a 95%
+interval of [−0.006, +0.015] and only 5 of 15 seeds favouring it. That is no
+difference, and the claim is withdrawn. What genuinely wins on this family is
+the **voicing merge specifically** (+0.087 [+0.081, +0.094], 15/15), consistent
+with Dravidian scripts not marking voicing on stops — not the Indic encoder in
+general.
 
 On **Bengali anglicisation it is the worst method tested (0.117)** — below
 Levenshtein's 0.360 and Soundex's 0.394. Chatterjee/Chattopadhyay is a
@@ -368,8 +378,10 @@ quality. Blending a small amount of a continuous signal (Jaro-Winkler at weight
 
 The cost is negligible and the phonology is untouched:
 
-- R@1% FPR moves by −0.006 and −0.005. The blend does not reorder pairs the base
-  matcher already separated.
+- R@1% FPR moves by −0.006 and −0.005. Across 15 seeds that cost is real rather
+  than noise (−0.004 [−0.005, −0.003] for the Indic encoder), but it is four
+  tenths of a point against a 13-point gain at the tight budget. The blend does
+  not reorder pairs the base matcher already separated.
 - **AUC-PR rises** in both cases (0.838→0.851, 0.849→0.852), so this is not a
   precision-for-recall trade.
 - Latency roughly doubles in relative terms but stays in single-digit
@@ -451,6 +463,59 @@ table has nothing to add.
 
 These are absent from every table rather than present with a zero. A matcher
 that did not run and a matcher that scored badly are different findings.
+
+---
+
+## 11. Are these differences real?
+
+Every number above came from one corpus draw. §11 tests whether the gaps
+survive resampling. `benchmarks/significance.py`, 15 corpus seeds, 2,500
+identities each.
+
+**Method.** Paired per-seed differences. All matchers score the *same* corpus in
+each replicate, so their errors are strongly positively correlated — a seed
+producing hard variants lowers everyone together. Putting a CI on each matcher
+and checking for overlap would absorb that shared variance into both intervals
+and is conservative to the point of uselessness. The delta cancels it. A sign
+test cross-checks distribution-free.
+
+| Claim | Delta | 95% CI | Seeds | Verdict |
+| --- | --- | --- | --- | --- |
+| Indic-dravidian > Soundex, transliteration | +0.092 | [+0.085, +0.099] | 15/15 | **real** |
+| Voicing merge helps, transliteration | +0.087 | [+0.081, +0.094] | 15/15 | **real** |
+| Indic > Jaro-Winkler, transliteration | +0.318 | [+0.294, +0.342] | 15/15 | **real** |
+| Indic > Levenshtein, transliteration | +0.214 | [+0.183, +0.244] | 15/15 | **real** |
+| Tie-break recovers 0.1% budget (Soundex) | +0.146 | [+0.136, +0.156] | 15/15 | **real** |
+| Tie-break recovers 0.1% budget (Indic) | +0.129 | [+0.105, +0.152] | 14/15 | **real** |
+| Indic-dravidian > Soundex, headline | +0.002 | [+0.001, +0.003] | 13/15 | real but negligible |
+| Tie-break cost at 1% budget | −0.004 | [−0.005, −0.003] | 1/15 | real, small |
+| **Indic > Soundex, transliteration** | **+0.004** | **[−0.006, +0.015]** | **5/15** | **NO DIFFERENCE** |
+| Indic > Soundex, headline | −0.018 | [−0.020, −0.017] | 0/15 | real, **reversed** |
+
+### 11.1 One claim withdrawn
+
+The bottom two rows were overclaimed in the first version of this report. The
+strict-mode Indic encoder does **not** beat Soundex on transliteration — the
+interval spans zero and fewer than half the seeds favour it — and on the mixed
+headline set Soundex is reliably *better*.
+
+The defensible version of the contribution is narrower: **the voicing merge is
+what wins**, by about nine points on transliteration, reproducibly across every
+seed tested. The encoder's other design choices are not shown to beat Soundex.
+
+### 11.2 What this does and does not cover
+
+Covers variance from **corpus sampling only** — which identities get assembled
+and which transformations fire.
+
+Does **not** cover uncertainty in the component inventory, the hand-assigned
+frequency tiers, or the rule set. Those are systematic, and no resampling
+procedure can see them: every replicate draws from the same inventory I wrote.
+`tier_sensitivity.py` addresses the tier component separately; the rest is in
+§10.
+
+So "real" here means "not explained by which names happened to be drawn". It
+does not mean "would replicate on real records".
 
 ---
 

@@ -58,10 +58,19 @@ English-tuned baseline on transliteration variance:
 | **Indic phonetic** | **0.789** | 0.760 | 0.117 |
 | **Indic phonetic (voicing merged)** | **0.869** | 0.764 | 0.117 |
 
-On the family it was designed for it leads Soundex by 8.6 points and
-Jaro-Winkler by 38. On **Bengali anglicisation it is the worst method tested** —
-Chatterjee/Chattopadhyay is a historical divergence, not a phonetic one, and no
-amount of phonology recovers it. Reported rather than hidden.
+Tested across 15 corpus seeds with paired differences (`benchmarks/significance.py`):
+
+- **voicing-merged encoder beats Soundex on transliteration by +0.092
+  [+0.085, +0.099], 15/15 seeds** — real
+- beats Jaro-Winkler by +0.318 and Levenshtein by +0.214 — real
+- **the strict-mode encoder does *not* beat Soundex** (+0.004, CI [−0.006,
+  +0.015], 5/15 seeds). An earlier version of this README claimed it did; that
+  claim is withdrawn.
+
+So the defensible contribution is narrower than "an Indic encoder is better":
+**the voicing merge is what wins.** On **Bengali anglicisation the encoder is the
+worst method tested** — Chatterjee/Chattopadhyay is historical, not phonetic.
+Reported rather than hidden.
 
 ### 4. Phonetic matchers score zero at a tight alert budget — and it's a one-line fix
 
@@ -180,6 +189,7 @@ built = corpus.build(corpus.CorpusConfig(seed=20260811))
 python benchmarks/run_all.py           # every reported number
 python benchmarks/make_figures.py      # every figure
 python benchmarks/tier_sensitivity.py  # robustness of the fairness result
+python benchmarks/significance.py      # are the reported gaps real?
 pytest                                 # 107 tests
 ```
 
