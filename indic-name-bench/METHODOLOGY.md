@@ -36,7 +36,7 @@ before any phoneme mapping:
 
 | Rule | Example |
 | --- | --- |
-| `x` → `ksh` | Laxmi → Lakshmi |
+| `x` → `ksh` | Laxmi → Lakshmi — **measurably net-negative, see findings §12.2** |
 | `cch` → `ch` | |
 | `ck` → `k` | |
 | `q` → `k` | Farooq / Farook |
