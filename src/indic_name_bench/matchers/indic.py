@@ -77,7 +77,18 @@ _PRE_NORMALISE: tuple[tuple[str, str], ...] = (
 #: Digraph and trigraph phonemes, longest first. Single uppercase symbols so
 #: the resulting code is compact and unambiguous.
 _DIGRAPHS: tuple[tuple[str, str], ...] = (
-    ("ksh", "X"),  # the ksh/x cluster, one phoneme
+    # ksh maps to the K+S cluster, NOT a dedicated phoneme.
+    #
+    # It was originally ("ksh", "X"), which was measurably net-negative -- see
+    # findings §12.2. The mechanism is rule ordering: ksh is matched before
+    # sh, so a dedicated symbol consumed the `sh` inside Lakshmi and the
+    # sibilant merge never saw it. Lakshmi/Laxmi collided (both X) but
+    # Lakshmi/Laksmi did not (LXM vs LKSM), and the sibilant alternation is far
+    # more frequent than the ksha/x one.
+    #
+    # Mapping to "KS" makes all three collide at LKSM, because the K and S fall
+    # out of the same cluster the sibilant merge already produces.
+    ("ksh", "KS"),
     ("chh", "C"),
     ("ngh", "N"),  # Singh -> SN; the h is aspiration, the ng is one nasal
     ("nh", "N"),  # Sinh, Sinha -- aspiration on the nasal, not a real /h/

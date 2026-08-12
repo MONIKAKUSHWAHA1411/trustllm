@@ -36,7 +36,7 @@ before any phoneme mapping:
 
 | Rule | Example |
 | --- | --- |
-| `x` → `ksh` | Laxmi → Lakshmi — **measurably net-negative, see findings §12.2** |
+| `x` → `ksh` | Laxmi → Lakshmi |
 | `cch` → `ch` | |
 | `ck` → `k` | |
 | `q` → `k` | Farooq / Farook |
@@ -57,7 +57,7 @@ would merge Amit with Umesh.
 **Stage 4 — digraph to phoneme.** Longest first:
 
 ```
-ksh → X     chh → C     ngh → N     nh → N      ng → N
+ksh → KS    chh → C     ngh → N     nh → N      ng → N
 ny  → N     gn  → N     bh  → B     ph → P      dh → D
 th  → T     gh  → G     kh  → K     jh → J      ch → C
 sh  → S     ss  → S     zh  → S
@@ -65,6 +65,13 @@ sh  → S     ss  → S     zh  → S
 
 Aspiration is consumed here, so it never contributes a separate `h`. `ngh`/`nh`
 collapse the aspirated nasal: Singh, Sinh and Sing all reach `SN`.
+
+`ksh` maps to the **`K`+`S` cluster, not a dedicated phoneme**, and that detail is
+load-bearing. It was originally a dedicated `X`, which the ablation in findings
+§12.2 showed to be net-negative: because `ksh` is matched before `sh`, the
+dedicated symbol consumed the `sh` inside "Lakshmi" and the sibilant merge never
+saw it — so Lakshmi/Laxmi collided while Lakshmi/Laksmi stopped colliding. The
+cluster mapping makes all three reach `LKSM`.
 
 **Stage 5 — single characters.**
 

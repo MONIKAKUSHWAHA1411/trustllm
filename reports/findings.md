@@ -525,84 +525,115 @@ does not mean "would replicate on real records".
 voicing merge beats Soundex". That is still a bundle. The encoder makes seven
 separable decisions; `benchmarks/ablation.py` disables one at a time, holds the
 comparison strategy fixed, and takes paired per-seed deltas on the
-transliteration split. 8 seeds, 2,000 identities each.
+transliteration split. 5 seeds, 3,000 variants per family.
 
-| Stage disabled | Recall | Δ vs full | 95% CI | Verdict |
-| --- | --- | --- | --- | --- |
-| *(none — full encoder)* | 0.803 | — | — | — |
-| drop non-initial vowels | 0.280 | **−0.523** | [−0.552, −0.495] | **carries almost everything** |
-| aspiration as digraph | 0.601 | −0.203 | [−0.221, −0.184] | contributes |
-| merge sibilants | 0.629 | −0.174 | [−0.185, −0.164] | contributes |
-| degemination | 0.649 | −0.154 | [−0.168, −0.139] | contributes |
-| final `-y` as vowel | 0.753 | −0.050 | [−0.059, −0.041] | contributes |
-| **unify `ksh` ≡ `x`** | 0.807 | **+0.004** | **[+0.000, +0.008]** | **harmful — removing it helps** |
-| *(add voicing merge)* | 0.890 | +0.087 | [+0.075, +0.099] | helps |
+| Stage disabled | Recall | Δ vs full | 95% CI |
+| --- | --- | --- | --- |
+| *(none — full encoder)* | 0.809 | — | — |
+| **drop non-initial vowels** | 0.292 | **−0.517** | [−0.527, −0.507] |
+| aspiration as digraph | 0.597 | −0.211 | [−0.217, −0.205] |
+| merge sibilants | 0.640 | −0.169 | [−0.175, −0.163] |
+| degemination | 0.656 | −0.153 | [−0.160, −0.145] |
+| final `-y` as vowel | 0.750 | −0.059 | [−0.064, −0.053] |
+| unify `ksh` ≡ `x` | 0.804 | −0.004 | [−0.006, −0.003] |
+| *(add voicing merge)* | 0.900 | +0.091 | [+0.084, +0.097] |
 
 ### 12.1 The contribution is one decision, not seven
 
-**Dropping non-initial vowels is 2.6× the next-largest stage and roughly as large
-as all the others combined.** Keeping vowels collapses the encoder from 0.803 to
-0.280 — below Levenshtein. The consonant skeleton *is* the method; aspiration
-handling, sibilant merging and degemination are refinements on top of it worth
-15–20 points each.
+**Dropping non-initial vowels is 2.4× the next-largest stage and larger than all
+the others combined.** Keeping vowels collapses the encoder from 0.809 to 0.292 —
+below Levenshtein. The consonant skeleton *is* the method; aspiration handling,
+sibilant merging and degemination are 15–21 point refinements on top of it.
 
-That is a much more useful statement than the one this project started with. If
-you are building an Indic matcher and can implement exactly one thing, implement
-vowel dropping.
+If you are building an Indic matcher and can implement exactly one thing,
+implement vowel dropping.
 
-### 12.2 A design choice that is measurably harmful
+### 12.2 A rule that was harmful, and the ordering bug behind it
 
-`ksh` ≡ `x` — unifying Lakshmi and Laxmi — was listed as a headline design
-feature in the README and in METHODOLOGY §1.2. **Removing it improves recall**
-by +0.004 with a 95% interval of [+0.0002, +0.0079] that excludes zero.
+The first run of this ablation found `ksh` ≡ `x` — unifying Lakshmi and Laxmi, a
+headline design feature in the README and METHODOLOGY — to be **net-negative**:
+removing it *improved* recall by +0.004, CI [+0.0002, +0.0079], excluding zero.
 
-Small, but real and in the wrong direction. The likely mechanism: mapping `x` to
-a dedicated `X` phoneme creates a symbol that *fails* to collide with names
-legitimately containing `ks`, and the collisions it buys on the Lakshmi/Laxmi
-pair are rarer than the ones it destroys elsewhere. The rule looks obviously
-correct in isolation and is not.
+The per-rule table located the cause. Disabling `unify_ksha_x` raised
+`sibilant_deretroflex` recall from 0.938 to 1.000 — the ksha rule was damaging
+the *sibilant* rule. The mechanism is **rule ordering**, not linguistics:
 
-It has been kept in the shipped encoder and flagged here rather than silently
-removed, because the finding — that a linguistically well-motivated rule can be
-net-negative — is more interesting than the 0.4 points.
+```
+ksh → X   is matched before   sh → S
+```
 
-### 12.3 Per-rule attribution, and where it runs out
+so a dedicated `X` phoneme consumed the `sh` inside "Lakshmi" and the sibilant
+merge never saw it:
 
-The corpus records the exact `rule_id` behind every variant. Restricting to
-severity-1 single-family variants gives one rule per pair, so recall attributes
-to individual transformations:
-
-| Rule | Full encoder | Vowels kept |
+| Pair | with `ksh→X` | without |
 | --- | --- | --- |
-| `vowel_lengthening` | 0.927 | **0.000** |
-| `lexical_variant_swap` | 0.801 | 0.298 |
-| `keyboard_typo` | 0.488 | 0.133 |
-| `anglicisation_swap` | 0.078 | 0.000 |
-| `name_order_inversion` | 1.000 | 1.000 |
-| `case_noise`, `diacritic_noise` | 1.000 | 1.000 |
-| `initialise_token` | 0.000 | 0.000 |
+| Lakshmi / Laxmi | `LXM` = `LXM` ✓ | `LKSM` ≠ `LM` ✗ |
+| Lakshmi / **Laksmi** | `LXM` ≠ `LKSM` ✗ | `LKSM` = `LKSM` ✓ |
+| Lakshman / **Laksman** | `LXMN` ≠ `LKSMN` ✗ | `LKSMN` = `LKSMN` ✓ |
 
-`vowel_lengthening` going 0.927 → 0.000 is exact mechanism attribution: vowel
-dropping is precisely what defends against Sita/Seeta, and nothing else in the
-encoder touches it.
+The rule bought the ksha/x alternation and lost the sibilant alternation, which
+fires far more often. Net negative.
 
-But vowel dropping also lifts `keyboard_typo` (0.133 → 0.488) and
-`lexical_variant_swap` (0.298 → 0.801), which it has no principled reason to
-help. **Part of its contribution is simply that shorter codes collide more
-often** — a permissiveness effect rather than a phonological one. The 1% FPR
-budget controls for the precision cost, so the recall gain is genuine, but the
-mechanism is not purely what the docstring claims.
+**Fixed by mapping `ksh` to the `K`+`S` cluster instead of a dedicated phoneme.**
+All three forms now collide at `LKSM`, because K and S fall out of the same
+cluster the sibilant merge already produces. After the fix the sign reverses —
+`unify_ksha_x` **contributes** −0.004 [−0.006, −0.003] — `sibilant_deretroflex`
+reaches 1.000, and the full encoder rises from 0.803 to 0.809. The numbers in the
+table above are post-fix.
 
-`initialise_token` at 0.000 across every configuration is the standing failure:
-no encoder stage addresses initials, and §4 shows no matcher does.
+Worth stating plainly: the rule was linguistically correct and implemented
+correctly. It failed on **interaction ordering with another rule**, which no
+amount of reasoning about Indic phonology would have surfaced. Only the ablation
+found it, and only the per-rule cross-tab explained it.
 
-**Coverage limit.** Only 14 rules reached the 25-pair minimum at severity 1, and
-just one of them (`vowel_lengthening`) is a transliteration rule — the family
-split spreads 400 variants over three severities and 19 transliteration rules,
-so most cells are too thin. `ksha_to_x` in particular has no per-rule row, which
-is why §12.2 rests on the stage ablation rather than on direct rule attribution.
-Raising `family_variants_per_family` to a few thousand would fill the table; the
-groupby already exists.
+### 12.3 Per-rule attribution is almost perfectly diagonal
+
+29 rules cleared the 25-pair minimum. Each stage collapses exactly the rules it
+targets and leaves the rest untouched:
+
+| Rule | Full | Stage that zeroes it | Recall when disabled |
+| --- | --- | --- | --- |
+| `aspirate_collapse` | 0.898 | aspiration as digraph | **0.000** |
+| `aspirate_insertion` | 0.950 | aspiration as digraph | **0.002** |
+| `sibilant_deretroflex` | 1.000 | merge sibilants | **0.040** |
+| `sibilant_retroflex` | 0.863 | merge sibilants | **0.000** |
+| `consonant_gemination` | 0.994 | degemination | **0.000** |
+| `vowel_lengthening` | 0.937 | drop vowels | **0.000** |
+| `vowel_shortening` | 0.996 | drop vowels | **0.000** |
+| `schwa_medial_shift` | 0.978 | drop vowels | **0.000** |
+| `schwa_medial_deletion` | 0.960 | drop vowels | **0.000** |
+| `final_y_alternation` | 0.934 | final `-y` as vowel | **0.107** |
+| `retroflex_dental_shift` | **0.000** | *(voicing merge takes it to)* | **1.000** |
+
+`retroflex_dental_shift` is the sharpest cell in the project: **0.000 without the
+voicing merge, 1.000 with it.** The stage exists for exactly that transformation
+and does nothing else. That is what a correctly-scoped rule looks like, and it is
+why §11's finding that the voicing merge carries the encoder is credible.
+
+### 12.4 Where every configuration fails
+
+Four rules sit at zero for **all eight** encoder configurations:
+
+| Rule | Best recall across all configs |
+| --- | --- |
+| `initialise_token` | 0.001 |
+| `expand_initial` | 0.000 |
+| `house_name_prefix` | 0.000 |
+| `mohammed_abbreviation` | 0.000 |
+
+No encoder stage addresses any of them, and §4 shows no matcher in the benchmark
+does either. These are **structural and abbreviation** transformations — losing or
+adding a whole token — and phonology operates one token at a time. They are the
+clearest open problem the benchmark identifies.
+
+### 12.5 Caveat on the vowel result
+
+Vowel dropping also lifts rules it has no principled reason to help:
+`keyboard_typo` 0.165 → 0.489, `lexical_variant_swap` 0.294 → 0.790. **Part of its
+contribution is simply that shorter codes collide more often** — permissiveness,
+not phonology. The 1% FPR budget prices the precision cost, so the recall gain is
+real, but the mechanism is broader than the docstring claims. Unlike the other
+stages, it is not diagonal.
 
 ---
 
