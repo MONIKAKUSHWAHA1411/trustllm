@@ -26,6 +26,8 @@ FEATURED = [
     "char_embedding_svd",
     "indic_phonetic",
     "indic_phonetic_dravidian",
+    "soundex+tiebreak",
+    "indic_phonetic+tiebreak",
 ]
 
 STYLE = {
@@ -37,6 +39,8 @@ STYLE = {
     "char_embedding_svd": ("#4a7ba7", "-."),
     "indic_phonetic": ("#2a7f5f", "-"),
     "indic_phonetic_dravidian": ("#1a5c42", "-"),
+    "soundex+tiebreak": ("#a8442a", (0, (3, 1, 1, 1))),
+    "indic_phonetic+tiebreak": ("#0f4030", (0, (3, 1, 1, 1))),
 }
 
 FAMILY_ORDER = [
@@ -99,7 +103,7 @@ def figure_degradation(results: dict) -> None:
 def figure_per_family(results: dict) -> None:
     data = results["per_family_recall_at_1pct_fpr"]
     fig, ax = plt.subplots(figsize=(11, 5), dpi=200)
-    width = 0.1
+    width = 0.08
     for i, matcher in enumerate(FEATURED):
         if matcher not in data:
             continue
@@ -202,6 +206,118 @@ def figure_fairness(results: dict) -> None:
     plt.close(fig)
 
 
+def figure_granularity(results: dict) -> None:
+    """Recall at both budgets, base vs tie-broken.
+
+    The paired-bar form is deliberate: the story is that the tight-budget bar
+    goes from zero to something while the loose-budget bar barely moves.
+    """
+    rows = results.get("granularity", {}).get("rows", [])
+    if not rows:
+        return
+
+    bases = [r for r in rows if r["variant"] == "base"]
+    labels = [r["matcher"] for r in bases]
+    if not labels:
+        return
+
+    fig, (ax_tight, ax_loose) = plt.subplots(1, 2, figsize=(11, 4.5), dpi=200)
+    width = 0.35
+    positions = list(range(len(labels)))
+
+    for ax, key, title, budget in (
+        (ax_tight, "recall_at_0.1pct_fpr", "Recall at 0.1% FPR (tight budget)", "0.1%"),
+        (ax_loose, "recall_at_1pct_fpr", "Recall at 1% FPR (loose budget)", "1%"),
+    ):
+        base_values, tie_values = [], []
+        for label in labels:
+            base_values.append(
+                next(r[key] for r in rows if r["matcher"] == label and r["variant"] == "base")
+            )
+            tie_values.append(
+                next(
+                    r[key]
+                    for r in rows
+                    if r["matcher"].startswith(label) and r["variant"] == "tie_broken"
+                )
+            )
+        ax.bar([p - width / 2 for p in positions], base_values, width,
+               label="as shipped", color="#b0b0b0")
+        ax.bar([p + width / 2 for p in positions], tie_values, width,
+               label="+ tie-breaker", color="#2a7f5f")
+        for p, value in zip(positions, base_values, strict=True):
+            ax.annotate(f"{value:.3f}", (p - width / 2, value), ha="center",
+                        va="bottom", fontsize=8, xytext=(0, 2),
+                        textcoords="offset points", color="#555555")
+        for p, value in zip(positions, tie_values, strict=True):
+            ax.annotate(f"{value:.3f}", (p + width / 2, value), ha="center",
+                        va="bottom", fontsize=8, fontweight="bold", xytext=(0, 2),
+                        textcoords="offset points", color="#1a5c42")
+        setup(ax, title, "", "Recall")
+        ax.set_xticks(positions)
+        ax.set_xticklabels(labels, fontsize=9)
+        # Headroom so the legend clears the tallest bar and its label.
+        ax.set_ylim(0, max(base_values + tie_values) * 1.35)
+        ax.legend(frameon=False, fontsize=8, loc="upper left")
+
+    fig.suptitle(
+        "Score granularity, not phonology, causes zero recall at a tight budget",
+        fontsize=13, fontweight="bold", x=0.02, ha="left",
+    )
+    fig.text(
+        0.02, -0.03,
+        "Tie-breaker is Jaro-Winkler blended at weight 0.15. AUC-PR rises in both cases; "
+        "the phonology is unchanged.",
+        fontsize=7, style="italic", color="#666666",
+    )
+    fig.tight_layout()
+    fig.savefig(FIGURES / "score_granularity.png", bbox_inches="tight")
+    plt.close(fig)
+
+
+def figure_alias_coverage(results: dict) -> None:
+    """Bengali anglicisation recall against alias-table coverage."""
+    data = results.get("alias_coverage", {}).get("recall_at_1pct_fpr", {})
+    if not data:
+        return
+
+    order = [
+        ("indic_phonetic", "no alias table", "#b0b0b0"),
+        ("indic_phonetic+alias_half", "41% class coverage", "#4a9070"),
+        ("indic_phonetic+alias_oracle", "full table\n(UPPER BOUND)", "#c1442e"),
+    ]
+    families = ["bengali_anglicisation", "arabic_persian", "transliteration"]
+    label = {
+        "bengali_anglicisation": "Bengali\nanglicisation",
+        "arabic_persian": "Arabic/Persian",
+        "transliteration": "Transliteration",
+    }
+
+    fig, ax = plt.subplots(figsize=(8.5, 5), dpi=200)
+    width = 0.26
+    for i, (key, legend, colour) in enumerate(order):
+        if key not in data:
+            continue
+        values = [data[key].get(f, 0.0) for f in families]
+        ax.bar([x + i * width for x in range(len(families))], values, width,
+               label=legend, color=colour)
+
+    setup(ax, "What an alias table is worth", "", "Recall at 1% false-positive rate")
+    ax.set_xticks([x + width for x in range(len(families))])
+    ax.set_xticklabels([label[f] for f in families], fontsize=9)
+    ax.legend(frameon=False, fontsize=8)
+    fig.text(
+        0.01, -0.05,
+        "The full table is the one the corpus was generated from, so it is an upper bound, "
+        "not a result.\nCoverage buys recall roughly linearly and nothing transfers to "
+        "unlisted variants.",
+        fontsize=7, style="italic", color="#666666",
+    )
+    fig.tight_layout()
+    fig.savefig(FIGURES / "alias_coverage.png", bbox_inches="tight")
+    plt.close(fig)
+
+
 def main() -> int:
     path = ROOT / "reports" / "results.json"
     if not path.exists():
@@ -214,6 +330,8 @@ def main() -> int:
     figure_per_family(results)
     figure_alert_volume(results)
     figure_fairness(results)
+    figure_granularity(results)
+    figure_alias_coverage(results)
     for figure in sorted(FIGURES.glob("*.png")):
         print(f"wrote {figure.relative_to(ROOT)}")
     return 0

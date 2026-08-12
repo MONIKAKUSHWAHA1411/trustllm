@@ -133,6 +133,7 @@ citing this.
 | --- | --- |
 | ![Degradation curve](reports/figures/degradation_curve.png) | ![Per-family breakdown](reports/figures/per_family_breakdown.png) |
 | ![Alert volume](reports/figures/alert_volume.png) | ![Fairness by origin](reports/figures/fairness_by_origin.png) |
+| ![Score granularity](reports/figures/score_granularity.png) | ![Alias coverage](reports/figures/alias_coverage.png) |
 
 ---
 
