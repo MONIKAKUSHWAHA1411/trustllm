@@ -1,0 +1,102 @@
+# Name-origin categories used for stratification in the fairness analysis.
+#
+# IMPORTANT CAVEAT, repeated in METHODOLOGY.md and reports/findings.md:
+# These categories are a coarse, imperfect proxy for linguistic/orthographic
+# convention. They are NOT ethnicity, NOT religion, and NOT nationality. A
+# person's name being drawn from a given inventory says nothing about how they
+# identify. Many names appear across several categories (Sharma, Joshi, Patil,
+# Rao, Varma, Das, Nayak) and are deliberately listed in more than one; the
+# generator resolves multi-membership by sampling, not by assignment.
+#
+# The categories exist because *orthographic variant density differs
+# systematically between them* -- that is the measurable property this
+# benchmark is about. Read every stratified number as "names following this
+# transliteration convention", never as "people of this group".
+
+version: "0.1.0"
+
+categories:
+  - id: arabic_persian
+    label: "Arabic/Persian-origin"
+    note: >-
+      Names of Arabic or Persian etymology as used across South Asia. Highest
+      variant density in the corpus: no single dominant romanisation ever
+      standardised, so Mohammed/Muhammad/Mohammad/Mohd/Md all circulate as
+      equally legitimate spellings of one name.
+    script_native: ["Arab", "Deva"]
+
+  - id: bengali
+    label: "Bengali"
+    note: >-
+      Colonial-era anglicisations diverge from the Bengali source form by whole
+      syllables rather than single characters (Chattopadhyay -> Chatterjee).
+      Both forms remain in active official use for the same individuals.
+    script_native: ["Beng"]
+
+  - id: tamil
+    label: "Tamil"
+    note: >-
+      Frequent initial-plus-name structure, where the initial expands a
+      patronymic or a village name. Tamil lacks a voiced/aspirated stop
+      contrast in its script, so romanisations of the same name differ on
+      k/g, t/d, p/b.
+    script_native: ["Taml"]
+
+  - id: telugu
+    label: "Telugu"
+    note: >-
+      House name (intiperu) conventionally precedes the given name and is
+      routinely abbreviated to an initial or dropped entirely in official
+      records.
+    script_native: ["Telu"]
+
+  - id: punjabi
+    label: "Punjabi"
+    note: >-
+      Very high collision rate from the near-universal community suffixes
+      Singh and Kaur, which function as surname, middle name, or neither
+      depending on the record.
+    script_native: ["Guru", "Arab"]
+
+  - id: gujarati
+    label: "Gujarati"
+    script_native: ["Gujr"]
+
+  - id: marathi
+    label: "Marathi"
+    script_native: ["Deva"]
+
+  - id: hindi_belt
+    label: "Hindi belt (generic North Indian)"
+    note: >-
+      Catch-all for the Hindi-speaking north. Largest inventory and highest
+      raw name-collision rate simply from population size.
+    script_native: ["Deva"]
+
+  - id: kannada
+    label: "Kannada"
+    script_native: ["Knda"]
+
+  - id: malayalam
+    label: "Malayalam"
+    note: >-
+      Includes the Syrian Christian inventory (Thomas, Varghese, Kurian),
+      whose names carry both Malayalam and biblical-European variant patterns.
+    script_native: ["Mlym"]
+
+  - id: odia
+    label: "Odia"
+    script_native: ["Orya"]
+
+# Ordinal frequency tiers.
+#
+# These are NOT measured frequencies. No openly licensed Indian name-frequency
+# corpus was reachable when this inventory was built, so tiers are hand-assigned
+# ordinal judgements of relative commonness. They control sampling weight only.
+# Treat any result that depends on the precise shape of this distribution as
+# provisional -- see the limitations section of reports/findings.md.
+tiers:
+  1: { weight: 100, label: "very common" }
+  2: { weight: 40, label: "common" }
+  3: { weight: 12, label: "moderate" }
+  4: { weight: 4, label: "less common" }

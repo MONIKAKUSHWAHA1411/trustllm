@@ -1,0 +1,428 @@
+{
+  "seeds": 15,
+  "identities_per_seed": 2500,
+  "method": "Paired per-seed differences. All matchers score the same corpus in each replicate, so shared corpus variance cancels in the delta. Comparing overlapping marginal CIs would be the wrong test and would be conservative.",
+  "scope": "Captures corpus-sampling variance only -- which identities are assembled and which transformations fire. Does NOT capture uncertainty in the inventory, the hand-assigned frequency tiers, or the rule set. Those are systematic; see tier_sensitivity.py.",
+  "marginal": {
+    "levenshtein": {
+      "headline@0.001": {
+        "mean": 0.1175,
+        "sd": 0.0209,
+        "ci95": [
+          0.1059,
+          0.1291
+        ]
+      },
+      "headline@0.01": {
+        "mean": 0.1779,
+        "sd": 0.0075,
+        "ci95": [
+          0.1737,
+          0.182
+        ]
+      },
+      "transliteration@0.001": {
+        "mean": 0.332,
+        "sd": 0.0769,
+        "ci95": [
+          0.2894,
+          0.3746
+        ]
+      },
+      "transliteration@0.01": {
+        "mean": 0.5937,
+        "sd": 0.0459,
+        "ci95": [
+          0.5683,
+          0.6191
+        ]
+      }
+    },
+    "jaro_winkler": {
+      "headline@0.001": {
+        "mean": 0.1194,
+        "sd": 0.0146,
+        "ci95": [
+          0.1113,
+          0.1275
+        ]
+      },
+      "headline@0.01": {
+        "mean": 0.1708,
+        "sd": 0.0099,
+        "ci95": [
+          0.1653,
+          0.1763
+        ]
+      },
+      "transliteration@0.001": {
+        "mean": 0.3192,
+        "sd": 0.053,
+        "ci95": [
+          0.2899,
+          0.3486
+        ]
+      },
+      "transliteration@0.01": {
+        "mean": 0.4891,
+        "sd": 0.0361,
+        "ci95": [
+          0.4691,
+          0.5091
+        ]
+      }
+    },
+    "soundex": {
+      "headline@0.001": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "headline@0.01": {
+        "mean": 0.349,
+        "sd": 0.0045,
+        "ci95": [
+          0.3465,
+          0.3514
+        ]
+      },
+      "transliteration@0.001": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "transliteration@0.01": {
+        "mean": 0.803,
+        "sd": 0.0237,
+        "ci95": [
+          0.7899,
+          0.8162
+        ]
+      }
+    },
+    "indic_phonetic": {
+      "headline@0.001": {
+        "mean": 0.0216,
+        "sd": 0.0837,
+        "ci95": [
+          -0.0248,
+          0.068
+        ]
+      },
+      "headline@0.01": {
+        "mean": 0.3308,
+        "sd": 0.0047,
+        "ci95": [
+          0.3282,
+          0.3334
+        ]
+      },
+      "transliteration@0.001": {
+        "mean": 0.0545,
+        "sd": 0.211,
+        "ci95": [
+          -0.0624,
+          0.1713
+        ]
+      },
+      "transliteration@0.01": {
+        "mean": 0.8074,
+        "sd": 0.0236,
+        "ci95": [
+          0.7944,
+          0.8205
+        ]
+      }
+    },
+    "indic_phonetic_dravidian": {
+      "headline@0.001": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "headline@0.01": {
+        "mean": 0.3506,
+        "sd": 0.0042,
+        "ci95": [
+          0.3483,
+          0.353
+        ]
+      },
+      "transliteration@0.001": {
+        "mean": 0.0,
+        "sd": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "transliteration@0.01": {
+        "mean": 0.8947,
+        "sd": 0.0174,
+        "ci95": [
+          0.885,
+          0.9043
+        ]
+      }
+    },
+    "soundex+tiebreak": {
+      "headline@0.001": {
+        "mean": 0.1457,
+        "sd": 0.0184,
+        "ci95": [
+          0.1355,
+          0.156
+        ]
+      },
+      "headline@0.01": {
+        "mean": 0.3449,
+        "sd": 0.0037,
+        "ci95": [
+          0.3428,
+          0.347
+        ]
+      },
+      "transliteration@0.001": {
+        "mean": 0.6335,
+        "sd": 0.1058,
+        "ci95": [
+          0.5749,
+          0.6921
+        ]
+      },
+      "transliteration@0.01": {
+        "mean": 0.803,
+        "sd": 0.0237,
+        "ci95": [
+          0.7899,
+          0.8162
+        ]
+      }
+    },
+    "indic_phonetic+tiebreak": {
+      "headline@0.001": {
+        "mean": 0.1501,
+        "sd": 0.0499,
+        "ci95": [
+          0.1225,
+          0.1778
+        ]
+      },
+      "headline@0.01": {
+        "mean": 0.327,
+        "sd": 0.0039,
+        "ci95": [
+          0.3248,
+          0.3291
+        ]
+      },
+      "transliteration@0.001": {
+        "mean": 0.6505,
+        "sd": 0.128,
+        "ci95": [
+          0.5796,
+          0.7214
+        ]
+      },
+      "transliteration@0.01": {
+        "mean": 0.8074,
+        "sd": 0.0236,
+        "ci95": [
+          0.7944,
+          0.8205
+        ]
+      }
+    }
+  },
+  "claims": [
+    {
+      "claim": "Indic vs Soundex on transliteration",
+      "a": "indic_phonetic",
+      "b": "soundex",
+      "split": "transliteration",
+      "fpr_budget": 0.01,
+      "mean_delta": 0.00438,
+      "sd": 0.01931,
+      "ci95": [
+        -0.00632,
+        0.01508
+      ],
+      "seeds_favouring_a": 5,
+      "n_seeds": 15,
+      "sign_test_p": 0.77441,
+      "significant": false,
+      "verdict": "no difference"
+    },
+    {
+      "claim": "Indic-dravidian vs Soundex on transliteration",
+      "a": "indic_phonetic_dravidian",
+      "b": "soundex",
+      "split": "transliteration",
+      "fpr_budget": 0.01,
+      "mean_delta": 0.09162,
+      "sd": 0.01266,
+      "ci95": [
+        0.08461,
+        0.09863
+      ],
+      "seeds_favouring_a": 15,
+      "n_seeds": 15,
+      "sign_test_p": 6e-05,
+      "significant": true,
+      "verdict": "REAL"
+    },
+    {
+      "claim": "Indic-dravidian vs Soundex on headline",
+      "a": "indic_phonetic_dravidian",
+      "b": "soundex",
+      "split": "headline",
+      "fpr_budget": 0.01,
+      "mean_delta": 0.00166,
+      "sd": 0.00208,
+      "ci95": [
+        0.00051,
+        0.00281
+      ],
+      "seeds_favouring_a": 13,
+      "n_seeds": 15,
+      "sign_test_p": 0.00739,
+      "significant": true,
+      "verdict": "REAL"
+    },
+    {
+      "claim": "Indic vs Soundex on headline",
+      "a": "indic_phonetic",
+      "b": "soundex",
+      "split": "headline",
+      "fpr_budget": 0.01,
+      "mean_delta": -0.01812,
+      "sd": 0.00278,
+      "ci95": [
+        -0.01966,
+        -0.01659
+      ],
+      "seeds_favouring_a": 0,
+      "n_seeds": 15,
+      "sign_test_p": 6e-05,
+      "significant": true,
+      "verdict": "REAL (reversed)"
+    },
+    {
+      "claim": "Voicing merge helps on transliteration",
+      "a": "indic_phonetic_dravidian",
+      "b": "indic_phonetic",
+      "split": "transliteration",
+      "fpr_budget": 0.01,
+      "mean_delta": 0.08724,
+      "sd": 0.01177,
+      "ci95": [
+        0.08072,
+        0.09376
+      ],
+      "seeds_favouring_a": 15,
+      "n_seeds": 15,
+      "sign_test_p": 6e-05,
+      "significant": true,
+      "verdict": "REAL"
+    },
+    {
+      "claim": "Tie-break recovers the 0.1% budget (Indic)",
+      "a": "indic_phonetic+tiebreak",
+      "b": "indic_phonetic",
+      "split": "headline",
+      "fpr_budget": 0.001,
+      "mean_delta": 0.12852,
+      "sd": 0.04274,
+      "ci95": [
+        0.10485,
+        0.15219
+      ],
+      "seeds_favouring_a": 14,
+      "n_seeds": 15,
+      "sign_test_p": 0.00098,
+      "significant": true,
+      "verdict": "REAL"
+    },
+    {
+      "claim": "Tie-break recovers the 0.1% budget (Soundex)",
+      "a": "soundex+tiebreak",
+      "b": "soundex",
+      "split": "headline",
+      "fpr_budget": 0.001,
+      "mean_delta": 0.14575,
+      "sd": 0.01844,
+      "ci95": [
+        0.13554,
+        0.15596
+      ],
+      "seeds_favouring_a": 15,
+      "n_seeds": 15,
+      "sign_test_p": 6e-05,
+      "significant": true,
+      "verdict": "REAL"
+    },
+    {
+      "claim": "Tie-break costs little at the 1% budget (Indic)",
+      "a": "indic_phonetic+tiebreak",
+      "b": "indic_phonetic",
+      "split": "headline",
+      "fpr_budget": 0.01,
+      "mean_delta": -0.00386,
+      "sd": 0.00236,
+      "ci95": [
+        -0.00516,
+        -0.00255
+      ],
+      "seeds_favouring_a": 1,
+      "n_seeds": 15,
+      "sign_test_p": 0.00098,
+      "significant": true,
+      "verdict": "REAL (reversed)"
+    },
+    {
+      "claim": "Indic beats Levenshtein on transliteration",
+      "a": "indic_phonetic",
+      "b": "levenshtein",
+      "split": "transliteration",
+      "fpr_budget": 0.01,
+      "mean_delta": 0.21371,
+      "sd": 0.05522,
+      "ci95": [
+        0.18313,
+        0.2443
+      ],
+      "seeds_favouring_a": 15,
+      "n_seeds": 15,
+      "sign_test_p": 6e-05,
+      "significant": true,
+      "verdict": "REAL"
+    },
+    {
+      "claim": "Indic beats Jaro-Winkler on transliteration",
+      "a": "indic_phonetic",
+      "b": "jaro_winkler",
+      "split": "transliteration",
+      "fpr_budget": 0.01,
+      "mean_delta": 0.31829,
+      "sd": 0.04325,
+      "ci95": [
+        0.29433,
+        0.34224
+      ],
+      "seeds_favouring_a": 15,
+      "n_seeds": 15,
+      "sign_test_p": 6e-05,
+      "significant": true,
+      "verdict": "REAL"
+    }
+  ]
+}

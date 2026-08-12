@@ -1,0 +1,207 @@
+# Curated cross-script forms.
+#
+# Deliberately NOT rule-generated. A Latin -> Devanagari transliterator run in
+# reverse produces forms that no native writer would produce, and evaluating
+# matchers against those would measure the transliterator's errors rather than
+# any real cross-script gap. Every pair below is a hand-checked conventional
+# spelling.
+#
+# Coverage is therefore partial by construction: roughly the highest-frequency
+# tokens per script. Cross-script results are reported over this subset only,
+# with the covered fraction stated alongside. Contributions extending coverage
+# are the single most useful thing an outside reader can add.
+
+version: "0.1.0"
+
+# ISO 15924 script codes.
+Deva:
+  language_note: "Devanagari, as used for Hindi and Marathi."
+  given:
+    Rahul: राहुल
+    Amit: अमित
+    Sunil: सुनील
+    Manoj: मनोज
+    Rajesh: राजेश
+    Sanjay: संजय
+    Vijay: विजय
+    Deepak: दीपक
+    Anil: अनिल
+    Ajay: अजय
+    Ramesh: रमेश
+    Suresh: सुरेश
+    Ashok: अशोक
+    Rakesh: राकेश
+    Vinod: विनोद
+    Dinesh: दिनेश
+    Pankaj: पंकज
+    Arun: अरुण
+    Sandeep: संदीप
+    Vikram: विक्रम
+    Gaurav: गौरव
+    Nitin: नितिन
+    Rohit: रोहित
+    Abhishek: अभिषेक
+    Ankit: अंकित
+    Mukesh: मुकेश
+    Krishna: कृष्ण
+    Ravi: रवि
+    Prasad: प्रसाद
+    Kumar: कुमार
+    Ganesh: गणेश
+    Mahesh: महेश
+    Sachin: सचिन
+    Sunita: सुनीता
+    Anita: अनीता
+    Kavita: कविता
+    Priya: प्रिया
+    Pooja: पूजा
+    Neha: नेहा
+    Meena: मीना
+    Rekha: रेखा
+    Seema: सीमा
+    Usha: उषा
+    Nisha: निशा
+    Poonam: पूनम
+    Devi: देवी
+    Lakshmi: लक्ष्मी
+    Mohammed: मोहम्मद
+    Abdul: अब्दुल
+    Ibrahim: इब्राहिम
+    Yusuf: यूसुफ
+    Fatima: फातिमा
+    Ayesha: आयशा
+    Imran: इमरान
+    Hussain: हुसैन
+  surname:
+    Sharma: शर्मा
+    Verma: वर्मा
+    Gupta: गुप्ता
+    Singh: सिंह
+    Yadav: यादव
+    Agarwal: अग्रवाल
+    Mishra: मिश्रा
+    Pandey: पांडे
+    Tiwari: तिवारी
+    Dubey: दुबे
+    Srivastava: श्रीवास्तव
+    Saxena: सक्सेना
+    Chauhan: चौहान
+    Jain: जैन
+    Sinha: सिन्हा
+    Thakur: ठाकुर
+    Kapoor: कपूर
+    Malhotra: मल्होत्रा
+    Chopra: चोपड़ा
+    Arora: अरोड़ा
+    Bhatia: भाटिया
+    Patel: पटेल
+    Shah: शाह
+    Desai: देसाई
+    Mehta: मेहता
+    Joshi: जोशी
+    Trivedi: त्रिवेदी
+    Bhatt: भट्ट
+    Modi: मोदी
+    Gandhi: गांधी
+    Deshpande: देशपांडे
+    Kulkarni: कुलकर्णी
+    Patil: पाटील
+    Jadhav: जाधव
+    Pawar: पवार
+    Shinde: शिंदे
+    Khan: खान
+    Ahmed: अहमद
+    Ali: अली
+    Sheikh: शेख
+    Ansari: अंसारी
+    Qureshi: कुरैशी
+    Siddiqui: सिद्दीकी
+    Das: दास
+    Rao: राव
+    Reddy: रेड्डी
+
+Beng:
+  language_note: "Bengali script. Note that the Bengali form usually corresponds to the Sanskritic surname, not the anglicised one."
+  given:
+    Amit: অমিত
+    Gautam: গৌতম
+    Dilip: দিলীপ
+    Tapan: তপন
+    Sandip: সন্দীপ
+    Partha: পার্থ
+    Kaushik: কৌশিক
+    Aparna: অপর্ণা
+    Nandita: নন্দিতা
+    Sharmila: শর্মিলা
+  surname:
+    Chattopadhyay: চট্টোপাধ্যায়
+    Bandopadhyay: বন্দ্যোপাধ্যায়
+    Mukhopadhyay: মুখোপাধ্যায়
+    Gangopadhyay: গঙ্গোপাধ্যায়
+    Ghosh: ঘোষ
+    Das: দাস
+    Roy: রায়
+    Sen: সেন
+    Basu: বসু
+    Chakraborty: চক্রবর্তী
+    Bhattacharya: ভট্টাচার্য
+    Sarkar: সরকার
+    Dutta: দত্ত
+    Mitra: মিত্র
+    Saha: সাহা
+    Biswas: বিশ্বাস
+
+Taml:
+  language_note: "Tamil script. Tamil has no voiced/aspirated stop letters, which is the structural reason romanisations diverge on k/g, t/d, p/b."
+  given:
+    Venkatesh: வெங்கடேஷ்
+    Murugan: முருகன்
+    Karthik: கார்த்திக்
+    Rajan: ராஜன்
+    Selvam: செல்வம்
+    Kannan: கண்ணன்
+    Subramanian: சுப்பிரமணியன்
+    Saravanan: சரவணன்
+    Lakshmi: லட்சுமி
+    Meenakshi: மீனாட்சி
+  surname:
+    Pillai: பிள்ளை
+    Iyer: ஐயர்
+    Nadar: நாடார்
+    Chettiar: செட்டியார்
+    Mudaliar: முதலியார்
+
+Telu:
+  language_note: "Telugu script."
+  given:
+    Venkata: వెంకట
+    Srinivas: శ్రీనివాస్
+    Ramesh: రమేష్
+    Suresh: సురేష్
+    Krishna: కృష్ణ
+    Lakshmi: లక్ష్మి
+    Padma: పద్మ
+  surname:
+    Reddy: రెడ్డి
+    Naidu: నాయుడు
+    Rao: రావు
+    Raju: రాజు
+    Sharma: శర్మ
+
+Guru:
+  language_note: "Gurmukhi script."
+  given:
+    Gurpreet: ਗੁਰਪ੍ਰੀਤ
+    Harpreet: ਹਰਪ੍ਰੀਤ
+    Manpreet: ਮਨਪ੍ਰੀਤ
+    Jaspreet: ਜਸਪ੍ਰੀਤ
+    Simran: ਸਿਮਰਨ
+    Ranjit: ਰਣਜੀਤ
+  surname:
+    Singh: ਸਿੰਘ
+    Kaur: ਕੌਰ
+    Gill: ਗਿੱਲ
+    Sidhu: ਸਿੱਧੂ
+    Dhillon: ਢਿੱਲੋਂ
+    Sandhu: ਸੰਧੂ
+    Grewal: ਗਰੇਵਾਲ

@@ -1,0 +1,106 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "indic-name-bench"
+version = "0.1.0"
+description = "An open benchmark for fuzzy name matching on Indian names in financial-crime screening."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+keywords = [
+    "name-matching",
+    "entity-resolution",
+    "sanctions-screening",
+    "record-linkage",
+    "phonetic-matching",
+    "indic-nlp",
+    "fairness",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+
+# Deliberately light. The variant generator and the Indic phonetic encoder are
+# pure stdlib so that corpus generation is reproducible anywhere, including in
+# air-gapped environments. Everything heavier is an optional extra.
+dependencies = [
+    "numpy>=1.24",
+    "pandas>=2.0",
+    "scipy>=1.10",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+# Baseline matchers. Separated from core so that `generate` works without them.
+matchers = [
+    "jellyfish>=1.0",
+    "rapidfuzz>=3.0",
+    "abydos>=0.5",
+    "Unidecode>=1.3",
+]
+# Figures and the report pipeline.
+report = [
+    "matplotlib>=3.7",
+    "scikit-learn>=1.3",
+]
+# Transformer encoders (MuRIL, LaBSE). Requires network access at first use.
+neural = [
+    "torch>=2.0",
+    "transformers>=4.40",
+    "sentence-transformers>=3.0",
+]
+# LLM reranker stage of the hybrid cascade.
+llm = [
+    "anthropic>=0.40",
+]
+# Third-party entity-resolution reference point.
+er = [
+    "recordlinkage>=0.16",
+]
+dev = [
+    "pytest>=7.4",
+    "pytest-cov>=4.1",
+    "ruff>=0.6",
+]
+all = [
+    "indic-name-bench[matchers,report,neural,llm,er,dev]",
+]
+
+[project.scripts]
+indic-name-bench = "indic_name_bench.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/MONIKAKUSHWAHA1411/indic-name-bench"
+Methodology = "https://github.com/MONIKAKUSHWAHA1411/indic-name-bench/blob/main/METHODOLOGY.md"
+Findings = "https://github.com/MONIKAKUSHWAHA1411/indic-name-bench/blob/main/reports/findings.md"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+indic_name_bench = ["seeds/data/*.yaml", "seeds/data/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+markers = [
+    "slow: deselect with '-m \"not slow\"'",
+    "network: requires outbound network access",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["E501"]

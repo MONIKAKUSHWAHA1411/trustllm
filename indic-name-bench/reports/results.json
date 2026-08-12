@@ -1,0 +1,7436 @@
+{
+  "version": "0.1.0",
+  "config": {
+    "seed": 20260811,
+    "n_identities": 4000,
+    "severities": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "variants_per_identity_per_severity": 1,
+    "family_variants_per_family": 900,
+    "family_severities": [
+      1,
+      2,
+      3
+    ],
+    "cross_script_variants": 800,
+    "hard_negatives_per_type": 1500,
+    "easy_negatives": 4000
+  },
+  "config_fingerprint": "cb072819ce95b87c",
+  "corpus_summary": {
+    "identities": 4000,
+    "pairs_by_split": {
+      "cross_script": 800,
+      "degradation": 20000,
+      "family": 5400,
+      "negatives": 11500
+    },
+    "total_pairs": 37700,
+    "positives": 26200,
+    "negatives": 11500,
+    "unsatisfiable_negatives": 1500
+  },
+  "unavailable_matchers": {
+    "labse, muril": "sentence-transformers not installed (pip install indic-name-bench[neural]); model weights also require network access to huggingface.co",
+    "llm_reranker": "anthropic SDK not installed (pip install indic-name-bench[llm])"
+  },
+  "assumptions": {
+    "minutes_per_alert": 4.0,
+    "alert_volumes_are_upper_bounds": "hard negatives are drawn from the confusable region, not uniformly, so measured FPR exceeds a uniform draw at the same base rate"
+  },
+  "headline": [
+    {
+      "matcher": "exact",
+      "n_pairs": 30000,
+      "auc_pr": 0.6667,
+      "auc_roc": 0.5,
+      "per_pair_us": 0.08,
+      "pairs_per_second": 12210425.0,
+      "recall@fpr0.001": 0.0,
+      "recall@fpr0.01": 0.0,
+      "recall@fpr0.05": 0.0,
+      "cost_class": "trivial"
+    },
+    {
+      "matcher": "normalised_exact",
+      "n_pairs": 30000,
+      "auc_pr": 0.6767,
+      "auc_roc": 0.5151,
+      "per_pair_us": 0.52,
+      "pairs_per_second": 1914048.0,
+      "recall@fpr0.001": 0.0302,
+      "recall@fpr0.01": 0.0302,
+      "recall@fpr0.05": 0.0302,
+      "cost_class": "trivial"
+    },
+    {
+      "matcher": "levenshtein",
+      "n_pairs": 30000,
+      "auc_pr": 0.7893,
+      "auc_roc": 0.6247,
+      "per_pair_us": 4.7,
+      "pairs_per_second": 212708.0,
+      "recall@fpr0.001": 0.1308,
+      "recall@fpr0.01": 0.1908,
+      "recall@fpr0.05": 0.2528,
+      "cost_class": "trivial"
+    },
+    {
+      "matcher": "damerau_levenshtein",
+      "n_pairs": 30000,
+      "auc_pr": 0.7899,
+      "auc_roc": 0.6253,
+      "per_pair_us": 7.57,
+      "pairs_per_second": 132175.0,
+      "recall@fpr0.001": 0.1323,
+      "recall@fpr0.01": 0.1925,
+      "recall@fpr0.05": 0.2544,
+      "cost_class": "trivial"
+    },
+    {
+      "matcher": "ngram_cosine",
+      "n_pairs": 30000,
+      "auc_pr": 0.807,
+      "auc_roc": 0.7037,
+      "per_pair_us": 18.01,
+      "pairs_per_second": 55513.0,
+      "recall@fpr0.001": 0.052,
+      "recall@fpr0.01": 0.0886,
+      "recall@fpr0.05": 0.1815,
+      "cost_class": "cheap"
+    },
+    {
+      "matcher": "ngram_jaccard",
+      "n_pairs": 30000,
+      "auc_pr": 0.8038,
+      "auc_roc": 0.6992,
+      "per_pair_us": 5.57,
+      "pairs_per_second": 179518.0,
+      "recall@fpr0.001": 0.051,
+      "recall@fpr0.01": 0.0873,
+      "recall@fpr0.05": 0.1767,
+      "cost_class": "cheap"
+    },
+    {
+      "matcher": "token_jaccard",
+      "n_pairs": 30000,
+      "auc_pr": 0.6898,
+      "auc_roc": 0.5144,
+      "per_pair_us": 1.97,
+      "pairs_per_second": 508226.0,
+      "recall@fpr0.001": 0.0922,
+      "recall@fpr0.01": 0.0922,
+      "recall@fpr0.05": 0.0922,
+      "cost_class": "trivial"
+    },
+    {
+      "matcher": "weighted_token",
+      "n_pairs": 30000,
+      "auc_pr": 0.7057,
+      "auc_roc": 0.5291,
+      "per_pair_us": 8.3,
+      "pairs_per_second": 120419.0,
+      "recall@fpr0.001": 0.1202,
+      "recall@fpr0.01": 0.1202,
+      "recall@fpr0.05": 0.1202,
+      "cost_class": "trivial"
+    },
+    {
+      "matcher": "token_sort_levenshtein",
+      "n_pairs": 30000,
+      "auc_pr": 0.8557,
+      "auc_roc": 0.742,
+      "per_pair_us": 54.25,
+      "pairs_per_second": 18434.0,
+      "recall@fpr0.001": 0.1834,
+      "recall@fpr0.01": 0.2475,
+      "recall@fpr0.05": 0.3397,
+      "cost_class": "trivial"
+    },
+    {
+      "matcher": "jaro",
+      "n_pairs": 30000,
+      "auc_pr": 0.7938,
+      "auc_roc": 0.6497,
+      "per_pair_us": 2.73,
+      "pairs_per_second": 366741.0,
+      "recall@fpr0.001": 0.1105,
+      "recall@fpr0.01": 0.1731,
+      "recall@fpr0.05": 0.2189,
+      "cost_class": "trivial"
+    },
+    {
+      "matcher": "jaro_winkler",
+      "n_pairs": 30000,
+      "auc_pr": 0.7872,
+      "auc_roc": 0.6409,
+      "per_pair_us": 2.76,
+      "pairs_per_second": 362058.0,
+      "recall@fpr0.001": 0.1181,
+      "recall@fpr0.01": 0.1691,
+      "recall@fpr0.05": 0.206,
+      "cost_class": "trivial"
+    },
+    {
+      "matcher": "monge_elkan",
+      "n_pairs": 30000,
+      "auc_pr": 0.806,
+      "auc_roc": 0.7777,
+      "per_pair_us": 6.86,
+      "pairs_per_second": 145753.0,
+      "recall@fpr0.001": 0.0,
+      "recall@fpr0.01": 0.0,
+      "recall@fpr0.05": 0.0,
+      "cost_class": "moderate"
+    },
+    {
+      "matcher": "soundex",
+      "n_pairs": 30000,
+      "auc_pr": 0.8381,
+      "auc_roc": 0.7108,
+      "per_pair_us": 6.22,
+      "pairs_per_second": 160724.0,
+      "recall@fpr0.001": 0.0,
+      "recall@fpr0.01": 0.3549,
+      "recall@fpr0.05": 0.3549,
+      "cost_class": "cheap"
+    },
+    {
+      "matcher": "metaphone",
+      "n_pairs": 30000,
+      "auc_pr": 0.7872,
+      "auc_roc": 0.6329,
+      "per_pair_us": 6.47,
+      "pairs_per_second": 154530.0,
+      "recall@fpr0.001": 0.0,
+      "recall@fpr0.01": 0.2567,
+      "recall@fpr0.05": 0.2567,
+      "cost_class": "cheap"
+    },
+    {
+      "matcher": "nysiis",
+      "n_pairs": 30000,
+      "auc_pr": 0.799,
+      "auc_roc": 0.6499,
+      "per_pair_us": 6.54,
+      "pairs_per_second": 152924.0,
+      "recall@fpr0.001": 0.0,
+      "recall@fpr0.01": 0.2794,
+      "recall@fpr0.05": 0.2794,
+      "cost_class": "cheap"
+    },
+    {
+      "matcher": "match_rating",
+      "n_pairs": 30000,
+      "auc_pr": 0.7749,
+      "auc_roc": 0.6161,
+      "per_pair_us": 6.61,
+      "pairs_per_second": 151239.0,
+      "recall@fpr0.001": 0.0,
+      "recall@fpr0.01": 0.2339,
+      "recall@fpr0.05": 0.2339,
+      "cost_class": "cheap"
+    },
+    {
+      "matcher": "refined_soundex",
+      "n_pairs": 30000,
+      "auc_pr": 0.8285,
+      "auc_roc": 0.6924,
+      "per_pair_us": 11.62,
+      "pairs_per_second": 86039.0,
+      "recall@fpr0.001": 0.0,
+      "recall@fpr0.01": 0.3413,
+      "recall@fpr0.05": 0.3413,
+      "cost_class": "cheap"
+    },
+    {
+      "matcher": "double_metaphone",
+      "n_pairs": 30000,
+      "auc_pr": 0.8043,
+      "auc_roc": 0.6571,
+      "per_pair_us": 9.79,
+      "pairs_per_second": 102181.0,
+      "recall@fpr0.001": 0.0,
+      "recall@fpr0.01": 0.2902,
+      "recall@fpr0.05": 0.2902,
+      "cost_class": "cheap"
+    },
+    {
+      "matcher": "caverphone",
+      "n_pairs": 30000,
+      "auc_pr": 0.8103,
+      "auc_roc": 0.662,
+      "per_pair_us": 9.19,
+      "pairs_per_second": 108828.0,
+      "recall@fpr0.001": 0.0,
+      "recall@fpr0.01": 0.3077,
+      "recall@fpr0.05": 0.3077,
+      "cost_class": "cheap"
+    },
+    {
+      "matcher": "indic_phonetic_exact",
+      "n_pairs": 30000,
+      "auc_pr": 0.7434,
+      "auc_roc": 0.6157,
+      "per_pair_us": 7.0,
+      "pairs_per_second": 142829.0,
+      "recall@fpr0.001": 0.0,
+      "recall@fpr0.01": 0.2339,
+      "recall@fpr0.05": 0.2339,
+      "cost_class": "cheap"
+    },
+    {
+      "matcher": "indic_phonetic",
+      "n_pairs": 30000,
+      "auc_pr": 0.849,
+      "auc_roc": 0.7325,
+      "per_pair_us": 8.28,
+      "pairs_per_second": 120737.0,
+      "recall@fpr0.001": 0.0,
+      "recall@fpr0.01": 0.3379,
+      "recall@fpr0.05": 0.3379,
+      "cost_class": "moderate"
+    },
+    {
+      "matcher": "indic_phonetic_dravidian",
+      "n_pairs": 30000,
+      "auc_pr": 0.8571,
+      "auc_roc": 0.7439,
+      "per_pair_us": 12.41,
+      "pairs_per_second": 80608.0,
+      "recall@fpr0.001": 0.0,
+      "recall@fpr0.01": 0.3572,
+      "recall@fpr0.05": 0.3572,
+      "cost_class": "moderate"
+    },
+    {
+      "matcher": "char_embedding_svd",
+      "n_pairs": 30000,
+      "auc_pr": 0.8965,
+      "auc_roc": 0.8171,
+      "per_pair_us": 24.55,
+      "pairs_per_second": 40730.0,
+      "recall@fpr0.001": 0.1103,
+      "recall@fpr0.01": 0.2286,
+      "recall@fpr0.05": 0.4032,
+      "cost_class": "cheap"
+    },
+    {
+      "matcher": "cascade[ngram_jaccard->indic_phonetic]",
+      "n_pairs": 30000,
+      "auc_pr": 0.8423,
+      "auc_roc": 0.7182,
+      "per_pair_us": 12.57,
+      "pairs_per_second": 79539.0,
+      "recall@fpr0.001": 0.0,
+      "recall@fpr0.01": 0.3348,
+      "recall@fpr0.05": 0.3348,
+      "cost_class": "moderate"
+    },
+    {
+      "matcher": "indic_phonetic+alias_half",
+      "n_pairs": 30000,
+      "auc_pr": 0.851,
+      "auc_roc": 0.7352,
+      "per_pair_us": 16.5,
+      "pairs_per_second": 60624.0,
+      "recall@fpr0.001": 0.0,
+      "recall@fpr0.01": 0.3432,
+      "recall@fpr0.05": 0.3432,
+      "cost_class": "moderate"
+    },
+    {
+      "matcher": "indic_phonetic+alias_oracle",
+      "n_pairs": 30000,
+      "auc_pr": 0.8531,
+      "auc_roc": 0.7382,
+      "per_pair_us": 11.17,
+      "pairs_per_second": 89557.0,
+      "recall@fpr0.001": 0.0,
+      "recall@fpr0.01": 0.3489,
+      "recall@fpr0.05": 0.3489,
+      "cost_class": "moderate"
+    },
+    {
+      "matcher": "alias_exact",
+      "n_pairs": 30000,
+      "auc_pr": 0.6974,
+      "auc_roc": 0.5461,
+      "per_pair_us": 2.94,
+      "pairs_per_second": 339810.0,
+      "recall@fpr0.001": 0.0922,
+      "recall@fpr0.01": 0.0922,
+      "recall@fpr0.05": 0.0922,
+      "cost_class": "trivial"
+    },
+    {
+      "matcher": "soundex+tiebreak",
+      "n_pairs": 30000,
+      "auc_pr": 0.8506,
+      "auc_roc": 0.7198,
+      "per_pair_us": 9.73,
+      "pairs_per_second": 102803.0,
+      "recall@fpr0.001": 0.1485,
+      "recall@fpr0.01": 0.3487,
+      "recall@fpr0.05": 0.3614,
+      "cost_class": "cheap"
+    },
+    {
+      "matcher": "indic_phonetic+tiebreak",
+      "n_pairs": 30000,
+      "auc_pr": 0.8524,
+      "auc_roc": 0.7295,
+      "per_pair_us": 11.47,
+      "pairs_per_second": 87209.0,
+      "recall@fpr0.001": 0.1608,
+      "recall@fpr0.01": 0.3334,
+      "recall@fpr0.05": 0.3444,
+      "cost_class": "cheap"
+    }
+  ],
+  "degradation_recall_at_1pct_fpr": {
+    "exact": {
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0,
+      "4": 0.0,
+      "5": 0.0
+    },
+    "normalised_exact": {
+      "1": 0.10875,
+      "2": 0.0195,
+      "3": 0.01725,
+      "4": 0.00175,
+      "5": 0.00375
+    },
+    "levenshtein": {
+      "1": 0.5455,
+      "2": 0.217,
+      "3": 0.11225,
+      "4": 0.05425,
+      "5": 0.025
+    },
+    "damerau_levenshtein": {
+      "1": 0.54675,
+      "2": 0.22175,
+      "3": 0.113,
+      "4": 0.055,
+      "5": 0.026
+    },
+    "ngram_cosine": {
+      "1": 0.30725,
+      "2": 0.07,
+      "3": 0.04275,
+      "4": 0.0155,
+      "5": 0.00725
+    },
+    "ngram_jaccard": {
+      "1": 0.30275,
+      "2": 0.0685,
+      "3": 0.042,
+      "4": 0.0155,
+      "5": 0.00775
+    },
+    "token_jaccard": {
+      "1": 0.29075,
+      "2": 0.08625,
+      "3": 0.04975,
+      "4": 0.0225,
+      "5": 0.01175
+    },
+    "weighted_token": {
+      "1": 0.3505,
+      "2": 0.12525,
+      "3": 0.073,
+      "4": 0.031,
+      "5": 0.021
+    },
+    "token_sort_levenshtein": {
+      "1": 0.61475,
+      "2": 0.305,
+      "3": 0.169,
+      "4": 0.09225,
+      "5": 0.05625
+    },
+    "jaro": {
+      "1": 0.503,
+      "2": 0.1825,
+      "3": 0.10175,
+      "4": 0.053,
+      "5": 0.02525
+    },
+    "jaro_winkler": {
+      "1": 0.49925,
+      "2": 0.1735,
+      "3": 0.09575,
+      "4": 0.05175,
+      "5": 0.02525
+    },
+    "monge_elkan": {
+      "1": 0.0,
+      "2": 0.0,
+      "3": 0.0,
+      "4": 0.0,
+      "5": 0.0
+    },
+    "soundex": {
+      "1": 0.6555,
+      "2": 0.4245,
+      "3": 0.3135,
+      "4": 0.216,
+      "5": 0.165
+    },
+    "metaphone": {
+      "1": 0.5575,
+      "2": 0.30575,
+      "3": 0.2075,
+      "4": 0.123,
+      "5": 0.09
+    },
+    "nysiis": {
+      "1": 0.5795,
+      "2": 0.3315,
+      "3": 0.23175,
+      "4": 0.1465,
+      "5": 0.108
+    },
+    "match_rating": {
+      "1": 0.5275,
+      "2": 0.277,
+      "3": 0.1845,
+      "4": 0.10325,
+      "5": 0.07725
+    },
+    "refined_soundex": {
+      "1": 0.641,
+      "2": 0.4055,
+      "3": 0.30075,
+      "4": 0.20425,
+      "5": 0.15525
+    },
+    "double_metaphone": {
+      "1": 0.59425,
+      "2": 0.3415,
+      "3": 0.249,
+      "4": 0.15025,
+      "5": 0.116
+    },
+    "caverphone": {
+      "1": 0.61,
+      "2": 0.366,
+      "3": 0.2645,
+      "4": 0.1685,
+      "5": 0.1295
+    },
+    "indic_phonetic_exact": {
+      "1": 0.53275,
+      "2": 0.27775,
+      "3": 0.18,
+      "4": 0.1065,
+      "5": 0.07275
+    },
+    "indic_phonetic": {
+      "1": 0.64125,
+      "2": 0.406,
+      "3": 0.3,
+      "4": 0.2,
+      "5": 0.1425
+    },
+    "indic_phonetic_dravidian": {
+      "1": 0.65975,
+      "2": 0.426,
+      "3": 0.3185,
+      "4": 0.22075,
+      "5": 0.16075
+    },
+    "char_embedding_svd": {
+      "1": 0.55525,
+      "2": 0.2715,
+      "3": 0.15975,
+      "4": 0.0935,
+      "5": 0.06275
+    },
+    "cascade[ngram_jaccard->indic_phonetic]": {
+      "1": 0.64125,
+      "2": 0.40575,
+      "3": 0.29725,
+      "4": 0.19475,
+      "5": 0.13525
+    },
+    "indic_phonetic+alias_half": {
+      "1": 0.64775,
+      "2": 0.413,
+      "3": 0.3075,
+      "4": 0.20375,
+      "5": 0.14425
+    },
+    "indic_phonetic+alias_oracle": {
+      "1": 0.65575,
+      "2": 0.421,
+      "3": 0.3135,
+      "4": 0.20825,
+      "5": 0.14625
+    },
+    "alias_exact": {
+      "1": 0.28225,
+      "2": 0.08975,
+      "3": 0.0535,
+      "4": 0.02225,
+      "5": 0.0135
+    },
+    "soundex+tiebreak": {
+      "1": 0.66925,
+      "2": 0.41925,
+      "3": 0.3,
+      "4": 0.20225,
+      "5": 0.1525
+    },
+    "indic_phonetic+tiebreak": {
+      "1": 0.65775,
+      "2": 0.4035,
+      "3": 0.2865,
+      "4": 0.18675,
+      "5": 0.1325
+    }
+  },
+  "per_family_recall_at_1pct_fpr": {
+    "exact": {
+      "affix": 0.0,
+      "arabic_persian": 0.0,
+      "bengali_anglicisation": 0.0,
+      "cross_script": 0.0,
+      "noise": 0.0,
+      "structure": 0.0,
+      "transliteration": 0.0
+    },
+    "normalised_exact": {
+      "affix": 0.005555555555555556,
+      "arabic_persian": 0.0,
+      "bengali_anglicisation": 0.0,
+      "cross_script": 0.0,
+      "noise": 0.29333333333333333,
+      "structure": 0.035555555555555556,
+      "transliteration": 0.0
+    },
+    "levenshtein": {
+      "affix": 0.025555555555555557,
+      "arabic_persian": 0.8577777777777778,
+      "bengali_anglicisation": 0.36,
+      "cross_script": 0.0,
+      "noise": 0.8744444444444445,
+      "structure": 0.17888888888888888,
+      "transliteration": 0.6544444444444445
+    },
+    "damerau_levenshtein": {
+      "affix": 0.025555555555555557,
+      "arabic_persian": 0.8622222222222222,
+      "bengali_anglicisation": 0.36,
+      "cross_script": 0.0,
+      "noise": 0.9133333333333333,
+      "structure": 0.17888888888888888,
+      "transliteration": 0.6555555555555556
+    },
+    "ngram_cosine": {
+      "affix": 0.15333333333333332,
+      "arabic_persian": 0.1811111111111111,
+      "bengali_anglicisation": 0.013333333333333334,
+      "cross_script": 0.00375,
+      "noise": 0.3933333333333333,
+      "structure": 0.07555555555555556,
+      "transliteration": 0.15222222222222223
+    },
+    "ngram_jaccard": {
+      "affix": 0.13111111111111112,
+      "arabic_persian": 0.18333333333333332,
+      "bengali_anglicisation": 0.006666666666666667,
+      "cross_script": 0.00375,
+      "noise": 0.3988888888888889,
+      "structure": 0.08,
+      "transliteration": 0.15333333333333332
+    },
+    "token_jaccard": {
+      "affix": 0.17666666666666667,
+      "arabic_persian": 0.0,
+      "bengali_anglicisation": 0.0,
+      "cross_script": 0.0,
+      "noise": 0.29333333333333333,
+      "structure": 0.26222222222222225,
+      "transliteration": 0.0
+    },
+    "weighted_token": {
+      "affix": 0.5,
+      "arabic_persian": 0.0,
+      "bengali_anglicisation": 0.0,
+      "cross_script": 0.0,
+      "noise": 0.29333333333333333,
+      "structure": 0.24666666666666667,
+      "transliteration": 0.0
+    },
+    "token_sort_levenshtein": {
+      "affix": 0.034444444444444444,
+      "arabic_persian": 0.8444444444444444,
+      "bengali_anglicisation": 0.35888888888888887,
+      "cross_script": 0.0,
+      "noise": 0.7655555555555555,
+      "structure": 0.3433333333333333,
+      "transliteration": 0.6622222222222223
+    },
+    "jaro": {
+      "affix": 0.07222222222222222,
+      "arabic_persian": 0.7377777777777778,
+      "bengali_anglicisation": 0.19666666666666666,
+      "cross_script": 0.00875,
+      "noise": 0.8355555555555556,
+      "structure": 0.18,
+      "transliteration": 0.53
+    },
+    "jaro_winkler": {
+      "affix": 0.08777777777777777,
+      "arabic_persian": 0.7266666666666667,
+      "bengali_anglicisation": 0.20333333333333334,
+      "cross_script": 0.01125,
+      "noise": 0.8088888888888889,
+      "structure": 0.17555555555555555,
+      "transliteration": 0.48777777777777775
+    },
+    "monge_elkan": {
+      "affix": 0.0,
+      "arabic_persian": 0.0,
+      "bengali_anglicisation": 0.0,
+      "cross_script": 0.0,
+      "noise": 0.0,
+      "structure": 0.0,
+      "transliteration": 0.0
+    },
+    "soundex": {
+      "affix": 0.4444444444444444,
+      "arabic_persian": 0.8822222222222222,
+      "bengali_anglicisation": 0.39444444444444443,
+      "cross_script": 0.0,
+      "noise": 0.49333333333333335,
+      "structure": 0.2511111111111111,
+      "transliteration": 0.7833333333333333
+    },
+    "metaphone": {
+      "affix": 0.4444444444444444,
+      "arabic_persian": 0.6666666666666666,
+      "bengali_anglicisation": 0.13666666666666666,
+      "cross_script": 0.0,
+      "noise": 0.43,
+      "structure": 0.2477777777777778,
+      "transliteration": 0.3933333333333333
+    },
+    "nysiis": {
+      "affix": 0.4444444444444444,
+      "arabic_persian": 0.5022222222222222,
+      "bengali_anglicisation": 0.06888888888888889,
+      "cross_script": 0.0,
+      "noise": 0.4266666666666667,
+      "structure": 0.24888888888888888,
+      "transliteration": 0.5511111111111111
+    },
+    "match_rating": {
+      "affix": 0.4444444444444444,
+      "arabic_persian": 0.4922222222222222,
+      "bengali_anglicisation": 0.06888888888888889,
+      "cross_script": 0.0,
+      "noise": 0.44555555555555554,
+      "structure": 0.24666666666666667,
+      "transliteration": 0.3277777777777778
+    },
+    "refined_soundex": {
+      "affix": 0.4444444444444444,
+      "arabic_persian": 0.8422222222222222,
+      "bengali_anglicisation": 0.13666666666666666,
+      "cross_script": 0.0,
+      "noise": 0.46111111111111114,
+      "structure": 0.25,
+      "transliteration": 0.7644444444444445
+    },
+    "double_metaphone": {
+      "affix": 0.44333333333333336,
+      "arabic_persian": 0.7633333333333333,
+      "bengali_anglicisation": 0.13666666666666666,
+      "cross_script": 0.0,
+      "noise": 0.44555555555555554,
+      "structure": 0.2477777777777778,
+      "transliteration": 0.5355555555555556
+    },
+    "caverphone": {
+      "affix": 0.4444444444444444,
+      "arabic_persian": 0.7655555555555555,
+      "bengali_anglicisation": 0.24444444444444444,
+      "cross_script": 0.0,
+      "noise": 0.4888888888888889,
+      "structure": 0.24666666666666667,
+      "transliteration": 0.5744444444444444
+    },
+    "indic_phonetic_exact": {
+      "affix": 0.3466666666666667,
+      "arabic_persian": 0.76,
+      "bengali_anglicisation": 0.11666666666666667,
+      "cross_script": 0.0,
+      "noise": 0.4444444444444444,
+      "structure": 0.03666666666666667,
+      "transliteration": 0.8933333333333333
+    },
+    "indic_phonetic": {
+      "affix": 0.4444444444444444,
+      "arabic_persian": 0.76,
+      "bengali_anglicisation": 0.11666666666666667,
+      "cross_script": 0.0,
+      "noise": 0.43,
+      "structure": 0.2477777777777778,
+      "transliteration": 0.7888888888888889
+    },
+    "indic_phonetic_dravidian": {
+      "affix": 0.4444444444444444,
+      "arabic_persian": 0.7644444444444445,
+      "bengali_anglicisation": 0.11666666666666667,
+      "cross_script": 0.0,
+      "noise": 0.4444444444444444,
+      "structure": 0.2477777777777778,
+      "transliteration": 0.8688888888888889
+    },
+    "char_embedding_svd": {
+      "affix": 0.1711111111111111,
+      "arabic_persian": 0.5355555555555556,
+      "bengali_anglicisation": 0.08222222222222222,
+      "cross_script": 0.005,
+      "noise": 0.6822222222222222,
+      "structure": 0.49,
+      "transliteration": 0.35444444444444445
+    },
+    "cascade[ngram_jaccard->indic_phonetic]": {
+      "affix": 0.4444444444444444,
+      "arabic_persian": 0.76,
+      "bengali_anglicisation": 0.11666666666666667,
+      "cross_script": 0.0,
+      "noise": 0.43,
+      "structure": 0.2477777777777778,
+      "transliteration": 0.78
+    },
+    "indic_phonetic+alias_half": {
+      "affix": 0.4444444444444444,
+      "arabic_persian": 0.8455555555555555,
+      "bengali_anglicisation": 0.5477777777777778,
+      "cross_script": 0.0,
+      "noise": 0.43,
+      "structure": 0.2477777777777778,
+      "transliteration": 0.7877777777777778
+    },
+    "indic_phonetic+alias_oracle": {
+      "affix": 0.4444444444444444,
+      "arabic_persian": 0.9444444444444444,
+      "bengali_anglicisation": 0.9577777777777777,
+      "cross_script": 0.0,
+      "noise": 0.43,
+      "structure": 0.2477777777777778,
+      "transliteration": 0.7877777777777778
+    },
+    "alias_exact": {
+      "affix": 0.3466666666666667,
+      "arabic_persian": 0.9444444444444444,
+      "bengali_anglicisation": 0.9577777777777777,
+      "cross_script": 0.0,
+      "noise": 0.29444444444444445,
+      "structure": 0.035555555555555556,
+      "transliteration": 0.021111111111111112
+    },
+    "soundex+tiebreak": {
+      "affix": 0.4444444444444444,
+      "arabic_persian": 0.8822222222222222,
+      "bengali_anglicisation": 0.39444444444444443,
+      "cross_script": 0.00875,
+      "noise": 0.49444444444444446,
+      "structure": 0.24888888888888888,
+      "transliteration": 0.7833333333333333
+    },
+    "indic_phonetic+tiebreak": {
+      "affix": 0.45555555555555555,
+      "arabic_persian": 0.76,
+      "bengali_anglicisation": 0.11666666666666667,
+      "cross_script": 0.00875,
+      "noise": 0.43,
+      "structure": 0.24333333333333335,
+      "transliteration": 0.7888888888888889
+    }
+  },
+  "recall_by_negative_type": {
+    "exact": {
+      "easy": 0.0,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.0,
+      "same_surname_diff_given": 0.0,
+      "shared_initials": 0.0,
+      "suffix_only_difference": 0.0
+    },
+    "normalised_exact": {
+      "easy": 0.0302,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.0302,
+      "same_surname_diff_given": 0.0302,
+      "shared_initials": 0.0302,
+      "suffix_only_difference": 0.0302
+    },
+    "levenshtein": {
+      "easy": 0.74555,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.17885,
+      "same_surname_diff_given": 0.1522,
+      "shared_initials": 0.1689,
+      "suffix_only_difference": 0.25925
+    },
+    "damerau_levenshtein": {
+      "easy": 0.7403,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.1802,
+      "same_surname_diff_given": 0.15405,
+      "shared_initials": 0.1708,
+      "suffix_only_difference": 0.26075
+    },
+    "ngram_cosine": {
+      "easy": 0.9683,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.26715,
+      "same_surname_diff_given": 0.2092,
+      "shared_initials": 0.10905,
+      "suffix_only_difference": 0.0558
+    },
+    "ngram_jaccard": {
+      "easy": 0.96785,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.2379,
+      "same_surname_diff_given": 0.19985,
+      "shared_initials": 0.07915,
+      "suffix_only_difference": 0.0736
+    },
+    "token_jaccard": {
+      "easy": 0.7583,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.16015,
+      "same_surname_diff_given": 0.0922,
+      "shared_initials": 0.0922,
+      "suffix_only_difference": 0.0922
+    },
+    "weighted_token": {
+      "easy": 0.75,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.16595,
+      "same_surname_diff_given": 0.15425,
+      "shared_initials": 0.16595,
+      "suffix_only_difference": 0.12015
+    },
+    "token_sort_levenshtein": {
+      "easy": 0.831,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.24745,
+      "same_surname_diff_given": 0.2117,
+      "shared_initials": 0.21775,
+      "suffix_only_difference": 0.3233
+    },
+    "jaro": {
+      "easy": 0.6938,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.1513,
+      "same_surname_diff_given": 0.153,
+      "shared_initials": 0.17295,
+      "suffix_only_difference": 0.1731
+    },
+    "jaro_winkler": {
+      "easy": 0.69605,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.144,
+      "same_surname_diff_given": 0.2144,
+      "shared_initials": 0.24195,
+      "suffix_only_difference": 0.16405
+    },
+    "monge_elkan": {
+      "easy": 0.9378,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.55995,
+      "same_surname_diff_given": 0.5331,
+      "shared_initials": 0.56585,
+      "suffix_only_difference": 0.0
+    },
+    "soundex": {
+      "easy": 0.81675,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.4398,
+      "same_surname_diff_given": 0.4398,
+      "shared_initials": 0.0,
+      "suffix_only_difference": 0.3549
+    },
+    "metaphone": {
+      "easy": 0.8443,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.32255,
+      "same_surname_diff_given": 0.32255,
+      "shared_initials": 0.0,
+      "suffix_only_difference": 0.25675
+    },
+    "nysiis": {
+      "easy": 0.8606,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.3478,
+      "same_surname_diff_given": 0.3478,
+      "shared_initials": 0.0,
+      "suffix_only_difference": 0.27945
+    },
+    "match_rating": {
+      "easy": 0.8444,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.2955,
+      "same_surname_diff_given": 0.2955,
+      "shared_initials": 0.0,
+      "suffix_only_difference": 0.2339
+    },
+    "refined_soundex": {
+      "easy": 0.78295,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.4222,
+      "same_surname_diff_given": 0.4222,
+      "shared_initials": 0.0,
+      "suffix_only_difference": 0.34135
+    },
+    "double_metaphone": {
+      "easy": 0.8548,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.36065,
+      "same_surname_diff_given": 0.36065,
+      "shared_initials": 0.0,
+      "suffix_only_difference": 0.2902
+    },
+    "caverphone": {
+      "easy": 0.73945,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.35715,
+      "same_surname_diff_given": 0.37485,
+      "shared_initials": 0.37485,
+      "suffix_only_difference": 0.3077
+    },
+    "indic_phonetic_exact": {
+      "easy": 0.23395,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.23395,
+      "same_surname_diff_given": 0.23395,
+      "shared_initials": 0.0,
+      "suffix_only_difference": 0.23395
+    },
+    "indic_phonetic": {
+      "easy": 0.87365,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.55015,
+      "same_surname_diff_given": 0.58075,
+      "shared_initials": 0.0,
+      "suffix_only_difference": 0.33795
+    },
+    "indic_phonetic_dravidian": {
+      "easy": 0.88205,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.54045,
+      "same_surname_diff_given": 0.60135,
+      "shared_initials": 0.0,
+      "suffix_only_difference": 0.35715
+    },
+    "char_embedding_svd": {
+      "easy": 0.9624,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.34725,
+      "same_surname_diff_given": 0.29125,
+      "shared_initials": 0.12795,
+      "suffix_only_difference": 0.38295
+    },
+    "cascade[ngram_jaccard->indic_phonetic]": {
+      "easy": 0.96655,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.52345,
+      "same_surname_diff_given": 0.54405,
+      "shared_initials": 0.0,
+      "suffix_only_difference": 0.33485
+    },
+    "indic_phonetic+alias_half": {
+      "easy": 0.875,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.5555,
+      "same_surname_diff_given": 0.5858,
+      "shared_initials": 0.0,
+      "suffix_only_difference": 0.34325
+    },
+    "indic_phonetic+alias_oracle": {
+      "easy": 0.87725,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.56115,
+      "same_surname_diff_given": 0.59095,
+      "shared_initials": 0.0,
+      "suffix_only_difference": 0.34895
+    },
+    "alias_exact": {
+      "easy": 0.09225,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.09225,
+      "same_surname_diff_given": 0.09225,
+      "shared_initials": 0.09225,
+      "suffix_only_difference": 0.09225
+    },
+    "soundex+tiebreak": {
+      "easy": 0.86125,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.4407,
+      "same_surname_diff_given": 0.452,
+      "shared_initials": 0.1779,
+      "suffix_only_difference": 0.347
+    },
+    "indic_phonetic+tiebreak": {
+      "easy": 0.8956,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.54005,
+      "same_surname_diff_given": 0.5625,
+      "shared_initials": 0.1694,
+      "suffix_only_difference": 0.32995
+    }
+  },
+  "alert_volume": {
+    "exact": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.0,
+        "fpr": 0.0,
+        "alerts_per_100k": 0.0,
+        "precision": 0.0,
+        "analyst_hours_per_100k": 0.0
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.0,
+        "fpr": 0.0,
+        "alerts_per_100k": 0.0,
+        "precision": 0.0,
+        "analyst_hours_per_100k": 0.0
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.0,
+        "fpr": 0.0,
+        "alerts_per_100k": 0.0,
+        "precision": 0.0,
+        "analyst_hours_per_100k": 0.0
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.0,
+        "fpr": 0.0,
+        "alerts_per_100k": 0.0,
+        "precision": 0.0,
+        "analyst_hours_per_100k": 0.0
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.0,
+        "fpr": 0.0,
+        "alerts_per_100k": 0.0,
+        "precision": 0.0,
+        "analyst_hours_per_100k": 0.0
+      }
+    ],
+    "normalised_exact": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.0302,
+        "fpr": 0.0,
+        "alerts_per_100k": 30.2,
+        "precision": 1.0,
+        "analyst_hours_per_100k": 2.0
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.0302,
+        "fpr": 0.0,
+        "alerts_per_100k": 3.0,
+        "precision": 1.0,
+        "analyst_hours_per_100k": 0.2
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.0302,
+        "fpr": 0.0,
+        "alerts_per_100k": 0.3,
+        "precision": 1.0,
+        "analyst_hours_per_100k": 0.0
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.0302,
+        "fpr": 0.0,
+        "alerts_per_100k": 0.0,
+        "precision": 1.0,
+        "analyst_hours_per_100k": 0.0
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.0302,
+        "fpr": 0.0,
+        "alerts_per_100k": 0.0,
+        "precision": 1.0,
+        "analyst_hours_per_100k": 0.0
+      }
+    ],
+    "levenshtein": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.1908,
+        "fpr": 0.009,
+        "alerts_per_100k": 1081.8,
+        "precision": 0.176373,
+        "analyst_hours_per_100k": 72.1
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.1908,
+        "fpr": 0.009,
+        "alerts_per_100k": 918.2,
+        "precision": 0.02078,
+        "analyst_hours_per_100k": 61.2
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.1908,
+        "fpr": 0.009,
+        "alerts_per_100k": 901.8,
+        "precision": 0.002116,
+        "analyst_hours_per_100k": 60.1
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.1908,
+        "fpr": 0.009,
+        "alerts_per_100k": 900.2,
+        "precision": 0.000212,
+        "analyst_hours_per_100k": 60.0
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.1908,
+        "fpr": 0.009,
+        "alerts_per_100k": 900.0,
+        "precision": 2.1e-05,
+        "analyst_hours_per_100k": 60.0
+      }
+    ],
+    "damerau_levenshtein": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.1925,
+        "fpr": 0.0092,
+        "alerts_per_100k": 1103.3,
+        "precision": 0.174477,
+        "analyst_hours_per_100k": 73.6
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.1925,
+        "fpr": 0.0092,
+        "alerts_per_100k": 938.3,
+        "precision": 0.020515,
+        "analyst_hours_per_100k": 62.6
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.1925,
+        "fpr": 0.0092,
+        "alerts_per_100k": 921.8,
+        "precision": 0.002088,
+        "analyst_hours_per_100k": 61.5
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.1925,
+        "fpr": 0.0092,
+        "alerts_per_100k": 920.2,
+        "precision": 0.000209,
+        "analyst_hours_per_100k": 61.3
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.1925,
+        "fpr": 0.0092,
+        "alerts_per_100k": 920.0,
+        "precision": 2.1e-05,
+        "analyst_hours_per_100k": 61.3
+      }
+    ],
+    "ngram_cosine": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.0886,
+        "fpr": 0.0081,
+        "alerts_per_100k": 890.4,
+        "precision": 0.099444,
+        "analyst_hours_per_100k": 59.4
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.0886,
+        "fpr": 0.0081,
+        "alerts_per_100k": 818.0,
+        "precision": 0.010825,
+        "analyst_hours_per_100k": 54.5
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.0886,
+        "fpr": 0.0081,
+        "alerts_per_100k": 810.8,
+        "precision": 0.001092,
+        "analyst_hours_per_100k": 54.1
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.0886,
+        "fpr": 0.0081,
+        "alerts_per_100k": 810.1,
+        "precision": 0.000109,
+        "analyst_hours_per_100k": 54.0
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.0886,
+        "fpr": 0.0081,
+        "alerts_per_100k": 810.0,
+        "precision": 1.1e-05,
+        "analyst_hours_per_100k": 54.0
+      }
+    ],
+    "ngram_jaccard": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.0873,
+        "fpr": 0.0077,
+        "alerts_per_100k": 849.6,
+        "precision": 0.102754,
+        "analyst_hours_per_100k": 56.6
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.0873,
+        "fpr": 0.0077,
+        "alerts_per_100k": 778.0,
+        "precision": 0.011222,
+        "analyst_hours_per_100k": 51.9
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.0873,
+        "fpr": 0.0077,
+        "alerts_per_100k": 770.8,
+        "precision": 0.001133,
+        "analyst_hours_per_100k": 51.4
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.0873,
+        "fpr": 0.0077,
+        "alerts_per_100k": 770.1,
+        "precision": 0.000113,
+        "analyst_hours_per_100k": 51.3
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.0873,
+        "fpr": 0.0077,
+        "alerts_per_100k": 770.0,
+        "precision": 1.1e-05,
+        "analyst_hours_per_100k": 51.3
+      }
+    ],
+    "token_jaccard": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.0922,
+        "fpr": 0.0,
+        "alerts_per_100k": 92.2,
+        "precision": 1.0,
+        "analyst_hours_per_100k": 6.1
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.0922,
+        "fpr": 0.0,
+        "alerts_per_100k": 9.2,
+        "precision": 1.0,
+        "analyst_hours_per_100k": 0.6
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.0922,
+        "fpr": 0.0,
+        "alerts_per_100k": 0.9,
+        "precision": 1.0,
+        "analyst_hours_per_100k": 0.1
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.0922,
+        "fpr": 0.0,
+        "alerts_per_100k": 0.1,
+        "precision": 1.0,
+        "analyst_hours_per_100k": 0.0
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.0922,
+        "fpr": 0.0,
+        "alerts_per_100k": 0.0,
+        "precision": 1.0,
+        "analyst_hours_per_100k": 0.0
+      }
+    ],
+    "weighted_token": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.1202,
+        "fpr": 0.0,
+        "alerts_per_100k": 120.2,
+        "precision": 1.0,
+        "analyst_hours_per_100k": 8.0
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.1202,
+        "fpr": 0.0,
+        "alerts_per_100k": 12.0,
+        "precision": 1.0,
+        "analyst_hours_per_100k": 0.8
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.1202,
+        "fpr": 0.0,
+        "alerts_per_100k": 1.2,
+        "precision": 1.0,
+        "analyst_hours_per_100k": 0.1
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.1202,
+        "fpr": 0.0,
+        "alerts_per_100k": 0.1,
+        "precision": 1.0,
+        "analyst_hours_per_100k": 0.0
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.1202,
+        "fpr": 0.0,
+        "alerts_per_100k": 0.0,
+        "precision": 1.0,
+        "analyst_hours_per_100k": 0.0
+      }
+    ],
+    "token_sort_levenshtein": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.2475,
+        "fpr": 0.008,
+        "alerts_per_100k": 1039.5,
+        "precision": 0.238059,
+        "analyst_hours_per_100k": 69.3
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.2475,
+        "fpr": 0.008,
+        "alerts_per_100k": 823.9,
+        "precision": 0.030032,
+        "analyst_hours_per_100k": 54.9
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.2475,
+        "fpr": 0.008,
+        "alerts_per_100k": 802.4,
+        "precision": 0.003084,
+        "analyst_hours_per_100k": 53.5
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.2475,
+        "fpr": 0.008,
+        "alerts_per_100k": 800.2,
+        "precision": 0.000309,
+        "analyst_hours_per_100k": 53.3
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.2475,
+        "fpr": 0.008,
+        "alerts_per_100k": 800.0,
+        "precision": 3.1e-05,
+        "analyst_hours_per_100k": 53.3
+      }
+    ],
+    "jaro": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.1731,
+        "fpr": 0.0089,
+        "alerts_per_100k": 1054.2,
+        "precision": 0.1642,
+        "analyst_hours_per_100k": 70.3
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.1731,
+        "fpr": 0.0089,
+        "alerts_per_100k": 906.4,
+        "precision": 0.019097,
+        "analyst_hours_per_100k": 60.4
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.1731,
+        "fpr": 0.0089,
+        "alerts_per_100k": 891.6,
+        "precision": 0.001941,
+        "analyst_hours_per_100k": 59.4
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.1731,
+        "fpr": 0.0089,
+        "alerts_per_100k": 890.2,
+        "precision": 0.000194,
+        "analyst_hours_per_100k": 59.3
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.1731,
+        "fpr": 0.0089,
+        "alerts_per_100k": 890.0,
+        "precision": 1.9e-05,
+        "analyst_hours_per_100k": 59.3
+      }
+    ],
+    "jaro_winkler": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.1691,
+        "fpr": 0.0092,
+        "alerts_per_100k": 1079.9,
+        "precision": 0.156589,
+        "analyst_hours_per_100k": 72.0
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.1691,
+        "fpr": 0.0092,
+        "alerts_per_100k": 936.0,
+        "precision": 0.018066,
+        "analyst_hours_per_100k": 62.4
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.1691,
+        "fpr": 0.0092,
+        "alerts_per_100k": 921.6,
+        "precision": 0.001835,
+        "analyst_hours_per_100k": 61.4
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.1691,
+        "fpr": 0.0092,
+        "alerts_per_100k": 920.2,
+        "precision": 0.000184,
+        "analyst_hours_per_100k": 61.3
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.1691,
+        "fpr": 0.0092,
+        "alerts_per_100k": 920.0,
+        "precision": 1.8e-05,
+        "analyst_hours_per_100k": 61.3
+      }
+    ],
+    "monge_elkan": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.0,
+        "fpr": 0.0,
+        "alerts_per_100k": 0.0,
+        "precision": 0.0,
+        "analyst_hours_per_100k": 0.0
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.0,
+        "fpr": 0.0,
+        "alerts_per_100k": 0.0,
+        "precision": 0.0,
+        "analyst_hours_per_100k": 0.0
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.0,
+        "fpr": 0.0,
+        "alerts_per_100k": 0.0,
+        "precision": 0.0,
+        "analyst_hours_per_100k": 0.0
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.0,
+        "fpr": 0.0,
+        "alerts_per_100k": 0.0,
+        "precision": 0.0,
+        "analyst_hours_per_100k": 0.0
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.0,
+        "fpr": 0.0,
+        "alerts_per_100k": 0.0,
+        "precision": 0.0,
+        "analyst_hours_per_100k": 0.0
+      }
+    ],
+    "soundex": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.3549,
+        "fpr": 0.0027,
+        "alerts_per_100k": 622.2,
+        "precision": 0.570395,
+        "analyst_hours_per_100k": 41.5
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.3549,
+        "fpr": 0.0027,
+        "alerts_per_100k": 305.2,
+        "precision": 0.116277,
+        "analyst_hours_per_100k": 20.3
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.3549,
+        "fpr": 0.0027,
+        "alerts_per_100k": 273.5,
+        "precision": 0.012975,
+        "analyst_hours_per_100k": 18.2
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.3549,
+        "fpr": 0.0027,
+        "alerts_per_100k": 270.4,
+        "precision": 0.001313,
+        "analyst_hours_per_100k": 18.0
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.3549,
+        "fpr": 0.0027,
+        "alerts_per_100k": 270.0,
+        "precision": 0.000131,
+        "analyst_hours_per_100k": 18.0
+      }
+    ],
+    "metaphone": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.2567,
+        "fpr": 0.0022,
+        "alerts_per_100k": 474.5,
+        "precision": 0.541039,
+        "analyst_hours_per_100k": 31.6
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.2567,
+        "fpr": 0.0022,
+        "alerts_per_100k": 245.5,
+        "precision": 0.104602,
+        "analyst_hours_per_100k": 16.4
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.2567,
+        "fpr": 0.0022,
+        "alerts_per_100k": 222.5,
+        "precision": 0.011537,
+        "analyst_hours_per_100k": 14.8
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.2567,
+        "fpr": 0.0022,
+        "alerts_per_100k": 220.3,
+        "precision": 0.001166,
+        "analyst_hours_per_100k": 14.7
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.2567,
+        "fpr": 0.0022,
+        "alerts_per_100k": 220.0,
+        "precision": 0.000117,
+        "analyst_hours_per_100k": 14.7
+      }
+    ],
+    "nysiis": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.2794,
+        "fpr": 0.0023,
+        "alerts_per_100k": 507.1,
+        "precision": 0.55102,
+        "analyst_hours_per_100k": 33.8
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.2794,
+        "fpr": 0.0023,
+        "alerts_per_100k": 257.7,
+        "precision": 0.108434,
+        "analyst_hours_per_100k": 17.2
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.2794,
+        "fpr": 0.0023,
+        "alerts_per_100k": 232.8,
+        "precision": 0.012005,
+        "analyst_hours_per_100k": 15.5
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.2794,
+        "fpr": 0.0023,
+        "alerts_per_100k": 230.3,
+        "precision": 0.001214,
+        "analyst_hours_per_100k": 15.4
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.2794,
+        "fpr": 0.0023,
+        "alerts_per_100k": 230.0,
+        "precision": 0.000121,
+        "analyst_hours_per_100k": 15.3
+      }
+    ],
+    "match_rating": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.2339,
+        "fpr": 0.0022,
+        "alerts_per_100k": 451.7,
+        "precision": 0.517822,
+        "analyst_hours_per_100k": 30.1
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.2339,
+        "fpr": 0.0022,
+        "alerts_per_100k": 243.2,
+        "precision": 0.096188,
+        "analyst_hours_per_100k": 16.2
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.2339,
+        "fpr": 0.0022,
+        "alerts_per_100k": 222.3,
+        "precision": 0.010521,
+        "analyst_hours_per_100k": 14.8
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.2339,
+        "fpr": 0.0022,
+        "alerts_per_100k": 220.2,
+        "precision": 0.001062,
+        "analyst_hours_per_100k": 14.7
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.2339,
+        "fpr": 0.0022,
+        "alerts_per_100k": 220.0,
+        "precision": 0.000106,
+        "analyst_hours_per_100k": 14.7
+      }
+    ],
+    "refined_soundex": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.3413,
+        "fpr": 0.0023,
+        "alerts_per_100k": 569.0,
+        "precision": 0.599859,
+        "analyst_hours_per_100k": 37.9
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.3413,
+        "fpr": 0.0023,
+        "alerts_per_100k": 263.9,
+        "precision": 0.129346,
+        "analyst_hours_per_100k": 17.6
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.3413,
+        "fpr": 0.0023,
+        "alerts_per_100k": 233.4,
+        "precision": 0.014626,
+        "analyst_hours_per_100k": 15.6
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.3413,
+        "fpr": 0.0023,
+        "alerts_per_100k": 230.3,
+        "precision": 0.001482,
+        "analyst_hours_per_100k": 15.4
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.3413,
+        "fpr": 0.0023,
+        "alerts_per_100k": 230.0,
+        "precision": 0.000148,
+        "analyst_hours_per_100k": 15.3
+      }
+    ],
+    "double_metaphone": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.2902,
+        "fpr": 0.0022,
+        "alerts_per_100k": 508.0,
+        "precision": 0.57126,
+        "analyst_hours_per_100k": 33.9
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.2902,
+        "fpr": 0.0022,
+        "alerts_per_100k": 248.8,
+        "precision": 0.11664,
+        "analyst_hours_per_100k": 16.6
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.2902,
+        "fpr": 0.0022,
+        "alerts_per_100k": 222.9,
+        "precision": 0.01302,
+        "analyst_hours_per_100k": 14.9
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.2902,
+        "fpr": 0.0022,
+        "alerts_per_100k": 220.3,
+        "precision": 0.001317,
+        "analyst_hours_per_100k": 14.7
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.2902,
+        "fpr": 0.0022,
+        "alerts_per_100k": 220.0,
+        "precision": 0.000132,
+        "analyst_hours_per_100k": 14.7
+      }
+    ],
+    "caverphone": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.3077,
+        "fpr": 0.0013,
+        "alerts_per_100k": 436.4,
+        "precision": 0.705087,
+        "analyst_hours_per_100k": 29.1
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.3077,
+        "fpr": 0.0013,
+        "alerts_per_100k": 160.6,
+        "precision": 0.191546,
+        "analyst_hours_per_100k": 10.7
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.3077,
+        "fpr": 0.0013,
+        "alerts_per_100k": 133.1,
+        "precision": 0.023124,
+        "analyst_hours_per_100k": 8.9
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.3077,
+        "fpr": 0.0013,
+        "alerts_per_100k": 130.3,
+        "precision": 0.002361,
+        "analyst_hours_per_100k": 8.7
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.3077,
+        "fpr": 0.0013,
+        "alerts_per_100k": 130.0,
+        "precision": 0.000237,
+        "analyst_hours_per_100k": 8.7
+      }
+    ],
+    "indic_phonetic_exact": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.2339,
+        "fpr": 0.0026,
+        "alerts_per_100k": 491.3,
+        "precision": 0.476137,
+        "analyst_hours_per_100k": 32.8
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.2339,
+        "fpr": 0.0026,
+        "alerts_per_100k": 283.1,
+        "precision": 0.082628,
+        "analyst_hours_per_100k": 18.9
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.2339,
+        "fpr": 0.0026,
+        "alerts_per_100k": 262.3,
+        "precision": 0.008919,
+        "analyst_hours_per_100k": 17.5
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.2339,
+        "fpr": 0.0026,
+        "alerts_per_100k": 260.2,
+        "precision": 0.000899,
+        "analyst_hours_per_100k": 17.3
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.2339,
+        "fpr": 0.0026,
+        "alerts_per_100k": 260.0,
+        "precision": 9e-05,
+        "analyst_hours_per_100k": 17.3
+      }
+    ],
+    "indic_phonetic": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.3379,
+        "fpr": 0.0023,
+        "alerts_per_100k": 565.6,
+        "precision": 0.597454,
+        "analyst_hours_per_100k": 37.7
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.3379,
+        "fpr": 0.0023,
+        "alerts_per_100k": 263.6,
+        "precision": 0.128223,
+        "analyst_hours_per_100k": 17.6
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.3379,
+        "fpr": 0.0023,
+        "alerts_per_100k": 233.4,
+        "precision": 0.014482,
+        "analyst_hours_per_100k": 15.6
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.3379,
+        "fpr": 0.0023,
+        "alerts_per_100k": 230.3,
+        "precision": 0.001467,
+        "analyst_hours_per_100k": 15.4
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.3379,
+        "fpr": 0.0023,
+        "alerts_per_100k": 230.0,
+        "precision": 0.000147,
+        "analyst_hours_per_100k": 15.3
+      }
+    ],
+    "indic_phonetic_dravidian": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.3572,
+        "fpr": 0.0023,
+        "alerts_per_100k": 584.9,
+        "precision": 0.610669,
+        "analyst_hours_per_100k": 39.0
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.3572,
+        "fpr": 0.0023,
+        "alerts_per_100k": 265.5,
+        "precision": 0.134527,
+        "analyst_hours_per_100k": 17.7
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.3572,
+        "fpr": 0.0023,
+        "alerts_per_100k": 233.5,
+        "precision": 0.015292,
+        "analyst_hours_per_100k": 15.6
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.3572,
+        "fpr": 0.0023,
+        "alerts_per_100k": 230.4,
+        "precision": 0.00155,
+        "analyst_hours_per_100k": 15.4
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.3572,
+        "fpr": 0.0023,
+        "alerts_per_100k": 230.0,
+        "precision": 0.000155,
+        "analyst_hours_per_100k": 15.3
+      }
+    ],
+    "char_embedding_svd": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.2286,
+        "fpr": 0.01,
+        "alerts_per_100k": 1218.6,
+        "precision": 0.187559,
+        "analyst_hours_per_100k": 81.2
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.2286,
+        "fpr": 0.01,
+        "alerts_per_100k": 1021.9,
+        "precision": 0.022366,
+        "analyst_hours_per_100k": 68.1
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.2286,
+        "fpr": 0.01,
+        "alerts_per_100k": 1002.2,
+        "precision": 0.002281,
+        "analyst_hours_per_100k": 66.8
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.2286,
+        "fpr": 0.01,
+        "alerts_per_100k": 1000.2,
+        "precision": 0.000229,
+        "analyst_hours_per_100k": 66.7
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.2286,
+        "fpr": 0.01,
+        "alerts_per_100k": 1000.0,
+        "precision": 2.3e-05,
+        "analyst_hours_per_100k": 66.7
+      }
+    ],
+    "cascade[ngram_jaccard->indic_phonetic]": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.3348,
+        "fpr": 0.0023,
+        "alerts_per_100k": 562.6,
+        "precision": 0.595236,
+        "analyst_hours_per_100k": 37.5
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.3348,
+        "fpr": 0.0023,
+        "alerts_per_100k": 263.3,
+        "precision": 0.127196,
+        "analyst_hours_per_100k": 17.6
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.3348,
+        "fpr": 0.0023,
+        "alerts_per_100k": 233.3,
+        "precision": 0.014351,
+        "analyst_hours_per_100k": 15.6
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.3348,
+        "fpr": 0.0023,
+        "alerts_per_100k": 230.3,
+        "precision": 0.001454,
+        "analyst_hours_per_100k": 15.4
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.3348,
+        "fpr": 0.0023,
+        "alerts_per_100k": 230.0,
+        "precision": 0.000146,
+        "analyst_hours_per_100k": 15.3
+      }
+    ],
+    "indic_phonetic+alias_half": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.3432,
+        "fpr": 0.0023,
+        "alerts_per_100k": 571.0,
+        "precision": 0.601191,
+        "analyst_hours_per_100k": 38.1
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.3432,
+        "fpr": 0.0023,
+        "alerts_per_100k": 264.1,
+        "precision": 0.129972,
+        "analyst_hours_per_100k": 17.6
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.3432,
+        "fpr": 0.0023,
+        "alerts_per_100k": 233.4,
+        "precision": 0.014706,
+        "analyst_hours_per_100k": 15.6
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.3432,
+        "fpr": 0.0023,
+        "alerts_per_100k": 230.3,
+        "precision": 0.00149,
+        "analyst_hours_per_100k": 15.4
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.3432,
+        "fpr": 0.0023,
+        "alerts_per_100k": 230.0,
+        "precision": 0.000149,
+        "analyst_hours_per_100k": 15.3
+      }
+    ],
+    "indic_phonetic+alias_oracle": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.3489,
+        "fpr": 0.0023,
+        "alerts_per_100k": 576.6,
+        "precision": 0.605133,
+        "analyst_hours_per_100k": 38.4
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.3489,
+        "fpr": 0.0023,
+        "alerts_per_100k": 264.7,
+        "precision": 0.131846,
+        "analyst_hours_per_100k": 17.6
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.3489,
+        "fpr": 0.0023,
+        "alerts_per_100k": 233.5,
+        "precision": 0.014946,
+        "analyst_hours_per_100k": 15.6
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.3489,
+        "fpr": 0.0023,
+        "alerts_per_100k": 230.3,
+        "precision": 0.001515,
+        "analyst_hours_per_100k": 15.4
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.3489,
+        "fpr": 0.0023,
+        "alerts_per_100k": 230.0,
+        "precision": 0.000152,
+        "analyst_hours_per_100k": 15.3
+      }
+    ],
+    "alias_exact": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.0922,
+        "fpr": 0.0001,
+        "alerts_per_100k": 102.2,
+        "precision": 0.903084,
+        "analyst_hours_per_100k": 6.8
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.0922,
+        "fpr": 0.0001,
+        "alerts_per_100k": 19.2,
+        "precision": 0.480094,
+        "analyst_hours_per_100k": 1.3
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.0922,
+        "fpr": 0.0001,
+        "alerts_per_100k": 10.9,
+        "precision": 0.084466,
+        "analyst_hours_per_100k": 0.7
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.0922,
+        "fpr": 0.0001,
+        "alerts_per_100k": 10.1,
+        "precision": 0.009141,
+        "analyst_hours_per_100k": 0.7
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.0922,
+        "fpr": 0.0001,
+        "alerts_per_100k": 10.0,
+        "precision": 0.000922,
+        "analyst_hours_per_100k": 0.7
+      }
+    ],
+    "soundex+tiebreak": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.3487,
+        "fpr": 0.0054,
+        "alerts_per_100k": 883.2,
+        "precision": 0.394735,
+        "analyst_hours_per_100k": 58.9
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.3487,
+        "fpr": 0.0054,
+        "alerts_per_100k": 574.3,
+        "precision": 0.060706,
+        "analyst_hours_per_100k": 38.3
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.3487,
+        "fpr": 0.0054,
+        "alerts_per_100k": 543.4,
+        "precision": 0.006416,
+        "analyst_hours_per_100k": 36.2
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.3487,
+        "fpr": 0.0054,
+        "alerts_per_100k": 540.3,
+        "precision": 0.000645,
+        "analyst_hours_per_100k": 36.0
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.3487,
+        "fpr": 0.0054,
+        "alerts_per_100k": 540.0,
+        "precision": 6.5e-05,
+        "analyst_hours_per_100k": 36.0
+      }
+    ],
+    "indic_phonetic+tiebreak": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.3334,
+        "fpr": 0.0097,
+        "alerts_per_100k": 1293.7,
+        "precision": 0.25771,
+        "analyst_hours_per_100k": 86.2
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.3334,
+        "fpr": 0.0097,
+        "alerts_per_100k": 1002.4,
+        "precision": 0.033261,
+        "analyst_hours_per_100k": 66.8
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.3334,
+        "fpr": 0.0097,
+        "alerts_per_100k": 973.2,
+        "precision": 0.003426,
+        "analyst_hours_per_100k": 64.9
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.3334,
+        "fpr": 0.0097,
+        "alerts_per_100k": 970.3,
+        "precision": 0.000344,
+        "analyst_hours_per_100k": 64.7
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.3334,
+        "fpr": 0.0097,
+        "alerts_per_100k": 970.0,
+        "precision": 3.4e-05,
+        "analyst_hours_per_100k": 64.7
+      }
+    ]
+  },
+  "optimal_threshold_by_origin": {
+    "exact": {
+      "arabic_persian": 1.0,
+      "bengali": 1.0,
+      "gujarati": 1.0,
+      "hindi_belt": 1.0,
+      "kannada": 1.0,
+      "malayalam": 1.0,
+      "marathi": 1.0,
+      "odia": 1.0,
+      "punjabi": 1.0,
+      "tamil": 1.0,
+      "telugu": 1.0
+    },
+    "normalised_exact": {
+      "arabic_persian": 1.0,
+      "bengali": 1.0,
+      "gujarati": 1.0,
+      "hindi_belt": 1.0,
+      "kannada": 1.0,
+      "malayalam": 1.0,
+      "marathi": 1.0,
+      "odia": 1.0,
+      "punjabi": 1.0,
+      "tamil": 1.0,
+      "telugu": 1.0
+    },
+    "levenshtein": {
+      "arabic_persian": 0.8462,
+      "bengali": 0.8421,
+      "gujarati": 0.9,
+      "hindi_belt": 0.9,
+      "kannada": 0.8,
+      "malayalam": 0.8571,
+      "marathi": 0.85,
+      "odia": 0.8667,
+      "punjabi": 0.8182,
+      "tamil": 0.7692,
+      "telugu": 0.8889
+    },
+    "damerau_levenshtein": {
+      "arabic_persian": 0.8462,
+      "bengali": 0.8421,
+      "gujarati": 0.9,
+      "hindi_belt": 0.9,
+      "kannada": 0.8,
+      "malayalam": 0.8571,
+      "marathi": 0.85,
+      "odia": 0.8667,
+      "punjabi": 0.8182,
+      "tamil": 0.7692,
+      "telugu": 0.8889
+    },
+    "ngram_cosine": {
+      "arabic_persian": 0.7939,
+      "bengali": 0.8082,
+      "gujarati": 0.8102,
+      "hindi_belt": 0.8119,
+      "kannada": 0.8385,
+      "malayalam": 0.8365,
+      "marathi": 0.7778,
+      "odia": 0.7379,
+      "punjabi": 0.9037,
+      "tamil": 0.8672,
+      "telugu": 0.8646
+    },
+    "ngram_jaccard": {
+      "arabic_persian": 0.6552,
+      "bengali": 0.6842,
+      "gujarati": 0.6842,
+      "hindi_belt": 0.6842,
+      "kannada": 0.7308,
+      "malayalam": 0.72,
+      "marathi": 0.6429,
+      "odia": 0.5862,
+      "punjabi": 0.7931,
+      "tamil": 0.76,
+      "telugu": 0.8077
+    },
+    "token_jaccard": {
+      "arabic_persian": 0.75,
+      "bengali": 0.75,
+      "gujarati": 0.75,
+      "hindi_belt": 0.75,
+      "kannada": 0.6,
+      "malayalam": 0.6,
+      "marathi": 0.75,
+      "odia": 0.6,
+      "punjabi": 0.75,
+      "tamil": 0.6,
+      "telugu": 0.75
+    },
+    "weighted_token": {
+      "arabic_persian": 0.75,
+      "bengali": 0.75,
+      "gujarati": 0.75,
+      "hindi_belt": 0.6923,
+      "kannada": 0.6429,
+      "malayalam": 0.6,
+      "marathi": 0.7059,
+      "odia": 0.4706,
+      "punjabi": 0.9,
+      "tamil": 0.5556,
+      "telugu": 0.6923
+    },
+    "token_sort_levenshtein": {
+      "arabic_persian": 0.8261,
+      "bengali": 0.8421,
+      "gujarati": 0.8462,
+      "hindi_belt": 0.9,
+      "kannada": 0.7895,
+      "malayalam": 0.8462,
+      "marathi": 0.8077,
+      "odia": 0.8667,
+      "punjabi": 0.7857,
+      "tamil": 0.7692,
+      "telugu": 0.8889
+    },
+    "jaro": {
+      "arabic_persian": 0.9279,
+      "bengali": 0.9269,
+      "gujarati": 0.9265,
+      "hindi_belt": 0.9491,
+      "kannada": 0.8901,
+      "malayalam": 0.9487,
+      "marathi": 0.8966,
+      "odia": 0.9269,
+      "punjabi": 0.9175,
+      "tamil": 0.8788,
+      "telugu": 0.9269
+    },
+    "jaro_winkler": {
+      "arabic_persian": 0.9567,
+      "bengali": 0.9507,
+      "gujarati": 0.95,
+      "hindi_belt": 0.9571,
+      "kannada": 0.9305,
+      "malayalam": 0.952,
+      "marathi": 0.9338,
+      "odia": 0.9554,
+      "punjabi": 0.9505,
+      "tamil": 0.915,
+      "telugu": 0.9528
+    },
+    "monge_elkan": {
+      "arabic_persian": 0.9361,
+      "bengali": 0.9446,
+      "gujarati": 0.9266,
+      "hindi_belt": 0.9556,
+      "kannada": 0.9417,
+      "malayalam": 0.925,
+      "marathi": 0.92,
+      "odia": 0.9303,
+      "punjabi": 1.0,
+      "tamil": 0.9167,
+      "telugu": 0.9333
+    },
+    "soundex": {
+      "arabic_persian": 0.75,
+      "bengali": 0.7059,
+      "gujarati": 0.7059,
+      "hindi_belt": 0.8333,
+      "kannada": 0.6923,
+      "malayalam": 0.7059,
+      "marathi": 0.7059,
+      "odia": 0.5625,
+      "punjabi": 0.9,
+      "tamil": 0.6923,
+      "telugu": 1.0
+    },
+    "metaphone": {
+      "arabic_persian": 0.75,
+      "bengali": 0.7059,
+      "gujarati": 0.7059,
+      "hindi_belt": 0.6923,
+      "kannada": 0.6923,
+      "malayalam": 0.7059,
+      "marathi": 0.7059,
+      "odia": 0.5625,
+      "punjabi": 0.9,
+      "tamil": 0.6923,
+      "telugu": 1.0
+    },
+    "nysiis": {
+      "arabic_persian": 0.75,
+      "bengali": 0.6923,
+      "gujarati": 0.7059,
+      "hindi_belt": 0.6923,
+      "kannada": 0.6923,
+      "malayalam": 0.7059,
+      "marathi": 0.7059,
+      "odia": 0.6154,
+      "punjabi": 0.9,
+      "tamil": 0.6923,
+      "telugu": 1.0
+    },
+    "match_rating": {
+      "arabic_persian": 0.75,
+      "bengali": 0.7059,
+      "gujarati": 0.75,
+      "hindi_belt": 0.6923,
+      "kannada": 0.6923,
+      "malayalam": 0.7059,
+      "marathi": 0.7059,
+      "odia": 0.5625,
+      "punjabi": 0.9,
+      "tamil": 0.6923,
+      "telugu": 1.0
+    },
+    "refined_soundex": {
+      "arabic_persian": 0.75,
+      "bengali": 0.7059,
+      "gujarati": 0.7059,
+      "hindi_belt": 0.6923,
+      "kannada": 0.6923,
+      "malayalam": 0.7059,
+      "marathi": 0.7059,
+      "odia": 0.5625,
+      "punjabi": 0.9,
+      "tamil": 0.6923,
+      "telugu": 1.0
+    },
+    "double_metaphone": {
+      "arabic_persian": 0.75,
+      "bengali": 0.7059,
+      "gujarati": 0.7059,
+      "hindi_belt": 0.6923,
+      "kannada": 0.6923,
+      "malayalam": 0.7059,
+      "marathi": 0.7059,
+      "odia": 0.5625,
+      "punjabi": 0.9,
+      "tamil": 0.6923,
+      "telugu": 1.0
+    },
+    "caverphone": {
+      "arabic_persian": 0.75,
+      "bengali": 0.7143,
+      "gujarati": 0.7059,
+      "hindi_belt": 0.8333,
+      "kannada": 0.6923,
+      "malayalam": 0.7059,
+      "marathi": 0.7059,
+      "odia": 0.625,
+      "punjabi": 0.9,
+      "tamil": 0.6923,
+      "telugu": 0.9
+    },
+    "indic_phonetic_exact": {
+      "arabic_persian": 1.0,
+      "bengali": 1.0,
+      "gujarati": 1.0,
+      "hindi_belt": 1.0,
+      "kannada": 1.0,
+      "malayalam": 1.0,
+      "marathi": 1.0,
+      "odia": 1.0,
+      "punjabi": 1.0,
+      "tamil": 1.0,
+      "telugu": 1.0
+    },
+    "indic_phonetic": {
+      "arabic_persian": 0.6767,
+      "bengali": 0.6738,
+      "gujarati": 0.6815,
+      "hindi_belt": 0.8,
+      "kannada": 0.8667,
+      "malayalam": 0.8889,
+      "marathi": 0.6767,
+      "odia": 0.5625,
+      "punjabi": 0.9,
+      "tamil": 0.8889,
+      "telugu": 1.0
+    },
+    "indic_phonetic_dravidian": {
+      "arabic_persian": 0.6767,
+      "bengali": 0.6738,
+      "gujarati": 0.6815,
+      "hindi_belt": 0.8,
+      "kannada": 0.8667,
+      "malayalam": 0.8889,
+      "marathi": 0.6767,
+      "odia": 0.5625,
+      "punjabi": 0.9,
+      "tamil": 0.88,
+      "telugu": 1.0
+    },
+    "char_embedding_svd": {
+      "arabic_persian": 0.9627,
+      "bengali": 0.9557,
+      "gujarati": 0.9415,
+      "hindi_belt": 0.9285,
+      "kannada": 0.978,
+      "malayalam": 0.9885,
+      "marathi": 0.9605,
+      "odia": 0.9436,
+      "punjabi": 0.9441,
+      "tamil": 0.992,
+      "telugu": 0.9782
+    },
+    "cascade[ngram_jaccard->indic_phonetic]": {
+      "arabic_persian": 0.6767,
+      "bengali": 0.6738,
+      "gujarati": 0.6815,
+      "hindi_belt": 0.8,
+      "kannada": 0.8667,
+      "malayalam": 0.8889,
+      "marathi": 0.6767,
+      "odia": 0.5625,
+      "punjabi": 0.9,
+      "tamil": 0.8889,
+      "telugu": 1.0
+    },
+    "indic_phonetic+alias_half": {
+      "arabic_persian": 0.6767,
+      "bengali": 0.68,
+      "gujarati": 0.6815,
+      "hindi_belt": 0.8,
+      "kannada": 0.8667,
+      "malayalam": 0.8889,
+      "marathi": 0.6767,
+      "odia": 0.5625,
+      "punjabi": 0.9,
+      "tamil": 0.8889,
+      "telugu": 1.0
+    },
+    "indic_phonetic+alias_oracle": {
+      "arabic_persian": 0.6767,
+      "bengali": 0.68,
+      "gujarati": 0.6815,
+      "hindi_belt": 0.8,
+      "kannada": 0.8667,
+      "malayalam": 0.8889,
+      "marathi": 0.6767,
+      "odia": 0.5625,
+      "punjabi": 0.9,
+      "tamil": 0.8889,
+      "telugu": 1.0
+    },
+    "alias_exact": {
+      "arabic_persian": 1.0,
+      "bengali": 1.0,
+      "gujarati": 1.0,
+      "hindi_belt": 1.0,
+      "kannada": 1.0,
+      "malayalam": 1.0,
+      "marathi": 1.0,
+      "odia": 1.0,
+      "punjabi": 1.0,
+      "tamil": 1.0,
+      "telugu": 1.0
+    },
+    "soundex+tiebreak": {
+      "arabic_persian": 0.7102,
+      "bengali": 0.7087,
+      "gujarati": 0.7094,
+      "hindi_belt": 0.807,
+      "kannada": 0.7062,
+      "malayalam": 0.7095,
+      "marathi": 0.707,
+      "odia": 0.624,
+      "punjabi": 0.8983,
+      "tamil": 0.6892,
+      "telugu": 0.979
+    },
+    "indic_phonetic+tiebreak": {
+      "arabic_persian": 0.7104,
+      "bengali": 0.7104,
+      "gujarati": 0.7127,
+      "hindi_belt": 0.7847,
+      "kannada": 0.8462,
+      "malayalam": 0.8646,
+      "marathi": 0.7092,
+      "odia": 0.6152,
+      "punjabi": 0.8983,
+      "tamil": 0.8455,
+      "telugu": 0.9791
+    }
+  },
+  "fairness": {
+    "caveats": [
+      "Origin categories are a proxy for transliteration convention, not ethnicity, religion or nationality.",
+      "Frequency tiers in the seed inventory are hand-assigned ordinal judgements, not measured; the disparity magnitudes depend on them.",
+      "Synthetic variant distributions may not match real record distributions.",
+      "Identities whose surname appears under several origins are flagged origin_ambiguous and counted separately below."
+    ],
+    "matchers": {
+      "exact": {
+        "global_threshold": 1.0,
+        "pooled_fpr": 0.0,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00396
+            ],
+            "false_positives": 0,
+            "negatives": 966,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00497
+            ],
+            "false_positives": 0,
+            "negatives": 769,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00753
+            ],
+            "false_positives": 0,
+            "negatives": 506,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00205
+            ],
+            "false_positives": 0,
+            "negatives": 1872,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "kannada": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00619
+            ],
+            "false_positives": 0,
+            "negatives": 617,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00716
+            ],
+            "false_positives": 0,
+            "negatives": 533,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.002
+            ],
+            "false_positives": 0,
+            "negatives": 1916,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "telugu": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00309
+            ],
+            "false_positives": 0,
+            "negatives": 1241,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          }
+        }
+      },
+      "normalised_exact": {
+        "global_threshold": 1.0,
+        "pooled_fpr": 0.0,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00396
+            ],
+            "false_positives": 0,
+            "negatives": 966,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00497
+            ],
+            "false_positives": 0,
+            "negatives": 769,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00753
+            ],
+            "false_positives": 0,
+            "negatives": 506,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00205
+            ],
+            "false_positives": 0,
+            "negatives": 1872,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "kannada": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00619
+            ],
+            "false_positives": 0,
+            "negatives": 617,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00716
+            ],
+            "false_positives": 0,
+            "negatives": 533,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.002
+            ],
+            "false_positives": 0,
+            "negatives": 1916,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "telugu": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00309
+            ],
+            "false_positives": 0,
+            "negatives": 1241,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          }
+        }
+      },
+      "levenshtein": {
+        "global_threshold": 0.8438,
+        "pooled_fpr": 0.009,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.00311,
+            "ci95": [
+              0.00106,
+              0.00909
+            ],
+            "false_positives": 3,
+            "negatives": 966,
+            "disparity_vs_pooled": 0.346,
+            "disparity_ci95": [
+              0.096,
+              1.241
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0026,
+            "ci95": [
+              0.00071,
+              0.00943
+            ],
+            "false_positives": 2,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.289,
+            "disparity_ci95": [
+              0.065,
+              1.287
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.01186,
+            "ci95": [
+              0.00545,
+              0.02563
+            ],
+            "false_positives": 6,
+            "negatives": 506,
+            "disparity_vs_pooled": 1.318,
+            "disparity_ci95": [
+              0.493,
+              3.497
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.01442,
+            "ci95": [
+              0.00993,
+              0.0209
+            ],
+            "false_positives": 27,
+            "negatives": 1872,
+            "disparity_vs_pooled": 1.602,
+            "disparity_ci95": [
+              0.899,
+              2.852
+            ]
+          },
+          "kannada": {
+            "fpr": 0.00324,
+            "ci95": [
+              0.00089,
+              0.01174
+            ],
+            "false_positives": 2,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.36,
+            "disparity_ci95": [
+              0.08,
+              1.602
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0075,
+            "ci95": [
+              0.00292,
+              0.01914
+            ],
+            "false_positives": 4,
+            "negatives": 533,
+            "disparity_vs_pooled": 0.833,
+            "disparity_ci95": [
+              0.264,
+              2.611
+            ]
+          },
+          "marathi": {
+            "fpr": 0.00514,
+            "ci95": [
+              0.00175,
+              0.01499
+            ],
+            "false_positives": 3,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.571,
+            "disparity_ci95": [
+              0.158,
+              2.046
+            ]
+          },
+          "odia": {
+            "fpr": 0.00685,
+            "ci95": [
+              0.00121,
+              0.03778
+            ],
+            "false_positives": 1,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.761,
+            "disparity_ci95": [
+              0.11,
+              5.155
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.00418,
+            "ci95": [
+              0.00212,
+              0.00822
+            ],
+            "false_positives": 8,
+            "negatives": 1916,
+            "disparity_vs_pooled": 0.464,
+            "disparity_ci95": [
+              0.192,
+              1.121
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.614
+            ]
+          },
+          "telugu": {
+            "fpr": 0.0274,
+            "ci95": [
+              0.01967,
+              0.03804
+            ],
+            "false_positives": 34,
+            "negatives": 1241,
+            "disparity_vs_pooled": 3.044,
+            "disparity_ci95": [
+              1.78,
+              5.191
+            ]
+          }
+        }
+      },
+      "damerau_levenshtein": {
+        "global_threshold": 0.8438,
+        "pooled_fpr": 0.0092,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.00414,
+            "ci95": [
+              0.00161,
+              0.0106
+            ],
+            "false_positives": 4,
+            "negatives": 966,
+            "disparity_vs_pooled": 0.45,
+            "disparity_ci95": [
+              0.143,
+              1.412
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0026,
+            "ci95": [
+              0.00071,
+              0.00943
+            ],
+            "false_positives": 2,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.283,
+            "disparity_ci95": [
+              0.063,
+              1.256
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.01383,
+            "ci95": [
+              0.00672,
+              0.02828
+            ],
+            "false_positives": 7,
+            "negatives": 506,
+            "disparity_vs_pooled": 1.503,
+            "disparity_ci95": [
+              0.596,
+              3.766
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.01442,
+            "ci95": [
+              0.00993,
+              0.0209
+            ],
+            "false_positives": 27,
+            "negatives": 1872,
+            "disparity_vs_pooled": 1.567,
+            "disparity_ci95": [
+              0.881,
+              2.784
+            ]
+          },
+          "kannada": {
+            "fpr": 0.00324,
+            "ci95": [
+              0.00089,
+              0.01174
+            ],
+            "false_positives": 2,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.352,
+            "disparity_ci95": [
+              0.079,
+              1.564
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0075,
+            "ci95": [
+              0.00292,
+              0.01914
+            ],
+            "false_positives": 4,
+            "negatives": 533,
+            "disparity_vs_pooled": 0.815,
+            "disparity_ci95": [
+              0.259,
+              2.549
+            ]
+          },
+          "marathi": {
+            "fpr": 0.00514,
+            "ci95": [
+              0.00175,
+              0.01499
+            ],
+            "false_positives": 3,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.559,
+            "disparity_ci95": [
+              0.155,
+              1.997
+            ]
+          },
+          "odia": {
+            "fpr": 0.00685,
+            "ci95": [
+              0.00121,
+              0.03778
+            ],
+            "false_positives": 1,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.745,
+            "disparity_ci95": [
+              0.107,
+              5.031
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.00418,
+            "ci95": [
+              0.00212,
+              0.00822
+            ],
+            "false_positives": 8,
+            "negatives": 1916,
+            "disparity_vs_pooled": 0.454,
+            "disparity_ci95": [
+              0.188,
+              1.095
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.599
+            ]
+          },
+          "telugu": {
+            "fpr": 0.0274,
+            "ci95": [
+              0.01967,
+              0.03804
+            ],
+            "false_positives": 34,
+            "negatives": 1241,
+            "disparity_vs_pooled": 2.978,
+            "disparity_ci95": [
+              1.746,
+              5.067
+            ]
+          }
+        }
+      },
+      "ngram_cosine": {
+        "global_threshold": 0.8794,
+        "pooled_fpr": 0.0081,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00396
+            ],
+            "false_positives": 0,
+            "negatives": 966,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.607
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00497
+            ],
+            "false_positives": 0,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.762
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00753
+            ],
+            "false_positives": 0,
+            "negatives": 506,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.155
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00205
+            ],
+            "false_positives": 0,
+            "negatives": 1872,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.314
+            ]
+          },
+          "kannada": {
+            "fpr": 0.00486,
+            "ci95": [
+              0.00165,
+              0.0142
+            ],
+            "false_positives": 3,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.6,
+            "disparity_ci95": [
+              0.165,
+              2.177
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00716
+            ],
+            "false_positives": 0,
+            "negatives": 533,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.097
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.002
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              3.931
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.03758,
+            "ci95": [
+              0.02995,
+              0.04706
+            ],
+            "false_positives": 72,
+            "negatives": 1916,
+            "disparity_vs_pooled": 4.64,
+            "disparity_ci95": [
+              2.978,
+              7.215
+            ]
+          },
+          "tamil": {
+            "fpr": 0.00235,
+            "ci95": [
+              0.00065,
+              0.00854
+            ],
+            "false_positives": 2,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.29,
+            "disparity_ci95": [
+              0.064,
+              1.309
+            ]
+          },
+          "telugu": {
+            "fpr": 0.00322,
+            "ci95": [
+              0.00125,
+              0.00826
+            ],
+            "false_positives": 4,
+            "negatives": 1241,
+            "disparity_vs_pooled": 0.398,
+            "disparity_ci95": [
+              0.125,
+              1.266
+            ]
+          }
+        }
+      },
+      "ngram_jaccard": {
+        "global_threshold": 0.7812,
+        "pooled_fpr": 0.0077,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00396
+            ],
+            "false_positives": 0,
+            "negatives": 966,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.642
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00497
+            ],
+            "false_positives": 0,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.806
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00753
+            ],
+            "false_positives": 0,
+            "negatives": 506,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.222
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00205
+            ],
+            "false_positives": 0,
+            "negatives": 1872,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.332
+            ]
+          },
+          "kannada": {
+            "fpr": 0.00486,
+            "ci95": [
+              0.00165,
+              0.0142
+            ],
+            "false_positives": 3,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.631,
+            "disparity_ci95": [
+              0.172,
+              2.303
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00716
+            ],
+            "false_positives": 0,
+            "negatives": 533,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.161
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.06
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.158
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.03132,
+            "ci95": [
+              0.02441,
+              0.0401
+            ],
+            "false_positives": 60,
+            "negatives": 1916,
+            "disparity_vs_pooled": 4.068,
+            "disparity_ci95": [
+              2.539,
+              6.504
+            ]
+          },
+          "tamil": {
+            "fpr": 0.00471,
+            "ci95": [
+              0.00183,
+              0.01204
+            ],
+            "false_positives": 4,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.612,
+            "disparity_ci95": [
+              0.191,
+              1.952
+            ]
+          },
+          "telugu": {
+            "fpr": 0.00806,
+            "ci95": [
+              0.00438,
+              0.01477
+            ],
+            "false_positives": 10,
+            "negatives": 1241,
+            "disparity_vs_pooled": 1.047,
+            "disparity_ci95": [
+              0.456,
+              2.395
+            ]
+          }
+        }
+      },
+      "token_jaccard": {
+        "global_threshold": 0.75,
+        "pooled_fpr": 0.0,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00396
+            ],
+            "false_positives": 0,
+            "negatives": 966,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00497
+            ],
+            "false_positives": 0,
+            "negatives": 769,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00753
+            ],
+            "false_positives": 0,
+            "negatives": 506,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00205
+            ],
+            "false_positives": 0,
+            "negatives": 1872,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "kannada": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00619
+            ],
+            "false_positives": 0,
+            "negatives": 617,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00716
+            ],
+            "false_positives": 0,
+            "negatives": 533,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.002
+            ],
+            "false_positives": 0,
+            "negatives": 1916,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "telugu": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00309
+            ],
+            "false_positives": 0,
+            "negatives": 1241,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          }
+        }
+      },
+      "weighted_token": {
+        "global_threshold": 0.9,
+        "pooled_fpr": 0.0,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00396
+            ],
+            "false_positives": 0,
+            "negatives": 966,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00497
+            ],
+            "false_positives": 0,
+            "negatives": 769,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00753
+            ],
+            "false_positives": 0,
+            "negatives": 506,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00205
+            ],
+            "false_positives": 0,
+            "negatives": 1872,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "kannada": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00619
+            ],
+            "false_positives": 0,
+            "negatives": 617,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00716
+            ],
+            "false_positives": 0,
+            "negatives": 533,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.002
+            ],
+            "false_positives": 0,
+            "negatives": 1916,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          },
+          "telugu": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00309
+            ],
+            "false_positives": 0,
+            "negatives": 1241,
+            "disparity_vs_pooled": 1.0,
+            "disparity_ci95": [
+              0.0,
+              null
+            ]
+          }
+        }
+      },
+      "token_sort_levenshtein": {
+        "global_threshold": 0.8378,
+        "pooled_fpr": 0.008,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.00414,
+            "ci95": [
+              0.00161,
+              0.0106
+            ],
+            "false_positives": 4,
+            "negatives": 966,
+            "disparity_vs_pooled": 0.517,
+            "disparity_ci95": [
+              0.162,
+              1.648
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0052,
+            "ci95": [
+              0.00202,
+              0.0133
+            ],
+            "false_positives": 4,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.65,
+            "disparity_ci95": [
+              0.204,
+              2.067
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.00593,
+            "ci95": [
+              0.00202,
+              0.01728
+            ],
+            "false_positives": 3,
+            "negatives": 506,
+            "disparity_vs_pooled": 0.741,
+            "disparity_ci95": [
+              0.203,
+              2.687
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.01015,
+            "ci95": [
+              0.00651,
+              0.0158
+            ],
+            "false_positives": 19,
+            "negatives": 1872,
+            "disparity_vs_pooled": 1.269,
+            "disparity_ci95": [
+              0.654,
+              2.456
+            ]
+          },
+          "kannada": {
+            "fpr": 0.00162,
+            "ci95": [
+              0.00029,
+              0.00912
+            ],
+            "false_positives": 1,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.202,
+            "disparity_ci95": [
+              0.029,
+              1.418
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.01501,
+            "ci95": [
+              0.00762,
+              0.02934
+            ],
+            "false_positives": 8,
+            "negatives": 533,
+            "disparity_vs_pooled": 1.876,
+            "disparity_ci95": [
+              0.767,
+              4.56
+            ]
+          },
+          "marathi": {
+            "fpr": 0.00342,
+            "ci95": [
+              0.00094,
+              0.0124
+            ],
+            "false_positives": 2,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.427,
+            "disparity_ci95": [
+              0.094,
+              1.928
+            ]
+          },
+          "odia": {
+            "fpr": 0.00685,
+            "ci95": [
+              0.00121,
+              0.03778
+            ],
+            "false_positives": 1,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.856,
+            "disparity_ci95": [
+              0.122,
+              5.872
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.00209,
+            "ci95": [
+              0.00081,
+              0.00536
+            ],
+            "false_positives": 4,
+            "negatives": 1916,
+            "disparity_vs_pooled": 0.261,
+            "disparity_ci95": [
+              0.082,
+              0.833
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.699
+            ]
+          },
+          "telugu": {
+            "fpr": 0.0274,
+            "ci95": [
+              0.01967,
+              0.03804
+            ],
+            "false_positives": 34,
+            "negatives": 1241,
+            "disparity_vs_pooled": 3.425,
+            "disparity_ci95": [
+              1.978,
+              5.913
+            ]
+          }
+        }
+      },
+      "jaro": {
+        "global_threshold": 0.9169,
+        "pooled_fpr": 0.0089,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.01139,
+            "ci95": [
+              0.00637,
+              0.02028
+            ],
+            "false_positives": 11,
+            "negatives": 966,
+            "disparity_vs_pooled": 1.28,
+            "disparity_ci95": [
+              0.582,
+              2.801
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0078,
+            "ci95": [
+              0.00358,
+              0.01692
+            ],
+            "false_positives": 6,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.876,
+            "disparity_ci95": [
+              0.327,
+              2.337
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.00988,
+            "ci95": [
+              0.00423,
+              0.02292
+            ],
+            "false_positives": 5,
+            "negatives": 506,
+            "disparity_vs_pooled": 1.11,
+            "disparity_ci95": [
+              0.387,
+              3.167
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.01122,
+            "ci95": [
+              0.00735,
+              0.01709
+            ],
+            "false_positives": 21,
+            "negatives": 1872,
+            "disparity_vs_pooled": 1.261,
+            "disparity_ci95": [
+              0.672,
+              2.361
+            ]
+          },
+          "kannada": {
+            "fpr": 0.00162,
+            "ci95": [
+              0.00029,
+              0.00912
+            ],
+            "false_positives": 1,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.182,
+            "disparity_ci95": [
+              0.026,
+              1.26
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.01689,
+            "ci95": [
+              0.00891,
+              0.03178
+            ],
+            "false_positives": 9,
+            "negatives": 533,
+            "disparity_vs_pooled": 1.898,
+            "disparity_ci95": [
+              0.814,
+              4.39
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.903
+            ]
+          },
+          "odia": {
+            "fpr": 0.0137,
+            "ci95": [
+              0.00376,
+              0.04857
+            ],
+            "false_positives": 2,
+            "negatives": 146,
+            "disparity_vs_pooled": 1.539,
+            "disparity_ci95": [
+              0.344,
+              6.71
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.00835,
+            "ci95": [
+              0.00515,
+              0.01352
+            ],
+            "false_positives": 16,
+            "negatives": 1916,
+            "disparity_vs_pooled": 0.938,
+            "disparity_ci95": [
+              0.471,
+              1.868
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.622
+            ]
+          },
+          "telugu": {
+            "fpr": 0.0145,
+            "ci95": [
+              0.00919,
+              0.02281
+            ],
+            "false_positives": 18,
+            "negatives": 1241,
+            "disparity_vs_pooled": 1.629,
+            "disparity_ci95": [
+              0.841,
+              3.151
+            ]
+          }
+        }
+      },
+      "jaro_winkler": {
+        "global_threshold": 0.949,
+        "pooled_fpr": 0.0092,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.01035,
+            "ci95": [
+              0.00563,
+              0.01895
+            ],
+            "false_positives": 10,
+            "negatives": 966,
+            "disparity_vs_pooled": 1.125,
+            "disparity_ci95": [
+              0.5,
+              2.524
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0065,
+            "ci95": [
+              0.00278,
+              0.01513
+            ],
+            "false_positives": 5,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.707,
+            "disparity_ci95": [
+              0.247,
+              2.015
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.00395,
+            "ci95": [
+              0.00108,
+              0.0143
+            ],
+            "false_positives": 2,
+            "negatives": 506,
+            "disparity_vs_pooled": 0.429,
+            "disparity_ci95": [
+              0.096,
+              1.904
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.00801,
+            "ci95": [
+              0.00486,
+              0.01318
+            ],
+            "false_positives": 15,
+            "negatives": 1872,
+            "disparity_vs_pooled": 0.871,
+            "disparity_ci95": [
+              0.431,
+              1.755
+            ]
+          },
+          "kannada": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00619
+            ],
+            "false_positives": 0,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.824
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0075,
+            "ci95": [
+              0.00292,
+              0.01914
+            ],
+            "false_positives": 4,
+            "negatives": 533,
+            "disparity_vs_pooled": 0.815,
+            "disparity_ci95": [
+              0.259,
+              2.549
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.87
+            ]
+          },
+          "odia": {
+            "fpr": 0.00685,
+            "ci95": [
+              0.00121,
+              0.03778
+            ],
+            "false_positives": 1,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.745,
+            "disparity_ci95": [
+              0.107,
+              5.031
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.02244,
+            "ci95": [
+              0.0167,
+              0.03009
+            ],
+            "false_positives": 43,
+            "negatives": 1916,
+            "disparity_vs_pooled": 2.439,
+            "disparity_ci95": [
+              1.482,
+              4.008
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.599
+            ]
+          },
+          "telugu": {
+            "fpr": 0.00967,
+            "ci95": [
+              0.00554,
+              0.01683
+            ],
+            "false_positives": 12,
+            "negatives": 1241,
+            "disparity_vs_pooled": 1.051,
+            "disparity_ci95": [
+              0.492,
+              2.241
+            ]
+          }
+        }
+      },
+      "monge_elkan": {
+        "global_threshold": 1.0,
+        "pooled_fpr": 0.1503,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00396
+            ],
+            "false_positives": 0,
+            "negatives": 966,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.028
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00497
+            ],
+            "false_positives": 0,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.035
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00753
+            ],
+            "false_positives": 0,
+            "negatives": 506,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.053
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00205
+            ],
+            "false_positives": 0,
+            "negatives": 1872,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.014
+            ]
+          },
+          "kannada": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00619
+            ],
+            "false_positives": 0,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.043
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00716
+            ],
+            "false_positives": 0,
+            "negatives": 533,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.05
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.046
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.179
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.78288,
+            "ci95": [
+              0.76386,
+              0.80077
+            ],
+            "false_positives": 1500,
+            "negatives": 1916,
+            "disparity_vs_pooled": 5.209,
+            "disparity_ci95": [
+              4.852,
+              5.583
+            ]
+          },
+          "tamil": {
+            "fpr": 0.00353,
+            "ci95": [
+              0.0012,
+              0.01033
+            ],
+            "false_positives": 3,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.023,
+            "disparity_ci95": [
+              0.008,
+              0.072
+            ]
+          },
+          "telugu": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00309
+            ],
+            "false_positives": 0,
+            "negatives": 1241,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.022
+            ]
+          }
+        }
+      },
+      "soundex": {
+        "global_threshold": 0.9,
+        "pooled_fpr": 0.0027,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.00104,
+            "ci95": [
+              0.00018,
+              0.00584
+            ],
+            "false_positives": 1,
+            "negatives": 966,
+            "disparity_vs_pooled": 0.385,
+            "disparity_ci95": [
+              0.047,
+              3.146
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00497
+            ],
+            "false_positives": 0,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              2.678
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.00198,
+            "ci95": [
+              0.00035,
+              0.01111
+            ],
+            "false_positives": 1,
+            "negatives": 506,
+            "disparity_vs_pooled": 0.733,
+            "disparity_ci95": [
+              0.089,
+              5.984
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.00214,
+            "ci95": [
+              0.00083,
+              0.00548
+            ],
+            "false_positives": 4,
+            "negatives": 1872,
+            "disparity_vs_pooled": 0.793,
+            "disparity_ci95": [
+              0.212,
+              2.953
+            ]
+          },
+          "kannada": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00619
+            ],
+            "false_positives": 0,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              3.333
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00716
+            ],
+            "false_positives": 0,
+            "negatives": 533,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              3.855
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              3.52
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              13.811
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.002
+            ],
+            "false_positives": 0,
+            "negatives": 1916,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.078
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              2.424
+            ]
+          },
+          "telugu": {
+            "fpr": 0.01692,
+            "ci95": [
+              0.01109,
+              0.02573
+            ],
+            "false_positives": 21,
+            "negatives": 1241,
+            "disparity_vs_pooled": 6.267,
+            "disparity_ci95": [
+              2.826,
+              13.861
+            ]
+          }
+        }
+      },
+      "metaphone": {
+        "global_threshold": 0.9,
+        "pooled_fpr": 0.0022,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.00104,
+            "ci95": [
+              0.00018,
+              0.00584
+            ],
+            "false_positives": 1,
+            "negatives": 966,
+            "disparity_vs_pooled": 0.473,
+            "disparity_ci95": [
+              0.055,
+              4.019
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00497
+            ],
+            "false_positives": 0,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              3.42
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00753
+            ],
+            "false_positives": 0,
+            "negatives": 506,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              5.185
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00205
+            ],
+            "false_positives": 0,
+            "negatives": 1872,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.409
+            ]
+          },
+          "kannada": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00619
+            ],
+            "false_positives": 0,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.258
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00716
+            ],
+            "false_positives": 0,
+            "negatives": 533,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.924
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.497
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              17.641
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.002
+            ],
+            "false_positives": 0,
+            "negatives": 1916,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.377
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              3.096
+            ]
+          },
+          "telugu": {
+            "fpr": 0.01692,
+            "ci95": [
+              0.01109,
+              0.02573
+            ],
+            "false_positives": 21,
+            "negatives": 1241,
+            "disparity_vs_pooled": 7.691,
+            "disparity_ci95": [
+              3.333,
+              17.705
+            ]
+          }
+        }
+      },
+      "nysiis": {
+        "global_threshold": 0.9,
+        "pooled_fpr": 0.0023,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.00104,
+            "ci95": [
+              0.00018,
+              0.00584
+            ],
+            "false_positives": 1,
+            "negatives": 966,
+            "disparity_vs_pooled": 0.452,
+            "disparity_ci95": [
+              0.053,
+              3.809
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00497
+            ],
+            "false_positives": 0,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              3.242
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.00198,
+            "ci95": [
+              0.00035,
+              0.01111
+            ],
+            "false_positives": 1,
+            "negatives": 506,
+            "disparity_vs_pooled": 0.861,
+            "disparity_ci95": [
+              0.101,
+              7.246
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00205
+            ],
+            "false_positives": 0,
+            "negatives": 1872,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.336
+            ]
+          },
+          "kannada": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00619
+            ],
+            "false_positives": 0,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.036
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00716
+            ],
+            "false_positives": 0,
+            "negatives": 533,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.667
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.263
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              16.722
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.002
+            ],
+            "false_positives": 0,
+            "negatives": 1916,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.305
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              2.935
+            ]
+          },
+          "telugu": {
+            "fpr": 0.01692,
+            "ci95": [
+              0.01109,
+              0.02573
+            ],
+            "false_positives": 21,
+            "negatives": 1241,
+            "disparity_vs_pooled": 7.357,
+            "disparity_ci95": [
+              3.217,
+              16.783
+            ]
+          }
+        }
+      },
+      "match_rating": {
+        "global_threshold": 0.9,
+        "pooled_fpr": 0.0022,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.00104,
+            "ci95": [
+              0.00018,
+              0.00584
+            ],
+            "false_positives": 1,
+            "negatives": 966,
+            "disparity_vs_pooled": 0.473,
+            "disparity_ci95": [
+              0.055,
+              4.019
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00497
+            ],
+            "false_positives": 0,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              3.42
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00753
+            ],
+            "false_positives": 0,
+            "negatives": 506,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              5.185
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00205
+            ],
+            "false_positives": 0,
+            "negatives": 1872,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.409
+            ]
+          },
+          "kannada": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00619
+            ],
+            "false_positives": 0,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.258
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00716
+            ],
+            "false_positives": 0,
+            "negatives": 533,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.924
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.497
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              17.641
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.002
+            ],
+            "false_positives": 0,
+            "negatives": 1916,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.377
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              3.096
+            ]
+          },
+          "telugu": {
+            "fpr": 0.01692,
+            "ci95": [
+              0.01109,
+              0.02573
+            ],
+            "false_positives": 21,
+            "negatives": 1241,
+            "disparity_vs_pooled": 7.691,
+            "disparity_ci95": [
+              3.333,
+              17.705
+            ]
+          }
+        }
+      },
+      "refined_soundex": {
+        "global_threshold": 0.9,
+        "pooled_fpr": 0.0023,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.00104,
+            "ci95": [
+              0.00018,
+              0.00584
+            ],
+            "false_positives": 1,
+            "negatives": 966,
+            "disparity_vs_pooled": 0.452,
+            "disparity_ci95": [
+              0.053,
+              3.809
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00497
+            ],
+            "false_positives": 0,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              3.242
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.00198,
+            "ci95": [
+              0.00035,
+              0.01111
+            ],
+            "false_positives": 1,
+            "negatives": 506,
+            "disparity_vs_pooled": 0.861,
+            "disparity_ci95": [
+              0.101,
+              7.246
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00205
+            ],
+            "false_positives": 0,
+            "negatives": 1872,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.336
+            ]
+          },
+          "kannada": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00619
+            ],
+            "false_positives": 0,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.036
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00716
+            ],
+            "false_positives": 0,
+            "negatives": 533,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.667
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.263
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              16.722
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.002
+            ],
+            "false_positives": 0,
+            "negatives": 1916,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.305
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              2.935
+            ]
+          },
+          "telugu": {
+            "fpr": 0.01692,
+            "ci95": [
+              0.01109,
+              0.02573
+            ],
+            "false_positives": 21,
+            "negatives": 1241,
+            "disparity_vs_pooled": 7.357,
+            "disparity_ci95": [
+              3.217,
+              16.783
+            ]
+          }
+        }
+      },
+      "double_metaphone": {
+        "global_threshold": 0.9,
+        "pooled_fpr": 0.0022,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.00104,
+            "ci95": [
+              0.00018,
+              0.00584
+            ],
+            "false_positives": 1,
+            "negatives": 966,
+            "disparity_vs_pooled": 0.473,
+            "disparity_ci95": [
+              0.055,
+              4.019
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00497
+            ],
+            "false_positives": 0,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              3.42
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00753
+            ],
+            "false_positives": 0,
+            "negatives": 506,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              5.185
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00205
+            ],
+            "false_positives": 0,
+            "negatives": 1872,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.409
+            ]
+          },
+          "kannada": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00619
+            ],
+            "false_positives": 0,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.258
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00716
+            ],
+            "false_positives": 0,
+            "negatives": 533,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.924
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.497
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              17.641
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.002
+            ],
+            "false_positives": 0,
+            "negatives": 1916,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.377
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              3.096
+            ]
+          },
+          "telugu": {
+            "fpr": 0.01692,
+            "ci95": [
+              0.01109,
+              0.02573
+            ],
+            "false_positives": 21,
+            "negatives": 1241,
+            "disparity_vs_pooled": 7.691,
+            "disparity_ci95": [
+              3.333,
+              17.705
+            ]
+          }
+        }
+      },
+      "caverphone": {
+        "global_threshold": 0.9,
+        "pooled_fpr": 0.0013,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.00104,
+            "ci95": [
+              0.00018,
+              0.00584
+            ],
+            "false_positives": 1,
+            "negatives": 966,
+            "disparity_vs_pooled": 0.8,
+            "disparity_ci95": [
+              0.082,
+              7.686
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0026,
+            "ci95": [
+              0.00071,
+              0.00943
+            ],
+            "false_positives": 2,
+            "negatives": 769,
+            "disparity_vs_pooled": 2.0,
+            "disparity_ci95": [
+              0.321,
+              12.413
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.00198,
+            "ci95": [
+              0.00035,
+              0.01111
+            ],
+            "false_positives": 1,
+            "negatives": 506,
+            "disparity_vs_pooled": 1.523,
+            "disparity_ci95": [
+              0.157,
+              14.619
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.0016,
+            "ci95": [
+              0.00055,
+              0.0047
+            ],
+            "false_positives": 3,
+            "negatives": 1872,
+            "disparity_vs_pooled": 1.231,
+            "disparity_ci95": [
+              0.245,
+              6.187
+            ]
+          },
+          "kannada": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00619
+            ],
+            "false_positives": 0,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              8.143
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00716
+            ],
+            "false_positives": 0,
+            "negatives": 533,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              9.417
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              8.6
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              33.738
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.00052,
+            "ci95": [
+              9e-05,
+              0.00295
+            ],
+            "false_positives": 1,
+            "negatives": 1916,
+            "disparity_vs_pooled": 0.4,
+            "disparity_ci95": [
+              0.041,
+              3.883
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              5.921
+            ]
+          },
+          "telugu": {
+            "fpr": 0.00403,
+            "ci95": [
+              0.00172,
+              0.0094
+            ],
+            "false_positives": 5,
+            "negatives": 1241,
+            "disparity_vs_pooled": 3.1,
+            "disparity_ci95": [
+              0.775,
+              12.366
+            ]
+          }
+        }
+      },
+      "indic_phonetic_exact": {
+        "global_threshold": 1.0,
+        "pooled_fpr": 0.0026,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.00104,
+            "ci95": [
+              0.00018,
+              0.00584
+            ],
+            "false_positives": 1,
+            "negatives": 966,
+            "disparity_vs_pooled": 0.4,
+            "disparity_ci95": [
+              0.048,
+              3.29
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00497
+            ],
+            "false_positives": 0,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              2.8
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.00198,
+            "ci95": [
+              0.00035,
+              0.01111
+            ],
+            "false_positives": 1,
+            "negatives": 506,
+            "disparity_vs_pooled": 0.762,
+            "disparity_ci95": [
+              0.092,
+              6.259
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.0016,
+            "ci95": [
+              0.00055,
+              0.0047
+            ],
+            "false_positives": 3,
+            "negatives": 1872,
+            "disparity_vs_pooled": 0.615,
+            "disparity_ci95": [
+              0.143,
+              2.649
+            ]
+          },
+          "kannada": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00619
+            ],
+            "false_positives": 0,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              3.486
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00716
+            ],
+            "false_positives": 0,
+            "negatives": 533,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.032
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              3.682
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              14.444
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.002
+            ],
+            "false_positives": 0,
+            "negatives": 1916,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.127
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              2.535
+            ]
+          },
+          "telugu": {
+            "fpr": 0.01692,
+            "ci95": [
+              0.01109,
+              0.02573
+            ],
+            "false_positives": 21,
+            "negatives": 1241,
+            "disparity_vs_pooled": 6.508,
+            "disparity_ci95": [
+              2.914,
+              14.497
+            ]
+          }
+        }
+      },
+      "indic_phonetic": {
+        "global_threshold": 0.8889,
+        "pooled_fpr": 0.0023,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.00104,
+            "ci95": [
+              0.00018,
+              0.00584
+            ],
+            "false_positives": 1,
+            "negatives": 966,
+            "disparity_vs_pooled": 0.452,
+            "disparity_ci95": [
+              0.053,
+              3.809
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00497
+            ],
+            "false_positives": 0,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              3.242
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.00198,
+            "ci95": [
+              0.00035,
+              0.01111
+            ],
+            "false_positives": 1,
+            "negatives": 506,
+            "disparity_vs_pooled": 0.861,
+            "disparity_ci95": [
+              0.101,
+              7.246
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00205
+            ],
+            "false_positives": 0,
+            "negatives": 1872,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.336
+            ]
+          },
+          "kannada": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00619
+            ],
+            "false_positives": 0,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.036
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00716
+            ],
+            "false_positives": 0,
+            "negatives": 533,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.667
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.263
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              16.722
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.002
+            ],
+            "false_positives": 0,
+            "negatives": 1916,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.305
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              2.935
+            ]
+          },
+          "telugu": {
+            "fpr": 0.01692,
+            "ci95": [
+              0.01109,
+              0.02573
+            ],
+            "false_positives": 21,
+            "negatives": 1241,
+            "disparity_vs_pooled": 7.357,
+            "disparity_ci95": [
+              3.217,
+              16.783
+            ]
+          }
+        }
+      },
+      "indic_phonetic_dravidian": {
+        "global_threshold": 0.8889,
+        "pooled_fpr": 0.0023,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.00104,
+            "ci95": [
+              0.00018,
+              0.00584
+            ],
+            "false_positives": 1,
+            "negatives": 966,
+            "disparity_vs_pooled": 0.452,
+            "disparity_ci95": [
+              0.053,
+              3.809
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00497
+            ],
+            "false_positives": 0,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              3.242
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.00198,
+            "ci95": [
+              0.00035,
+              0.01111
+            ],
+            "false_positives": 1,
+            "negatives": 506,
+            "disparity_vs_pooled": 0.861,
+            "disparity_ci95": [
+              0.101,
+              7.246
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00205
+            ],
+            "false_positives": 0,
+            "negatives": 1872,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.336
+            ]
+          },
+          "kannada": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00619
+            ],
+            "false_positives": 0,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.036
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00716
+            ],
+            "false_positives": 0,
+            "negatives": 533,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.667
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.263
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              16.722
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.002
+            ],
+            "false_positives": 0,
+            "negatives": 1916,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.305
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              2.935
+            ]
+          },
+          "telugu": {
+            "fpr": 0.01692,
+            "ci95": [
+              0.01109,
+              0.02573
+            ],
+            "false_positives": 21,
+            "negatives": 1241,
+            "disparity_vs_pooled": 7.357,
+            "disparity_ci95": [
+              3.217,
+              16.783
+            ]
+          }
+        }
+      },
+      "char_embedding_svd": {
+        "global_threshold": 0.9697,
+        "pooled_fpr": 0.01,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.00207,
+            "ci95": [
+              0.00057,
+              0.00752
+            ],
+            "false_positives": 2,
+            "negatives": 966,
+            "disparity_vs_pooled": 0.207,
+            "disparity_ci95": [
+              0.047,
+              0.914
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0026,
+            "ci95": [
+              0.00071,
+              0.00943
+            ],
+            "false_positives": 2,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.26,
+            "disparity_ci95": [
+              0.059,
+              1.146
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00753
+            ],
+            "false_positives": 0,
+            "negatives": 506,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.916
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00205
+            ],
+            "false_positives": 0,
+            "negatives": 1872,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.249
+            ]
+          },
+          "kannada": {
+            "fpr": 0.01459,
+            "ci95": [
+              0.00769,
+              0.02749
+            ],
+            "false_positives": 9,
+            "negatives": 617,
+            "disparity_vs_pooled": 1.459,
+            "disparity_ci95": [
+              0.633,
+              3.34
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0788,
+            "ci95": [
+              0.05882,
+              0.1048
+            ],
+            "false_positives": 42,
+            "negatives": 533,
+            "disparity_vs_pooled": 7.88,
+            "disparity_ci95": [
+              4.843,
+              12.735
+            ]
+          },
+          "marathi": {
+            "fpr": 0.00342,
+            "ci95": [
+              0.00094,
+              0.0124
+            ],
+            "false_positives": 2,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.342,
+            "disparity_ci95": [
+              0.077,
+              1.507
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              3.115
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.00104,
+            "ci95": [
+              0.00029,
+              0.0038
+            ],
+            "false_positives": 2,
+            "negatives": 1916,
+            "disparity_vs_pooled": 0.104,
+            "disparity_ci95": [
+              0.024,
+              0.462
+            ]
+          },
+          "tamil": {
+            "fpr": 0.02118,
+            "ci95": [
+              0.01344,
+              0.03323
+            ],
+            "false_positives": 18,
+            "negatives": 850,
+            "disparity_vs_pooled": 2.118,
+            "disparity_ci95": [
+              1.106,
+              4.037
+            ]
+          },
+          "telugu": {
+            "fpr": 0.01853,
+            "ci95": [
+              0.01238,
+              0.02766
+            ],
+            "false_positives": 23,
+            "negatives": 1241,
+            "disparity_vs_pooled": 1.853,
+            "disparity_ci95": [
+              1.019,
+              3.361
+            ]
+          }
+        }
+      },
+      "cascade[ngram_jaccard->indic_phonetic]": {
+        "global_threshold": 0.8889,
+        "pooled_fpr": 0.0023,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.00104,
+            "ci95": [
+              0.00018,
+              0.00584
+            ],
+            "false_positives": 1,
+            "negatives": 966,
+            "disparity_vs_pooled": 0.452,
+            "disparity_ci95": [
+              0.053,
+              3.809
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00497
+            ],
+            "false_positives": 0,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              3.242
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.00198,
+            "ci95": [
+              0.00035,
+              0.01111
+            ],
+            "false_positives": 1,
+            "negatives": 506,
+            "disparity_vs_pooled": 0.861,
+            "disparity_ci95": [
+              0.101,
+              7.246
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00205
+            ],
+            "false_positives": 0,
+            "negatives": 1872,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.336
+            ]
+          },
+          "kannada": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00619
+            ],
+            "false_positives": 0,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.036
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00716
+            ],
+            "false_positives": 0,
+            "negatives": 533,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.667
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.263
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              16.722
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.002
+            ],
+            "false_positives": 0,
+            "negatives": 1916,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.305
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              2.935
+            ]
+          },
+          "telugu": {
+            "fpr": 0.01692,
+            "ci95": [
+              0.01109,
+              0.02573
+            ],
+            "false_positives": 21,
+            "negatives": 1241,
+            "disparity_vs_pooled": 7.357,
+            "disparity_ci95": [
+              3.217,
+              16.783
+            ]
+          }
+        }
+      },
+      "indic_phonetic+alias_half": {
+        "global_threshold": 0.8889,
+        "pooled_fpr": 0.0023,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.00104,
+            "ci95": [
+              0.00018,
+              0.00584
+            ],
+            "false_positives": 1,
+            "negatives": 966,
+            "disparity_vs_pooled": 0.452,
+            "disparity_ci95": [
+              0.053,
+              3.809
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00497
+            ],
+            "false_positives": 0,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              3.242
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.00198,
+            "ci95": [
+              0.00035,
+              0.01111
+            ],
+            "false_positives": 1,
+            "negatives": 506,
+            "disparity_vs_pooled": 0.861,
+            "disparity_ci95": [
+              0.101,
+              7.246
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00205
+            ],
+            "false_positives": 0,
+            "negatives": 1872,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.336
+            ]
+          },
+          "kannada": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00619
+            ],
+            "false_positives": 0,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.036
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00716
+            ],
+            "false_positives": 0,
+            "negatives": 533,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.667
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.263
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              16.722
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.002
+            ],
+            "false_positives": 0,
+            "negatives": 1916,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.305
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              2.935
+            ]
+          },
+          "telugu": {
+            "fpr": 0.01692,
+            "ci95": [
+              0.01109,
+              0.02573
+            ],
+            "false_positives": 21,
+            "negatives": 1241,
+            "disparity_vs_pooled": 7.357,
+            "disparity_ci95": [
+              3.217,
+              16.783
+            ]
+          }
+        }
+      },
+      "indic_phonetic+alias_oracle": {
+        "global_threshold": 0.8889,
+        "pooled_fpr": 0.0023,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.00104,
+            "ci95": [
+              0.00018,
+              0.00584
+            ],
+            "false_positives": 1,
+            "negatives": 966,
+            "disparity_vs_pooled": 0.452,
+            "disparity_ci95": [
+              0.053,
+              3.809
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00497
+            ],
+            "false_positives": 0,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              3.242
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.00198,
+            "ci95": [
+              0.00035,
+              0.01111
+            ],
+            "false_positives": 1,
+            "negatives": 506,
+            "disparity_vs_pooled": 0.861,
+            "disparity_ci95": [
+              0.101,
+              7.246
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00205
+            ],
+            "false_positives": 0,
+            "negatives": 1872,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.336
+            ]
+          },
+          "kannada": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00619
+            ],
+            "false_positives": 0,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.036
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00716
+            ],
+            "false_positives": 0,
+            "negatives": 533,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.667
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.263
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              16.722
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.002
+            ],
+            "false_positives": 0,
+            "negatives": 1916,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.305
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              2.935
+            ]
+          },
+          "telugu": {
+            "fpr": 0.01692,
+            "ci95": [
+              0.01109,
+              0.02573
+            ],
+            "false_positives": 21,
+            "negatives": 1241,
+            "disparity_vs_pooled": 7.357,
+            "disparity_ci95": [
+              3.217,
+              16.783
+            ]
+          }
+        }
+      },
+      "alias_exact": {
+        "global_threshold": 1.0,
+        "pooled_fpr": 0.0001,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.00104,
+            "ci95": [
+              0.00018,
+              0.00584
+            ],
+            "false_positives": 1,
+            "negatives": 966,
+            "disparity_vs_pooled": 10.4,
+            "disparity_ci95": [
+              0.323,
+              330.865
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00497
+            ],
+            "false_positives": 0,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              281.593
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00753
+            ],
+            "false_positives": 0,
+            "negatives": 506,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              426.852
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00205
+            ],
+            "false_positives": 0,
+            "negatives": 1872,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              116.016
+            ]
+          },
+          "kannada": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00619
+            ],
+            "false_positives": 0,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              350.536
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00716
+            ],
+            "false_positives": 0,
+            "negatives": 533,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              405.384
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              370.214
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1452.381
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.002
+            ],
+            "false_positives": 0,
+            "negatives": 1916,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              113.357
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              254.88
+            ]
+          },
+          "telugu": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00309
+            ],
+            "false_positives": 0,
+            "negatives": 1241,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              174.823
+            ]
+          }
+        }
+      },
+      "soundex+tiebreak": {
+        "global_threshold": 0.8977,
+        "pooled_fpr": 0.0054,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.00104,
+            "ci95": [
+              0.00018,
+              0.00584
+            ],
+            "false_positives": 1,
+            "negatives": 966,
+            "disparity_vs_pooled": 0.193,
+            "disparity_ci95": [
+              0.026,
+              1.41
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00497
+            ],
+            "false_positives": 0,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.2
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.00198,
+            "ci95": [
+              0.00035,
+              0.01111
+            ],
+            "false_positives": 1,
+            "negatives": 506,
+            "disparity_vs_pooled": 0.367,
+            "disparity_ci95": [
+              0.05,
+              2.682
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.00214,
+            "ci95": [
+              0.00083,
+              0.00548
+            ],
+            "false_positives": 4,
+            "negatives": 1872,
+            "disparity_vs_pooled": 0.396,
+            "disparity_ci95": [
+              0.118,
+              1.324
+            ]
+          },
+          "kannada": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00619
+            ],
+            "false_positives": 0,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.494
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00716
+            ],
+            "false_positives": 0,
+            "negatives": 533,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.728
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.578
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              6.191
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.01409,
+            "ci95": [
+              0.0097,
+              0.02043
+            ],
+            "false_positives": 27,
+            "negatives": 1916,
+            "disparity_vs_pooled": 2.609,
+            "disparity_ci95": [
+              1.378,
+              4.932
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.086
+            ]
+          },
+          "telugu": {
+            "fpr": 0.01692,
+            "ci95": [
+              0.01109,
+              0.02573
+            ],
+            "false_positives": 21,
+            "negatives": 1241,
+            "disparity_vs_pooled": 3.133,
+            "disparity_ci95": [
+              1.576,
+              6.213
+            ]
+          }
+        }
+      },
+      "indic_phonetic+tiebreak": {
+        "global_threshold": 0.8974,
+        "pooled_fpr": 0.0097,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.00104,
+            "ci95": [
+              0.00018,
+              0.00584
+            ],
+            "false_positives": 1,
+            "negatives": 966,
+            "disparity_vs_pooled": 0.107,
+            "disparity_ci95": [
+              0.015,
+              0.734
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00497
+            ],
+            "false_positives": 0,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.625
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.00198,
+            "ci95": [
+              0.00035,
+              0.01111
+            ],
+            "false_positives": 1,
+            "negatives": 506,
+            "disparity_vs_pooled": 0.204,
+            "disparity_ci95": [
+              0.03,
+              1.396
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00205
+            ],
+            "false_positives": 0,
+            "negatives": 1872,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.257
+            ]
+          },
+          "kannada": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00619
+            ],
+            "false_positives": 0,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.778
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00716
+            ],
+            "false_positives": 0,
+            "negatives": 533,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.899
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.821
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              3.221
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.03862,
+            "ci95": [
+              0.03088,
+              0.04821
+            ],
+            "false_positives": 74,
+            "negatives": 1916,
+            "disparity_vs_pooled": 3.981,
+            "disparity_ci95": [
+              2.613,
+              6.058
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.565
+            ]
+          },
+          "telugu": {
+            "fpr": 0.01692,
+            "ci95": [
+              0.01109,
+              0.02573
+            ],
+            "false_positives": 21,
+            "negatives": 1241,
+            "disparity_vs_pooled": 1.744,
+            "disparity_ci95": [
+              0.939,
+              3.233
+            ]
+          }
+        }
+      }
+    },
+    "origin_ambiguous_identities": {
+      "count": 804,
+      "fraction": 0.201
+    }
+  },
+  "cascade": [
+    {
+      "cascade": "cascade[ngram_jaccard->indic_phonetic]",
+      "block_threshold": 0.25,
+      "blocking_recall_ceiling": 0.8838,
+      "fraction_reranked": 0.9373
+    }
+  ],
+  "granularity": {
+    "note": "A matcher emitting N distinct scores has N available operating points. If none sits under the budget, recall there is zero regardless of matching quality. Blending weight is 0.15 -- enough to order within a tie group, not enough to relitigate the phonetic decision.",
+    "rows": [
+      {
+        "matcher": "soundex",
+        "variant": "base",
+        "distinct_scores": 74,
+        "recall_at_0.1pct_fpr": 0.0,
+        "recall_at_1pct_fpr": 0.3549,
+        "auc_pr": 0.8381,
+        "per_pair_us": 5.44
+      },
+      {
+        "matcher": "soundex+tiebreak",
+        "variant": "tie_broken",
+        "distinct_scores": 15250,
+        "recall_at_0.1pct_fpr": 0.1485,
+        "recall_at_1pct_fpr": 0.3487,
+        "auc_pr": 0.8506,
+        "per_pair_us": 8.97
+      },
+      {
+        "matcher": "indic_phonetic",
+        "variant": "base",
+        "distinct_scores": 531,
+        "recall_at_0.1pct_fpr": 0.0,
+        "recall_at_1pct_fpr": 0.3379,
+        "auc_pr": 0.849,
+        "per_pair_us": 8.13
+      },
+      {
+        "matcher": "indic_phonetic+tiebreak",
+        "variant": "tie_broken",
+        "distinct_scores": 17118,
+        "recall_at_0.1pct_fpr": 0.1608,
+        "recall_at_1pct_fpr": 0.3334,
+        "auc_pr": 0.8524,
+        "per_pair_us": 11.51
+      }
+    ]
+  },
+  "alias_coverage": {
+    "coverage": {
+      "full_classes": 109,
+      "full_forms": 362,
+      "half_classes": 45,
+      "half_forms": 148
+    },
+    "caveat": "alias_oracle uses the same equivalence tables the corpus was generated from. It is an upper bound on what a complete alias list achieves, not a generalisation result, and must not be cited as matcher performance. alias_half holds out 50% of classes and is the deployable comparison.",
+    "recall_at_1pct_fpr": {
+      "soundex": {
+        "bengali_anglicisation": 0.3944,
+        "arabic_persian": 0.8822,
+        "transliteration": 0.7833
+      },
+      "indic_phonetic": {
+        "bengali_anglicisation": 0.1167,
+        "arabic_persian": 0.76,
+        "transliteration": 0.7889
+      },
+      "indic_phonetic+alias_half": {
+        "bengali_anglicisation": 0.5478,
+        "arabic_persian": 0.8456,
+        "transliteration": 0.7878
+      },
+      "indic_phonetic+alias_oracle": {
+        "bengali_anglicisation": 0.9578,
+        "arabic_persian": 0.9444,
+        "transliteration": 0.7878
+      },
+      "alias_exact": {
+        "bengali_anglicisation": 0.9578,
+        "arabic_persian": 0.9444,
+        "transliteration": 0.0211
+      }
+    }
+  }
+}
