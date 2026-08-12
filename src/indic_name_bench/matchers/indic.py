@@ -55,6 +55,7 @@ The full rule set is restated in METHODOLOGY.md.
 from __future__ import annotations
 
 import re
+from dataclasses import dataclass
 from functools import lru_cache
 from typing import ClassVar
 
@@ -115,6 +116,141 @@ _VOWELS = frozenset("aeiou")
 
 #: Applied in "dravidian" mode: scripts that do not mark voicing on stops.
 _VOICING_MERGE: dict[str, str] = {"G": "K", "J": "C", "D": "T", "B": "P"}
+
+
+@dataclass(frozen=True, slots=True)
+class EncoderConfig:
+    """Which design choices of the encoder are active.
+
+    Exists for stage-wise ablation. The 15-seed paired tests in findings §11
+    showed the encoder as a whole does *not* beat Soundex on transliteration --
+    only the voicing-merged variant does. That leaves an obvious question the
+    family-level result cannot answer: of the seven design choices, which ones
+    actually carry signal, and which are decoration?
+
+    Defaults reproduce the shipped strict-mode encoder exactly.
+    """
+
+    #: ksh == x. Lakshmi / Laxmi.
+    unify_ksha_x: bool = True
+    #: Treat bh/dh/gh/kh/ph/th as single phonemes. With this off, `h` becomes an
+    #: ordinary consonant -- which is what Soundex and Metaphone do.
+    aspiration_as_digraph: bool = True
+    #: Collapse the three sibilants. Sharma / Sarma.
+    merge_sibilants: bool = True
+    #: Drop non-initial vowels, keeping the consonant skeleton.
+    drop_vowels: bool = True
+    #: Collapse adjacent identical phonemes. Bhatt / Bhat.
+    degeminate: bool = True
+    #: Treat word-final -y as a vowel. Ganguly / Ganguli.
+    final_y_as_vowel: bool = True
+    #: Merge voicing: k/g, t/d, p/b, c/j. Dravidian scripts do not mark it.
+    merge_voicing: bool = False
+
+    @property
+    def label(self) -> str:
+        if self == FULL:
+            return "full"
+        if self == DRAVIDIAN:
+            return "full+voicing"
+        off = [
+            name
+            for name, default in (
+                ("unify_ksha_x", True),
+                ("aspiration_as_digraph", True),
+                ("merge_sibilants", True),
+                ("drop_vowels", True),
+                ("degeminate", True),
+                ("final_y_as_vowel", True),
+            )
+            if getattr(self, name) != default
+        ]
+        return "no_" + "+".join(off) if off else "full"
+
+
+FULL = EncoderConfig()
+DRAVIDIAN = EncoderConfig(merge_voicing=True)
+
+#: One config per ablation: the full encoder with exactly one stage disabled.
+#: A drop in recall against FULL is that stage's contribution.
+ABLATIONS: tuple[EncoderConfig, ...] = (
+    FULL,
+    DRAVIDIAN,
+    EncoderConfig(unify_ksha_x=False),
+    EncoderConfig(aspiration_as_digraph=False),
+    EncoderConfig(merge_sibilants=False),
+    EncoderConfig(drop_vowels=False),
+    EncoderConfig(degeminate=False),
+    EncoderConfig(final_y_as_vowel=False),
+)
+
+#: Aspirated digraphs, separated out so the ablation can skip exactly these.
+_ASPIRATED: frozenset[str] = frozenset({"chh", "bh", "ph", "dh", "th", "gh", "kh", "jh"})
+
+
+@lru_cache(maxsize=400_000)
+def encode_with(token: str, config: EncoderConfig = FULL) -> str:
+    """Phonetic code under an explicit ablation config.
+
+    ``encode_token`` is the shipped entry point and delegates here; keeping both
+    means the default path is provably identical to the pre-ablation encoder
+    (asserted in tests) while ablations reuse one implementation.
+    """
+    text = token.lower().strip()
+    if not text:
+        return ""
+
+    for source, target in _PRE_NORMALISE:
+        if source == target:
+            continue
+        if source == "x" and not config.unify_ksha_x:
+            continue
+        text = text.replace(source, target)
+
+    if config.final_y_as_vowel and len(text) > 1 and text.endswith("y"):
+        text = text[:-1] + "i"
+
+    prefix = ""
+    if text[0] in _VOWELS:
+        for source, target in _VOWEL_CLASS:
+            if text.startswith(source):
+                prefix = target.upper()
+                break
+
+    for source, target in _DIGRAPHS:
+        if source == "ksh" and not config.unify_ksha_x:
+            continue
+        if source in _ASPIRATED and not config.aspiration_as_digraph:
+            continue
+        # Without the sibilant merge, sh keeps a symbol of its own so that
+        # Sharma and Sarma no longer collide.
+        if source in ("sh", "ss", "zh") and not config.merge_sibilants:
+            target = "Z"
+        text = text.replace(source, target)
+
+    mixed: list[str] = []
+    for ch in text:
+        if ch in _VOWELS:
+            mixed.append(ch)
+        elif ch.isupper():
+            mixed.append(ch)
+        elif ch in _SINGLES:
+            mixed.append(_SINGLES[ch])
+    sequence = "".join(mixed)
+    if config.degeminate:
+        sequence = re.sub(r"([A-Z])\1+", r"\1", sequence)
+
+    if config.drop_vowels:
+        code = prefix + "".join(ch for ch in sequence if ch.isupper())
+    else:
+        # Keep vowels inline; the prefix would double the initial one.
+        code = "".join(ch.upper() if ch.isupper() else ch for ch in sequence)
+
+    if config.merge_voicing:
+        code = "".join(_VOICING_MERGE.get(ch, ch) for ch in code)
+        code = re.sub(r"(.)\1+", r"\1", code)
+
+    return code
 
 
 @lru_cache(maxsize=200_000)

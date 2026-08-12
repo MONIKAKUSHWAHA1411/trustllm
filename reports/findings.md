@@ -519,6 +519,93 @@ does not mean "would replicate on real records".
 
 ---
 
+## 12. Which encoder stage actually does the work?
+
+§11 narrowed the contribution from "an Indic encoder beats Soundex" to "the
+voicing merge beats Soundex". That is still a bundle. The encoder makes seven
+separable decisions; `benchmarks/ablation.py` disables one at a time, holds the
+comparison strategy fixed, and takes paired per-seed deltas on the
+transliteration split. 8 seeds, 2,000 identities each.
+
+| Stage disabled | Recall | Δ vs full | 95% CI | Verdict |
+| --- | --- | --- | --- | --- |
+| *(none — full encoder)* | 0.803 | — | — | — |
+| drop non-initial vowels | 0.280 | **−0.523** | [−0.552, −0.495] | **carries almost everything** |
+| aspiration as digraph | 0.601 | −0.203 | [−0.221, −0.184] | contributes |
+| merge sibilants | 0.629 | −0.174 | [−0.185, −0.164] | contributes |
+| degemination | 0.649 | −0.154 | [−0.168, −0.139] | contributes |
+| final `-y` as vowel | 0.753 | −0.050 | [−0.059, −0.041] | contributes |
+| **unify `ksh` ≡ `x`** | 0.807 | **+0.004** | **[+0.000, +0.008]** | **harmful — removing it helps** |
+| *(add voicing merge)* | 0.890 | +0.087 | [+0.075, +0.099] | helps |
+
+### 12.1 The contribution is one decision, not seven
+
+**Dropping non-initial vowels is 2.6× the next-largest stage and roughly as large
+as all the others combined.** Keeping vowels collapses the encoder from 0.803 to
+0.280 — below Levenshtein. The consonant skeleton *is* the method; aspiration
+handling, sibilant merging and degemination are refinements on top of it worth
+15–20 points each.
+
+That is a much more useful statement than the one this project started with. If
+you are building an Indic matcher and can implement exactly one thing, implement
+vowel dropping.
+
+### 12.2 A design choice that is measurably harmful
+
+`ksh` ≡ `x` — unifying Lakshmi and Laxmi — was listed as a headline design
+feature in the README and in METHODOLOGY §1.2. **Removing it improves recall**
+by +0.004 with a 95% interval of [+0.0002, +0.0079] that excludes zero.
+
+Small, but real and in the wrong direction. The likely mechanism: mapping `x` to
+a dedicated `X` phoneme creates a symbol that *fails* to collide with names
+legitimately containing `ks`, and the collisions it buys on the Lakshmi/Laxmi
+pair are rarer than the ones it destroys elsewhere. The rule looks obviously
+correct in isolation and is not.
+
+It has been kept in the shipped encoder and flagged here rather than silently
+removed, because the finding — that a linguistically well-motivated rule can be
+net-negative — is more interesting than the 0.4 points.
+
+### 12.3 Per-rule attribution, and where it runs out
+
+The corpus records the exact `rule_id` behind every variant. Restricting to
+severity-1 single-family variants gives one rule per pair, so recall attributes
+to individual transformations:
+
+| Rule | Full encoder | Vowels kept |
+| --- | --- | --- |
+| `vowel_lengthening` | 0.927 | **0.000** |
+| `lexical_variant_swap` | 0.801 | 0.298 |
+| `keyboard_typo` | 0.488 | 0.133 |
+| `anglicisation_swap` | 0.078 | 0.000 |
+| `name_order_inversion` | 1.000 | 1.000 |
+| `case_noise`, `diacritic_noise` | 1.000 | 1.000 |
+| `initialise_token` | 0.000 | 0.000 |
+
+`vowel_lengthening` going 0.927 → 0.000 is exact mechanism attribution: vowel
+dropping is precisely what defends against Sita/Seeta, and nothing else in the
+encoder touches it.
+
+But vowel dropping also lifts `keyboard_typo` (0.133 → 0.488) and
+`lexical_variant_swap` (0.298 → 0.801), which it has no principled reason to
+help. **Part of its contribution is simply that shorter codes collide more
+often** — a permissiveness effect rather than a phonological one. The 1% FPR
+budget controls for the precision cost, so the recall gain is genuine, but the
+mechanism is not purely what the docstring claims.
+
+`initialise_token` at 0.000 across every configuration is the standing failure:
+no encoder stage addresses initials, and §4 shows no matcher does.
+
+**Coverage limit.** Only 14 rules reached the 25-pair minimum at severity 1, and
+just one of them (`vowel_lengthening`) is a transliteration rule — the family
+split spreads 400 variants over three severities and 19 transliteration rules,
+so most cells are too thin. `ksha_to_x` in particular has no per-rule row, which
+is why §12.2 rests on the stage ablation rather than on direct rule attribution.
+Raising `family_variants_per_family` to a few thousand would fill the table; the
+groupby already exists.
+
+---
+
 ## 10. Limitations
 
 Beyond the fairness caveats in §6.3 and the alias-oracle caveat in §8:

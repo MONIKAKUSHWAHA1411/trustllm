@@ -1,0 +1,228 @@
+{
+  "seeds": 8,
+  "identities_per_seed": 2000,
+  "fpr_budget": 0.01,
+  "method": "Stage ablation: disable exactly one encoder stage, hold the comparison strategy fixed, paired per-seed delta against the full encoder on the transliteration split. Per-rule: severity-1 single-family variants, so exactly one rule fired per pair.",
+  "full_encoder_recall": 0.8031,
+  "stages": [
+    {
+      "config": "full+voicing",
+      "recall_mean": 0.89,
+      "delta_vs_full": 0.08687,
+      "ci95": [
+        0.07455,
+        0.0992
+      ],
+      "significant": true,
+      "verdict": "helps"
+    },
+    {
+      "config": "no_unify_ksha_x",
+      "recall_mean": 0.8072,
+      "delta_vs_full": 0.00406,
+      "ci95": [
+        0.0002,
+        0.00792
+      ],
+      "significant": true,
+      "verdict": "HURTS (removing helps)"
+    },
+    {
+      "config": "no_aspiration_as_digraph",
+      "recall_mean": 0.6006,
+      "delta_vs_full": -0.2025,
+      "ci95": [
+        -0.2213,
+        -0.1837
+      ],
+      "significant": true,
+      "verdict": "contributes"
+    },
+    {
+      "config": "no_merge_sibilants",
+      "recall_mean": 0.6288,
+      "delta_vs_full": -0.17438,
+      "ci95": [
+        -0.18484,
+        -0.16391
+      ],
+      "significant": true,
+      "verdict": "contributes"
+    },
+    {
+      "config": "no_drop_vowels",
+      "recall_mean": 0.2797,
+      "delta_vs_full": -0.52344,
+      "ci95": [
+        -0.55168,
+        -0.49519
+      ],
+      "significant": true,
+      "verdict": "contributes"
+    },
+    {
+      "config": "no_degeminate",
+      "recall_mean": 0.6494,
+      "delta_vs_full": -0.15375,
+      "ci95": [
+        -0.16845,
+        -0.13905
+      ],
+      "significant": true,
+      "verdict": "contributes"
+    },
+    {
+      "config": "no_final_y_as_vowel",
+      "recall_mean": 0.7531,
+      "delta_vs_full": -0.05,
+      "ci95": [
+        -0.05908,
+        -0.04092
+      ],
+      "significant": true,
+      "verdict": "contributes"
+    }
+  ],
+  "per_rule_recall": {
+    "anglicisation_swap": {
+      "full": 0.0781,
+      "full+voicing": 0.0781,
+      "no_unify_ksha_x": 0.0781,
+      "no_aspiration_as_digraph": 0.0969,
+      "no_merge_sibilants": 0.0781,
+      "no_drop_vowels": 0.0,
+      "no_degeminate": 0.0969,
+      "no_final_y_as_vowel": 0.0781
+    },
+    "case_noise": {
+      "full": 1.0,
+      "full+voicing": 1.0,
+      "no_unify_ksha_x": 1.0,
+      "no_aspiration_as_digraph": 1.0,
+      "no_merge_sibilants": 1.0,
+      "no_drop_vowels": 1.0,
+      "no_degeminate": 1.0,
+      "no_final_y_as_vowel": 1.0
+    },
+    "community_suffix_addition": {
+      "full": 0.342,
+      "full+voicing": 0.342,
+      "no_unify_ksha_x": 0.342,
+      "no_aspiration_as_digraph": 0.342,
+      "no_merge_sibilants": 0.342,
+      "no_drop_vowels": 0.342,
+      "no_degeminate": 0.342,
+      "no_final_y_as_vowel": 0.342
+    },
+    "compound_fusion": {
+      "full": 0.2176,
+      "full+voicing": 0.2176,
+      "no_unify_ksha_x": 0.2176,
+      "no_aspiration_as_digraph": 0.2176,
+      "no_merge_sibilants": 0.2176,
+      "no_drop_vowels": 0.2176,
+      "no_degeminate": 0.2176,
+      "no_final_y_as_vowel": 0.2176
+    },
+    "diacritic_noise": {
+      "full": 1.0,
+      "full+voicing": 1.0,
+      "no_unify_ksha_x": 1.0,
+      "no_aspiration_as_digraph": 1.0,
+      "no_merge_sibilants": 1.0,
+      "no_drop_vowels": 1.0,
+      "no_degeminate": 1.0,
+      "no_final_y_as_vowel": 1.0
+    },
+    "honorific_addition": {
+      "full": 0.9884,
+      "full+voicing": 0.9884,
+      "no_unify_ksha_x": 0.9884,
+      "no_aspiration_as_digraph": 0.9884,
+      "no_merge_sibilants": 0.9884,
+      "no_drop_vowels": 0.9884,
+      "no_degeminate": 0.9884,
+      "no_final_y_as_vowel": 0.9884
+    },
+    "initialise_token": {
+      "full": 0.0,
+      "full+voicing": 0.0,
+      "no_unify_ksha_x": 0.0,
+      "no_aspiration_as_digraph": 0.0,
+      "no_merge_sibilants": 0.0,
+      "no_drop_vowels": 0.0,
+      "no_degeminate": 0.0,
+      "no_final_y_as_vowel": 0.0
+    },
+    "keyboard_typo": {
+      "full": 0.4882,
+      "full+voicing": 0.4882,
+      "no_unify_ksha_x": 0.4882,
+      "no_aspiration_as_digraph": 0.4997,
+      "no_merge_sibilants": 0.4657,
+      "no_drop_vowels": 0.133,
+      "no_degeminate": 0.3759,
+      "no_final_y_as_vowel": 0.4829
+    },
+    "lexical_variant_swap": {
+      "full": 0.8006,
+      "full+voicing": 0.8093,
+      "no_unify_ksha_x": 0.7802,
+      "no_aspiration_as_digraph": 0.7695,
+      "no_merge_sibilants": 0.715,
+      "no_drop_vowels": 0.2976,
+      "no_degeminate": 0.724,
+      "no_final_y_as_vowel": 0.6963
+    },
+    "name_order_inversion": {
+      "full": 1.0,
+      "full+voicing": 1.0,
+      "no_unify_ksha_x": 1.0,
+      "no_aspiration_as_digraph": 1.0,
+      "no_merge_sibilants": 1.0,
+      "no_drop_vowels": 1.0,
+      "no_degeminate": 1.0,
+      "no_final_y_as_vowel": 1.0
+    },
+    "ocr_confusion": {
+      "full": 0.0,
+      "full+voicing": 0.0416,
+      "no_unify_ksha_x": 0.0,
+      "no_aspiration_as_digraph": 0.0,
+      "no_merge_sibilants": 0.0,
+      "no_drop_vowels": 0.01,
+      "no_degeminate": 0.0,
+      "no_final_y_as_vowel": 0.0
+    },
+    "qualifier_addition": {
+      "full": 0.4089,
+      "full+voicing": 0.4089,
+      "no_unify_ksha_x": 0.4089,
+      "no_aspiration_as_digraph": 0.4089,
+      "no_merge_sibilants": 0.4089,
+      "no_drop_vowels": 0.4089,
+      "no_degeminate": 0.4089,
+      "no_final_y_as_vowel": 0.4089
+    },
+    "separator_noise": {
+      "full": 0.7846,
+      "full+voicing": 0.7846,
+      "no_unify_ksha_x": 0.7846,
+      "no_aspiration_as_digraph": 0.7846,
+      "no_merge_sibilants": 0.7846,
+      "no_drop_vowels": 0.7846,
+      "no_degeminate": 0.7846,
+      "no_final_y_as_vowel": 0.7846
+    },
+    "vowel_lengthening": {
+      "full": 0.9274,
+      "full+voicing": 0.9274,
+      "no_unify_ksha_x": 0.9274,
+      "no_aspiration_as_digraph": 0.9274,
+      "no_merge_sibilants": 0.9274,
+      "no_drop_vowels": 0.0,
+      "no_degeminate": 0.9274,
+      "no_final_y_as_vowel": 0.9274
+    }
+  }
+}

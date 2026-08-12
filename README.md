@@ -47,7 +47,7 @@ does not require changing the matching algorithm at all.
 ### 3. An Indic-adapted phonetic encoder wins where it should, and only there
 
 A purpose-built encoder (consonant skeleton + initial vowel, aspiration as a
-diacritic not a consonant, merged coronals and sibilants, `ksh`≡`x`) beats every
+diacritic not a consonant, merged coronals and sibilants) beats every
 English-tuned baseline on transliteration variance:
 
 | Matcher | Transliteration | Arabic/Persian | Bengali anglicisation |
@@ -71,6 +71,27 @@ So the defensible contribution is narrower than "an Indic encoder is better":
 **the voicing merge is what wins.** On **Bengali anglicisation the encoder is the
 worst method tested** — Chatterjee/Chattopadhyay is historical, not phonetic.
 Reported rather than hidden.
+
+Stage-wise ablation (`benchmarks/ablation.py`, 8 seeds) narrows it further —
+**one of the seven design choices carries almost all of it**:
+
+| Stage disabled | Δ recall vs full |
+| --- | --- |
+| drop non-initial vowels | **−0.523** |
+| aspiration as digraph | −0.203 |
+| merge sibilants | −0.174 |
+| degemination | −0.154 |
+| final `-y` as vowel | −0.050 |
+| **unify `ksh` ≡ `x`** | **+0.004 — removing it *helps*** |
+
+Dropping vowels is 2.6× the next stage and about as large as all the others
+combined. If you implement exactly one thing, implement that.
+
+And `ksh`≡`x` — which earlier versions of this README listed as a headline
+feature — is **measurably counterproductive** (CI [+0.0002, +0.0079], excludes
+zero). Kept in the shipped encoder and flagged in `findings.md` §12.2 rather than
+quietly deleted, because "a linguistically obvious rule that is net-negative" is
+the more interesting result.
 
 ### 4. Phonetic matchers score zero at a tight alert budget — and it's a one-line fix
 
@@ -190,6 +211,7 @@ python benchmarks/run_all.py           # every reported number
 python benchmarks/make_figures.py      # every figure
 python benchmarks/tier_sensitivity.py  # robustness of the fairness result
 python benchmarks/significance.py      # are the reported gaps real?
+python benchmarks/ablation.py          # which encoder stage does the work?
 pytest                                 # 107 tests
 ```
 
