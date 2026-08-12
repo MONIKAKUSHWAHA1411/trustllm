@@ -72,26 +72,33 @@ So the defensible contribution is narrower than "an Indic encoder is better":
 worst method tested** — Chatterjee/Chattopadhyay is historical, not phonetic.
 Reported rather than hidden.
 
-Stage-wise ablation (`benchmarks/ablation.py`, 8 seeds) narrows it further —
-**one of the seven design choices carries almost all of it**:
+Stage-wise ablation (`benchmarks/ablation.py`) narrows it further — **one of the
+seven design choices carries almost all of it**:
 
 | Stage disabled | Δ recall vs full |
 | --- | --- |
-| drop non-initial vowels | **−0.523** |
-| aspiration as digraph | −0.203 |
-| merge sibilants | −0.174 |
-| degemination | −0.154 |
-| final `-y` as vowel | −0.050 |
-| **unify `ksh` ≡ `x`** | **+0.004 — removing it *helps*** |
+| **drop non-initial vowels** | **−0.517** |
+| aspiration as digraph | −0.211 |
+| merge sibilants | −0.169 |
+| degemination | −0.153 |
+| final `-y` as vowel | −0.059 |
+| unify `ksh` ≡ `x` | −0.004 |
 
-Dropping vowels is 2.6× the next stage and about as large as all the others
-combined. If you implement exactly one thing, implement that.
+Dropping vowels is 2.4× the next stage and larger than all the others combined.
+If you implement exactly one thing, implement that.
 
-And `ksh`≡`x` — which earlier versions of this README listed as a headline
-feature — is **measurably counterproductive** (CI [+0.0002, +0.0079], excludes
-zero). Kept in the shipped encoder and flagged in `findings.md` §12.2 rather than
-quietly deleted, because "a linguistically obvious rule that is net-negative" is
-the more interesting result.
+**The ablation also caught a bug that reasoning could not.** `ksh`≡`x` was
+initially net-*negative* — removing it improved recall. The per-rule cross-tab
+found why: `ksh→X` is matched before `sh→S`, so a dedicated phoneme ate the `sh`
+inside "Lakshmi" and the sibilant merge never fired. Lakshmi/Laxmi collided but
+Lakshmi/**Laksmi** stopped colliding, and the sibilant alternation is far more
+common. Mapping `ksh` to the `K`+`S` cluster instead fixes all three at `LKSM`;
+the sign reverses and the full encoder gains 0.6 points. A linguistically correct
+rule failing on **interaction ordering** — see `findings.md` §12.2.
+
+And the sharpest cell in the project: `retroflex_dental_shift` scores **0.000**
+without the voicing merge and **1.000** with it. The stage exists for exactly that
+transformation and touches nothing else.
 
 ### 4. Phonetic matchers score zero at a tight alert budget — and it's a one-line fix
 

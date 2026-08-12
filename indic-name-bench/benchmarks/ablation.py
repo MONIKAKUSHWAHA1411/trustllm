@@ -108,6 +108,13 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--seeds", type=int, default=8)
     parser.add_argument("--identities", type=int, default=2000)
+    parser.add_argument(
+        "--family-variants", type=int, default=400,
+        help="variants per family. Raise to fill the per-rule table: the split "
+             "spreads these over 3 severities and 19 transliteration rules, so "
+             "400 leaves most per-rule cells below the minimum.",
+    )
+    parser.add_argument("--min-rule-pairs", type=int, default=25)
     parser.add_argument("--out", type=Path, default=ROOT / "reports")
     args = parser.parse_args()
 
@@ -118,7 +125,7 @@ def main() -> int:
         config = corpus.CorpusConfig(
             seed=20260811 + i * 7919,
             n_identities=args.identities,
-            family_variants_per_family=400,
+            family_variants_per_family=args.family_variants,
             cross_script_variants=60,
             hard_negatives_per_type=500,
             easy_negatives=1000,
@@ -138,12 +145,20 @@ def main() -> int:
         for cfg in ABLATIONS:
             matcher = IndicPhoneticMatcher(merge_voicing=cfg.merge_voicing)
             stage_row[cfg.label] = recall_for(matcher, cfg, translit, negatives)
+            # Negative scores depend only on the config, so score them once per
+            # config instead of once per rule. Without this the negatives are
+            # re-scored 19 times per config and dominate the runtime.
+            negative_scores = score_split(matcher, negatives, cfg)
             for rule, pairs in by_rule.items():
-                if len(pairs) < 25:
+                if len(pairs) < args.min_rule_pairs:
                     continue
-                per_rule[cfg.label][rule].append(
-                    recall_for(matcher, cfg, pairs, negatives)
+                positive_scores = score_split(matcher, pairs, cfg)
+                curve = metrics.build_curve(
+                    positive_scores + negative_scores,
+                    [p.label for p in pairs] + [p.label for p in negatives],
                 )
+                recall, _ = metrics.recall_at_fpr(curve, BUDGET)
+                per_rule[cfg.label][rule].append(recall)
         per_seed_stage.append(stage_row)
         print(f"  seed {i + 1}/{args.seeds}", end="\r")
     print()
@@ -203,8 +218,41 @@ def main() -> int:
         print(f"{rule[:30]:30s}{cells}")
         rule_table[rule] = row
 
+    # -- the sharp test of section 12.2 ------------------------------------
+    # Does unify_ksha_x help on the transformation it exists for, even though it
+    # hurts overall? If yes, the rule works locally and its collateral damage
+    # exceeds its benefit -- a far more precise statement than "it is harmful".
+    local = {}
+    for rule in ("ksha_to_x", "x_to_ksha"):
+        with_rule = per_rule["full"].get(rule, [])
+        without = per_rule["no_unify_ksha_x"].get(rule, [])
+        if not with_rule or len(with_rule) != len(without):
+            continue
+        deltas = [a - b for a, b in zip(with_rule, without, strict=True)]
+        mean = statistics.fmean(deltas)
+        sd = statistics.stdev(deltas) if len(deltas) > 1 else 0.0
+        half = t_critical(len(deltas) - 1) * sd / math.sqrt(len(deltas)) if sd else 0.0
+        local[rule] = {
+            "recall_with_rule": round(statistics.fmean(with_rule), 4),
+            "recall_without_rule": round(statistics.fmean(without), 4),
+            "delta": round(mean, 5),
+            "ci95": [round(mean - half, 5), round(mean + half, 5)],
+            "n_seeds": len(deltas),
+        }
+    if local:
+        print("\nsection 12.2 sharp test -- ksha/x rule on the rules it targets")
+        for rule, row in local.items():
+            print(
+                f"  {rule:14s} with={row['recall_with_rule']:.3f} "
+                f"without={row['recall_without_rule']:.3f} "
+                f"delta={row['delta']:+.4f} [{row['ci95'][0]:+.4f},{row['ci95'][1]:+.4f}]"
+            )
+
     payload = {
         "seeds": args.seeds,
+        "min_rule_pairs": args.min_rule_pairs,
+        "family_variants_per_family": args.family_variants,
+        "ksha_x_local_effect": local,
         "identities_per_seed": args.identities,
         "fpr_budget": BUDGET,
         "method": (
