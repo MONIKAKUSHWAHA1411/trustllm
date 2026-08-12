@@ -1,0 +1,158 @@
+# Lexical equivalence classes: spellings of one name that no character-level
+# rule derives from one another.
+#
+# Mohammed -> Mahomed is not a sequence of edits, it is a different
+# transliteration tradition. Trying to generate these with regex rewrites
+# produces both false variants (strings nobody writes) and misses the real
+# ones. So they are enumerated.
+#
+# Every member of a class is a form actually used in South Asian records. The
+# first entry is the corpus's canonical form; order otherwise carries no
+# meaning and the generator does not privilege position.
+#
+# PROVENANCE: compiled from published transliteration guidance and standard
+# reference works on Arabic and Persian name romanisation, cross-checked
+# against the spelling variants that appear in the public sanctions lists'
+# own alias fields (OFAC SDN and the UN Consolidated List both record
+# multiple romanisations per listed name). No private source was consulted.
+
+version: "0.1.0"
+
+arabic_persian:
+  # --- The Mohammed cluster. Highest-variance name in the corpus, and the
+  # single most common given name in the world, which is what makes it the
+  # worst case for screening: enormous variant density multiplied by enormous
+  # base frequency.
+  - [Mohammed, Muhammad, Mohammad, Mohamed, Muhammed, Mahomed, Mohamad, Muhammod]
+  - [Ahmed, Ahmad, Ahamed, Ahammed, Ahmet]
+  - [Ali, Aly, Alee]
+  - [Hussain, Hussein, Husain, Hosain, Husayn, Hussayn, Hossain]
+  - [Hassan, Hasan, Hassaan, Hasaan]
+  - [Ibrahim, Ebrahim, Ibraheem, Ibrahem]
+  - [Yusuf, Yousuf, Yousaf, Yusof, Yousef, Yusuff]
+  - [Ismail, Ismael, Esmail, Ismaeel]
+  - [Usman, Osman, Uthman, Usmaan]
+  - [Omar, Umar, Umer, Omer]
+  - [Rahman, Rehman, Rahaman, Rehmaan, Rahmaan]
+  - [Rashid, Rasheed, Rashed]
+  - [Salim, Saleem, Selim, Salem]
+  - [Tariq, Tarique, Tareq, Tarik]
+  - [Wasim, Waseem, Wassim]
+  - [Nadeem, Nadim, Nadeim]
+  - [Shakeel, Shakil, Shaqeel]
+  - [Iqbal, Ikbal, Eqbal]
+  - [Haroon, Harun, Haroun, Haroone]
+  - [Bilal, Belal, Bilaal]
+  - [Faisal, Faizal, Faysal, Fysal]
+  - [Arif, Aarif, Areef, Aref]
+  - [Anwar, Anwer, Anvar]
+  - [Kabir, Kabeer, Kabier]
+  - [Latif, Lateef]
+  - [Majid, Majeed, Mazid]
+  - [Nasir, Naseer, Nazir, Naser]
+  - [Zubair, Zubayr, Zobair, Zubeir]
+  - [Zafar, Zaffar, Zafer]
+  - [Jamal, Jamaal, Djamal]
+  - [Imran, Emran, Imraan]
+  - [Khalid, Khaled, Kalid]
+  - [Mahmood, Mahmud, Mehmood, Mahmoud]
+  - [Ghulam, Gulam, Ghulaam]
+  - [Junaid, Juned, Junayd]
+  - [Aziz, Azeez, Aziiz]
+  - [Farid, Fareed, Fareid]
+  # --- Feminine
+  - [Ayesha, Aisha, Ayisha, Aishah, Ayshah]
+  - [Fatima, Fathima, Fatema, Fatma, Fathema]
+  - [Khadija, Khadeeja, Khadijah, Khadeejah]
+  - [Zainab, Zaynab, Zenab, Zainub]
+  - [Parveen, Parvin, Perveen, Parween]
+  - [Nasreen, Nasrin, Nasrine, Nazreen]
+  - [Yasmin, Yasmeen, Yasmine]
+  - [Amina, Ameena, Aminah, Amena]
+  - [Rubina, Roobina, Rubeena]
+  - [Saira, Sayra, Sairah]
+  - [Shazia, Shazya, Shaziya]
+  - [Sana, Sanaa, Sanah]
+  - [Rehana, Rehaana, Rihana]
+  - [Samina, Sameena]
+  - [Bushra, Booshra, Bushrah]
+  # --- Surnames
+  - [Siddiqui, Siddiqi, Sidiqui, Siddique, Sidiqi]
+  - [Qureshi, Quraishi, Kureshi, Qureishi, Quraishy]
+  - [Sheikh, Shaikh, Shekh, Sheik, Shaykh]
+  - [Ansari, Ansary, Ansaari]
+  - [Mirza, Merza, Meerza]
+  - [Pathan, Pathaan, Patan]
+  - [Zaidi, Zaydi, Zaidee]
+  - [Rizvi, Rizavi, Razvi]
+  - [Naqvi, Naquvi, Nakvi]
+  - [Baig, Beg, Baeg]
+  - [Abbasi, Abasi, Abbassi]
+  - [Hashmi, Hashimi, Hashmee]
+  - [Kazmi, Kaazmi, Kazmee]
+  - [Usmani, Osmani, Uthmani]
+  - [Farooqui, Faruqi, Farooqi, Faruqui]
+  - [Malik, Malick, Maalik]
+
+# The Syed cluster is separate because the token functions as an honorific,
+# a given name and a surname depending on the record -- so it needs both a
+# spelling class and a role-ambiguity treatment.
+syed_cluster: [Syed, Sayed, Sayyid, Said, Saiyed, Seyed, Sayyed, Syeed]
+
+# Abdul is a bound prefix meaning "servant of"; it is never a standalone name,
+# and the following element is not a separate name either. Records split, fuse,
+# hyphenate and assimilate it inconsistently, producing forms whose string
+# distance is enormous for what is one identity.
+abdul_prefix:
+  prefix_forms: [Abdul, Abdel, Abd al, Abdal, Abd, Abdur, Abdour]
+  # Assimilated fusions, where the /l/ of "al-" assimilates to the following
+  # consonant. These are the forms that break naive matchers hardest.
+  seconds:
+    Rahman:  [Abdurrahman, Abdur Rahman, Abdul Rahman, Abdul-Rahman, Abdulrahman, Abd al-Rahman]
+    Rahim:   [Abdurrahim, Abdur Rahim, Abdul Rahim, Abdul-Rahim, Abdulrahim]
+    Karim:   [Abdul Karim, Abdulkarim, Abdul-Karim, Abdelkarim]
+    Aziz:    [Abdul Aziz, Abdulaziz, Abdul-Aziz, Abdelaziz]
+    Latif:   [Abdul Latif, Abdullatif, Abdul-Latif]
+    Majid:   [Abdul Majid, Abdulmajid, Abdul-Majid, Abdulmajeed]
+    Hamid:   [Abdul Hamid, Abdulhamid, Abdul-Hamid, Abdelhamid]
+    Salam:   [Abdul Salam, Abdussalam, Abdus Salam, Abdul-Salam]
+    Ghani:   [Abdul Ghani, Abdulghani, Abdul-Ghani]
+    Qadir:   [Abdul Qadir, Abdulqadir, Abdul-Qadir, Abdelkader]
+    Wahab:   [Abdul Wahab, Abdulwahab, Abdul-Wahab]
+    Sattar:  [Abdul Sattar, Abdussattar, Abdus Sattar]
+    Razzak:  [Abdul Razzak, Abdurrazzak, Abdur Razzak, Abdul-Razzaq]
+
+# Abbreviations of Mohammed used as a name-initial honorific. Extremely common
+# in South Asian records and routinely mis-parsed as a given name.
+mohammed_abbreviations: [Md, Mohd, Mohd., Md., "M."]
+
+# Non-Arabic classes where the same enumerate-don't-derive argument applies.
+other:
+  - [Roy, Ray, Rai]
+  - [Ghosh, Ghose]
+  - [Bose, Basu, Bosu]
+  - [Dutta, Datta, Dutt]
+  - [Chowdhury, Choudhury, Chaudhuri, Choudhuri, Chowdhary, Chaudhary, Chaudhry, Choudhary]
+  - [Sengupta, Sen Gupta, SenGupta]
+  - [Dasgupta, Das Gupta, DasGupta]
+  - [Lakshmi, Laxmi, Lakshmee]
+  - [Krishna, Krishnaa, Krsna, Krishn]
+  - [Venkatesh, Venkatesa, Vengatesh]
+  - [Subramanian, Subramaniam, Subrahmanian, Subramanyam, Subbramanian]
+  - [Ramachandran, Ramchandran, Ramachandra, Ramchandra]
+  - [Gowda, Gouda, Gowdar]
+  - [Shetty, Setty, Shetti]
+  - [Pillai, Pillay, Pilla]
+  - [Nair, Nayar, Naiyar]
+  - [Varghese, Vargheese, Vergese]
+  - [Thomas, Thoma, Tomas]
+  - [Reddy, Reddi]
+  - [Naidu, Naidoo, Nayudu]
+  - [Deshpande, Deshpandey, Deshapande]
+  - [Kulkarni, Kulkarny]
+  - [Patil, Patill]
+  - [Gaikwad, Gayakwad, Gaekwad]
+  - [Chavan, Chavhan]
+  - [Bhonsle, Bhosale, Bhosle, Bhonsale]
+  - [Srivastava, Shrivastava, Srivastav, Shrivastav]
+  - [Agarwal, Aggarwal, Agrawal, Agarwala]

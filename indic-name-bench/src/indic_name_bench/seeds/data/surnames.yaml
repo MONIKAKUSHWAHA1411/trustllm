@@ -1,0 +1,107 @@
+# Surname inventory, grouped origin -> ordinal frequency tier.
+#
+# Same status as given_names.yaml: linguistic tokens, not people.
+#
+# Several surnames are intentionally listed under more than one origin
+# (Sharma, Joshi, Patil, Rao, Das, Nayak, Varma, Kulkarni, Prasad, Singh).
+# That multi-membership is real and is exactly why origin attribution from a
+# name alone is unreliable. The loader keeps every membership and the sampler
+# picks one at assembly time; the fairness analysis reports how much of the
+# corpus is origin-ambiguous so the disparity numbers can be discounted
+# accordingly.
+
+version: "0.1.0"
+
+arabic_persian:
+  1: [Khan, Ahmed, Ali, Sheikh, Ansari, Hussain, Syed, Malik]
+  2: [Qureshi, Siddiqui, Mirza, Pathan, Rahman, Chaudhary, Iqbal, Shaikh,
+      Baig, Zaidi, Naqvi, Abbasi]
+  3: [Farooqui, Hashmi, Jafri, Kazmi, Rizvi, Usmani, Alvi, Ghori, Lodhi,
+      Mansuri, Osmani, Beg]
+  4: [Nadvi, Barelvi, Deobandi, Firdausi, Halim, Jilani, Kidwai, Nomani, Shamsi]
+
+bengali:
+  1: [Chatterjee, Banerjee, Mukherjee, Ghosh, Das, Roy, Sen, Bose]
+  2: [Ganguly, Bhattacharya, Chakraborty, Dutta, Basu, Sarkar, Mitra, Saha,
+      Biswas, Pal, Sinha, Chowdhury]
+  3: [Majumdar, Dasgupta, Sengupta, Kar, Nag, Talukdar, Halder, Mondal,
+      Adhikari, Goswami, Bardhan, Rakshit]
+  4: [Bhowmik, Chakrabarti, Deb, Guha, Kundu, Lahiri, Maity, Nandi, Podder, Sanyal]
+
+tamil:
+  1: [Iyer, Pillai, Nadar]
+  2: [Iyengar, Mudaliar, Chettiar, Gounder, Naicker, Thevar, Subramaniam]
+  3: [Reddiar, Vanniar, Konar, Udayar, Achari, Sastri]
+  4: [Ayyangar, Kounder, Marar, Pandaram, Sozhiya]
+
+telugu:
+  1: [Reddy, Naidu, Rao, Raju]
+  2: [Chowdary, Sharma, Varma, Prasad, Sastry, Murthy, Babu, Kumar]
+  3: [Acharya, Goud, Sarma, Setty, Yadav, Pantulu]
+  # Telugu house names (intiperu). Conventionally precede the given name and
+  # are the seed for the village/house-name prefix transformation.
+  4: [Kondapalli, Nandyala, Vemulapalli, Chintalapati, Bhattiprolu, Gollapudi,
+      Mallavarapu, Peddinti, Tadepalli, Yerraguntla, Alluri, Pusapati]
+
+punjabi:
+  1: [Singh, Kaur, Gill, Sidhu, Dhillon, Sandhu]
+  2: [Grewal, Bajwa, Brar, Cheema, Dhaliwal, Randhawa, Mann, Kang, Bains, Virk]
+  3: [Bhatti, Chahal, Deol, Hundal, Sekhon, Toor, Sohal, Sarai, Gosal, Aulakh]
+  4: [Barar, Dosanjh, Ghuman, Jhutti, Khaira, Nijjar, Pannu, Rai, Sahota, Takhar]
+
+gujarati:
+  1: [Patel, Shah, Desai, Mehta, Joshi]
+  2: [Trivedi, Vyas, Dave, Amin, Bhatt, Gandhi, Modi, Parikh, Thakkar, Doshi, Sheth]
+  3: [Chokshi, Jani, Kothari, Panchal, Rana, Solanki, Vaghela, Zaveri, Pandya, Raval]
+  4: [Bhavsar, Chudasama, Gohil, Jadeja, Limbachiya, Makwana, Prajapati, Sompura]
+
+marathi:
+  1: [Deshpande, Kulkarni, Patil, Jadhav, Pawar, Joshi]
+  2: [Shinde, More, Gaikwad, Bhosale, Chavan, Kadam, Sawant, Naik, Thorat, Wagh]
+  3: [Salunkhe, Karve, Ranade, Apte, Gokhale, Phadke, Marathe, Bhave, Limaye, Kelkar]
+  4: [Chitale, Deshmukh, Ghatge, Inamdar, Kanitkar, Mahajan, Nimbalkar, Vaidya]
+
+hindi_belt:
+  1: [Sharma, Verma, Gupta, Singh, Yadav, Agarwal, Mishra, Kumar]
+  2: [Pandey, Tiwari, Dubey, Srivastava, Saxena, Chauhan, Jain, Sinha, Thakur, Prasad]
+  3: [Chaturvedi, Bhardwaj, Rathore, Tomar, Kashyap, Bansal, Goyal, Mittal,
+      Khanna, Kapoor, Malhotra, Chopra, Arora, Bhatia, Sethi, Rajput]
+  4: [Ahluwalia, Bhargava, Dixit, Gaur, Johri, Katiyar, Nigam, Purohit,
+      Shukla, Tripathi, Upadhyay, Vajpayee]
+
+kannada:
+  1: [Gowda, Shetty, Rao]
+  2: [Hegde, Bhat, Kamath, Nayak, Acharya, Murthy, Prabhu, Pai]
+  3: [Setty, Kulkarni, Patil, Shenoy, Udupa, Rai]
+  4: [Ballal, Chandrashekaraiah, Gundappa, Hiremath, Jois, Puttaiah, Ramanna]
+
+malayalam:
+  1: [Nair, Menon, Pillai, Thomas]
+  2: [Kurup, Panicker, Warrier, Nambiar, Varma, Mathew, Joseph, Varghese]
+  3: [Namboothiri, Thampi, Marar, Kaimal, Jacob, Kurian, Philip, Chacko]
+  4: [Achuthan, Ezhuthachan, Kartha, Moothathu, Pisharody, Poduval, Zachariah]
+
+odia:
+  1: [Mohanty, Patnaik, Behera, Das]
+  2: [Sahoo, Nayak, Panda, Mishra, Rout, Jena, Swain, Pradhan]
+  3: [Acharya, Dash, Mahapatra, Parida, Sahu, Tripathy, Barik]
+  4: [Bhoi, Choudhury, Hota, Kanungo, Nanda, Samal, Senapati]
+
+# Bengali surnames whose anglicised and Sanskritic forms are BOTH in active
+# official use for the same individuals. Structured as explicit pairs because
+# the divergence is lexical, not rule-derivable: no character-level rule turns
+# Chattopadhyay into Chatterjee. The bengali_anglicisation transformation reads
+# this table directly. Documented in METHODOLOGY.md.
+bengali_anglicisation_pairs:
+  - [Chatterjee, Chattopadhyay]
+  - [Banerjee, Bandopadhyay]
+  - [Mukherjee, Mukhopadhyay]
+  - [Ganguly, Gangopadhyay]
+  - [Bhattacharya, Bhattacharjee]
+  - [Chakraborty, Chakravarti]
+  - [Majumdar, Mazumder]
+  - [Sengupta, Sen Gupta]
+  - [Dasgupta, Das Gupta]
+  - [Chowdhury, Choudhuri]
+  - [Talukdar, Talukder]
+  - [Bardhan, Burdhan]

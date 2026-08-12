@@ -1,0 +1,175 @@
+# Given-name inventory, grouped origin -> gender -> ordinal frequency tier.
+#
+# These are name COMPONENTS: generic linguistic tokens drawn from published
+# reference works on South Asian naming conventions and from general knowledge
+# of the languages. This file is not a list of people, is not derived from any
+# register of individuals, and no entry here refers to a specific person.
+# Synthetic identities are assembled by sampling from it (see seeds/assemble.py).
+#
+# Tiers are ordinal judgements, not measured counts. See origins.yaml.
+
+version: "0.1.0"
+
+arabic_persian:
+  male:
+    1: [Mohammed, Ahmed, Ali, Abdul, Hussain, Ibrahim, Yusuf, Omar, Hassan, Imran]
+    2: [Ismail, Bilal, Farhan, Irfan, Javed, Nadeem, Rashid, Salim, Tariq, Zahid,
+        Asif, Faisal, Khalid, Rizwan, Sajid, Wasim, Zubair, Aamir, Adnan, Anwar]
+    3: [Kamal, Zeeshan, Arif, Haroon, Junaid, Mansoor, Naveed, Qasim, Shakeel,
+        Yasin, Akram, Ayaz, Danish, Ehsan, Fahad, Ghulam, Habib, Idris, Jamal, Kabir]
+    4: [Latif, Mahmood, Nasir, Parvez, Raza, Sohail, Tanveer, Usman, Waseem,
+        Yaqub, Zafar, Mustafa, Shahid, Iqbal, Rafiq, Sarfaraz, Altaf, Manzoor]
+  female:
+    1: [Ayesha, Fatima, Zainab, Sana, Yasmin, Parveen]
+    2: [Khadija, Nusrat, Rukhsana, Shabnam, Farah, Nasreen, Rubina, Saira, Shazia, Amina]
+    3: [Tabassum, Zarina, Bushra, Firdaus, Hina, Kausar, Mehreen, Rehana, Samina, Uzma]
+    4: [Ishrat, Naziya, Shaista, Shaheen, Rizwana, Afsana, Gulshan, Nargis]
+
+bengali:
+  male:
+    1: [Amit, Gautam, Dilip, Ranjan, Sandip, Tapan]
+    2: [Anirban, Arindam, Bikash, Debashish, Dipankar, Indranil, Jayanta, Kaushik,
+        Partha, Prasenjit, Somnath, Subhas, Sujit, Utpal, Pranab, Swapan]
+    3: [Nabin, Rabindra, Ashim, Bimal, Chandan, Goutam, Joydeep, Kalyan, Manas,
+        Nirmal, Sisir, Sudip, Hiranmoy, Sanjib, Tarun, Bishnu]
+    4: [Jyotirmoy, Saibal, Ashoke, Barun, Dibyendu, Naba, Prabir, Samir, Tridib]
+  female:
+    1: [Rina, Mita, Sharmila]
+    2: [Anindita, Aparna, Nandita, Rituparna, Sumita, Debjani]
+    3: [Bandana, Chaitali, Ipsita, Kakoli, Madhumita, Papiya, Sanchita, Sudeshna, Tanushree]
+    4: [Jhumpa, Moushumi, Sreelekha, Piyali, Antara, Rumki]
+
+tamil:
+  male:
+    1: [Venkatesh, Karthik, Rajan, Murugan, Balaji, Selvam]
+    2: [Ramachandran, Ganesan, Muthu, Sundaram, Thangavel, Arumugam, Chandran,
+        Kannan, Manikandan, Natarajan, Saravanan, Senthil, Sivakumar, Subramanian]
+    3: [Elango, Palani, Ravichandran, Vetrivel, Anbu, Dhanapal, Ilango, Jeyakumar,
+        Krishnamoorthy, Loganathan, Perumal, Shanmugam, Vairamuthu]
+    4: [Alagappan, Chidambaram, Kandasamy, Marimuthu, Nallathambi, Ponnusamy,
+        Rajaratnam, Thirumalai, Velayutham]
+  female:
+    1: [Lakshmi, Priya, Devi, Kavitha]
+    2: [Meenakshi, Revathi, Saraswathi, Jayanthi, Malathi, Nithya, Shanthi, Uma]
+    3: [Kalaivani, Thenmozhi, Vasanthi, Bhuvana, Gomathi, Rajeswari, Valli, Chitra]
+    4: [Alamelu, Kanaga, Pushpavalli, Sivagami, Vadivu, Yogeswari]
+
+telugu:
+  male:
+    1: [Venkata, Ramesh, Srinivas, Suresh, Krishna, Ravi]
+    2: [Naresh, Prasad, Rajesh, Satyanarayana, Chandra, Madhav, Narayana, Pavan,
+        Sai, Sudhakar, Vijay, Anil, Bhaskar, Gopal]
+    3: [Nagesh, Prabhakar, Ramakrishna, Seshagiri, Subbarao, Venugopal, Sridhar,
+        Mallikarjun, Chandrasekhar]
+    4: [Adinarayana, Lakshminarayana, Purushotham, Satyanandam, Veeraswamy, Yellaiah]
+  female:
+    1: [Padma, Lakshmi, Usha]
+    2: [Sridevi, Vijaya, Anitha, Jyothi, Madhavi, Swapna]
+    3: [Bharathi, Kavya, Rajani, Sailaja, Sunitha, Vasundhara]
+    4: [Annapurna, Rajyalakshmi, Satyavathi, Venkatalakshmi]
+
+punjabi:
+  male:
+    1: [Gurpreet, Harpreet, Jaspreet, Manpreet, Ranjit, Surinder]
+    2: [Amrit, Baldev, Charanjit, Davinder, Gurdeep, Harjeet, Inderjit, Jagdish,
+        Kuldeep, Mohinder, Narinder, Paramjit, Rajinder, Satnam, Sukhdev, Tejinder]
+    3: [Balwinder, Gurbachan, Hardev, Jarnail, Karnail, Lakhwinder, Malkiat,
+        Pritam, Sarabjit, Joginder, Kulwant, Swaran]
+    4: [Bhupinder, Dalbir, Gurcharan, Harbhajan, Jaswinder, Mohan, Piara, Sohan]
+  female:
+    1: [Simran, Manjit, Gurmeet]
+    2: [Amarjit, Baljeet, Harjinder, Jasbir, Kamaljit, Navjot, Parminder, Rajwinder]
+    3: [Sukhwinder, Surjit, Balwinder, Charanjeet, Harbans, Kulwinder]
+    4: [Gurbaksh, Jagir, Mohinder, Narinder, Swaranjit]
+
+gujarati:
+  male:
+    1: [Rakesh, Sanjay, Mehul, Hitesh, Jayesh]
+    2: [Bhavesh, Chirag, Dhaval, Hardik, Jignesh, Kalpesh, Nilesh, Paresh,
+        Tushar, Vipul, Alpesh, Darshan, Ketan, Nirav, Pankaj]
+    3: [Bhargav, Mitesh, Ronak, Snehal, Tejas, Ashwin, Dipak, Kaushal, Rajesh, Vishal]
+    4: [Bharatkumar, Chandrakant, Girdharlal, Kanaiyalal, Manharlal, Natvarlal,
+        Prafulchandra, Rasiklal]
+  female:
+    1: [Manisha, Rekha, Priti]
+    2: [Bhavna, Hetal, Kinjal, Nayana, Sonal, Trupti, Vaishali]
+    3: [Chetna, Daxa, Falguni, Jagruti, Urvashi, Nita, Bhumika]
+    4: [Champaben, Hansaben, Jasumati, Kokilaben, Ramilaben, Savitaben]
+
+marathi:
+  male:
+    1: [Sachin, Rahul, Ganesh, Nitin, Mahesh]
+    2: [Amol, Ashish, Mangesh, Prashant, Santosh, Swapnil, Vikas, Yogesh,
+        Chetan, Girish, Hemant, Kiran, Pravin, Sameer, Vishal]
+    3: [Abhijit, Bhushan, Dattatray, Nandkumar, Tanaji, Milind, Shrikant,
+        Vinayak, Anant, Prakash]
+    4: [Balasaheb, Dnyaneshwar, Keshav, Madhukar, Namdev, Ramchandra, Shivaji, Tukaram]
+  female:
+    1: [Jyoti, Smita, Kalpana]
+    2: [Aparna, Madhuri, Pallavi, Rupali, Sujata, Vaishnavi]
+    3: [Chhaya, Nilima, Shubhangi, Manjusha, Snehal, Archana]
+    4: [Indumati, Kamalabai, Malatibai, Shakuntala, Vimalbai]
+
+hindi_belt:
+  male:
+    1: [Rahul, Amit, Sunil, Manoj, Rajesh, Sanjay, Vijay, Deepak, Anil, Ajay,
+        Ramesh, Suresh, Ashok, Rakesh]
+    2: [Vinod, Dinesh, Pankaj, Arun, Naresh, Praveen, Sandeep, Vikram, Gaurav,
+        Nitin, Rohit, Saurabh, Abhishek, Ankit, Mukesh, Alok]
+    3: [Shashank, Neeraj, Yogendra, Devendra, Jitendra, Mahendra, Rajendra,
+        Satish, Shailesh, Umesh, Brijesh, Kamlesh]
+    4: [Bhagwan, Chhotelal, Girdhari, Hariram, Jagmohan, Kishanlal, Munnalal,
+        Phoolchand, Ramautar, Shyamlal]
+  female:
+    1: [Sunita, Anita, Kavita, Priya, Pooja, Neha]
+    2: [Meena, Rekha, Ritu, Seema, Shalini, Sushma, Usha, Vandana, Nisha, Poonam]
+    3: [Renu, Sarita, Archana, Deepika, Jyoti, Manju, Nirmala, Rajni, Sangeeta, Shobha]
+    4: [Bimla, Chandrakala, Kaushalya, Prem, Ramkali, Shanti, Sheela, Vidyawati]
+
+kannada:
+  male:
+    1: [Manjunath, Prakash, Nagaraj]
+    2: [Basavaraj, Shivakumar, Ravikumar, Umesh, Girish, Chandrashekar, Mahadev]
+    3: [Nanjundaswamy, Puttaswamy, Siddaraju, Veerabhadra, Shivanna, Krishnappa]
+    4: [Doddappa, Mallikarjunaiah, Rangaswamy, Thimmappa, Venkataramanappa]
+  female:
+    1: [Geetha, Pushpa]
+    2: [Bhagya, Lalitha, Savitha, Shobha, Vani]
+    3: [Nagarathna, Jayamma, Ratnamma, Sharadamma]
+    4: [Gangamma, Puttamma, Siddamma, Yashodamma]
+
+malayalam:
+  male:
+    1: [Hari, Vinod, Manoj, Thomas, Prakash]
+    2: [Anoop, Bijoy, Dileep, Girish, Jayan, Krishnan, Rajeev, Sabu, Vishnu,
+        Biju, Sajan, Shibu, Unnikrishnan]
+    3: [Nandakumar, Suresh, Ajith, Bineesh, Jomon, Renjith, Sanoop, Vipin,
+        Mathew, Joseph, Jacob, Varghese]
+    4: [Abraham, Chacko, Kurian, Philip, Zachariah, Achuthan, Gopalakrishnan,
+        Madhavan, Raghavan]
+  female:
+    1: [Bindu, Deepa, Geetha]
+    2: [Ambika, Indira, Lekha, Mini, Remya, Sindhu, Sreelatha]
+    3: [Anitha, Jisha, Nimmy, Reshma, Smitha, Soumya, Mary, Annamma]
+    4: [Kamalakshi, Leelamma, Parvathy, Saraswathy, Thankamma]
+
+odia:
+  male:
+    1: [Manoj, Sarat]
+    2: [Bibhuti, Debasis, Jagannath, Niranjan, Prafulla, Susanta]
+    3: [Akshaya, Bhagaban, Dillip, Gopinath, Pradeep, Rabindra, Sanjib]
+    4: [Banamali, Chintamani, Harihar, Kailash, Nrusingha, Trilochan]
+  female:
+    1: [Sasmita]
+    2: [Anjali, Namita, Sujata, Pratima]
+    3: [Bandita, Ipsita, Jyotsna, Sarojini, Snigdha]
+    4: [Basanti, Kuntala, Padmabati, Sabitri]
+
+# Tokens that occupy a given-name slot but are not distinguishing. These drive
+# the "patronymic-as-surname ambiguity" family: the same token appears as a
+# middle name, a surname, or a bare filler in different records for the same
+# person, and is shared by tens of millions of unrelated people.
+low_information:
+  neutral:
+    1: [Kumar, Devi, Lal, Ram, Prasad, Chand, Nath, Bai]
+    2: [Chandra, Kant, Kishore, Mohan, Narayan, Pati, Raj, Rani]
