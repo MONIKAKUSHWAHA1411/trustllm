@@ -1,0 +1,73 @@
+{
+  "config": {
+    "seed": 20260811,
+    "n_identities": 4000,
+    "severities": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "variants_per_identity_per_severity": 1,
+    "family_variants_per_family": 900,
+    "family_severities": [
+      1,
+      2,
+      3
+    ],
+    "cross_script_variants": 800,
+    "hard_negatives_per_type": 1500,
+    "easy_negatives": 4000
+  },
+  "config_fingerprint": "cb072819ce95b87c",
+  "summary": {
+    "identities": 4000,
+    "pairs_by_split": {
+      "cross_script": 800,
+      "degradation": 20000,
+      "family": 5400,
+      "negatives": 11500
+    },
+    "total_pairs": 37700,
+    "positives": 26200,
+    "negatives": 11500,
+    "unsatisfiable_negatives": 1500
+  },
+  "inventory": {
+    "total_components": 1074,
+    "by_kind": {
+      "given": 697,
+      "low_information": 16,
+      "surname": 361
+    },
+    "by_origin": {
+      "*": 16,
+      "arabic_persian": 143,
+      "bengali": 113,
+      "gujarati": 95,
+      "hindi_belt": 132,
+      "kannada": 60,
+      "malayalam": 89,
+      "marathi": 92,
+      "odia": 61,
+      "punjabi": 100,
+      "tamil": 89,
+      "telugu": 84
+    },
+    "distinct_forms": 992,
+    "origin_ambiguous_surnames": 20
+  },
+  "cross_script_coverage": {
+    "Beng": 26,
+    "Deva": 101,
+    "Guru": 13,
+    "Taml": 15,
+    "Telu": 12
+  },
+  "notes": {
+    "positives": "canonical (clean list entry) vs variant (messy record)",
+    "base_rate": "applied at evaluation time as importance weights, not materialised",
+    "unsatisfiable_negatives": "identical_collision pairs have identical strings and are excluded from headline metrics; they set the name-only precision ceiling"
+  }
+}
