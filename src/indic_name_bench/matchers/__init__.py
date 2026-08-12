@@ -19,6 +19,7 @@ __all__ = [
     "Timing",
     "blocking_recall",
     "build_all",
+    "build_experiments",
     "encode_name",
     "encode_token",
     "normalise",
@@ -26,7 +27,12 @@ __all__ = [
 ]
 
 
-def build_all(*, include_cascade: bool = True, include_neural: bool = True) -> list[Matcher]:
+def build_all(
+    *,
+    include_cascade: bool = True,
+    include_neural: bool = True,
+    include_experiments: bool = True,
+) -> list[Matcher]:
     """Every matcher available in this environment, in reporting order."""
     matchers: list[Matcher] = []
     matchers += classical.build()
@@ -50,7 +56,45 @@ def build_all(*, include_cascade: bool = True, include_neural: bool = True) -> l
                 NgramJaccardMatcher(), IndicPhoneticMatcher(), block_threshold=0.25
             )
         )
+
+    if include_experiments:
+        matchers += build_experiments()
     return matchers
+
+
+def build_experiments() -> list[Matcher]:
+    """Matchers that exist to test a specific hypothesis, not to be deployed.
+
+    Two experiments, both answering a question the headline table only raised:
+
+    **Alias normalisation** -- how much of the Bengali anglicisation gap closes
+    with a lookup table, and whether it generalises. ``alias_oracle`` uses the
+    same table the corpus was generated from and is an upper bound, not a
+    result; ``alias_half`` uses 50% of the classes and answers the question a
+    real system faces. See ``alias.py``.
+
+    **Tie-breaking** -- whether the zeros at a 0.1% FPR budget are a phonology
+    failure or a score-granularity artefact. See ``granularity.py``.
+    """
+    from .alias import AliasExactMatcher, AliasNormalisedMatcher, full_table, half_table
+    from .classical import JaroWinklerMatcher
+    from .granularity import TieBrokenMatcher
+    from .phonetic import build as build_phonetic
+
+    out: list[Matcher] = []
+
+    indic = IndicPhoneticMatcher()
+    out.append(AliasNormalisedMatcher(indic, half_table(), label="alias_half"))
+    out.append(AliasNormalisedMatcher(indic, full_table(), label="alias_oracle"))
+    out.append(AliasExactMatcher())
+
+    tiebreaker = JaroWinklerMatcher()
+    soundex = next((m for m in build_phonetic() if m.name == "soundex"), None)
+    if soundex is not None:
+        out.append(TieBrokenMatcher(soundex, tiebreaker))
+    out.append(TieBrokenMatcher(IndicPhoneticMatcher(), tiebreaker))
+
+    return out
 
 
 def unavailable() -> dict[str, str]:

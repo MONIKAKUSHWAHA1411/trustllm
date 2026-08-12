@@ -49,8 +49,8 @@
       "n_pairs": 30000,
       "auc_pr": 0.6667,
       "auc_roc": 0.5,
-      "per_pair_us": 0.11,
-      "pairs_per_second": 9414701.0,
+      "per_pair_us": 0.08,
+      "pairs_per_second": 12210425.0,
       "recall@fpr0.001": 0.0,
       "recall@fpr0.01": 0.0,
       "recall@fpr0.05": 0.0,
@@ -61,8 +61,8 @@
       "n_pairs": 30000,
       "auc_pr": 0.6767,
       "auc_roc": 0.5151,
-      "per_pair_us": 0.71,
-      "pairs_per_second": 1415070.0,
+      "per_pair_us": 0.52,
+      "pairs_per_second": 1914048.0,
       "recall@fpr0.001": 0.0302,
       "recall@fpr0.01": 0.0302,
       "recall@fpr0.05": 0.0302,
@@ -73,8 +73,8 @@
       "n_pairs": 30000,
       "auc_pr": 0.7893,
       "auc_roc": 0.6247,
-      "per_pair_us": 5.02,
-      "pairs_per_second": 199393.0,
+      "per_pair_us": 4.7,
+      "pairs_per_second": 212708.0,
       "recall@fpr0.001": 0.1308,
       "recall@fpr0.01": 0.1908,
       "recall@fpr0.05": 0.2528,
@@ -85,8 +85,8 @@
       "n_pairs": 30000,
       "auc_pr": 0.7899,
       "auc_roc": 0.6253,
-      "per_pair_us": 9.31,
-      "pairs_per_second": 107358.0,
+      "per_pair_us": 7.57,
+      "pairs_per_second": 132175.0,
       "recall@fpr0.001": 0.1323,
       "recall@fpr0.01": 0.1925,
       "recall@fpr0.05": 0.2544,
@@ -97,8 +97,8 @@
       "n_pairs": 30000,
       "auc_pr": 0.807,
       "auc_roc": 0.7037,
-      "per_pair_us": 21.34,
-      "pairs_per_second": 46871.0,
+      "per_pair_us": 18.01,
+      "pairs_per_second": 55513.0,
       "recall@fpr0.001": 0.052,
       "recall@fpr0.01": 0.0886,
       "recall@fpr0.05": 0.1815,
@@ -109,8 +109,8 @@
       "n_pairs": 30000,
       "auc_pr": 0.8038,
       "auc_roc": 0.6992,
-      "per_pair_us": 5.8,
-      "pairs_per_second": 172368.0,
+      "per_pair_us": 5.57,
+      "pairs_per_second": 179518.0,
       "recall@fpr0.001": 0.051,
       "recall@fpr0.01": 0.0873,
       "recall@fpr0.05": 0.1767,
@@ -121,8 +121,8 @@
       "n_pairs": 30000,
       "auc_pr": 0.6898,
       "auc_roc": 0.5144,
-      "per_pair_us": 2.19,
-      "pairs_per_second": 457619.0,
+      "per_pair_us": 1.97,
+      "pairs_per_second": 508226.0,
       "recall@fpr0.001": 0.0922,
       "recall@fpr0.01": 0.0922,
       "recall@fpr0.05": 0.0922,
@@ -133,8 +133,8 @@
       "n_pairs": 30000,
       "auc_pr": 0.7057,
       "auc_roc": 0.5291,
-      "per_pair_us": 8.59,
-      "pairs_per_second": 116424.0,
+      "per_pair_us": 8.3,
+      "pairs_per_second": 120419.0,
       "recall@fpr0.001": 0.1202,
       "recall@fpr0.01": 0.1202,
       "recall@fpr0.05": 0.1202,
@@ -145,8 +145,8 @@
       "n_pairs": 30000,
       "auc_pr": 0.8557,
       "auc_roc": 0.742,
-      "per_pair_us": 54.54,
-      "pairs_per_second": 18335.0,
+      "per_pair_us": 54.25,
+      "pairs_per_second": 18434.0,
       "recall@fpr0.001": 0.1834,
       "recall@fpr0.01": 0.2475,
       "recall@fpr0.05": 0.3397,
@@ -157,8 +157,8 @@
       "n_pairs": 30000,
       "auc_pr": 0.7938,
       "auc_roc": 0.6497,
-      "per_pair_us": 2.95,
-      "pairs_per_second": 338851.0,
+      "per_pair_us": 2.73,
+      "pairs_per_second": 366741.0,
       "recall@fpr0.001": 0.1105,
       "recall@fpr0.01": 0.1731,
       "recall@fpr0.05": 0.2189,
@@ -169,8 +169,8 @@
       "n_pairs": 30000,
       "auc_pr": 0.7872,
       "auc_roc": 0.6409,
-      "per_pair_us": 2.93,
-      "pairs_per_second": 340749.0,
+      "per_pair_us": 2.76,
+      "pairs_per_second": 362058.0,
       "recall@fpr0.001": 0.1181,
       "recall@fpr0.01": 0.1691,
       "recall@fpr0.05": 0.206,
@@ -181,8 +181,8 @@
       "n_pairs": 30000,
       "auc_pr": 0.806,
       "auc_roc": 0.7777,
-      "per_pair_us": 7.16,
-      "pairs_per_second": 139714.0,
+      "per_pair_us": 6.86,
+      "pairs_per_second": 145753.0,
       "recall@fpr0.001": 0.0,
       "recall@fpr0.01": 0.0,
       "recall@fpr0.05": 0.0,
@@ -193,8 +193,8 @@
       "n_pairs": 30000,
       "auc_pr": 0.8381,
       "auc_roc": 0.7108,
-      "per_pair_us": 6.36,
-      "pairs_per_second": 157232.0,
+      "per_pair_us": 6.22,
+      "pairs_per_second": 160724.0,
       "recall@fpr0.001": 0.0,
       "recall@fpr0.01": 0.3549,
       "recall@fpr0.05": 0.3549,
@@ -205,8 +205,8 @@
       "n_pairs": 30000,
       "auc_pr": 0.7872,
       "auc_roc": 0.6329,
-      "per_pair_us": 6.85,
-      "pairs_per_second": 146066.0,
+      "per_pair_us": 6.47,
+      "pairs_per_second": 154530.0,
       "recall@fpr0.001": 0.0,
       "recall@fpr0.01": 0.2567,
       "recall@fpr0.05": 0.2567,
@@ -217,8 +217,8 @@
       "n_pairs": 30000,
       "auc_pr": 0.799,
       "auc_roc": 0.6499,
-      "per_pair_us": 6.97,
-      "pairs_per_second": 143390.0,
+      "per_pair_us": 6.54,
+      "pairs_per_second": 152924.0,
       "recall@fpr0.001": 0.0,
       "recall@fpr0.01": 0.2794,
       "recall@fpr0.05": 0.2794,
@@ -229,8 +229,8 @@
       "n_pairs": 30000,
       "auc_pr": 0.7749,
       "auc_roc": 0.6161,
-      "per_pair_us": 6.73,
-      "pairs_per_second": 148542.0,
+      "per_pair_us": 6.61,
+      "pairs_per_second": 151239.0,
       "recall@fpr0.001": 0.0,
       "recall@fpr0.01": 0.2339,
       "recall@fpr0.05": 0.2339,
@@ -241,8 +241,8 @@
       "n_pairs": 30000,
       "auc_pr": 0.8285,
       "auc_roc": 0.6924,
-      "per_pair_us": 7.63,
-      "pairs_per_second": 130987.0,
+      "per_pair_us": 11.62,
+      "pairs_per_second": 86039.0,
       "recall@fpr0.001": 0.0,
       "recall@fpr0.01": 0.3413,
       "recall@fpr0.05": 0.3413,
@@ -253,8 +253,8 @@
       "n_pairs": 30000,
       "auc_pr": 0.8043,
       "auc_roc": 0.6571,
-      "per_pair_us": 10.13,
-      "pairs_per_second": 98726.0,
+      "per_pair_us": 9.79,
+      "pairs_per_second": 102181.0,
       "recall@fpr0.001": 0.0,
       "recall@fpr0.01": 0.2902,
       "recall@fpr0.05": 0.2902,
@@ -265,8 +265,8 @@
       "n_pairs": 30000,
       "auc_pr": 0.8103,
       "auc_roc": 0.662,
-      "per_pair_us": 9.43,
-      "pairs_per_second": 106041.0,
+      "per_pair_us": 9.19,
+      "pairs_per_second": 108828.0,
       "recall@fpr0.001": 0.0,
       "recall@fpr0.01": 0.3077,
       "recall@fpr0.05": 0.3077,
@@ -277,8 +277,8 @@
       "n_pairs": 30000,
       "auc_pr": 0.7434,
       "auc_roc": 0.6157,
-      "per_pair_us": 6.17,
-      "pairs_per_second": 162176.0,
+      "per_pair_us": 7.0,
+      "pairs_per_second": 142829.0,
       "recall@fpr0.001": 0.0,
       "recall@fpr0.01": 0.2339,
       "recall@fpr0.05": 0.2339,
@@ -289,8 +289,8 @@
       "n_pairs": 30000,
       "auc_pr": 0.849,
       "auc_roc": 0.7325,
-      "per_pair_us": 8.22,
-      "pairs_per_second": 121615.0,
+      "per_pair_us": 8.28,
+      "pairs_per_second": 120737.0,
       "recall@fpr0.001": 0.0,
       "recall@fpr0.01": 0.3379,
       "recall@fpr0.05": 0.3379,
@@ -301,8 +301,8 @@
       "n_pairs": 30000,
       "auc_pr": 0.8571,
       "auc_roc": 0.7439,
-      "per_pair_us": 12.2,
-      "pairs_per_second": 81938.0,
+      "per_pair_us": 12.41,
+      "pairs_per_second": 80608.0,
       "recall@fpr0.001": 0.0,
       "recall@fpr0.01": 0.3572,
       "recall@fpr0.05": 0.3572,
@@ -313,8 +313,8 @@
       "n_pairs": 30000,
       "auc_pr": 0.8965,
       "auc_roc": 0.8171,
-      "per_pair_us": 24.43,
-      "pairs_per_second": 40940.0,
+      "per_pair_us": 24.55,
+      "pairs_per_second": 40730.0,
       "recall@fpr0.001": 0.1103,
       "recall@fpr0.01": 0.2286,
       "recall@fpr0.05": 0.4032,
@@ -325,12 +325,72 @@
       "n_pairs": 30000,
       "auc_pr": 0.8423,
       "auc_roc": 0.7182,
-      "per_pair_us": 12.96,
-      "pairs_per_second": 77132.0,
+      "per_pair_us": 12.57,
+      "pairs_per_second": 79539.0,
       "recall@fpr0.001": 0.0,
       "recall@fpr0.01": 0.3348,
       "recall@fpr0.05": 0.3348,
       "cost_class": "moderate"
+    },
+    {
+      "matcher": "indic_phonetic+alias_half",
+      "n_pairs": 30000,
+      "auc_pr": 0.851,
+      "auc_roc": 0.7352,
+      "per_pair_us": 16.5,
+      "pairs_per_second": 60624.0,
+      "recall@fpr0.001": 0.0,
+      "recall@fpr0.01": 0.3432,
+      "recall@fpr0.05": 0.3432,
+      "cost_class": "moderate"
+    },
+    {
+      "matcher": "indic_phonetic+alias_oracle",
+      "n_pairs": 30000,
+      "auc_pr": 0.8531,
+      "auc_roc": 0.7382,
+      "per_pair_us": 11.17,
+      "pairs_per_second": 89557.0,
+      "recall@fpr0.001": 0.0,
+      "recall@fpr0.01": 0.3489,
+      "recall@fpr0.05": 0.3489,
+      "cost_class": "moderate"
+    },
+    {
+      "matcher": "alias_exact",
+      "n_pairs": 30000,
+      "auc_pr": 0.6974,
+      "auc_roc": 0.5461,
+      "per_pair_us": 2.94,
+      "pairs_per_second": 339810.0,
+      "recall@fpr0.001": 0.0922,
+      "recall@fpr0.01": 0.0922,
+      "recall@fpr0.05": 0.0922,
+      "cost_class": "trivial"
+    },
+    {
+      "matcher": "soundex+tiebreak",
+      "n_pairs": 30000,
+      "auc_pr": 0.8506,
+      "auc_roc": 0.7198,
+      "per_pair_us": 9.73,
+      "pairs_per_second": 102803.0,
+      "recall@fpr0.001": 0.1485,
+      "recall@fpr0.01": 0.3487,
+      "recall@fpr0.05": 0.3614,
+      "cost_class": "cheap"
+    },
+    {
+      "matcher": "indic_phonetic+tiebreak",
+      "n_pairs": 30000,
+      "auc_pr": 0.8524,
+      "auc_roc": 0.7295,
+      "per_pair_us": 11.47,
+      "pairs_per_second": 87209.0,
+      "recall@fpr0.001": 0.1608,
+      "recall@fpr0.01": 0.3334,
+      "recall@fpr0.05": 0.3444,
+      "cost_class": "cheap"
     }
   ],
   "degradation_recall_at_1pct_fpr": {
@@ -501,6 +561,41 @@
       "3": 0.29725,
       "4": 0.19475,
       "5": 0.13525
+    },
+    "indic_phonetic+alias_half": {
+      "1": 0.64775,
+      "2": 0.413,
+      "3": 0.3075,
+      "4": 0.20375,
+      "5": 0.14425
+    },
+    "indic_phonetic+alias_oracle": {
+      "1": 0.65575,
+      "2": 0.421,
+      "3": 0.3135,
+      "4": 0.20825,
+      "5": 0.14625
+    },
+    "alias_exact": {
+      "1": 0.28225,
+      "2": 0.08975,
+      "3": 0.0535,
+      "4": 0.02225,
+      "5": 0.0135
+    },
+    "soundex+tiebreak": {
+      "1": 0.66925,
+      "2": 0.41925,
+      "3": 0.3,
+      "4": 0.20225,
+      "5": 0.1525
+    },
+    "indic_phonetic+tiebreak": {
+      "1": 0.65775,
+      "2": 0.4035,
+      "3": 0.2865,
+      "4": 0.18675,
+      "5": 0.1325
     }
   },
   "per_family_recall_at_1pct_fpr": {
@@ -719,6 +814,51 @@
       "noise": 0.43,
       "structure": 0.2477777777777778,
       "transliteration": 0.78
+    },
+    "indic_phonetic+alias_half": {
+      "affix": 0.4444444444444444,
+      "arabic_persian": 0.8455555555555555,
+      "bengali_anglicisation": 0.5477777777777778,
+      "cross_script": 0.0,
+      "noise": 0.43,
+      "structure": 0.2477777777777778,
+      "transliteration": 0.7877777777777778
+    },
+    "indic_phonetic+alias_oracle": {
+      "affix": 0.4444444444444444,
+      "arabic_persian": 0.9444444444444444,
+      "bengali_anglicisation": 0.9577777777777777,
+      "cross_script": 0.0,
+      "noise": 0.43,
+      "structure": 0.2477777777777778,
+      "transliteration": 0.7877777777777778
+    },
+    "alias_exact": {
+      "affix": 0.3466666666666667,
+      "arabic_persian": 0.9444444444444444,
+      "bengali_anglicisation": 0.9577777777777777,
+      "cross_script": 0.0,
+      "noise": 0.29444444444444445,
+      "structure": 0.035555555555555556,
+      "transliteration": 0.021111111111111112
+    },
+    "soundex+tiebreak": {
+      "affix": 0.4444444444444444,
+      "arabic_persian": 0.8822222222222222,
+      "bengali_anglicisation": 0.39444444444444443,
+      "cross_script": 0.00875,
+      "noise": 0.49444444444444446,
+      "structure": 0.24888888888888888,
+      "transliteration": 0.7833333333333333
+    },
+    "indic_phonetic+tiebreak": {
+      "affix": 0.45555555555555555,
+      "arabic_persian": 0.76,
+      "bengali_anglicisation": 0.11666666666666667,
+      "cross_script": 0.00875,
+      "noise": 0.43,
+      "structure": 0.24333333333333335,
+      "transliteration": 0.7888888888888889
     }
   },
   "recall_by_negative_type": {
@@ -913,6 +1053,46 @@
       "same_surname_diff_given": 0.54405,
       "shared_initials": 0.0,
       "suffix_only_difference": 0.33485
+    },
+    "indic_phonetic+alias_half": {
+      "easy": 0.875,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.5555,
+      "same_surname_diff_given": 0.5858,
+      "shared_initials": 0.0,
+      "suffix_only_difference": 0.34325
+    },
+    "indic_phonetic+alias_oracle": {
+      "easy": 0.87725,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.56115,
+      "same_surname_diff_given": 0.59095,
+      "shared_initials": 0.0,
+      "suffix_only_difference": 0.34895
+    },
+    "alias_exact": {
+      "easy": 0.09225,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.09225,
+      "same_surname_diff_given": 0.09225,
+      "shared_initials": 0.09225,
+      "suffix_only_difference": 0.09225
+    },
+    "soundex+tiebreak": {
+      "easy": 0.86125,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.4407,
+      "same_surname_diff_given": 0.452,
+      "shared_initials": 0.1779,
+      "suffix_only_difference": 0.347
+    },
+    "indic_phonetic+tiebreak": {
+      "easy": 0.8956,
+      "identical_collision": 0.0,
+      "same_given_diff_surname": 0.54005,
+      "same_surname_diff_given": 0.5625,
+      "shared_initials": 0.1694,
+      "suffix_only_difference": 0.32995
     }
   },
   "alert_volume": {
@@ -1923,6 +2103,216 @@
         "precision": 0.000146,
         "analyst_hours_per_100k": 15.3
       }
+    ],
+    "indic_phonetic+alias_half": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.3432,
+        "fpr": 0.0023,
+        "alerts_per_100k": 571.0,
+        "precision": 0.601191,
+        "analyst_hours_per_100k": 38.1
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.3432,
+        "fpr": 0.0023,
+        "alerts_per_100k": 264.1,
+        "precision": 0.129972,
+        "analyst_hours_per_100k": 17.6
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.3432,
+        "fpr": 0.0023,
+        "alerts_per_100k": 233.4,
+        "precision": 0.014706,
+        "analyst_hours_per_100k": 15.6
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.3432,
+        "fpr": 0.0023,
+        "alerts_per_100k": 230.3,
+        "precision": 0.00149,
+        "analyst_hours_per_100k": 15.4
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.3432,
+        "fpr": 0.0023,
+        "alerts_per_100k": 230.0,
+        "precision": 0.000149,
+        "analyst_hours_per_100k": 15.3
+      }
+    ],
+    "indic_phonetic+alias_oracle": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.3489,
+        "fpr": 0.0023,
+        "alerts_per_100k": 576.6,
+        "precision": 0.605133,
+        "analyst_hours_per_100k": 38.4
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.3489,
+        "fpr": 0.0023,
+        "alerts_per_100k": 264.7,
+        "precision": 0.131846,
+        "analyst_hours_per_100k": 17.6
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.3489,
+        "fpr": 0.0023,
+        "alerts_per_100k": 233.5,
+        "precision": 0.014946,
+        "analyst_hours_per_100k": 15.6
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.3489,
+        "fpr": 0.0023,
+        "alerts_per_100k": 230.3,
+        "precision": 0.001515,
+        "analyst_hours_per_100k": 15.4
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.3489,
+        "fpr": 0.0023,
+        "alerts_per_100k": 230.0,
+        "precision": 0.000152,
+        "analyst_hours_per_100k": 15.3
+      }
+    ],
+    "alias_exact": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.0922,
+        "fpr": 0.0001,
+        "alerts_per_100k": 102.2,
+        "precision": 0.903084,
+        "analyst_hours_per_100k": 6.8
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.0922,
+        "fpr": 0.0001,
+        "alerts_per_100k": 19.2,
+        "precision": 0.480094,
+        "analyst_hours_per_100k": 1.3
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.0922,
+        "fpr": 0.0001,
+        "alerts_per_100k": 10.9,
+        "precision": 0.084466,
+        "analyst_hours_per_100k": 0.7
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.0922,
+        "fpr": 0.0001,
+        "alerts_per_100k": 10.1,
+        "precision": 0.009141,
+        "analyst_hours_per_100k": 0.7
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.0922,
+        "fpr": 0.0001,
+        "alerts_per_100k": 10.0,
+        "precision": 0.000922,
+        "analyst_hours_per_100k": 0.7
+      }
+    ],
+    "soundex+tiebreak": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.3487,
+        "fpr": 0.0054,
+        "alerts_per_100k": 883.2,
+        "precision": 0.394735,
+        "analyst_hours_per_100k": 58.9
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.3487,
+        "fpr": 0.0054,
+        "alerts_per_100k": 574.3,
+        "precision": 0.060706,
+        "analyst_hours_per_100k": 38.3
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.3487,
+        "fpr": 0.0054,
+        "alerts_per_100k": 543.4,
+        "precision": 0.006416,
+        "analyst_hours_per_100k": 36.2
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.3487,
+        "fpr": 0.0054,
+        "alerts_per_100k": 540.3,
+        "precision": 0.000645,
+        "analyst_hours_per_100k": 36.0
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.3487,
+        "fpr": 0.0054,
+        "alerts_per_100k": 540.0,
+        "precision": 6.5e-05,
+        "analyst_hours_per_100k": 36.0
+      }
+    ],
+    "indic_phonetic+tiebreak": [
+      {
+        "base_rate": 0.01,
+        "recall": 0.3334,
+        "fpr": 0.0097,
+        "alerts_per_100k": 1293.7,
+        "precision": 0.25771,
+        "analyst_hours_per_100k": 86.2
+      },
+      {
+        "base_rate": 0.001,
+        "recall": 0.3334,
+        "fpr": 0.0097,
+        "alerts_per_100k": 1002.4,
+        "precision": 0.033261,
+        "analyst_hours_per_100k": 66.8
+      },
+      {
+        "base_rate": 0.0001,
+        "recall": 0.3334,
+        "fpr": 0.0097,
+        "alerts_per_100k": 973.2,
+        "precision": 0.003426,
+        "analyst_hours_per_100k": 64.9
+      },
+      {
+        "base_rate": 1e-05,
+        "recall": 0.3334,
+        "fpr": 0.0097,
+        "alerts_per_100k": 970.3,
+        "precision": 0.000344,
+        "analyst_hours_per_100k": 64.7
+      },
+      {
+        "base_rate": 1e-06,
+        "recall": 0.3334,
+        "fpr": 0.0097,
+        "alerts_per_100k": 970.0,
+        "precision": 3.4e-05,
+        "analyst_hours_per_100k": 64.7
+      }
     ]
   },
   "optimal_threshold_by_origin": {
@@ -2237,6 +2627,71 @@
       "punjabi": 0.9,
       "tamil": 0.8889,
       "telugu": 1.0
+    },
+    "indic_phonetic+alias_half": {
+      "arabic_persian": 0.6767,
+      "bengali": 0.68,
+      "gujarati": 0.6815,
+      "hindi_belt": 0.8,
+      "kannada": 0.8667,
+      "malayalam": 0.8889,
+      "marathi": 0.6767,
+      "odia": 0.5625,
+      "punjabi": 0.9,
+      "tamil": 0.8889,
+      "telugu": 1.0
+    },
+    "indic_phonetic+alias_oracle": {
+      "arabic_persian": 0.6767,
+      "bengali": 0.68,
+      "gujarati": 0.6815,
+      "hindi_belt": 0.8,
+      "kannada": 0.8667,
+      "malayalam": 0.8889,
+      "marathi": 0.6767,
+      "odia": 0.5625,
+      "punjabi": 0.9,
+      "tamil": 0.8889,
+      "telugu": 1.0
+    },
+    "alias_exact": {
+      "arabic_persian": 1.0,
+      "bengali": 1.0,
+      "gujarati": 1.0,
+      "hindi_belt": 1.0,
+      "kannada": 1.0,
+      "malayalam": 1.0,
+      "marathi": 1.0,
+      "odia": 1.0,
+      "punjabi": 1.0,
+      "tamil": 1.0,
+      "telugu": 1.0
+    },
+    "soundex+tiebreak": {
+      "arabic_persian": 0.7102,
+      "bengali": 0.7087,
+      "gujarati": 0.7094,
+      "hindi_belt": 0.807,
+      "kannada": 0.7062,
+      "malayalam": 0.7095,
+      "marathi": 0.707,
+      "odia": 0.624,
+      "punjabi": 0.8983,
+      "tamil": 0.6892,
+      "telugu": 0.979
+    },
+    "indic_phonetic+tiebreak": {
+      "arabic_persian": 0.7104,
+      "bengali": 0.7104,
+      "gujarati": 0.7127,
+      "hindi_belt": 0.7847,
+      "kannada": 0.8462,
+      "malayalam": 0.8646,
+      "marathi": 0.7092,
+      "odia": 0.6152,
+      "punjabi": 0.8983,
+      "tamil": 0.8455,
+      "telugu": 0.9791
     }
   },
   "fairness": {
@@ -6086,6 +6541,806 @@
             ]
           }
         }
+      },
+      "indic_phonetic+alias_half": {
+        "global_threshold": 0.8889,
+        "pooled_fpr": 0.0023,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.00104,
+            "ci95": [
+              0.00018,
+              0.00584
+            ],
+            "false_positives": 1,
+            "negatives": 966,
+            "disparity_vs_pooled": 0.452,
+            "disparity_ci95": [
+              0.053,
+              3.809
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00497
+            ],
+            "false_positives": 0,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              3.242
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.00198,
+            "ci95": [
+              0.00035,
+              0.01111
+            ],
+            "false_positives": 1,
+            "negatives": 506,
+            "disparity_vs_pooled": 0.861,
+            "disparity_ci95": [
+              0.101,
+              7.246
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00205
+            ],
+            "false_positives": 0,
+            "negatives": 1872,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.336
+            ]
+          },
+          "kannada": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00619
+            ],
+            "false_positives": 0,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.036
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00716
+            ],
+            "false_positives": 0,
+            "negatives": 533,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.667
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.263
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              16.722
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.002
+            ],
+            "false_positives": 0,
+            "negatives": 1916,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.305
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              2.935
+            ]
+          },
+          "telugu": {
+            "fpr": 0.01692,
+            "ci95": [
+              0.01109,
+              0.02573
+            ],
+            "false_positives": 21,
+            "negatives": 1241,
+            "disparity_vs_pooled": 7.357,
+            "disparity_ci95": [
+              3.217,
+              16.783
+            ]
+          }
+        }
+      },
+      "indic_phonetic+alias_oracle": {
+        "global_threshold": 0.8889,
+        "pooled_fpr": 0.0023,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.00104,
+            "ci95": [
+              0.00018,
+              0.00584
+            ],
+            "false_positives": 1,
+            "negatives": 966,
+            "disparity_vs_pooled": 0.452,
+            "disparity_ci95": [
+              0.053,
+              3.809
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00497
+            ],
+            "false_positives": 0,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              3.242
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.00198,
+            "ci95": [
+              0.00035,
+              0.01111
+            ],
+            "false_positives": 1,
+            "negatives": 506,
+            "disparity_vs_pooled": 0.861,
+            "disparity_ci95": [
+              0.101,
+              7.246
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00205
+            ],
+            "false_positives": 0,
+            "negatives": 1872,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.336
+            ]
+          },
+          "kannada": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00619
+            ],
+            "false_positives": 0,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.036
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00716
+            ],
+            "false_positives": 0,
+            "negatives": 533,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.667
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              4.263
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              16.722
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.002
+            ],
+            "false_positives": 0,
+            "negatives": 1916,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.305
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              2.935
+            ]
+          },
+          "telugu": {
+            "fpr": 0.01692,
+            "ci95": [
+              0.01109,
+              0.02573
+            ],
+            "false_positives": 21,
+            "negatives": 1241,
+            "disparity_vs_pooled": 7.357,
+            "disparity_ci95": [
+              3.217,
+              16.783
+            ]
+          }
+        }
+      },
+      "alias_exact": {
+        "global_threshold": 1.0,
+        "pooled_fpr": 0.0001,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.00104,
+            "ci95": [
+              0.00018,
+              0.00584
+            ],
+            "false_positives": 1,
+            "negatives": 966,
+            "disparity_vs_pooled": 10.4,
+            "disparity_ci95": [
+              0.323,
+              330.865
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00497
+            ],
+            "false_positives": 0,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              281.593
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00753
+            ],
+            "false_positives": 0,
+            "negatives": 506,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              426.852
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00205
+            ],
+            "false_positives": 0,
+            "negatives": 1872,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              116.016
+            ]
+          },
+          "kannada": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00619
+            ],
+            "false_positives": 0,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              350.536
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00716
+            ],
+            "false_positives": 0,
+            "negatives": 533,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              405.384
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              370.214
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1452.381
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.002
+            ],
+            "false_positives": 0,
+            "negatives": 1916,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              113.357
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              254.88
+            ]
+          },
+          "telugu": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00309
+            ],
+            "false_positives": 0,
+            "negatives": 1241,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              174.823
+            ]
+          }
+        }
+      },
+      "soundex+tiebreak": {
+        "global_threshold": 0.8977,
+        "pooled_fpr": 0.0054,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.00104,
+            "ci95": [
+              0.00018,
+              0.00584
+            ],
+            "false_positives": 1,
+            "negatives": 966,
+            "disparity_vs_pooled": 0.193,
+            "disparity_ci95": [
+              0.026,
+              1.41
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00497
+            ],
+            "false_positives": 0,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.2
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.00198,
+            "ci95": [
+              0.00035,
+              0.01111
+            ],
+            "false_positives": 1,
+            "negatives": 506,
+            "disparity_vs_pooled": 0.367,
+            "disparity_ci95": [
+              0.05,
+              2.682
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.00214,
+            "ci95": [
+              0.00083,
+              0.00548
+            ],
+            "false_positives": 4,
+            "negatives": 1872,
+            "disparity_vs_pooled": 0.396,
+            "disparity_ci95": [
+              0.118,
+              1.324
+            ]
+          },
+          "kannada": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00619
+            ],
+            "false_positives": 0,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.494
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00716
+            ],
+            "false_positives": 0,
+            "negatives": 533,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.728
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.578
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              6.191
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.01409,
+            "ci95": [
+              0.0097,
+              0.02043
+            ],
+            "false_positives": 27,
+            "negatives": 1916,
+            "disparity_vs_pooled": 2.609,
+            "disparity_ci95": [
+              1.378,
+              4.932
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              1.086
+            ]
+          },
+          "telugu": {
+            "fpr": 0.01692,
+            "ci95": [
+              0.01109,
+              0.02573
+            ],
+            "false_positives": 21,
+            "negatives": 1241,
+            "disparity_vs_pooled": 3.133,
+            "disparity_ci95": [
+              1.576,
+              6.213
+            ]
+          }
+        }
+      },
+      "indic_phonetic+tiebreak": {
+        "global_threshold": 0.8974,
+        "pooled_fpr": 0.0097,
+        "by_origin": {
+          "arabic_persian": {
+            "fpr": 0.00104,
+            "ci95": [
+              0.00018,
+              0.00584
+            ],
+            "false_positives": 1,
+            "negatives": 966,
+            "disparity_vs_pooled": 0.107,
+            "disparity_ci95": [
+              0.015,
+              0.734
+            ]
+          },
+          "bengali": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00497
+            ],
+            "false_positives": 0,
+            "negatives": 769,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.625
+            ]
+          },
+          "gujarati": {
+            "fpr": 0.00198,
+            "ci95": [
+              0.00035,
+              0.01111
+            ],
+            "false_positives": 1,
+            "negatives": 506,
+            "disparity_vs_pooled": 0.204,
+            "disparity_ci95": [
+              0.03,
+              1.396
+            ]
+          },
+          "hindi_belt": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00205
+            ],
+            "false_positives": 0,
+            "negatives": 1872,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.257
+            ]
+          },
+          "kannada": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00619
+            ],
+            "false_positives": 0,
+            "negatives": 617,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.778
+            ]
+          },
+          "malayalam": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00716
+            ],
+            "false_positives": 0,
+            "negatives": 533,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.899
+            ]
+          },
+          "marathi": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.00654
+            ],
+            "false_positives": 0,
+            "negatives": 584,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.821
+            ]
+          },
+          "odia": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.02564
+            ],
+            "false_positives": 0,
+            "negatives": 146,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              3.221
+            ]
+          },
+          "punjabi": {
+            "fpr": 0.03862,
+            "ci95": [
+              0.03088,
+              0.04821
+            ],
+            "false_positives": 74,
+            "negatives": 1916,
+            "disparity_vs_pooled": 3.981,
+            "disparity_ci95": [
+              2.613,
+              6.058
+            ]
+          },
+          "tamil": {
+            "fpr": 0.0,
+            "ci95": [
+              0.0,
+              0.0045
+            ],
+            "false_positives": 0,
+            "negatives": 850,
+            "disparity_vs_pooled": 0.0,
+            "disparity_ci95": [
+              0.0,
+              0.565
+            ]
+          },
+          "telugu": {
+            "fpr": 0.01692,
+            "ci95": [
+              0.01109,
+              0.02573
+            ],
+            "false_positives": 21,
+            "negatives": 1241,
+            "disparity_vs_pooled": 1.744,
+            "disparity_ci95": [
+              0.939,
+              3.233
+            ]
+          }
+        }
       }
     },
     "origin_ambiguous_identities": {
@@ -6100,5 +7355,82 @@
       "blocking_recall_ceiling": 0.8838,
       "fraction_reranked": 0.9373
     }
-  ]
+  ],
+  "granularity": {
+    "note": "A matcher emitting N distinct scores has N available operating points. If none sits under the budget, recall there is zero regardless of matching quality. Blending weight is 0.15 -- enough to order within a tie group, not enough to relitigate the phonetic decision.",
+    "rows": [
+      {
+        "matcher": "soundex",
+        "variant": "base",
+        "distinct_scores": 74,
+        "recall_at_0.1pct_fpr": 0.0,
+        "recall_at_1pct_fpr": 0.3549,
+        "auc_pr": 0.8381,
+        "per_pair_us": 5.44
+      },
+      {
+        "matcher": "soundex+tiebreak",
+        "variant": "tie_broken",
+        "distinct_scores": 15250,
+        "recall_at_0.1pct_fpr": 0.1485,
+        "recall_at_1pct_fpr": 0.3487,
+        "auc_pr": 0.8506,
+        "per_pair_us": 8.97
+      },
+      {
+        "matcher": "indic_phonetic",
+        "variant": "base",
+        "distinct_scores": 531,
+        "recall_at_0.1pct_fpr": 0.0,
+        "recall_at_1pct_fpr": 0.3379,
+        "auc_pr": 0.849,
+        "per_pair_us": 8.13
+      },
+      {
+        "matcher": "indic_phonetic+tiebreak",
+        "variant": "tie_broken",
+        "distinct_scores": 17118,
+        "recall_at_0.1pct_fpr": 0.1608,
+        "recall_at_1pct_fpr": 0.3334,
+        "auc_pr": 0.8524,
+        "per_pair_us": 11.51
+      }
+    ]
+  },
+  "alias_coverage": {
+    "coverage": {
+      "full_classes": 109,
+      "full_forms": 362,
+      "half_classes": 45,
+      "half_forms": 148
+    },
+    "caveat": "alias_oracle uses the same equivalence tables the corpus was generated from. It is an upper bound on what a complete alias list achieves, not a generalisation result, and must not be cited as matcher performance. alias_half holds out 50% of classes and is the deployable comparison.",
+    "recall_at_1pct_fpr": {
+      "soundex": {
+        "bengali_anglicisation": 0.3944,
+        "arabic_persian": 0.8822,
+        "transliteration": 0.7833
+      },
+      "indic_phonetic": {
+        "bengali_anglicisation": 0.1167,
+        "arabic_persian": 0.76,
+        "transliteration": 0.7889
+      },
+      "indic_phonetic+alias_half": {
+        "bengali_anglicisation": 0.5478,
+        "arabic_persian": 0.8456,
+        "transliteration": 0.7878
+      },
+      "indic_phonetic+alias_oracle": {
+        "bengali_anglicisation": 0.9578,
+        "arabic_persian": 0.9444,
+        "transliteration": 0.7878
+      },
+      "alias_exact": {
+        "bengali_anglicisation": 0.9578,
+        "arabic_persian": 0.9444,
+        "transliteration": 0.0211
+      }
+    }
+  }
 }

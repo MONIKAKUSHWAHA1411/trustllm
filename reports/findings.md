@@ -16,6 +16,8 @@ capacity is fixed, so the operational question is never "what is the F1" but
 | --- | --- | --- | --- | --- | --- |
 | indic_phonetic_dravidian | **0.357** | 0.000 | 0.857 | 14.5 | moderate |
 | soundex | 0.355 | 0.000 | 0.838 | 7.8 | cheap |
+| soundex + tiebreak *(§7)* | 0.349 | **0.148** | 0.851 | 9.0 | cheap |
+| indic_phonetic + tiebreak *(§7)* | 0.333 | **0.161** | 0.852 | 11.5 | cheap |
 | refined_soundex | 0.341 | 0.000 | 0.829 | 13.8 | cheap |
 | indic_phonetic | 0.338 | 0.000 | 0.849 | 9.5 | moderate |
 | cascade[ngram_jaccard→indic_phonetic] | 0.335 | 0.000 | 0.842 | 15.0 | moderate |
@@ -31,13 +33,17 @@ corpus the Indic encoder leads Soundex by 0.2 points — noise. The corpus
 averages seven transformation families with very different profiles, and the
 average hides all of it. The per-family table below is the result worth quoting.
 
-**A separate finding hides in the R@0.1% column.** Every phonetic method scores
-exactly zero at a 0.1% budget. Not because the phonology fails — because their
-scores are too coarse to place a threshold there. Soundex-style matchers emit a
-handful of distinct values; if the tightest available operating point already
-exceeds 0.1% FPR, there is nothing to tune. `token_sort_levenshtein`, with
-continuous scores and worse phonetics, still recovers 0.183. **At a tight alert
-budget, score granularity beats phonetic sophistication.**
+**A separate finding hides in the R@0.1% column.** Every unmodified phonetic
+method scores exactly zero at a 0.1% budget. Not because the phonology fails —
+because their scores are too coarse to place a threshold there. Soundex emits 74
+distinct values across 31,500 pairs; if none of those 74 operating points sits
+under the budget, there is nothing to tune. `token_sort_levenshtein`, with
+continuous scores and worse phonetics, still recovers 0.183.
+
+**This turns out to be fixable, and §7 measures the fix.** Blending a cheap
+continuous tie-breaker into the coarse score recovers 0.148–0.161 in that region
+at a cost of under 0.006 recall at the 1% budget, with AUC-PR *rising*. The two
+tie-broken rows above are the strongest all-round methods measured.
 
 ---
 
@@ -300,7 +306,104 @@ was not confirmed.
 
 ---
 
-## 7. What did not run
+## 7. Score granularity: the zeros at a tight budget are fixable
+
+§1 noted that every phonetic method scores exactly 0.000 at a 0.1% FPR budget.
+That was an observation, not a diagnosis. This experiment tests whether the cause
+is phonology or representation.
+
+A matcher emitting *N* distinct scores has *N* available operating points. If
+none sits under the budget, its recall there is zero regardless of matching
+quality. Blending a small amount of a continuous signal (Jaro-Winkler at weight
+0.15) breaks ties without relitigating any phonetic decision.
+
+| Matcher | Distinct scores | R@0.1% FPR | R@1% FPR | AUC-PR | µs/pair |
+| --- | --- | --- | --- | --- | --- |
+| soundex | 74 | **0.000** | 0.355 | 0.838 | 5.4 |
+| soundex + tiebreak | 15,250 | **0.148** | 0.349 | 0.851 | 9.0 |
+| indic_phonetic | 531 | **0.000** | 0.338 | 0.849 | 8.1 |
+| indic_phonetic + tiebreak | 17,118 | **0.161** | 0.333 | 0.852 | 11.5 |
+
+**The hypothesis holds.** Soundex emits 74 distinct scores across 31,500 pairs —
+74 operating points, none of them under 0.1% FPR. With a tie-breaker it emits
+15,250, and recovers **0.148** recall in a region where it previously had none.
+
+The cost is negligible and the phonology is untouched:
+
+- R@1% FPR moves by −0.006 and −0.005. The blend does not reorder pairs the base
+  matcher already separated.
+- **AUC-PR rises** in both cases (0.838→0.851, 0.849→0.852), so this is not a
+  precision-for-recall trade.
+- Latency roughly doubles in relative terms but stays in single-digit
+  microseconds, well inside the cheap cost class.
+
+`indic_phonetic+tiebreak` becomes the strongest all-round method measured: 0.161
+at a 0.1% budget, 0.333 at 1%, AUC-PR 0.852, 11.5 µs/pair. It beats
+`token_sort_levenshtein` (0.183 at 0.1%) on every other axis while costing a
+sixth as much.
+
+**Operational reading.** Any deployed phonetic screening system reporting zero
+recall at a tight alert budget is probably not phonology-limited — it is
+threshold-limited, and one extra cheap comparison per pair recovers a meaningful
+share. No retuning, no new algorithm, no change to which pairs the phonology
+treats as equivalent.
+
+---
+
+## 8. What an alias table is worth
+
+The Indic encoder is the *worst* method tested on Bengali anglicisation (0.117).
+Chatterjee/Chattopadhyay is historical, not phonological, so only a lookup table
+can reach it — which is what real screening systems maintain as alias lists.
+
+**Read the caveat before the table.** `alias_oracle` uses the same equivalence
+tables the corpus was *generated* from. It is an upper bound on what a complete
+alias list achieves, not a generalisation result, and must not be cited as
+matcher performance. `alias_half` holds out 50% of the classes (45 of 109
+classes, 148 of 362 forms) and is the deployable comparison.
+
+| Matcher | Bengali anglicisation | Arabic/Persian | Transliteration |
+| --- | --- | --- | --- |
+| indic_phonetic (baseline) | 0.117 | 0.760 | 0.789 |
+| indic_phonetic + alias_half | 0.548 | 0.846 | 0.788 |
+| indic_phonetic + alias_oracle *(upper bound)* | 0.958 | 0.944 | 0.788 |
+| soundex (reference) | 0.394 | 0.882 | 0.783 |
+| alias_exact (table only, no phonetics) | 0.958 | 0.944 | **0.021** |
+
+### 8.1 Alias coverage buys recall linearly, and nothing generalises
+
+41% class coverage moves Bengali recall from 0.117 to 0.548 — about 51% of the
+way to the oracle's 0.958. That is close enough to linear that the conclusion is
+unambiguous: **an alias table helps precisely and only for the names already
+enumerated in it.** There is no transfer to unlisted variants, because there is
+no rule to transfer — that is what "lexical" means.
+
+For a compliance function this is the actionable form of the finding. Alias-list
+investment has a predictable, measurable return proportional to coverage of the
+name families you actually screen, and no return beyond it. It is not a
+technology decision; it is a data-curation budget.
+
+### 8.2 Phonetics and alias tables are complementary, not substitutes
+
+The bottom row is the important one. `alias_exact` — table lookup with no fuzzy
+matching at all — reaches **0.958** on Bengali anglicisation and **0.021** on
+transliteration. The Indic encoder does the reverse: 0.789 on transliteration,
+0.117 on Bengali.
+
+Neither mechanism substitutes for the other, and the two failure modes are
+disjoint. A system with only phonetics misses every historical anglicisation; a
+system with only an alias list misses every spelling it has not enumerated. The
+combination (`alias_half`) is the only configuration competitive on both.
+
+Alias normalisation also lifts Arabic/Persian from 0.760 to 0.846, for the same
+reason: that family's variance is substantially lexical (Mohammed/Mahomed) rather
+than phonological. It leaves transliteration untouched (0.789 → 0.788), which is
+the correct null result — the phonology already handles that family, and the
+table has nothing to add.
+
+---
+
+## 9. What did not run
 
 | Matcher | Why |
 | --- | --- |
@@ -313,9 +416,9 @@ that did not run and a matcher that scored badly are different findings.
 
 ---
 
-## 8. Limitations
+## 10. Limitations
 
-Beyond the fairness caveats in §6.3:
+Beyond the fairness caveats in §6.3 and the alias-oracle caveat in §8:
 
 1. **Frequency tiers are not measured.** Highest-value fix available.
 2. **Synthetic variants may not match real distributions.** Rules are

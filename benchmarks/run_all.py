@@ -250,11 +250,113 @@ def main() -> int:
             )
     results["cascade"] = cascade_rows
 
+    # -- experiment: score granularity --------------------------------------
+    results["granularity"] = run_granularity(all_matchers, headline)
+
+    # -- experiment: alias-table coverage -----------------------------------
+    results["alias_coverage"] = run_alias(all_matchers, by_family, negatives)
+
     (args.out / "results.json").write_text(
         json.dumps(results, indent=2, ensure_ascii=False), encoding="utf-8"
     )
     print(f"\nwrote {args.out / 'results.json'}")
     return 0
+
+
+def run_granularity(all_matchers, headline) -> dict[str, object]:
+    """Is the zero at a 0.1% FPR budget a phonology failure or a tuning artefact?
+
+    Reports, for each coarse matcher and its tie-broken counterpart: how many
+    distinct scores it emits, and recall at both budgets. If granularity is the
+    cause, the tie-broken variant recovers the tight-budget region while its
+    1%-budget recall stays roughly flat -- the phonology is untouched, only the
+    number of available operating points changes.
+    """
+    from indic_name_bench.matchers.granularity import TieBrokenMatcher, distinct_score_count
+
+    inputs = [(p.left, p.right) for p in headline]
+    labels = [p.label for p in headline]
+    by_name = {m.name: m for m in all_matchers}
+
+    rows = []
+    for matcher in all_matchers:
+        if not isinstance(matcher, TieBrokenMatcher):
+            continue
+        base = by_name.get(matcher.base.name) or matcher.base
+        for label, candidate in (("base", base), ("tie_broken", matcher)):
+            scores, timing = candidate.score_batch(inputs)
+            curve = metrics.build_curve(scores, labels)
+            tight, _ = metrics.recall_at_fpr(curve, 0.001)
+            loose, _ = metrics.recall_at_fpr(curve, 0.01)
+            rows.append(
+                {
+                    "matcher": candidate.name,
+                    "variant": label,
+                    "distinct_scores": distinct_score_count(candidate, inputs),
+                    "recall_at_0.1pct_fpr": round(tight, 4),
+                    "recall_at_1pct_fpr": round(loose, 4),
+                    "auc_pr": round(metrics.auc_pr(scores, labels), 4),
+                    "per_pair_us": round(timing.per_pair_us, 2),
+                }
+            )
+    return {
+        "note": (
+            "A matcher emitting N distinct scores has N available operating points. "
+            "If none sits under the budget, recall there is zero regardless of "
+            "matching quality. Blending weight is 0.15 -- enough to order within a "
+            "tie group, not enough to relitigate the phonetic decision."
+        ),
+        "rows": rows,
+    }
+
+
+def run_alias(all_matchers, by_family, negatives) -> dict[str, object]:
+    """What is an alias table worth, and does it generalise?
+
+    ``alias_oracle`` shares its table with the generator, so its numbers are an
+    upper bound and not a generalisation result. ``alias_half`` holds out 50% of
+    the classes. If half-coverage lands near halfway between baseline and
+    oracle, performance scales with coverage and nothing generalises -- an alias
+    table helps only for the names already in it.
+    """
+    from indic_name_bench.matchers.alias import coverage_summary
+
+    tracked = [
+        m
+        for m in all_matchers
+        if m.name
+        in {
+            "indic_phonetic",
+            "indic_phonetic+alias_half",
+            "indic_phonetic+alias_oracle",
+            "alias_exact",
+            "soundex",
+        }
+    ]
+    families = ["bengali_anglicisation", "arabic_persian", "transliteration"]
+
+    table: dict[str, dict[str, float]] = {}
+    for matcher in tracked:
+        per_family: dict[str, float] = {}
+        for family in families:
+            subset = by_family.get(family, []) + negatives
+            if not subset:
+                continue
+            scores, labels, _ = score_all(matcher, subset)
+            curve = metrics.build_curve(scores, labels)
+            per_family[family], _ = metrics.recall_at_fpr(curve, 0.01)
+        table[matcher.name] = {k: round(v, 4) for k, v in per_family.items()}
+
+    return {
+        "coverage": coverage_summary(),
+        "caveat": (
+            "alias_oracle uses the same equivalence tables the corpus was generated "
+            "from. It is an upper bound on what a complete alias list achieves, not "
+            "a generalisation result, and must not be cited as matcher performance. "
+            "alias_half holds out 50% of classes and is the deployable comparison."
+        ),
+        "recall_at_1pct_fpr": table,
+    }
 
 
 def run_fairness(

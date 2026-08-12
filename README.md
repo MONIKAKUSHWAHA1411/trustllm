@@ -63,23 +63,52 @@ Jaro-Winkler by 38. On **Bengali anglicisation it is the worst method tested** �
 Chatterjee/Chattopadhyay is a historical divergence, not a phonetic one, and no
 amount of phonology recovers it. Reported rather than hidden.
 
-### 4. Coarse matchers cannot be operated at a tight alert budget
+### 4. Phonetic matchers score zero at a tight alert budget — and it's a one-line fix
 
-At a **0.1%** false-positive budget every phonetic method scores **0.000** —
-not because the phonology fails, but because their scores are too granular to
-place a threshold there at all. `token_sort_levenshtein`, with continuous
-scores, still recovers 0.183.
+At a **0.1%** false-positive budget every phonetic method scores **0.000**. Not
+because the phonology fails: because a code-equality matcher emits only a handful
+of distinct scores, so there is no threshold available in that region. Soundex
+produces **74 distinct scores** across 31,500 pairs.
 
-If your alert capacity is tight, score granularity matters more than phonetic
-sophistication.
+Blending in a cheap continuous signal to break ties (Jaro-Winkler at weight 0.15)
+fixes it:
 
-### 5. Cross-script matching is a floor of zero
+| Matcher | Distinct scores | R@0.1% FPR | R@1% FPR | AUC-PR |
+| --- | --- | --- | --- | --- |
+| soundex | 74 | **0.000** | 0.355 | 0.838 |
+| soundex + tiebreak | 15,250 | **0.148** | 0.349 | 0.851 |
+| indic_phonetic | 531 | **0.000** | 0.338 | 0.849 |
+| indic_phonetic + tiebreak | 17,118 | **0.161** | 0.333 | 0.852 |
+
+Recall at the 1% budget moves by less than 0.006, and AUC-PR *rises*. The
+phonology is untouched — only the number of available operating points changes.
+
+Any deployed phonetic screening system reporting zero recall at a tight budget is
+threshold-limited, not phonology-limited.
+
+### 5. An alias table buys recall linearly, and nothing generalises
+
+The Indic encoder is worst-in-class on Bengali anglicisation because
+Chatterjee/Chattopadhyay is historical, not phonetic. Only a lookup table reaches
+it. With 41% of equivalence classes available, Bengali recall goes 0.117 → 0.548;
+with the complete table (an **upper bound** — it's the table the corpus was
+generated from) 0.958.
+
+Coverage buys recall almost exactly linearly, with **no transfer to unlisted
+variants**. Alias-list investment has a predictable return proportional to
+coverage and none beyond it — a data-curation budget, not a technology decision.
+
+Table lookup alone reaches 0.958 on Bengali anglicisation and **0.021** on
+transliteration; the Indic encoder does the reverse. The two mechanisms are
+complementary with disjoint failure modes, and neither substitutes for the other.
+
+### 6. Cross-script matching is a floor of zero
 
 Every Latin-script method scores **0.000** on Devanagari/Bengali/Tamil/Telugu/
 Gurmukhi pairs. This is by construction — the strings share no characters — and
 it isolates the one capability only a multilingual encoder can have.
 
-### 6. The fairness hypothesis was not confirmed
+### 7. The fairness hypothesis was not confirmed
 
 The pre-registered hypothesis was that name families with higher variant density
 (Arabic/Persian above all) would absorb systematically higher false-positive
@@ -138,7 +167,7 @@ built = corpus.build(corpus.CorpusConfig(seed=20260811))
 ```bash
 python benchmarks/run_all.py      # every reported number
 python benchmarks/make_figures.py # every figure
-pytest                            # 92 tests
+pytest                            # 107 tests
 ```
 
 Deterministic from a fixed seed. The manifest records the config, its SHA-256
