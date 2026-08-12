@@ -1,0 +1,185 @@
+{
+  "trials": 10,
+  "identities": 1200,
+  "question": "Does the per-origin false-positive disparity survive the hand-assigned frequency tiers being scrambled?",
+  "indic_phonetic": {
+    "arabic_persian": {
+      "declared": 0.0,
+      "shuffled_mean": 0.0,
+      "shuffled_min": 0.0,
+      "shuffled_max": 0.0,
+      "uniform": 0.0,
+      "times_highest": 0
+    },
+    "bengali": {
+      "declared": 0.0,
+      "shuffled_mean": 0.00175,
+      "shuffled_min": 0.0,
+      "shuffled_max": 0.00851,
+      "uniform": 0.00444,
+      "times_highest": 1
+    },
+    "gujarati": {
+      "declared": 0.0,
+      "shuffled_mean": 0.00071,
+      "shuffled_min": 0.0,
+      "shuffled_max": 0.00709,
+      "uniform": 0.0,
+      "times_highest": 0
+    },
+    "hindi_belt": {
+      "declared": 0.0,
+      "shuffled_mean": 0.00126,
+      "shuffled_min": 0.0,
+      "shuffled_max": 0.00368,
+      "uniform": 0.00191,
+      "times_highest": 1
+    },
+    "kannada": {
+      "declared": 0.0,
+      "shuffled_mean": 0.00084,
+      "shuffled_min": 0.0,
+      "shuffled_max": 0.00446,
+      "uniform": 0.00455,
+      "times_highest": 1
+    },
+    "malayalam": {
+      "declared": 0.0,
+      "shuffled_mean": 0.0,
+      "shuffled_min": 0.0,
+      "shuffled_max": 0.0,
+      "uniform": 0.0,
+      "times_highest": 0
+    },
+    "marathi": {
+      "declared": 0.0,
+      "shuffled_mean": 0.0,
+      "shuffled_min": 0.0,
+      "shuffled_max": 0.0,
+      "uniform": 0.0,
+      "times_highest": 0
+    },
+    "odia": {
+      "declared": 0.0,
+      "shuffled_mean": 0.0,
+      "shuffled_min": 0.0,
+      "shuffled_max": 0.0,
+      "uniform": 0.0,
+      "times_highest": 0
+    },
+    "punjabi": {
+      "declared": 0.0,
+      "shuffled_mean": 0.00016,
+      "shuffled_min": 0.0,
+      "shuffled_max": 0.00163,
+      "uniform": 0.0,
+      "times_highest": 0
+    },
+    "tamil": {
+      "declared": 0.0,
+      "shuffled_mean": 0.0,
+      "shuffled_min": 0.0,
+      "shuffled_max": 0.0,
+      "uniform": 0.0,
+      "times_highest": 0
+    },
+    "telugu": {
+      "declared": 0.01538,
+      "shuffled_mean": 0.01242,
+      "shuffled_min": 0.0,
+      "shuffled_max": 0.03514,
+      "uniform": 0.01217,
+      "times_highest": 7
+    }
+  },
+  "soundex": {
+    "arabic_persian": {
+      "declared": 0.0,
+      "shuffled_mean": 0.00077,
+      "shuffled_min": 0.0,
+      "shuffled_max": 0.00403,
+      "uniform": 0.00712,
+      "times_highest": 0
+    },
+    "bengali": {
+      "declared": 0.0,
+      "shuffled_mean": 0.00175,
+      "shuffled_min": 0.0,
+      "shuffled_max": 0.00851,
+      "uniform": 0.00444,
+      "times_highest": 1
+    },
+    "gujarati": {
+      "declared": 0.0,
+      "shuffled_mean": 0.00071,
+      "shuffled_min": 0.0,
+      "shuffled_max": 0.00709,
+      "uniform": 0.0,
+      "times_highest": 0
+    },
+    "hindi_belt": {
+      "declared": 0.0,
+      "shuffled_mean": 0.0,
+      "shuffled_min": 0.0,
+      "shuffled_max": 0.0,
+      "uniform": 0.0,
+      "times_highest": 0
+    },
+    "kannada": {
+      "declared": 0.0,
+      "shuffled_mean": 0.00084,
+      "shuffled_min": 0.0,
+      "shuffled_max": 0.00446,
+      "uniform": 0.00455,
+      "times_highest": 1
+    },
+    "malayalam": {
+      "declared": 0.0,
+      "shuffled_mean": 0.0,
+      "shuffled_min": 0.0,
+      "shuffled_max": 0.0,
+      "uniform": 0.0,
+      "times_highest": 0
+    },
+    "marathi": {
+      "declared": 0.0,
+      "shuffled_mean": 0.00065,
+      "shuffled_min": 0.0,
+      "shuffled_max": 0.00649,
+      "uniform": 0.0,
+      "times_highest": 1
+    },
+    "odia": {
+      "declared": 0.0,
+      "shuffled_mean": 0.0,
+      "shuffled_min": 0.0,
+      "shuffled_max": 0.0,
+      "uniform": 0.0,
+      "times_highest": 0
+    },
+    "punjabi": {
+      "declared": 0.0,
+      "shuffled_mean": 0.00016,
+      "shuffled_min": 0.0,
+      "shuffled_max": 0.00163,
+      "uniform": 0.0016,
+      "times_highest": 1
+    },
+    "tamil": {
+      "declared": 0.0,
+      "shuffled_mean": 0.0,
+      "shuffled_min": 0.0,
+      "shuffled_max": 0.0,
+      "uniform": 0.0,
+      "times_highest": 0
+    },
+    "telugu": {
+      "declared": 0.01538,
+      "shuffled_mean": 0.01266,
+      "shuffled_min": 0.0,
+      "shuffled_max": 0.03514,
+      "uniform": 0.01217,
+      "times_highest": 6
+    }
+  }
+}

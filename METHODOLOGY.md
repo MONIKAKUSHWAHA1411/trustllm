@@ -314,6 +314,24 @@ built from Wilson bounds on each rate rather than a delta-method approximation
 on the log ratio — the latter behaves badly when either rate is near zero, which
 is routine at a 0.1% budget.
 
+### 3.4 Tier sensitivity
+
+The frequency tiers are hand-assigned, and the per-origin disparity depends on
+the collision structure they produce, so `benchmarks/tier_sensitivity.py` tests
+whether the finding survives them being wrong. It re-runs corpus generation and
+the fairness analysis with tier labels permuted within each origin (preserving
+each origin's histogram, randomising which names are common) and with all tiers
+flattened to 1.
+
+The mechanism is `inventory.set_tier_override()`, which invalidates
+`load_components`, `components_for` and `ambiguous_forms`. That invalidation is
+load-bearing: a stale cache would return unperturbed components and the analysis
+would report that nothing changed, which reads as a reassuring result rather
+than as the bug it is.
+
+Findings §6.2–6.4 report the outcome. The disparity survives all three regimes;
+the *mechanism* originally proposed for it did not.
+
 Limitations are in `reports/findings.md` and `DATA_SOURCES.md`, and they are
 substantial. The most important: origin categories are a proxy for
 transliteration convention rather than for any group identity, and the

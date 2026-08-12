@@ -119,11 +119,22 @@ names showed among the *lowest* false-positive rates (0.0010 for Soundex).
 The highest belonged to **Telugu** (0.0169), driven by surname concentration —
 Reddy, Rao, Naidu — rather than by spelling variance.
 
-A disparity in false-positive rate across origin categories is real and
-substantial (an order of magnitude between the highest and lowest strata). But
-the *mechanism* is name-collision density, not variant density, and the
-direction is not the one hypothesised. See the limitations section before
-citing this.
+A disparity across origin categories is real and substantial (an order of
+magnitude between the highest and lowest strata), and it **survives scrambling
+and removing the frequency tiers entirely** — so it is not an artefact of the
+hand-assigned tiers, which was the obvious objection. `benchmarks/tier_sensitivity.py`
+tests this directly.
+
+The mechanism proposed in the first version of this report — surname
+concentration — turned out to be **wrong** (r = −0.03 against surname inventory
+size). What correlates is mean token count per name (r = +0.69): more
+distinguishing tokens means a hard negative shares more matching tokens. Punjabi
+is the informative exception, with high token count and zero false positives,
+because its third token is usually Singh/Kaur, which the matcher down-weights.
+
+Variant density does not drive false-positive rate. It inflates the distance
+between spellings of *one* name, which costs recall, not precision against other
+people. See `findings.md` §6.4 for what can and cannot be claimed.
 
 ---
 
@@ -166,9 +177,10 @@ built = corpus.build(corpus.CorpusConfig(seed=20260811))
 ## Reproduce
 
 ```bash
-python benchmarks/run_all.py      # every reported number
-python benchmarks/make_figures.py # every figure
-pytest                            # 107 tests
+python benchmarks/run_all.py           # every reported number
+python benchmarks/make_figures.py      # every figure
+python benchmarks/tier_sensitivity.py  # robustness of the fairness result
+pytest                                 # 107 tests
 ```
 
 Deterministic from a fixed seed. The manifest records the config, its SHA-256
@@ -204,8 +216,11 @@ Full provenance, licences and limitations in [`DATA_SOURCES.md`](DATA_SOURCES.md
 Read these before citing anything above.
 
 - **Frequency tiers are hand-assigned, not measured.** No openly licensed Indian
-  name-frequency corpus was reachable. The corpus distribution rests on ordinal
-  judgement. This most affects the fairness numbers.
+  name-frequency corpus was reachable, so the corpus distribution rests on
+  ordinal judgement. `benchmarks/tier_sensitivity.py` shows the fairness result
+  survives those tiers being scrambled or removed, which bounds the damage — but
+  it does not make the tiers correct, and any result turning on the precise shape
+  of the distribution is still provisional.
 - **Origin categories are a proxy for transliteration convention**, not for
   ethnicity, religion or nationality. 20% of identities carry a surname that
   appears under more than one origin and are flagged `origin_ambiguous`.

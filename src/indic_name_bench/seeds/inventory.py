@@ -77,6 +77,37 @@ def origin_labels() -> dict[str, str]:
     return {c["id"]: c["label"] for c in _origins_config()["categories"]}
 
 
+#: Optional tier override, keyed by ``(form.lower(), kind, origin)``.
+#:
+#: Exists for the tier-sensitivity analysis. The frequency tiers in the YAML are
+#: hand-assigned ordinal judgements, and several reported results -- the
+#: per-origin false-positive disparity above all -- depend on the collision
+#: structure those tiers produce. Rather than assert the tiers are right, the
+#: analysis perturbs them and measures whether the findings survive. See
+#: ``benchmarks/tier_sensitivity.py``.
+_TIER_OVERRIDE: dict[tuple[str, str, str], int] | None = None
+
+
+def set_tier_override(mapping: dict[tuple[str, str, str], int] | None) -> None:
+    """Install a tier override and invalidate every dependent cache.
+
+    Invalidation matters more than it looks: ``load_components``,
+    ``components_for`` and ``ambiguous_forms`` are all cached, and a stale cache
+    would silently return unperturbed components, making a sensitivity analysis
+    report that nothing changed. That is exactly the failure mode that would be
+    read as a reassuring result.
+    """
+    global _TIER_OVERRIDE
+    _TIER_OVERRIDE = dict(mapping) if mapping else None
+    load_components.cache_clear()
+    components_for.cache_clear()
+    ambiguous_forms.cache_clear()
+
+
+def clear_tier_override() -> None:
+    set_tier_override(None)
+
+
 @lru_cache(maxsize=1)
 def load_components() -> tuple[Component, ...]:
     """Flatten the YAML inventories into a single component list."""
@@ -93,7 +124,13 @@ def load_components() -> tuple[Component, ...]:
             for tier, forms in by_tier.items():
                 for form in forms:
                     out.append(
-                        Component(form, kind, resolved_origin, int(tier), gender)
+                        Component(
+                            form,
+                            kind,
+                            resolved_origin,
+                            _resolve_tier(form, kind, resolved_origin, int(tier)),
+                            gender,
+                        )
                     )
 
     surnames = seeds("surnames.yaml")
@@ -104,9 +141,23 @@ def load_components() -> tuple[Component, ...]:
             continue
         for tier, forms in by_tier.items():
             for form in forms:
-                out.append(Component(form, SURNAME, origin, int(tier), "n"))
+                out.append(
+                    Component(
+                        form,
+                        SURNAME,
+                        origin,
+                        _resolve_tier(form, SURNAME, origin, int(tier)),
+                        "n",
+                    )
+                )
 
     return tuple(out)
+
+
+def _resolve_tier(form: str, kind: str, origin: str, declared: int) -> int:
+    if _TIER_OVERRIDE is None:
+        return declared
+    return _TIER_OVERRIDE.get((form.lower(), kind, origin), declared)
 
 
 #: Origins that do not take the Sanskritic low-information filler tokens.
